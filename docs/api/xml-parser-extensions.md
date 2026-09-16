@@ -300,7 +300,7 @@ print(resolver.stats)
 | `resolve_batch(references, progress_callback=None)` | `list[ResolvedReference]` | One result per reference; an unresolved one only copies `pmid` and `doi` from the input. `progress_callback(done, total)` is called after each |
 | `stats` | `dict` | `lookups`, `cache_hits`, `cache_size` |
 
-`ResolvedReference` fields: `source_ref` (the input dict), `resolved_pmid`, `resolved_doi`, `title`, `authors`, `year` (from the first publication date), `journal`, `citations` (`int`), `is_open_access` (`bool`); `to_dict()`.
+`ResolvedReference` fields: `source_ref` (the input dict), `resolved_pmid`, `resolved_pmcid`, `resolved_doi`, `title`, `authors`, `year` (from the first publication date), `journal`, `citations` (`int`), `is_open_access` (`bool`); `to_dict()`.
 
 ## Local processing
 
@@ -337,8 +337,8 @@ Output:
 | `LocalXMLProcessor(config=None).process_single(file_path, extract_fn=None)` | `dict` | `extract_fn(parser)`, or by default `source` (the first 100 characters), `metadata`, `authors`, `sections`, `references`, `figures`, `tables`, `funding`, `keywords` |
 | `LocalXMLProcessor(config=None).process_directory(directory, glob_pattern="*.xml", extract_fn=None)` | `dict[str, dict]` | File path to the result of `process_single`, searching subdirectories; `{"error": ...}` for a file that fails |
 | `process_single_pmc(pmcid, max_retries=3, timeout=30)` | `FullTextXMLParser` | Downloads `PMC{id}/fullTextXML` from the Europe PMC REST API with `urllib`, retrying after 2, 4, … seconds; raises `ConnectionError` after the last attempt or on HTTP 404 |
-| `process_biorxiv_manifest(manifest_path, **kwargs)` | `list[FullTextXMLParser]` | Reads DOIs from a manifest's `<article>` or `<record>` elements and downloads the articles; see [Known limitations](#known-limitations) |
-| `parse_bits_book(filepath_or_xml, **kwargs)` | `FullTextXMLParser` | Parses a BITS book file with book-specific patterns when the root is `<book>` |
+| `process_biorxiv_manifest(manifest_path, **kwargs)` | `list[FullTextXMLParser]` | Reads DOIs from a manifest's `<article>` or `<record>` elements, looks each up in Europe PMC and downloads the articles that have a PMC ID with `process_single_pmc(pmcid, **kwargs)`; articles without one are skipped |
+| `parse_bits_book(filepath_or_xml, **kwargs)` | `FullTextXMLParser` | Parses XML text (a string starting with `<`) or the file at a path, with book-specific patterns when the root is `<book>` |
 
 ## Pydantic helpers
 
@@ -381,4 +381,3 @@ Pydantic is a dependency of pyeuropepmc, so these helpers are always available.
 - **Assets.** `extract_asset_refs()` reports many files more than once: graphics inside figures are added a second time without a label, graphics in `<alternatives>` again, and each `<media>` inside supplementary material twice. Formula images count as figures, figure supplements get their parent's label, and supplementary assets have no MIME type. The URLs lack the `/bin/` path segment that PMC file URLs use elsewhere in the package, and were not checked against the PMC site.
 - **Peer review.** Sub-articles of type `aggregated-review-documents` are skipped, review titles are empty when they sit in `<front-stub>`, and text in a review body without `<sec>` elements, such as quoted reviewer comments, can be lost.
 - **Reference resolution.** `is_open_access` is `True` whenever Europe PMC returns any value, including `"N"`.
-- **Local processing.** `parse_bits_book()` raises `OSError` when given XML text instead of a path for real articles, because it first treats the text as a file name. `process_biorxiv_manifest()` passes the resolved PMID to `process_single_pmc()`, which treats it as a PMC ID.

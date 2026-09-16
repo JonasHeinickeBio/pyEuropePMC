@@ -38,7 +38,9 @@ class BenchmarkRunner:
     report_title : str, optional
         Title for the generated report.
     skip_errors : bool, default True
-        If True, skip articles that fail to parse instead of aborting.
+        If True, skip articles that cannot be read or parsed and record them in
+        ``stats["parse_errors"]``. If False, the first such error is raised and
+        the run stops.
 
     Examples
     --------
@@ -184,6 +186,8 @@ class BenchmarkRunner:
             self._stats["parse_errors"].append(
                 {"article": article_path.name, "error": f"read: {e}"}
             )
+            if not self.skip_errors:
+                raise
             return None
 
         # Optional: function-level profiling
@@ -212,6 +216,8 @@ class BenchmarkRunner:
                     self._stats["parse_errors"].append(
                         {"article": article_path.name, "error": f"parse: {e}"}
                     )
+                    if not self.skip_errors:
+                        raise
                     return None
 
             profiling_data = prof.stats_dict()
@@ -229,6 +235,8 @@ class BenchmarkRunner:
                 self._stats["parse_errors"].append(
                     {"article": article_path.name, "error": f"parse: {e}"}
                 )
+                if not self.skip_errors:
+                    raise
                 return None
 
             parse_time = time.perf_counter() - parse_start
