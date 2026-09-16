@@ -22,10 +22,9 @@ from xml.etree import (
     ElementTree as ET,  # nosec B405 - Only used for type hints, actual parsing uses defusedxml
 )
 
-import defusedxml.ElementTree as DefusedET
-
 from pyeuropepmc.core.error_codes import ErrorCodes
 from pyeuropepmc.core.exceptions import ParsingError
+from pyeuropepmc.core.xml_parsing import parse_xml
 
 # Import configuration classes from modular config
 from pyeuropepmc.features.fulltext.config.document_schema import DocumentSchema
@@ -279,12 +278,12 @@ class FullTextXMLParser:
         Raises
         ------
         ParsingError
-            If XML parsing fails
+            ``PARSE005`` if the document declares XML entities, which are refused;
+            ``PARSE002`` if the XML is not well formed; ``PARSE003`` if ``xml_content``
+            is empty or is neither a string nor an Element.
         """
         if xml_content is None:
-            raise ParsingError(
-                ErrorCodes.PARSE003, {"message": "XML content cannot be None or empty."}
-            )
+            raise ParsingError(ErrorCodes.PARSE003, message="XML content cannot be None or empty.")
 
         if isinstance(xml_content, ET.Element):
             self.root = xml_content
@@ -294,28 +293,21 @@ class FullTextXMLParser:
         elif isinstance(xml_content, str):
             if not xml_content.strip():
                 raise ParsingError(
-                    ErrorCodes.PARSE003, {"message": "XML content cannot be None or empty."}
+                    ErrorCodes.PARSE003, message="XML content cannot be None or empty."
                 )
-            try:
-                self.xml_content = xml_content
-                self.root = self._strip_default_namespace(DefusedET.fromstring(xml_content))
-                self._reset_parsers()
-                return self.root
-            except ET.ParseError as e:
-                error_msg = f"XML parsing error: {e}. The XML appears malformed."
-                logger.error(error_msg)
-                raise ParsingError(
-                    ErrorCodes.PARSE002, {"error": str(e), "format": "XML", "message": error_msg}
-                ) from e
-            except Exception as e:
-                error_msg = f"Unexpected XML parsing error: {e}"
-                logger.error(error_msg)
-                raise ParsingError(
-                    ErrorCodes.PARSE003, {"error": str(e), "format": "XML", "message": error_msg}
-                ) from e
+            self.xml_content = xml_content
+            self.root = self._strip_default_namespace(
+                parse_xml(xml_content, what="The full-text XML")
+            )
+            self._reset_parsers()
+            return self.root
         else:
             raise ParsingError(
-                ErrorCodes.PARSE003, {"message": "xml_content must be a string or Element."}
+                ErrorCodes.PARSE003,
+                message=(
+                    "xml_content must be a string or an Element, not "
+                    f"{type(xml_content).__name__}. Decode bytes before parsing."
+                ),
             )
 
     @staticmethod
@@ -349,7 +341,7 @@ class FullTextXMLParser:
         if self.root is None:
             raise ParsingError(
                 ErrorCodes.PARSE003,
-                {"message": "No XML content has been parsed. Call parse() first."},
+                message="No XML content has been parsed. Call parse() first.",
             )
 
     # =========================================================================
@@ -372,7 +364,7 @@ class FullTextXMLParser:
             logger.error(f"Error extracting metadata: {e}")
             raise ParsingError(
                 ErrorCodes.PARSE003,
-                {"error": str(e), "message": "Failed to extract metadata from XML"},
+                message=f"Failed to extract metadata from XML: {e}",
             ) from e
 
     def extract_authors(self) -> list[str]:
@@ -457,7 +449,7 @@ class FullTextXMLParser:
             logger.error(f"Error extracting references: {e}")
             raise ParsingError(
                 ErrorCodes.PARSE003,
-                {"error": str(e), "message": "Failed to extract references from XML"},
+                message=f"Failed to extract references from XML: {e}",
             ) from e
 
     def extract_tables(self) -> list[dict[str, Any]]:
@@ -476,7 +468,7 @@ class FullTextXMLParser:
             logger.error(f"Error extracting tables: {e}")
             raise ParsingError(
                 ErrorCodes.PARSE003,
-                {"error": str(e), "message": "Failed to extract tables from XML"},
+                message=f"Failed to extract tables from XML: {e}",
             ) from e
 
     def extract_figures(self) -> list[dict[str, Any]]:
@@ -495,7 +487,7 @@ class FullTextXMLParser:
             logger.error(f"Error extracting figures: {e}")
             raise ParsingError(
                 ErrorCodes.PARSE003,
-                {"error": str(e), "message": "Failed to extract figures from XML"},
+                message=f"Failed to extract figures from XML: {e}",
             ) from e
 
     def get_full_text_sections(self) -> list[dict[str, str]]:
@@ -514,7 +506,7 @@ class FullTextXMLParser:
             logger.error(f"Error extracting sections: {e}")
             raise ParsingError(
                 ErrorCodes.PARSE003,
-                {"error": str(e), "message": "Failed to extract sections from XML"},
+                message=f"Failed to extract sections from XML: {e}",
             ) from e
 
     def get_full_text_sections_structured(
@@ -590,7 +582,7 @@ class FullTextXMLParser:
             logger.error(f"Error converting to plaintext: {e}")
             raise ParsingError(
                 ErrorCodes.PARSE003,
-                {"error": str(e), "message": "Failed to convert XML to plaintext"},
+                message=f"Failed to convert XML to plaintext: {e}",
             ) from e
 
     def to_markdown(self) -> str:
@@ -609,7 +601,7 @@ class FullTextXMLParser:
             logger.error(f"Error converting to markdown: {e}")
             raise ParsingError(
                 ErrorCodes.PARSE003,
-                {"error": str(e), "message": "Failed to convert XML to markdown"},
+                message=f"Failed to convert XML to markdown: {e}",
             ) from e
 
     # =========================================================================

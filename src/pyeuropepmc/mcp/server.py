@@ -74,6 +74,7 @@ from pydantic import Field
 
 from pyeuropepmc import SearchClient
 from pyeuropepmc.cache.cache import CacheConfig
+from pyeuropepmc.core.exceptions import ParsingError
 
 # The pyeuropepmc modules below import without any extra: each one loads its
 # optional libraries lazily. A flag that only records whether the module
@@ -588,12 +589,16 @@ async def paper_figures(
         raise ToolError("One of pmcid, pmid, or doi is required")
 
     extractor = _figure_extractor_cache.get()
-    if pmcid:
-        figures = await _run_blocking(extractor.extract, pmcid=pmcid)
-    elif pmid:
-        figures = await _run_blocking(extractor.extract, pmid=pmid)
-    else:
-        figures = await _run_blocking(extractor.extract, doi=doi)
+    try:
+        if pmcid:
+            figures = await _run_blocking(extractor.extract, pmcid=pmcid)
+        elif pmid:
+            figures = await _run_blocking(extractor.extract, pmid=pmid)
+        else:
+            figures = await _run_blocking(extractor.extract, doi=doi)
+    except ParsingError as exc:
+        # A refused document is not "no figures": say so instead of reporting 0.
+        raise ToolError(str(exc)) from exc
 
     return {"figure_count": len(figures), "figures": [_to_serializable(f) for f in figures]}
 

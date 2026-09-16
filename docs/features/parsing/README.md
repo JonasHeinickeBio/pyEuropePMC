@@ -67,18 +67,18 @@ Output:
 
 ```text
 PARSE002 ParseError
-PARSE003 EntitiesForbidden
+PARSE005 EntitiesForbidden
 PARSE003 None
 ```
 
 | Input | Error code | `__cause__` |
 |---|---|---|
 | Malformed XML, including an undeclared named entity such as `&alpha;` | `PARSE002` | `xml.etree.ElementTree.ParseError` |
-| A DOCTYPE that declares an entity | `PARSE003` | `defusedxml.EntitiesForbidden` |
+| A DOCTYPE that declares an entity | `PARSE005` | `defusedxml.EntitiesForbidden` |
 | `None`, an empty string, `bytes` or another type | `PARSE003` | none |
 | Calling an extraction method before anything was parsed | `PARSE003` | none |
 
-`ParsingError` derives from `PyEuropePMCError`, not from `xml.etree.ElementTree.ParseError`, so `except ParseError` does not catch it. The `PARSE003` message always reads "Content cannot be None or empty", whatever the cause; look at `__cause__` for the real reason. Numeric character references such as `&#x0003c;` parse normally.
+`ParsingError` derives from `PyEuropePMCError`, not from `xml.etree.ElementTree.ParseError`, so `except ParseError` does not catch it; catch `ParsingError` instead. Every entry point that parses XML raises it the same way, and the message names the cause: which entity a refused document declares, or the line and column of a malformed one. Numeric character references such as `&#x0003c;` parse normally.
 
 ## Metadata, authors and affiliations
 
@@ -283,7 +283,7 @@ The method returns a list of dicts (`StructuredSection.to_dict()`), in this orde
 2. A section titled `Abstract` with `section_type` `"front"`.
 3. One section per `<sec>` in the body, with `section_type` `"body"`. Nested sections are separate entries; `section_path` joins the titles with `/`, for example `"Results/Gene mutation prediction"`. Paragraphs directly in `<body>` form an untitled section with `section_path` `"body"`.
 4. When the article keeps figures and tables in `<floats-group>`, outside `<body>` - every NIH author manuscript does - a section titled `Figures and Tables`, also with `section_type` `"body"`, holding a block for each.
-5. Back matter such as footnotes, notes and references, with `section_type` `"back"`, and appendices with `"appendix"`.
+5. Back matter such as footnotes, notes and references, with `section_type` `"back"`, and appendices with `"appendix"`. A reference list placed inside `<body>`, as some BioMed Central articles do, is given here once, as References, and not in the body section that holds it.
 
 Filter on `section_type == "body"` to get the main text only.
 
@@ -292,8 +292,8 @@ Each block is a dict with `type` and `schema_version`, plus the fields that appl
 | Block `type` | Fields |
 |---|---|
 | `heading` | `text` |
-| `paragraph` | `text`; `inlines`, a list of `{type, text, position, length}` dicts for cross-references and formatting, with `ref_type` and `target_id` for cross-references |
-| `list` | `items`, `list_type` |
+| `paragraph` | `text`; `inlines`, a list of `{type, text, position, length}` dicts for cross-references and formatting, with `ref_type` and `target_id` for cross-references. A reference in the References section is one paragraph - its label, then its citation (the `<mixed-citation>` when there is one) - with `target_id` set to the `<ref>`'s `id`, so a cross-reference's `target_id` finds it |
+| `list` | `items`, `list_type`; `inlines` whose `metadata["item"]` names the item their position indexes |
 | `table` | `label`, `caption`, `rows` (header rows first, laid out as in `extract_tables()`), `text` (label, caption, cells and footer in one string), `inlines` (positions in `text`), `metadata` (`header_rows`, the number of header rows; `footer`; and when present `spans`, `cell_graphics` and `cell_inlines`, the inline elements of each cell as `{row, column, inlines}`) |
 | `figure` | `label`, `caption`, `uri`, `target_id`, `inlines` |
 | `formula` | `text` (the expression as plain text), `tex` (LaTeX), `label`, `mathml`, `uri` |
@@ -464,11 +464,10 @@ These were found by checking the parser's output against the source XML of real 
   - `title` falls back to `source` for software and some books.
   - A pass over the flattened citation text can overwrite correctly tagged pages or DOIs.
 - **Structured sections.**
-  - Front-matter `<notes>` are typed `back`, and the `peer_review` section type is never produced.
+  - Front-matter `<notes>` are typed `back`. The `peer_review` section type is produced only by `PeerReviewExtractor`; `get_full_text_sections_structured()` leaves sub-articles out.
   - Appendix sections have no `section_path`, and a path is ambiguous when a title contains `/`.
-  - Paragraph text can run two words together where an inline element's text ends in a space (for example "IC50values").
 - **Text renderings.** `to_plaintext()`, `to_markdown()` and `get_full_text_sections()` render the title of a `<boxed-text>` or `<disp-quote>` and the `<label>` of a section or footnote as nothing, and a `<ref-list>` placed inside `<body>` not at all. `to_markdown()` renders a display formula as its flattened text rather than LaTeX, and emphasis, sub- and superscripts as plain text.
-- **Errors and size.** The `PARSE003` error text does not describe the actual cause. There are no size or depth limits; a document nested a few thousand levels deep fails in section extraction with `ParsingError`.
+- **Size and depth.** There are no size or depth limits; a document nested a few thousand levels deep fails in section extraction with `ParsingError`.
 
 ## See also
 

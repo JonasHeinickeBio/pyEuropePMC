@@ -252,7 +252,18 @@ ignore = ["E203", "E266", "E731"]
 ]
 
 [tool.ruff.lint.flake8-tidy-imports.banned-api]
+# defusedxml is the only XML parser. S313-S319 catch the common standard-library
+# calls; these catch what those rules miss.
 "lxml".msg = "Parse XML with defusedxml, the only XML parser pyeuropepmc uses."
+"defusedxml.lxml".msg = "defusedxml.lxml imports lxml; use defusedxml.ElementTree."
+"xml.etree.ElementTree.XML".msg = "Parse XML with pyeuropepmc.core.xml_parsing.parse_xml."
+"xml.etree.ElementTree.XMLPullParser".msg = "Parse XML with pyeuropepmc.core.xml_parsing.parse_xml."
+"xml.etree.ElementTree.fromstringlist".msg = "Parse XML with pyeuropepmc.core.xml_parsing.parse_xml."
+"xml.etree.ElementInclude".msg = "Its default loader parses with the standard library."
+"xml.parsers.expat".msg = "Parse XML with pyeuropepmc.core.xml_parsing.parse_xml."
+"pyexpat".msg = "Parse XML with pyeuropepmc.core.xml_parsing.parse_xml."
+"xmltodict".msg = "Parse XML with pyeuropepmc.core.xml_parsing.parse_xml."
+"pandas.read_xml".msg = "Parse XML with pyeuropepmc.core.xml_parsing.parse_xml."
 
 [tool.ruff.lint.mccabe]
 max-complexity = 15

@@ -142,17 +142,6 @@ class TestExtractTables:
                 assert cell, f"{doc.pmcid}: image cell of {table['label']!r} is empty"
 
 
-def _bare(text: str | None) -> str:
-    """Whitespace removed.
-
-    The structured blocks drop the space after an inline element whose text
-    ends in one ("'*' </bold>indicate" reads "'*'indicate"), which
-    extract_tables() does not. That is a defect of its own; these checks are
-    about layout.
-    """
-    return "".join((text or "").split())
-
-
 class TestStructuredTableBlocks:
     def test_rows_agree_with_extract_tables(self, doc: _Parsed) -> None:
         by_label = {_squash(t["label"]): t for t in doc.tables if t["label"]}
@@ -160,8 +149,7 @@ class TestStructuredTableBlocks:
             table = by_label.get(_squash(block.get("label")))
             if table is None:
                 continue
-            expected = [[_bare(c) for c in row] for row in table["header_rows"] + table["rows"]]
-            assert [[_bare(c) for c in row] for row in block["rows"]] == expected
+            assert block["rows"] == table["header_rows"] + table["rows"]
             assert block["metadata"]["header_rows"] == len(table["header_rows"])
 
     def test_the_footer_is_recorded(self, doc: _Parsed) -> None:
@@ -170,7 +158,7 @@ class TestStructuredTableBlocks:
             table = by_label.get(_squash(block.get("label")))
             if table is None or not table["footer"]:
                 continue
-            assert _bare(block["metadata"].get("footer")) == _bare(table["footer"])
+            assert block["metadata"].get("footer") == table["footer"]
 
     def test_every_inline_indexes_the_block_text(self, doc: _Parsed) -> None:
         checked = 0
