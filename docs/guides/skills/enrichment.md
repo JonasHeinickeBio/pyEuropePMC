@@ -17,7 +17,7 @@ print(f"Citations: {merged.get('citation_count')}")
 ```
 
 Key tips:
-- Pass a DOI, DOI URL, PMID or PMCID as the first argument. `enrich_paper()` has no `doi` parameter, so `enrich_paper(doi=...)` raises `ValueError`.
+- Pass a DOI, DOI URL, PMID or PMCID as the first argument, or as `doi=`, `pmid=` or `pmcid=`.
 - Europe PMC, CrossRef, OpenAlex, Semantic Scholar, iCite and ROR are enabled by default. Unpaywall needs `enable_unpaywall=True` plus `unpaywall_email` (or the `UNPAYWALL_EMAIL` environment variable); without an email the config raises `ValueError`.
 - `result["sources"]` lists the sources that returned data. `merged["citation_count"]` is the highest count, and `merged["citation_counts"]` has the per-source values.
 - For several papers, use `enricher.enrich_papers_batch(identifiers, save_responses=False)`. The default `save_responses=True` writes JSON files to `./enrichment_responses`.

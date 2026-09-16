@@ -196,6 +196,17 @@ class TestFigureEntity:
         figure.validate()
         assert figure.graphic_uri == "https://example.com/fig.png"
 
+    def test_relative_graphic_reference_is_kept(self):
+        """JATS <graphic xlink:href> is a file name, not an absolute URI."""
+        figure = FigureEntity(graphic_uri="  gkr715f1  ")
+        figure.normalize()
+        figure.validate()
+        assert figure.graphic_uri == "gkr715f1"
+
+    def test_malformed_absolute_graphic_uri_raises(self):
+        with pytest.raises(ValueError, match="Invalid URI"):
+            FigureEntity(graphic_uri="https://").normalize()
+
 
 class TestPaperEntity:
     """Tests for PaperEntity."""

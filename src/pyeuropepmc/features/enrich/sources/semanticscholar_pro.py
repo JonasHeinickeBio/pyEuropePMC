@@ -35,6 +35,11 @@ logger = logging.getLogger(__name__)
 
 __all__ = ["ProfessionalSemanticScholarClient"]
 
+# Paper search: the API returns at most 100 records per page, and relevance
+# search ends after 1000 records.
+_MAX_SEARCH_PAGE_SIZE = 100
+_MAX_SEARCH_RESULTS = 1000
+
 
 class ProfessionalSemanticScholarClient:
     """
@@ -60,8 +65,8 @@ class ProfessionalSemanticScholarClient:
     Examples
     --------
     >>> client = ProfessionalSemanticScholarClient(api_key="your_key")
-    >>> paper = client.get_paper("10.1093/mind/lix.236.433")
-    >>> print(f"Citations: {paper.citationCount}")
+    >>> paper = client.get_paper("DOI:10.1093/mind/lix.236.433")
+    >>> print(f"Citations: {paper['citation_count']}")
     """
 
     def __init__(
@@ -399,7 +404,9 @@ class ProfessionalSemanticScholarClient:
         min_citation_count : int, optional
             Minimum citation count filter
         limit : int, optional
-            Maximum results (default: 100, max: 100)
+            Maximum results (default: 100, max: 1000). Semantic Scholar serves
+            at most 100 per page; further pages are fetched as the results are
+            read, and relevance search stops at 1000.
         sort : str, optional
             Sort field:order (e.g., citationCount:desc)
         match_title : bool, optional
@@ -419,8 +426,8 @@ class ProfessionalSemanticScholarClient:
         APIClientError
             If an API error occurs
         """
-        if limit < 1 or limit > 100:
-            raise ValueError("limit must be between 1 and 100")
+        if limit < 1 or limit > _MAX_SEARCH_RESULTS:
+            raise ValueError(f"limit must be between 1 and {_MAX_SEARCH_RESULTS}")
 
         if fields is None:
             fields = self._default_paper_fields()
@@ -436,7 +443,10 @@ class ProfessionalSemanticScholarClient:
                 fields=fields,
                 publication_date_or_year=publication_date_or_year,
                 min_citation_count=min_citation_count,
-                limit=limit,
+                # Page size: the API rejects more than 100 per page. The
+                # PaginatedResults it returns fetches later pages on iteration,
+                # and _process_search_results stops reading at `limit`.
+                limit=min(limit, _MAX_SEARCH_PAGE_SIZE),
                 sort=sort,
                 match_title=match_title,
                 bulk=bulk,
