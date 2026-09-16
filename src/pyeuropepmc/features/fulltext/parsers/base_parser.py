@@ -39,7 +39,7 @@ class BaseParser:
         if self.root is None:
             raise ParsingError(
                 ErrorCodes.PARSE003,
-                {"message": "No XML content has been parsed. Call parse() first."},
+                message="No XML content has been parsed. Call parse() first.",
             )
 
     def _get_text_content(self, element: ET.Element | None) -> str:

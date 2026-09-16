@@ -16,6 +16,19 @@ All notable changes to PyEuropePMC are documented here.
 
 ### 🔒 Security
 
+- **One contract for a refused document.** defusedxml refuses XML that declares
+  entities, and that refusal now reaches callers the same way everywhere: the
+  JATS normalizer, the bioRxiv manifest, the benchmark metrics and the parse
+  profiler raise `ParsingError` instead of a raw `defusedxml.EntitiesForbidden`,
+  which `except ParseError` never caught. A refusal has its own code,
+  `PARSE005`, so it is no longer reported as "Content cannot be None or empty".
+  The arXiv, PubMed and figure paths still return their empty value and now log
+  the reason; the MCP tool `paper_figures` reports an error instead of zero
+  figures. Hostile XML is now tested against every entry point that parses, and
+  ruff bans nine more parser entry points (`xml.etree.ElementTree.XML`,
+  `XMLPullParser`, `fromstringlist`, `ElementInclude`, `expat`, `pyexpat`,
+  `xmltodict`, `pandas.read_xml`, `defusedxml.lxml`).
+
 - **All XML is parsed with defusedxml.** The arXiv and PubMed sources, figure
   extraction, the JATS normalizer, local-file and bioRxiv-manifest parsing and
   the benchmark metrics called the standard-library parser directly. They now
@@ -139,11 +152,66 @@ All notable changes to PyEuropePMC are documented here.
   content wherever the XML keeps it; in `get_full_text_sections()` the entry has
   no `type`. A `<sub-article>`'s floats are not the article's and are left out.
 
+- **References are given once, with their label once and correct offsets.**
+  PMC1764484 keeps its reference list inside a `<sec>` of the body, and the
+  structured sections gave it twice: flattened into one unknown block in that
+  section, and again as References. A labelled reference repeated its label
+  ("1. 1.Rowlett"), a `<citation-alternatives>` gave the element citation and
+  the mixed citation one after the other, the fields of an element citation ran
+  together ("RowlettVWImpact"), and the prefixed label moved the text without
+  its inlines: all 134 reference inlines of PMC11671585 pointed at the wrong
+  characters, and all 1,278 of PMC12311175. PMC12738713 also keeps its
+  reference list in the body and got it twice. Each reference
+  is now one block - label, then the mixed citation where there is one - with
+  `target_id` set to the `<ref>`'s `id`, and the reference list is left out of
+  the body section that holds it. A sub-article's references are no longer the
+  article's. A footnote no longer repeats its label either.
+
+- **An inline element that ends or starts with a space keeps it.** The text of
+  `<sup>`, `<italic>`, `<xref>` and the rest was taken stripped in the
+  structured blocks, so `R<sup>2 </sup>= 0.90` read "R2= 0.90" - 51 words ran
+  together that way in PMC1764484 - while `get_full_text_sections()` read it
+  correctly.
+
+- **List and definition-list inlines say which item they index.** Their
+  positions were relative to an item with nothing to say which, and a
+  cross-reference in a list lost its `ref_type` and `target_id`. Each inline now
+  carries `metadata["item"]` (or `"term"`/`"definition"`), and
+  `metadata["item_inlines"]` names its item.
+
+- **`extract_peer_reviews()` keeps the whole review.** It skipped PLOS's
+  `aggregated-review-documents`, which hold each round's decision letter and
+  reviews; read titles only from an `<article-meta>` that `<front-stub>` lacks,
+  so every PLOS and eLife review was untitled; took top-level sections without
+  their subsections; and, for a review without sections - every review of those
+  publishers - kept the bare paragraphs and nothing else, losing the reviewer
+  comments an eLife author response quotes. Measured by sentence, PMC10775981
+  kept 10 of 160, PMC11687933 100 of 148 and PMC13567752 312 of 368; all are
+  kept now. Review sections have `section_type` `"peer_review"`.
+
+- **Content outside any section keeps its document order.** The structured
+  sections put every bare `<p>` of a body first and every other block after
+  them, and dropped a `<supplementary-material>` placed there.
+
+- **`StructuredSection.to_chunks()` gives chunks their section path, type and
+  order.** A chunk's `section_path` held the section title; the pieces of a
+  block split for length had an empty `section_type` and were emitted before
+  the text gathered ahead of them; and the overlap was compared, in tokens,
+  with a limit in characters, so it repeated four times as much as asked. A
+  sentence longer than a chunk is now split at spaces rather than left whole.
+
 - **A formula block's `mathml` is serialized in the MathML namespace.**
   `ET.tostring` invents a prefix for a namespace it was not told about, so the
   MathML came back as `<ns0:math xmlns:ns0="...">`. It now reads
   `<math xmlns="http://www.w3.org/1998/Math/MathML">`, the form a renderer
   expects.
+
+- **Parse errors say what went wrong.** `PARSE003` no longer stands in for a
+  refused document, a recursion error or `bytes` input; each message names the
+  cause, and extraction failures carry the underlying error.
+
+- **`compute_all_metrics()` parses the document once**, not five times, which
+  takes about a third off its runtime.
 
 - **A table or figure inside a paragraph gets a block of its own.** JATS
   allows a `<table-wrap>` or `<fig>` inside a `<p>`, and
