@@ -270,6 +270,32 @@ All notable changes to PyEuropePMC are documented here.
   the same 703 boundaries ran together ("miRNARole") and a figure's label ran
   into its caption ("Fig. 1Mechanisms of immune"). Both now use the one walker.
 
+- **`JATSNormalizer` parses documents that escape `<` and `&`.** Numeric
+  character references were decoded before parsing, so `&#x0003c;` became a raw
+  `<` and `&#x00026;` a raw `&`, and `normalize_xml()` raised `ParseError` on
+  PMC3258128 and PMC12311175. Only named entities are resolved beforehand now.
+  `bytes` input is decoded the way its byte order mark or XML declaration says,
+  not always as UTF-8.
+
+- **`JATSNormalizer` metadata is the article's own.** The DOI came from the last
+  `<article-id>` in the document - for PMC10775981 that of a peer-review report,
+  `10.1371/journal.pcbi.1011761.r004` - and every `<sub-article>` contributor
+  was an author: 45 for PMC11687933's 22. Authorship declared on the
+  `<contrib-group>` gave no authors at all.
+
+- **`JATSNormalizer` sections are in document order**, each followed by its own
+  subsections; they were in neither that order nor its reverse.
+  `strip_display_markup` and `flatten_xrefs` now act independently, so the
+  CLI's `--no-markup` keeps display markup, and an `<xref>` inside `<bold>` is
+  kept when only markup is stripped. `drop_mathml` keeps each formula's text
+  in its place instead of losing it and the text that followed.
+
+- **`pyeuropepmc normalize` prints document text as it is.** `text`, `bioc` and
+  the `sections` table went through Rich markup, so a `[/i]` in an article
+  stopped the command and `[a]` disappeared. `normalize batch` exits with
+  status 1 when any file fails, and every command reads files in the encoding
+  their XML declaration names.
+
 - **A caption's title no longer runs into its text** in the figure and table
   blocks built from it ("Overview of the study.a The workflow"). Eight
   figure captions in PMC12738713 joined that way.
