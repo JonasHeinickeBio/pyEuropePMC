@@ -265,7 +265,7 @@ https://europepmc.org/api/fulltextRepo?pmcId=PMC3258128&type=FILE&fileName=gkr71
 
 | Method | Returns | Description |
 |---|---|---|
-| `extract_asset_refs()` | `list[AssetRef]` | One reference per file, in document order: every `<graphic>`, `<inline-graphic>` and `<media>`, typed and labelled by the block that owns it. A file declared twice is returned once. With a PMCID as `article_id`, `uri` is the Europe PMC download URL; otherwise it stays the file name from the XML |
+| `extract_asset_refs()` | `list[AssetRef]` | One reference per file, in document order: every `<graphic>`, `<inline-graphic>` and `<media>`, typed and labelled by the block that owns it. A `<supplementary-material>` without such a child is read from its own `xlink:href`, or else from an `<object-id>` that holds a file name (never one typed as a DOI). A file declared twice is returned once. With a PMCID as `article_id`, `uri` is the Europe PMC download URL; otherwise it stays the file name from the XML |
 | `download_assets(asset_refs)` | `list[AssetRef]` | Only with policy `DOWNLOAD` or `DOWNLOAD_MISSING` and a `download_dir`: downloads each `http` or `https` URI into `download_dir` under its file name and sets `local_path`. `DOWNLOAD_MISSING` skips assets whose `local_path` exists. Failures are logged. Returns the same list |
 | `resolve_figure_uris(figures, article_id)` | `list[dict]` | Class method: rewrites relative `graphic_uri` values of `extract_figures()` results in place, to Europe PMC download URLs. Needs a PMCID; anything else leaves the file names alone |
 
