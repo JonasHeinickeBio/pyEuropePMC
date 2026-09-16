@@ -231,6 +231,39 @@ All notable changes to PyEuropePMC are documented here.
   around the element: the text before it, a table or figure block with label,
   caption and rows, then the text after.
 
+- **Article metadata is read from the article's own front matter.** Every field
+  in `<article-meta>` has a namesake elsewhere in the document, and the lookups
+  searched all of them. `extract_metadata()["pages"]` took the page range of the
+  first reference whenever the article itself is paginated with
+  `<elocation-id>` — 4 of 5 measured articles, PMC11671585 reporting "1-22" for
+  elocation-id 354 — and `volume`, `issue` and the journal title had the same
+  fallback. A `<related-article>` beside them describes a different paper;
+  PMC13567752 reported its companion's pages. `elocation_id` is now extracted
+  and is a new key of `extract_metadata()`.
+
+- **`extract_affiliations()` returns the authors' affiliations.** It returned
+  every `<aff>` in the document: PMC11687933 has 8 and came back with 33 — the
+  2 editor affiliations and the 23 belonging to the peer-review `<sub-article>`
+  elements. An affiliation's `text` also ran the `<label>` marker and each
+  `<institution-id>` (a ROR URL, a GRID code, an ISNI) into the institution
+  name, which affected 18 of the 19 affiliations across the test corpus.
+
+- **`extract_keywords()` returns the article's own keywords.** A peer-review
+  `<sub-article>` tags keywords too, so PMC11687933's author keywords ended
+  with eLife's assessment vocabulary, "Compelling" and "Important".
+
+- **`extract_article_categories()` reports `article_type`.** It looked for
+  `.//article`, which never matches, because the root element *is* the
+  `<article>` and ElementTree's descendant search does not include it.
+
+- **`extract_funding()` keeps every award ID of an award group** in a new
+  `award_ids` list; only the first survived. PMC11671585 has a group naming
+  four grants. `award_id` still holds the first.
+
+- **`self_uri` is not an earlier version of the article.** eLife lists the
+  preprint and each reviewed preprint before the version of record, so
+  PMC11687933 reported the bioRxiv DOI of its preprint.
+
 - **`to_plaintext()` keeps the cells of such a table apart again**, as 2.0.0
   did. 2.2 built a paragraph's text with a walker of its own that put nothing
   around block-level elements, where `get_text_content()` puts a space, so

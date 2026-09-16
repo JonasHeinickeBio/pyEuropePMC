@@ -47,6 +47,38 @@ def _expected_author_contribs(document):
     return contribs
 
 
+def _expected_author_affiliations(document):
+    """The <aff> elements of the article's own front matter, editors' aside.
+
+    An editor's affiliation is cited by the editor's <contrib> and by no
+    author's, which is what tells the two apart at <article-meta> level; in a
+    <contrib-group> of editors it is the group that says so. Every other
+    affiliation belongs to the authors, including one no <xref> cites.
+    """
+    scope = _own_front(document)
+    editors = [
+        c for c in scope.findall(".//contrib") if c.get("contrib-type") not in (None, "author")
+    ]
+    editor_rids = {x.get("rid") for c in editors for x in c.findall(".//xref[@ref-type='aff']")}
+    author_rids = {
+        x.get("rid")
+        for c in _expected_author_contribs(document)
+        for x in c.findall(".//xref[@ref-type='aff']")
+    }
+    editor_groups = [
+        g
+        for g in scope.findall(".//contrib-group")
+        if g.findall("contrib") and all(c in editors for c in g.findall("contrib"))
+    ]
+    in_editor_group = {id(a) for g in editor_groups for a in g.iter("aff")}
+    return [
+        a
+        for a in scope.iter("aff")
+        if id(a) not in in_editor_group
+        and not (a.get("id") in editor_rids and a.get("id") not in author_rids)
+    ]
+
+
 class TestTitle:
     def test_matches_the_article_title_element(self, document):
         """Exact, not merely non-empty: `PM<sub>2.5</sub>` read as "PM 2.5"."""
@@ -94,11 +126,56 @@ class TestAuthors:
 
 
 class TestAffiliationsAndFigures:
-    def test_every_affiliation_is_returned(self, document):
-        affs = document.root.findall(".//article-meta//aff")
+    def test_every_author_affiliation_is_returned(self, document):
+        affs = _expected_author_affiliations(document)
         if not affs:
             pytest.skip(f"{document.pmcid} has no <aff>")
-        assert len(document.parser.extract_affiliations()) == len(affs)
+        got = document.parser.extract_affiliations()
+        assert [a.get("id") for a in got] == [a.get("id") for a in affs]
+
+    def test_no_editor_or_sub_article_affiliations(self, document):
+        """`.//aff` also matched the editors' and every reviewer report's.
+
+        PMC11687933 has 8 author affiliations and returned 33: the 2 editor
+        ones and 23 from the peer-review <sub-article> elements as well.
+        """
+        expected = _expected_author_affiliations(document)
+        everything = document.root.findall(".//aff")
+        if len(everything) == len(expected):
+            pytest.skip(f"{document.pmcid} has no editor or sub-article <aff>")
+        assert len(document.parser.extract_affiliations()) == len(expected)
+
+    def test_affiliation_text_has_no_label_or_institution_id(self, document):
+        """A ROR URL or a GRID code ran into the institution name.
+
+        Compared with the affiliation's own text minus those subtrees, not by
+        looking for the label as a substring: a label "1" also occurs in the
+        postal code "Singapore 117597".
+        """
+        skip = {"label", "institution-id"}
+
+        def text_without(node):
+            parts = [node.text or ""]
+            for child in node:
+                if child.tag not in skip:
+                    parts.append(text_without(child))
+                parts.append(child.tail or "")
+            return "".join(parts)
+
+        checked = 0
+        for aff, got in zip(
+            _expected_author_affiliations(document),
+            document.parser.extract_affiliations(),
+            strict=True,
+        ):
+            if not any(e.tag in skip for e in aff.iter()):
+                continue
+            checked += 1
+            assert squash(got.get("text")) == squash(text_without(aff)), (
+                f"{document.pmcid} {aff.get('id')}: {got.get('text')!r}"
+            )
+        if not checked:
+            pytest.skip(f"{document.pmcid} has no <label> or <institution-id> in an <aff>")
 
     def test_every_figure_is_returned(self, document):
         figs = document.root.findall(".//fig")
@@ -168,3 +245,98 @@ class TestLicence:
         got = document.parser.extract_license()
         assert got, f"{document.pmcid}: <license> present but nothing extracted"
         assert got.get("text"), f"{document.pmcid}: no licence text"
+
+
+def _article_meta(document):
+    return _own_front(document).find("./article-meta")
+
+
+class TestPagination:
+    """Pagination is the article's own, or absent.
+
+    Every one of `volume`, `issue`, `fpage` and `lpage` also occurs in each
+    reference, and the reference list is part of the document, so a `.//`
+    search filled these fields from the bibliography whenever the article
+    itself had nothing to give.
+    """
+
+    def test_pages_are_the_articles_own(self, document):
+        meta = _article_meta(document)
+        if meta is None:
+            pytest.skip(f"{document.pmcid} has no <article-meta>")
+        fpage = meta.findtext("fpage")
+        lpage = meta.findtext("lpage")
+        expected = f"{fpage}-{lpage}" if fpage and lpage else (fpage or None)
+        assert document.parser.extract_metadata().get("pages") == expected
+
+    def test_elocation_id_is_extracted(self, document):
+        meta = _article_meta(document)
+        if meta is None or meta.findtext("elocation-id") is None:
+            pytest.skip(f"{document.pmcid} has no <elocation-id>")
+        assert (
+            document.parser.extract_metadata().get("elocation_id")
+            == meta.findtext("elocation-id").strip()
+        )
+
+    def test_volume_and_issue_are_the_articles_own(self, document):
+        meta = _article_meta(document)
+        if meta is None:
+            pytest.skip(f"{document.pmcid} has no <article-meta>")
+        got = document.parser.extract_metadata()
+        for field in ("volume", "issue"):
+            expected = meta.findtext(field)
+            assert got.get(field) == (expected.strip() if expected else None), field
+
+
+class TestArticleMetadata:
+    def test_article_type_is_reported(self, document):
+        """`.//article` never matches: the root element is the <article>."""
+        expected = document.root.get("article-type")
+        if not expected:
+            pytest.skip(f"{document.pmcid} has no article-type")
+        assert document.parser.extract_article_categories().get("article_type") == expected
+
+    def test_keywords_are_the_articles_own(self, document):
+        """A peer-review <sub-article> tags keywords of its own."""
+        expected = [
+            normalise("".join(k.itertext()))
+            for k in _own_front(document).iter("kwd")
+            if normalise("".join(k.itertext()))
+        ]
+        if not expected:
+            pytest.skip(f"{document.pmcid} has no <kwd>")
+        assert document.parser.extract_keywords() == expected
+
+    def test_self_uri_is_not_an_earlier_version(self, document):
+        """eLife lists the preprint and each reviewed preprint first."""
+        uris = list(_own_front(document).iter("self-uri"))
+        if not uris:
+            pytest.skip(f"{document.pmcid} has no <self-uri>")
+        href = "{http://www.w3.org/1999/xlink}href"
+        expected = next(
+            (
+                u.get(href, u.get("href"))
+                for u in uris
+                if u.get(href, u.get("href"))
+                and "preprint" not in (u.get("content-type") or "").lower()
+            ),
+            None,
+        )
+        if expected is None:
+            pytest.skip(f"{document.pmcid} has only preprint <self-uri>")
+        assert document.parser.extract_metadata().get("self_uri") == expected
+
+    def test_every_award_id_of_a_group_is_kept(self, document):
+        """Only the first survived; a group routinely names several grants."""
+        groups = [
+            g for g in document.root.iter("award-group") if len(g.findall(".//award-id")) > 1
+        ]
+        if not groups:
+            pytest.skip(f"{document.pmcid} has no award-group with several award IDs")
+        got = document.parser.extract_metadata().get("funding") or []
+        found = {tuple(entry.get("award_ids") or []) for entry in got}
+        for group in groups:
+            expected = tuple(
+                normalise(e.text) for e in group.findall(".//award-id") if normalise(e.text)
+            )
+            assert expected in found, f"{document.pmcid}: {expected} missing from {found}"
