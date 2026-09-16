@@ -83,7 +83,7 @@ quality-full: quality codescene
 .PHONY: sync-rdf
 sync-rdf:
 	@echo "Synchronizing RML mappings from YAML..."
-	$(PYTHON_INTERPRETER) scripts/sync_rdf_mappings.py
+	$(PYTHON_INTERPRETER) examples/scripts/sync_rdf_mappings.py
 	@echo "✓ RML mappings synchronized"
 
 

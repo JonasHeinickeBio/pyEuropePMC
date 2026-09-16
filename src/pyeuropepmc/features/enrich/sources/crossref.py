@@ -32,7 +32,7 @@ class CrossRefClient(BaseEnrichmentClient):
     Examples
     --------
     >>> client = CrossRefClient()
-    >>> metadata = client.enrich(doi="10.1371/journal.pone.0123456")
+    >>> metadata = client.enrich("10.1371/journal.pone.0123456")
     >>> if metadata:
     ...     print(metadata.get("title"))
     ...     print(metadata.get("citation_count"))
@@ -82,7 +82,7 @@ class CrossRefClient(BaseEnrichmentClient):
         Parameters
         ----------
         identifier : str
-            Paper DOI (required)
+            Paper DOI (required); may also be passed as ``doi=``.
         **kwargs
             Additional parameters (unused)
 
@@ -106,6 +106,7 @@ class CrossRefClient(BaseEnrichmentClient):
         ValueError
             If identifier is not provided
         """
+        identifier = self._identifier_or_alias(identifier, kwargs, "doi")
         if not identifier:
             raise ValueError("Identifier is required for CrossRef enrichment")
 
