@@ -217,8 +217,26 @@ class TestSearchPaper:
 
     def test_limit_too_high_raises(self):
         c = _client()
-        with pytest.raises(ValueError):
-            c.search_paper("q", limit=101)
+        with pytest.raises(ValueError, match="between 1 and 1000"):
+            c.search_paper("q", limit=1001)
+
+    def test_limit_above_page_size_reads_further_pages(self):
+        """The API serves 100 per page; iterating the results pages on, up to ``limit``."""
+        c = _client()
+        # PaginatedResults stands in as a plain iterable of 450 papers.
+        c._client.search_paper.return_value = iter(
+            [SimpleNamespace(paperId=str(i)) for i in range(450)]
+        )
+        result = c.search_paper("cancer", limit=300)
+
+        assert len(result) == 300
+        assert c._client.search_paper.call_args.kwargs["limit"] == 100  # page size
+
+    def test_small_limit_is_the_page_size(self):
+        c = _client()
+        c._client.search_paper.return_value = [SimpleNamespace(paperId="1")]
+        c.search_paper("cancer", limit=7)
+        assert c._client.search_paper.call_args.kwargs["limit"] == 7
 
     def test_normal_search(self):
         c = _client()

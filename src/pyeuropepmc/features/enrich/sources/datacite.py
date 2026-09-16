@@ -37,7 +37,7 @@ class DataCiteClient(BaseEnrichmentClient):
     Examples
     --------
     >>> client = DataCiteClient()
-    >>> metadata = client.enrich(doi="10.5061/dryad.8515")
+    >>> metadata = client.enrich("10.5061/dryad.8515")
     >>> if metadata:
     ...     print(metadata.get("title"))
     ...     print(f"Citations: {metadata.get('citation_count', 0)}")
@@ -89,7 +89,7 @@ class DataCiteClient(BaseEnrichmentClient):
         Parameters
         ----------
         identifier : str
-            DOI to enrich (required)
+            DOI to enrich (required); may also be passed as ``doi=``.
         use_cache : bool, optional
             Whether to use cached results (default: True)
         **kwargs
@@ -130,6 +130,7 @@ class DataCiteClient(BaseEnrichmentClient):
         ValueError
             If identifier is not provided
         """
+        identifier = self._identifier_or_alias(identifier, kwargs, "doi")
         if not identifier:
             raise ValueError("Identifier is required for DataCite enrichment")
 

@@ -48,7 +48,7 @@ INTRODUCTION 3 paragraph
 | Method | Returns | Description |
 |---|---|---|
 | `to_dict()` | `dict` | `title`, `content` (block dicts), `section_type`, `schema_version` (`"0.2.0"`), and `section_path` when not empty |
-| `to_chunks(max_tokens=512, overlap=50, approx_chars_per_token=4)` | `list[dict]` | Block texts joined into chunks of about `max_tokens` tokens (estimated as characters divided by `approx_chars_per_token`), repeating trailing blocks up to `overlap` between chunks. Each chunk has `text`, `section_path` (holding the section title), `section_type`, `chunk_index` and `estimated_tokens`. A block longer than `max_tokens` is split at sentence ends into chunks with an empty `section_type` |
+| `to_chunks(max_tokens=512, overlap=50, approx_chars_per_token=4)` | `list[dict]` | Block texts joined, in document order, into chunks of at most `max_tokens` tokens (estimated as characters divided by `approx_chars_per_token`); the trailing blocks of one chunk, up to `overlap` tokens, begin the next. Each chunk has `text`, `section_path` (the section's path, or its title when it has none), `section_type`, `chunk_index` and `estimated_tokens`. A block longer than `max_tokens` is split at sentence ends, and a sentence longer than that at spaces |
 | `to_langchain_documents(metadata=None)` | `list[dict]` | One `{"page_content", "metadata"}` dict per block with text; metadata holds your `metadata` plus `section_title`, `section_type`, `block_type`, `block_index` and, when set, `label` |
 
 ### ContentBlock
@@ -62,6 +62,7 @@ INTRODUCTION 3 paragraph
 | `uri`, `target_id` | `str` | `""` | figure, figure and table references |
 | `rows` | `list[list[str]]` | `[]` | table |
 | `tex`, `mathml` | `str` | `""` | formula |
+| `uri` | `str` | `""` | figure, formula (the publisher's rendered image) |
 | `language` | `str` | `""` | code |
 | `definition_terms` | `list[dict[str, str]]` | `[]` | definition list: `{"term", "def"}` dicts |
 | `jats_tag` | `str` | `""` | unknown block |
@@ -78,7 +79,7 @@ Factory class methods: `paragraph(text)`, `paragraph_with_inlines(text, inlines=
 
 `ContentBlockType` values: `paragraph`, `list`, `formula`, `figure_ref`, `table_ref`, `code`, `boxed_text`, `heading`, `figure`, `table`, `quote`, `mathml`, `peer_review`, `definition_list`, `unknown_block`.
 
-`InlineElement` (in `pyeuropepmc.features.fulltext.extensions.content_blocks`) has `type` (an `InlineElementType`: `xref`, `inline_formula`, `bold`, `italic`, `superscript`, `subscript`, `chemical_structure`, `named_content`, `strikethrough`, `underline`, `monospace`, `small_caps`, `roman`, `sans_serif`, `styled_content`, `unknown_inline`), `text`, `ref_type`, `target_id`, `position` and `length` (the character span in the block's text), `formula_latex`, `language` and `metadata`.
+`InlineElement` (in `pyeuropepmc.features.fulltext.extensions.content_blocks`) has `type` (an `InlineElementType`: `xref`, `inline_formula`, `bold`, `italic`, `superscript`, `subscript`, `chemical_structure`, `named_content`, `strikethrough`, `underline`, `monospace`, `small_caps`, `roman`, `sans_serif`, `styled_content`, `unknown_inline`), `text`, `ref_type`, `target_id`, `position` and `length`, `formula_latex`, `language` and `metadata`. `position` and `length` are the character span in the block's `text`; for a block without `text`, such as a figure, in its `caption`; and in a list or definition list, in the item that `metadata` names: `{"item": i}` indexes `items`, `{"term": i}` and `{"definition": i}` the term and the definition of `definition_terms[i]`.
 
 ## Peer review
 
@@ -101,14 +102,16 @@ for review in review_set.reviews[:3]:
 
 `PeerReviewExtractor(root=None, config=None)`; `extract_peer_reviews() -> PeerReviewSet`.
 
-- Only sub-articles whose `article-type` is `decision-letter`, `referee-report`, `editor-report`, `reviewer-report`, `author-comment` or `reply` are read; others are skipped.
+- Only sub-articles whose `article-type` is `decision-letter`, `referee-report`, `editor-report`, `reviewer-report`, `author-comment`, `community-comment`, `aggregated-review-documents` (how PLOS publishes each round's decision letter with its reviews) or `reply` are read; others are skipped.
+- The title comes from the sub-article's `<front-stub>`, `<front>` or `<article-meta>`.
+- `sections` are read from the sub-article's own `<body>` as the article's body is: one section per `<sec>` at any depth, with its `section_path`, plus an untitled section for the content outside any `<sec>`, in document order. Every section has `section_type` `"peer_review"`.
 - The revision round comes from a version number in the sub-article, or from a numbered footnote label, and is 1 otherwise.
 
 | Class | Fields |
 |---|---|
 | `PeerReviewSet` | `article_id` (`str`), `reviews` (`list[PeerReviewMaterial]`), `revision_rounds` (`dict[int, list[PeerReviewMaterial]]`, sorted by round); `to_dict()` |
 | `PeerReviewMaterial` | `review_type` (`PeerReviewType`), `title` (`str`), `contributors` (`list[dict]` with `name` and `type`), `sections` (`list[StructuredSection]`), `revision_round` (`int`, default 1), `metadata` (`dict`); `to_dict()` |
-| `PeerReviewType` | `DECISION_LETTER`, `REFEREE_REPORT`, `EDITOR_REPORT`, `REVIEWER_REPORT`, `AUTHOR_COMMENT`, `REPLY`, `UNKNOWN`; values are the JATS `article-type` strings |
+| `PeerReviewType` | `DECISION_LETTER`, `REFEREE_REPORT`, `EDITOR_REPORT`, `REVIEWER_REPORT`, `AUTHOR_COMMENT`, `COMMUNITY_COMMENT`, `AGGREGATED_REVIEW_DOCUMENTS`, `REPLY`, `UNKNOWN`; values are the JATS `article-type` strings |
 
 ## MathML to LaTeX
 
@@ -135,8 +138,8 @@ print(converter.convert(math)[:40])
 Output:
 
 ```text
-${x}_{1}$ {x}_{1} $${x}_{1}$$
-$${L}_{P − T} = − \frac{1}{2 N} {\sum}_{
+$x_{1}$ x_{1} $$x_{1}$$
+$$\mathcal{L}_{P - T} = - \frac{1}{2N}\s
 ```
 
 | Member | Returns | Description |
@@ -300,7 +303,7 @@ print(resolver.stats)
 | `resolve_batch(references, progress_callback=None)` | `list[ResolvedReference]` | One result per reference; an unresolved one only copies `pmid` and `doi` from the input. `progress_callback(done, total)` is called after each |
 | `stats` | `dict` | `lookups`, `cache_hits`, `cache_size` |
 
-`ResolvedReference` fields: `source_ref` (the input dict), `resolved_pmid`, `resolved_doi`, `title`, `authors`, `year` (from the first publication date), `journal`, `citations` (`int`), `is_open_access` (`bool`); `to_dict()`.
+`ResolvedReference` fields: `source_ref` (the input dict), `resolved_pmid`, `resolved_pmcid`, `resolved_doi`, `title`, `authors`, `year` (from the first publication date), `journal`, `citations` (`int`), `is_open_access` (`bool`); `to_dict()`.
 
 ## Local processing
 
@@ -337,8 +340,8 @@ Output:
 | `LocalXMLProcessor(config=None).process_single(file_path, extract_fn=None)` | `dict` | `extract_fn(parser)`, or by default `source` (the first 100 characters), `metadata`, `authors`, `sections`, `references`, `figures`, `tables`, `funding`, `keywords` |
 | `LocalXMLProcessor(config=None).process_directory(directory, glob_pattern="*.xml", extract_fn=None)` | `dict[str, dict]` | File path to the result of `process_single`, searching subdirectories; `{"error": ...}` for a file that fails |
 | `process_single_pmc(pmcid, max_retries=3, timeout=30)` | `FullTextXMLParser` | Downloads `PMC{id}/fullTextXML` from the Europe PMC REST API with `urllib`, retrying after 2, 4, … seconds; raises `ConnectionError` after the last attempt or on HTTP 404 |
-| `process_biorxiv_manifest(manifest_path, **kwargs)` | `list[FullTextXMLParser]` | Reads DOIs from a manifest's `<article>` or `<record>` elements and downloads the articles; see [Known limitations](#known-limitations) |
-| `parse_bits_book(filepath_or_xml, **kwargs)` | `FullTextXMLParser` | Parses a BITS book file with book-specific patterns when the root is `<book>` |
+| `process_biorxiv_manifest(manifest_path, **kwargs)` | `list[FullTextXMLParser]` | Reads DOIs from a manifest's `<article>` or `<record>` elements, looks each up in Europe PMC and downloads the articles that have a PMC ID with `process_single_pmc(pmcid, **kwargs)`; articles without one are skipped |
+| `parse_bits_book(filepath_or_xml, **kwargs)` | `FullTextXMLParser` | Parses XML text (a string starting with `<`) or the file at a path, with book-specific patterns when the root is `<book>` |
 
 ## Pydantic helpers
 
@@ -377,8 +380,7 @@ Pydantic is a dependency of pyeuropepmc, so these helpers are always available.
 
 ## Known limitations
 
-- **MathML.** `MathMLConverter` returns an empty string (`$$$$` from `convert()`) for formulas wrapped in `<mtable>`, writes accents such as a bar as superscripts, flattens nested subscripts and fractions (`\frac{a i j}{b i j}`), and leaves Greek letters as Unicode characters.
+- **MathML.** `MathMLConverter` covers presentation MathML only. Content MathML (`<apply>`, `<annotation-xml>`) is dropped, `<mmultiscripts>` loses its script positions, and an `<mtable>` always becomes a plain `array` — a `cases` or `aligned` environment is never produced. A character with no LaTeX command in its tables is kept as it stands (a letter inside `\text{}`), which a Unicode-aware engine or MathJax accepts and pdflatex does not; on a sample of 1,654 formulas from 32 papers, 4 failed to compile with pdflatex for that reason.
 - **Assets.** `extract_asset_refs()` reports many files more than once: graphics inside figures are added a second time without a label, graphics in `<alternatives>` again, and each `<media>` inside supplementary material twice. Formula images count as figures, figure supplements get their parent's label, and supplementary assets have no MIME type. The URLs lack the `/bin/` path segment that PMC file URLs use elsewhere in the package, and were not checked against the PMC site.
-- **Peer review.** Sub-articles of type `aggregated-review-documents` are skipped, review titles are empty when they sit in `<front-stub>`, and text in a review body without `<sec>` elements, such as quoted reviewer comments, can be lost.
+- **Peer review.** `contributors` are collected from the whole sub-article, including any sub-article nested inside it. The revision round is not read from PLOS's titles ("Decision Letter 1"), so every PLOS review is in round 1.
 - **Reference resolution.** `is_open_access` is `True` whenever Europe PMC returns any value, including `"N"`.
-- **Local processing.** `parse_bits_book()` raises `OSError` when given XML text instead of a path for real articles, because it first treats the text as a file name. `process_biorxiv_manifest()` passes the resolved PMID to `process_single_pmc()`, which treats it as a PMC ID.
