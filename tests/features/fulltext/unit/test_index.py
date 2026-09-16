@@ -324,7 +324,8 @@ class TestAddSkipsDocumentsAlreadyIndexed:
 
     def test_same_doi_without_pmid_is_stored_once(self, index):
         first = index.add(_entry(pmid=""))
-        assert index.add(_entry(pmid="")) == first
+        # A different source_id, so only the DOI can make it a match.
+        assert index.add(_entry(pmid="", source_id="another-source")) == first
         assert index.count() == 1
 
     def test_same_source_id_without_pmid_or_doi_is_stored_once(self, index):

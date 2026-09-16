@@ -202,6 +202,45 @@ class TestDownloadChainWhenEverythingIsMissing:
         assert step.call_args.kwargs["doi"] == "10.1/x"
 
 
+class TestDoiLookupIsShared:
+    @pytest.fixture(autouse=True)
+    def all_requests_404(self):
+        with (
+            patch.object(requests.Session, "get", side_effect=_not_found),
+            patch(f"{MODULE}.requests.get", side_effect=_not_found),
+        ):
+            yield
+
+    def test_one_lookup_serves_the_extra_strategies_and_unpaywall(
+        self, client_with_email, tmp_path
+    ):
+        with (
+            patch.object(
+                client_with_email, "_lookup_doi_for_pmcid", return_value="10.1/x"
+            ) as lookup,
+            patch.object(
+                client_with_email, "_try_extra_xml_strategies", return_value=False
+            ) as extra,
+            patch.object(client_with_email, "_try_unpaywall_xml", return_value=False) as unpaywall,
+            pytest.raises(FullTextError),
+        ):
+            client_with_email.download_xml_by_pmcid("3257301", tmp_path / "a.xml")
+
+        lookup.assert_called_once_with("3257301")
+        assert extra.call_args.args[1] == "10.1/x"
+        assert unpaywall.call_args.kwargs["doi"] == "10.1/x"
+
+    def test_no_lookup_when_no_step_needs_the_doi(self, client, tmp_path):
+        """No extra strategies and no e-mail: nothing would use the DOI."""
+        with (
+            patch.object(client, "_lookup_doi_for_pmcid") as lookup,
+            pytest.raises(FullTextError),
+        ):
+            client.download_xml_by_pmcid("3257301", tmp_path / "a.xml", extra_strategies=False)
+
+        lookup.assert_not_called()
+
+
 def test_download_xml_methods_are_annotated_to_return_a_path():
     """Both raise FullTextError when nothing is found; neither returns None."""
     for method in (

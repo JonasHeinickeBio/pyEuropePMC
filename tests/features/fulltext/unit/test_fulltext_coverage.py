@@ -31,11 +31,16 @@ class TestFullTextClientCoverage:
             self.client, "_try_extra_xml_strategies", return_value=False
         )
         self._extra_patch.start()
+        # The chain looks up the DOI for those strategies before running them.
+        self._doi_patch = patch.object(self.client, "_lookup_doi_for_pmcid", return_value=None)
+        self._doi_patch.start()
 
     def teardown_method(self):
         """Clean up after each test method."""
         if hasattr(self, "_extra_patch"):
             self._extra_patch.stop()
+        if hasattr(self, "_doi_patch"):
+            self._doi_patch.stop()
         if hasattr(self, "client") and self.client:
             self.client.close()
 

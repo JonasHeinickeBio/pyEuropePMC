@@ -1318,6 +1318,12 @@ class FullTextClient(BaseAPIClient):
                 self.last_xml_source = name
                 return output_path
 
+        # The remaining steps key on the DOI. Look it up once here instead of
+        # once per step, and only if a step will use it: Unpaywall is skipped
+        # without a contact e-mail.
+        if doi is None and (extra_strategies or self.email):
+            doi = self._lookup_doi_for_pmcid(normalized_pmcid)
+
         # --- extra open sources -------------------------------------------
         if extra_strategies and self._try_extra_xml_strategies(normalized_pmcid, doi, output_path):
             self._save_to_cache(output_path, normalized_pmcid, "xml")
