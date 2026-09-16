@@ -276,7 +276,8 @@ class ReferenceResolver:
             year=entry.get("firstPublicationDate", "")[:4] or "",
             journal=entry.get("journalTitle", "") or "",
             citations=int(entry.get("citedByCount", 0) or 0),
-            is_open_access=bool(entry.get("isOpenAccess", False)),
+            # Europe PMC sends "Y" or "N"; bool("N") would be True.
+            is_open_access=entry.get("isOpenAccess") == "Y",
         )
 
     def _throttle(self) -> None:

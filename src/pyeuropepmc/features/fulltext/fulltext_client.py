@@ -19,10 +19,12 @@ import tempfile
 import threading
 from threading import Lock, local
 import time
-from typing import Any, TypedDict
+from typing import IO, Any, TypedDict
 from urllib.parse import urljoin
 import zipfile
 
+from defusedxml import DefusedXmlException
+import defusedxml.ElementTree as DefusedET
 import requests
 from requests import Session
 from tqdm import tqdm
@@ -38,6 +40,76 @@ logger = logging.getLogger(__name__)
 
 # Type alias for strategy functions
 StrategyFunc = Callable[[], Path | None | bool | str | dict[str, Any]]
+
+# ``<article-id pub-id-type=...>`` values that carry the PMC ID. ``pmcaid`` and
+# ``pmcaiid`` are PMC-internal article numbers, not the PMC ID, so they are left out.
+_PMCID_ID_TYPES = frozenset({"pmc", "pmcid", "pmcid-ver"})
+
+
+def _local_name(tag: object) -> str:
+    """An element's tag without its ``{namespace}`` part (``""`` for comments/PIs)."""
+    return tag.rsplit("}", 1)[-1] if isinstance(tag, str) else ""
+
+
+def _has_pmcid(article: Any, normalized_pmcid: str) -> bool:
+    """Whether *article*'s own ``<front>/<article-meta>`` carries the PMC ID.
+
+    Only the article's own front matter counts: a ``<sub-article>`` or a
+    ``<related-article>`` describes another document.
+    """
+    for front in article:
+        if _local_name(front.tag) != "front":
+            continue
+        for meta in front:
+            if _local_name(meta.tag) != "article-meta":
+                continue
+            for article_id in meta:
+                if _local_name(article_id.tag) != "article-id":
+                    continue
+                if article_id.get("pub-id-type", "").lower() not in _PMCID_ID_TYPES:
+                    continue
+                # "PMC3257301", "3257301" and the versioned "PMC3257301.1" all match.
+                value = (article_id.text or "").strip().upper().removeprefix("PMC")
+                if value.split(".", 1)[0] == normalized_pmcid:
+                    return True
+    return False
+
+
+def _extract_article_xml(stream: IO[bytes] | gzip.GzipFile, normalized_pmcid: str) -> str | None:
+    """Return the ``<article>`` with PMC ID *normalized_pmcid* from an XML stream.
+
+    *stream* is a single JATS article or an article set such as a Europe PMC
+    open-access bulk archive. It is read incrementally and every other article is
+    cleared once it has been checked, so memory use stays near one article.
+
+    Returns
+    -------
+    str or None
+        The article as a standalone XML document, or None if the stream has no
+        article with that PMC ID.
+
+    Raises
+    ------
+    xml.etree.ElementTree.ParseError
+        If the stream is not well-formed XML.
+    defusedxml.DefusedXmlException
+        If the XML uses entity declarations or other constructs defusedxml refuses.
+    """
+    for _event, element in DefusedET.iterparse(stream, events=("end",)):
+        if _local_name(element.tag) != "article":
+            continue
+        if _has_pmcid(element, normalized_pmcid):
+            element.tail = None
+            body = DefusedET.tostring(element, encoding="unicode")
+            return f'<?xml version="1.0" encoding="UTF-8"?>\n{body}\n'
+        element.clear()
+    return None
+
+
+def _display_pmcid(pmcid: str) -> str:
+    """Return *pmcid* with exactly one ``PMC`` prefix, whether or not it had one."""
+    text = str(pmcid).strip()
+    return text if text.upper().startswith("PMC") else f"PMC{text}"
 
 
 def looks_like_jats_xml(text: str) -> bool:
@@ -171,12 +243,13 @@ class ProgressInfo:
 
     def __str__(self) -> str:
         """Human-readable string representation."""
-        return (
-            f"Progress: {self.current_item}/{self.total_items} "
-            f"({self.progress_percent:.1f}%) - "
-            f"Current: PMC{self.current_pmcid} - "
-            f"Status: {self.status}"
-        )
+        parts = [
+            f"Progress: {self.current_item}/{self.total_items} ({self.progress_percent:.1f}%)"
+        ]
+        if self.current_pmcid:
+            parts.append(f"Current: {_display_pmcid(self.current_pmcid)}")
+        parts.append(f"Status: {self.status}")
+        return " - ".join(parts)
 
 
 class DownloadReport:
@@ -1177,7 +1250,7 @@ class FullTextClient(BaseAPIClient):
         rate_limiter: RateLimiter | None = None,
         doi: str | None = None,
         extra_strategies: bool = True,
-    ) -> Path | None:
+    ) -> Path:
         """
         Download full-text XML for a paper, Europe PMC first.
 
@@ -1251,7 +1324,7 @@ class FullTextClient(BaseAPIClient):
             return output_path
 
         # --- Unpaywall last ----------------------------------------------
-        if self._try_unpaywall_xml(normalized_pmcid, output_path):
+        if self._try_unpaywall_xml(normalized_pmcid, output_path, doi=doi):
             self._save_to_cache(output_path, normalized_pmcid, "xml")
             self.last_xml_source = "unpaywall"
             return output_path
@@ -1376,7 +1449,7 @@ class FullTextClient(BaseAPIClient):
 
     def download_xml_by_pmcid_bulk(
         self, pmcid: str, output_path: str | Path | None = None
-    ) -> Path | None:
+    ) -> Path:
         """
         Download XML full text from Europe PMC FTP OA bulk archives only.
 
@@ -1394,8 +1467,8 @@ class FullTextClient(BaseAPIClient):
 
         Returns
         -------
-        Path or None
-            Path to downloaded XML file if successful, None if failed
+        Path
+            Path to the downloaded XML file, which holds only the requested article
 
         Raises
         ------
@@ -1462,31 +1535,24 @@ class FullTextClient(BaseAPIClient):
             response = self._get(endpoint)
             self.logger.debug(f"Fulltext content response headers: {response.headers}")
             return str(response.text)
-        except requests.HTTPError as e:
+        except APIClientError as e:
+            # _get has already turned the requests exception into APIClientError;
+            # a closed client is a usage error, not a failed retrieval.
+            if e.error_code == ErrorCodes.FULL007:
+                raise
+            status_code = e.context.get("status_code")
             self.logger.error(
-                f"HTTP error while retrieving {format_type.upper()} for PMC{normalized_pmcid}: {e}"
+                "Request for %s of PMC%s failed: %s", format_type.upper(), normalized_pmcid, e
             )
-            if e.response.status_code == 404:
+            if status_code == 404:
                 raise FullTextError(
                     ErrorCodes.FULL003, pmcid=normalized_pmcid, format_type=format_type
                 ) from e
-            elif e.response.status_code == 403:
+            if status_code == 403:
                 raise FullTextError(ErrorCodes.FULL008, pmcid=normalized_pmcid) from e
-            else:
-                raise FullTextError(
-                    ErrorCodes.FULL005,
-                    context={"status_code": e.response.status_code, "error": str(e)},
-                    pmcid=normalized_pmcid,
-                    format_type=format_type,
-                ) from e
-        except requests.RequestException as e:
-            self.logger.error(
-                f"Network error while retrieving {format_type.upper()} for "
-                f"PMC{normalized_pmcid}: {e}"
-            )
             raise FullTextError(
                 ErrorCodes.FULL005,
-                context={"error": str(e)},
+                context={"status_code": status_code, "error": str(e)},
                 pmcid=normalized_pmcid,
                 format_type=format_type,
             ) from e
@@ -1694,7 +1760,7 @@ class FullTextClient(BaseAPIClient):
     ) -> Path | None:
         """Handle errors during batch download."""
         progress.failed_downloads += 1
-        progress.status = f"error PMC{pmcid}: {str(error)[:50]}..."
+        progress.status = f"error {_display_pmcid(pmcid)}: {str(error)[:50]}..."
 
         self.logger.error(f"Failed to download {format_type.upper()} for {pmcid}: {error}")
         if skip_errors:
@@ -1760,7 +1826,7 @@ class FullTextClient(BaseAPIClient):
             # Update progress
             progress.current_item = i + 1
             progress.current_pmcid = pmcid
-            progress.status = f"downloading PMC{pmcid}"
+            progress.status = f"downloading {_display_pmcid(pmcid)}"
 
             # Call progress callback if enough time has passed
             current_time = time.time()
@@ -2122,31 +2188,26 @@ class FullTextClient(BaseAPIClient):
                         temp_file.write(chunk)
                 temp_file.flush()
 
-                # Extract the specific XML file from the gzipped archive
+                # An archive holds many articles; keep only the requested one.
                 try:
-                    with gzip.open(temp_file.name, "rt", encoding="utf-8") as gz_file:
-                        xml_content = gz_file.read()
-
-                        # Look for the specific article XML
-                        # The content might be a collection of articles or a single article
-                        if "<article-meta>" in xml_content and f"PMC{pmcid}" in xml_content:
-                            # Save the extracted XML using atomic write
-                            with atomic_write(output_path, "w", encoding="utf-8") as f:
-                                f.write(xml_content)
-
-                            self.logger.info(
-                                f"Successfully downloaded XML from bulk archive: {archive_name}"
-                            )
-                            return True
-                        else:
-                            self.logger.debug(
-                                f"PMC{pmcid} not found in bulk archive {archive_name}"
-                            )
-                            return False
-
+                    with gzip.open(temp_file.name, "rb") as gz_file:
+                        article_xml = _extract_article_xml(gz_file, pmcid)
                 except gzip.BadGzipFile:
                     self.logger.debug(f"Invalid gzip file: {archive_url}")
                     return False
+                except (DefusedET.ParseError, DefusedXmlException, EOFError) as e:
+                    self.logger.debug(f"Unreadable bulk archive {archive_url}: {e}")
+                    return False
+
+            if article_xml is None:
+                self.logger.debug(f"PMC{pmcid} not found in bulk archive {archive_name}")
+                return False
+
+            with atomic_write(output_path, "w", encoding="utf-8") as f:
+                f.write(article_xml)
+
+            self.logger.info(f"Successfully downloaded XML from bulk archive: {archive_name}")
+            return True
 
         except (OSError, requests.RequestException, ValueError) as e:
             self.logger.debug(f"Error during bulk XML download for PMC{pmcid}: {e}")
@@ -2169,10 +2230,11 @@ class FullTextClient(BaseAPIClient):
             True if successful, False otherwise
         """
         try:
-            url = f"https://www.ebi.ac.uk/europepmc/webservices/rest/PMC{normalized_pmcid}/fulltextRepo"
-            self.logger.info(f"Trying fulltextRepo endpoint: {url}")
+            # _get prepends BASE_URL, so the endpoint must be relative to it.
+            endpoint = f"PMC{normalized_pmcid}/fulltextRepo"
+            self.logger.info(f"Trying fulltextRepo endpoint: {self.BASE_URL}{endpoint}")
 
-            response = self._get(url, timeout=30)
+            response = self._get(endpoint, timeout=30)
             self.logger.debug(f"fulltextRepo response: {response.status_code}")
 
             if response.status_code != 200:
@@ -2203,7 +2265,9 @@ class FullTextClient(BaseAPIClient):
             self.logger.error(f"File system error while saving XML for PMC{normalized_pmcid}: {e}")
             return False
 
-    def _try_unpaywall_xml(self, normalized_pmcid: str, output_path: Path) -> bool:
+    def _try_unpaywall_xml(
+        self, normalized_pmcid: str, output_path: Path, doi: str | None = None
+    ) -> bool:
         """
         Try to download XML using Unpaywall API via DOI lookup.
 
@@ -2213,37 +2277,29 @@ class FullTextClient(BaseAPIClient):
             Normalized PMC ID
         output_path : Path
             Output file path
+        doi : str, optional
+            The article's DOI; looked up from Europe PMC when omitted
 
         Returns
         -------
         bool
-            True if successful, False otherwise
+            True if successful, False otherwise. A failed DOI lookup counts as
+            "not found" rather than raising, like every other step of the chain.
         """
+        # Unpaywall refuses requests without a contact address, so there is no
+        # point in spending a Europe PMC request on the DOI without one.
+        if not self.email:
+            self.logger.debug(
+                "Skipping Unpaywall XML fallback for PMC%s — no contact email "
+                "(pass email= or set UNPAYWALL_EMAIL)",
+                normalized_pmcid,
+            )
+            return False
+
         try:
-            # Get article details to find DOI
-            from pyeuropepmc.features.literature.article import ArticleClient
-
-            article_client = ArticleClient(rate_limit_delay=self.rate_limit_delay)
-            try:
-                details = article_client.get_article_details(
-                    "PMC", normalized_pmcid, result_type="lite"
-                )
-                doi = None
-                if "result" in details:
-                    doi = details["result"].get("doi")
-
-                if not doi:
-                    self.logger.debug(f"No DOI found for PMC{normalized_pmcid} in article details")
-                    return False
-            finally:
-                article_client.close()
-
-            if not self.email:
-                self.logger.debug(
-                    "Skipping Unpaywall XML fallback for PMC%s — no contact email "
-                    "(pass email= or set UNPAYWALL_EMAIL)",
-                    normalized_pmcid,
-                )
+            doi = doi or self._lookup_doi_for_pmcid(normalized_pmcid)
+            if not doi:
+                self.logger.debug(f"No DOI found for PMC{normalized_pmcid} in article details")
                 return False
 
             self.logger.info(f"Looking up DOI in Unpaywall: {doi}")
@@ -2285,7 +2341,7 @@ class FullTextClient(BaseAPIClient):
             self.logger.warning(f"Unpaywall XML download produced an empty file: {output_path}")
             return False
 
-        except UnpaywallError as e:
+        except (UnpaywallError, APIClientError) as e:
             self.logger.warning(f"Unpaywall API error for PMC{normalized_pmcid}: {e}")
             return False
         except requests.RequestException as e:
@@ -2299,7 +2355,9 @@ class FullTextClient(BaseAPIClient):
             )
             return False
 
-    def _try_unpaywall_pdf(self, normalized_pmcid: str, output_path: Path) -> bool:
+    def _try_unpaywall_pdf(
+        self, normalized_pmcid: str, output_path: Path, doi: str | None = None
+    ) -> bool:
         """
         Try to download PDF using Unpaywall API via DOI lookup.
 
@@ -2309,36 +2367,26 @@ class FullTextClient(BaseAPIClient):
             Normalized PMC ID
         output_path : Path
             Output file path
+        doi : str, optional
+            The article's DOI; looked up from Europe PMC when omitted
 
         Returns
         -------
         bool
-            True if successful, False otherwise
+            True if successful, False otherwise. A failed DOI lookup counts as
+            "not found" rather than raising, like every other step of the chain.
         """
+        if not self.email:
+            self.logger.debug(
+                "Skipping Unpaywall PDF fallback for PMC%s — no contact email",
+                normalized_pmcid,
+            )
+            return False
+
         try:
-            # Get article details to find DOI
-            from pyeuropepmc.features.literature.article import ArticleClient
-
-            article_client = ArticleClient(rate_limit_delay=self.rate_limit_delay)
-            try:
-                details = article_client.get_article_details(
-                    "PMC", normalized_pmcid, result_type="lite"
-                )
-                doi = None
-                if "result" in details:
-                    doi = details["result"].get("doi")
-
-                if not doi:
-                    self.logger.debug(f"No DOI found for PMC{normalized_pmcid} in article details")
-                    return False
-            finally:
-                article_client.close()
-
-            if not self.email:
-                self.logger.debug(
-                    "Skipping Unpaywall PDF fallback for PMC%s — no contact email",
-                    normalized_pmcid,
-                )
+            doi = doi or self._lookup_doi_for_pmcid(normalized_pmcid)
+            if not doi:
+                self.logger.debug(f"No DOI found for PMC{normalized_pmcid} in article details")
                 return False
 
             self.logger.info(f"Looking up DOI in Unpaywall for PDF: {doi}")
@@ -2395,7 +2443,7 @@ class FullTextClient(BaseAPIClient):
             self.logger.info(f"Successfully downloaded PDF from Unpaywall: {output_path}")
             return True
 
-        except UnpaywallError as e:
+        except (UnpaywallError, APIClientError) as e:
             self.logger.warning(f"Unpaywall API error for PMC{normalized_pmcid}: {e}")
             return False
         except requests.RequestException as e:
@@ -2893,6 +2941,7 @@ class FullTextClient(BaseAPIClient):
 
             report.add_fallback(position, method_name, True, False)
 
+            result: Path | None
             try:
                 if method_name == "rest_xml":
                     start_time = time.time()

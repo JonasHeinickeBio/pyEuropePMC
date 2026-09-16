@@ -430,8 +430,9 @@ class TestFullTextClientCoverage:
         """Test successful bulk XML download."""
         # Create valid gzip content with the target PMC ID
         xml_content = (
-            "<article><article-meta>PMC123456</article-meta>"
-            "<abstract>Test content</abstract></article>"
+            "<article><front><article-meta>"
+            '<article-id pub-id-type="pmcid">PMC123456</article-id>'
+            "</article-meta></front><abstract>Test content</abstract></article>"
         )
         gzip_buffer = BytesIO()
         with gzip.open(gzip_buffer, "wt", encoding="utf-8") as f:
@@ -454,6 +455,7 @@ class TestFullTextClientCoverage:
                     saved_content = f.read()
                     assert "PMC123456" in saved_content
                     assert "article-meta" in saved_content
+                    assert "Test content" in saved_content
 
     def test_try_bulk_xml_download_network_error(self):
         """Test bulk XML download with network error."""
@@ -495,12 +497,12 @@ class TestFullTextClientCoverage:
 
     def test_get_fulltext_content_http_404_error(self):
         """Test get fulltext content with 404 HTTP error."""
-        mock_response = Mock()
-        mock_response.status_code = 404
-        http_error = requests.HTTPError("Not Found")
-        http_error.response = mock_response
+        # What BaseAPIClient._get raises for an HTTP 404.
+        api_error = APIClientError(
+            ErrorCodes.HTTP404, {"url": "u", "status_code": 404, "endpoint": "e"}
+        )
 
-        with patch.object(self.client, "_get", side_effect=http_error):
+        with patch.object(self.client, "_get", side_effect=api_error):
             with pytest.raises(FullTextError) as exc_info:
                 self.client.get_fulltext_content("123456", "xml")
 
@@ -514,12 +516,12 @@ class TestFullTextClientCoverage:
 
     def test_get_fulltext_content_http_403_error(self):
         """Test get fulltext content with 403 HTTP error."""
-        mock_response = Mock()
-        mock_response.status_code = 403
-        http_error = requests.HTTPError("Forbidden")
-        http_error.response = mock_response
+        # What BaseAPIClient._get raises for an HTTP 403.
+        api_error = APIClientError(
+            ErrorCodes.HTTP403, {"url": "u", "status_code": 403, "endpoint": "e"}
+        )
 
-        with patch.object(self.client, "_get", side_effect=http_error):
+        with patch.object(self.client, "_get", side_effect=api_error):
             with pytest.raises(FullTextError) as exc_info:
                 self.client.get_fulltext_content("123456", "xml")
 
@@ -533,12 +535,12 @@ class TestFullTextClientCoverage:
 
     def test_get_fulltext_content_http_500_error(self):
         """Test get fulltext content with 500 HTTP error."""
-        mock_response = Mock()
-        mock_response.status_code = 500
-        http_error = requests.HTTPError("Server Error")
-        http_error.response = mock_response
+        # What BaseAPIClient._get raises for an HTTP 500.
+        api_error = APIClientError(
+            ErrorCodes.HTTP500, {"url": "u", "status_code": 500, "endpoint": "e"}
+        )
 
-        with patch.object(self.client, "_get", side_effect=http_error):
+        with patch.object(self.client, "_get", side_effect=api_error):
             with pytest.raises(FullTextError) as exc_info:
                 self.client.get_fulltext_content("123456", "xml")
 
@@ -552,9 +554,9 @@ class TestFullTextClientCoverage:
 
     def test_get_fulltext_content_network_error(self):
         """Test get fulltext content with network error."""
-        with patch.object(
-            self.client, "_get", side_effect=requests.RequestException("Network error")
-        ):
+        # What BaseAPIClient._get raises when the request itself fails.
+        api_error = APIClientError(ErrorCodes.NET001, {"url": "u", "error": "Network error"})
+        with patch.object(self.client, "_get", side_effect=api_error):
             with pytest.raises(FullTextError) as exc_info:
                 self.client.get_fulltext_content("123456", "xml")
 

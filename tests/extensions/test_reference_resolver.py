@@ -286,7 +286,7 @@ class TestLookupByDoi:
                         "firstPublicationDate": "2023-01-15",
                         "journalTitle": "J Test",
                         "citedByCount": 10,
-                        "isOpenAccess": True,
+                        "isOpenAccess": "Y",
                     }
                 ]
             }
@@ -333,7 +333,7 @@ class TestLookupByPmid:
                         "firstPublicationDate": "2022-06-01",
                         "journalTitle": "PMID J",
                         "citedByCount": 5,
-                        "isOpenAccess": False,
+                        "isOpenAccess": "N",
                     }
                 ]
             }
@@ -477,7 +477,7 @@ class TestParseEntry:
             "firstPublicationDate": "2022-12-31",
             "journalTitle": "Journal",
             "citedByCount": 25,
-            "isOpenAccess": True,
+            "isOpenAccess": "Y",
         }
         ref = ReferenceResolver._parse_entry(entry)
 
@@ -500,6 +500,11 @@ class TestParseEntry:
         assert ref.journal == ""
         assert ref.citations == 0
         assert ref.is_open_access is False
+
+    def test_open_access_n_is_false(self):
+        """Europe PMC sends the flag as "Y"/"N"; "N" is a non-empty string."""
+        assert ReferenceResolver._parse_entry({"isOpenAccess": "N"}).is_open_access is False
+        assert ReferenceResolver._parse_entry({"isOpenAccess": "Y"}).is_open_access is True
 
     def test_cited_by_count_as_string(self):
         entry = {"citedByCount": "42"}

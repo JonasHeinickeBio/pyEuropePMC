@@ -36,8 +36,8 @@ Output:
 1 2 3
 ```
 
-- `add()` returns the row ID of the new document. It does not look for duplicates: adding the same DOI twice stores two rows. Use `update()` to replace a document.
-- `add_many()` adds the entries one at a time, logs and skips an entry that fails, and returns the number added.
+- `add()` returns the row ID of the new document. If the index already holds the document, `add()` stores nothing and returns the stored row's ID. A stored row is the same document when it has the entry's PMID; for an entry without a PMID, its DOI; for an entry with neither, its `source_id`. An entry with none of the three is always added. Use `update()` to replace a document.
+- `add_many()` adds the entries one at a time, logs and skips an entry that fails, and returns the number added, not counting entries already in the index.
 - `FullTextIndex()` without a path opens `~/.pyeuropepmc/fts_index.db`, creating the directory and file if needed. Pass a file path to choose the location, or `":memory:"` for an index that disappears when it is closed.
 
 ## Search
@@ -95,7 +95,7 @@ The searchable columns are `title`, `abstract`, `full_text`, `authors`, `journal
 | `doi`, `pmid`, `pmcid`, `source` | `str` | Stored values |
 | `year` | `int \| None` | Publication year |
 | `citation_count` | `int` | Citation count |
-| `snippets` | `dict[str, str]` | Keys `title`, `abstract` and `authors`: excerpts of up to 40 tokens with matches wrapped in `<b>`…`</b>`. The `authors` value is taken from the journal column (see [Known limitations](#known-limitations)) |
+| `snippets` | `dict[str, str]` | Keys `title`, `abstract` and `authors`: excerpts of up to 40 tokens from those columns, with matches wrapped in `<b>`…`</b>` |
 | `rowid` | `int` | Row ID, as used by `get()` and `delete()` |
 
 `count(query=None)` returns the number of documents, or the number matching `query`.
@@ -239,5 +239,4 @@ Smith, J PMC1234567 ['My Paper']
 
 ## Known limitations
 
-- `SearchResult.snippets["authors"]` is an excerpt of the journal column, not of the authors.
-- `add()` stores duplicates, and `update()` gives the replaced document a new row ID.
+- `update()` gives the replaced document a new row ID.

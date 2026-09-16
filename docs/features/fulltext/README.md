@@ -60,7 +60,8 @@ The methods try several sources in turn:
 
 - `client.last_xml_source` names the source of the last XML file: `cache`, `europepmc_rest`, `europepmc_ftp_bulk`, `europepmc_fulltext_repo`, `pmc_oa_service`, `ncbi_efetch`, `bioc_pmc`, `doi_negotiation`, `biorxiv` or `unpaywall`.
 - The DOI-based sources need the article's DOI. Pass `doi=` to `download_xml_by_pmcid()`, or the client looks it up in Europe PMC.
-- The Unpaywall steps run only with a contact e-mail address: `FullTextClient(email="you@example.org")`, or the `UNPAYWALL_EMAIL` or `CROSSREF_EMAIL` environment variable.
+- The Unpaywall steps run only with a contact e-mail address: `FullTextClient(email="you@example.org")`, or the `UNPAYWALL_EMAIL` or `CROSSREF_EMAIL` environment variable. Without one they are skipped before any request, including the DOI lookup.
+- A source that fails counts as having nothing, so the table's last column is the outcome whether the sources answered "not found" or could not be reached.
 - A PDF counts as downloaded only if the file starts with `%PDF`.
 
 ## Check what is available
@@ -243,7 +244,9 @@ with FullTextClient() as client:
 | Situation | Result |
 |---|---|
 | The PMC ID is empty, or is not digits after an optional `PMC` prefix | `FullTextError` (`FULL001` or `FULL002`), from every method |
-| `get_fulltext_content()` gets an HTTP error such as 404, or the request fails | `APIClientError` (for example `HTTP404` or `NET001`) |
+| `get_fulltext_content()` gets HTTP 404 | `FullTextError` (`FULL003`) |
+| `get_fulltext_content()` gets HTTP 403 | `FullTextError` (`FULL008`) |
+| `get_fulltext_content()` gets another HTTP error, or the request fails | `FullTextError` (`FULL005`) |
 | `get_fulltext_content()` with a `format_type` other than `"xml"` or `"html"` | `FullTextError` (`FULL004`) |
 | `download_xml_by_pmcid()` finds no XML | `FullTextError` (`FULL003`) |
 | `download_pdf_by_pmcid()` finds no PDF | `None` |
@@ -254,7 +257,7 @@ with FullTextClient() as client:
 
 ## Known limitations
 
-- When no Europe PMC source has the file and the request that looks up the article's DOI fails, `download_xml_by_pmcid()` and `download_pdf_by_pmcid()` raise `APIClientError` instead of raising `FullTextError` or returning `None`. The lookup is made even when no e-mail address is set, in which case Unpaywall is then skipped.
-- The `fulltextRepo` step requests a malformed URL (the API base URL appears twice), so it never succeeds.
-- The FTP archive step guesses the archive name from the PMC ID. When the archive contains the article, the whole decompressed archive is saved, including any other articles in it.
+- The `fulltextRepo` step requests `https://www.ebi.ac.uk/europepmc/webservices/rest/PMC{id}/fulltextRepo`. That path has not been checked against the live service; the file endpoint the Europe PMC website loads, `https://europepmc.org/api/fulltextRepo`, takes a file name and MIME type rather than only a PMC ID.
+- The Unpaywall steps do not find anything yet: `UnpaywallClient` requests the Unpaywall API base URL twice (`https://api.unpaywall.org/v2/https://api.unpaywall.org/v2/{doi}`), so every lookup fails and the step counts the article as not found.
+- The FTP archive step guesses the archive name from the PMC ID. From an archive that holds the article it saves only that article.
 - `download_html_by_pmcid()` saves the article's Europe PMC web page as served, not a rendering of the article alone.
