@@ -299,3 +299,68 @@ class TestModuleFunctions:
             assert (fake_home / ".pyeuropepmc").exists()
         finally:
             idx.close()
+
+
+class TestAuthorsSnippet:
+    def test_authors_snippet_is_taken_from_the_authors_column(self, index):
+        index.add(_entry(authors="Hopper G; Lovelace A", journal="Journal of Hopper Studies"))
+
+        results = index.search("Lovelace")
+
+        assert results
+        snippet = results[0].snippets["authors"]
+        assert "<b>Lovelace</b>" in snippet
+        assert "Journal" not in snippet
+
+
+class TestAddSkipsDocumentsAlreadyIndexed:
+    def test_same_pmid_is_stored_once(self, index):
+        first = index.add(_entry())
+        second = index.add(_entry(title="A second copy"))
+
+        assert second == first
+        assert index.count() == 1
+        assert index.get(first)["title"] == "CRISPR cancer therapy"
+
+    def test_same_doi_without_pmid_is_stored_once(self, index):
+        first = index.add(_entry(pmid=""))
+        # A different source_id, so only the DOI can make it a match.
+        assert index.add(_entry(pmid="", source_id="another-source")) == first
+        assert index.count() == 1
+
+    def test_same_source_id_without_pmid_or_doi_is_stored_once(self, index):
+        first = index.add(_entry(pmid="", doi="", source_id="src-1"))
+        assert index.add(_entry(pmid="", doi="", source_id="src-1")) == first
+        assert index.count() == 1
+
+    def test_different_pmids_are_both_stored(self, index):
+        """The PMID decides when both entries have one, as in update()."""
+        index.add(_entry(pmid="1"))
+        index.add(_entry(pmid="2"))
+        assert index.count() == 2
+
+    def test_entries_without_identifiers_are_always_added(self, index):
+        index.add(_entry(pmid="", doi="", source_id=""))
+        index.add(_entry(pmid="", doi="", source_id=""))
+        assert index.count() == 2
+
+    def test_add_many_counts_only_new_documents(self, index):
+        index.add(_entry(pmid="1"))
+        added = index.add_many([_entry(pmid="1"), _entry(pmid="2"), _entry(pmid="2")])
+        assert added == 1
+        assert index.count() == 2
+
+    def test_duplicate_is_searchable_once(self, index):
+        index.add(_entry())
+        index.add(_entry())
+        assert len(index.search("CRISPR")) == 1
+
+    def test_update_replaces_even_when_older_duplicates_exist(self, index):
+        """An index written before add() skipped duplicates may hold two copies."""
+        index._insert(_entry())
+        index._insert(_entry())
+
+        assert index.update(_entry(title="Replacement title")) is True
+
+        titles = [hit.title for hit in index.search("CRISPR OR Replacement")]
+        assert "Replacement title" in titles
