@@ -47,6 +47,50 @@ All notable changes to PyEuropePMC are documented here.
 
 ### 🐛 Bug Fixes
 
+- **`FigureExtractor` finds the figures.** It searched for elements in the
+  JATS1 XML namespace, which Europe PMC documents do not use, so it returned
+  nothing for every article: 0 of 25 figures, 8 tables and 19 supplementary
+  files across five papers. It now strips the document's own default namespace
+  the way `FullTextXMLParser` does, so both the DTD-based JATS Europe PMC serves
+  and schema-based JATS are matched, and it keeps the contract for a document
+  defusedxml refuses: that still raises `ParsingError`. The MCP tool `paper_figures`, which reported
+  `figure_count: 0` for every paper, reports them too, with a `counts_by_type`
+  breakdown and `include_tables`/`include_supplements` arguments.
+
+- **Asset URLs point at files that exist.** Figure and asset URLs were built by
+  appending the file name to a PMC article page address - and, in
+  `FigureExtractor`, by prefixing a PMCID with `PMC` a second time, giving
+  `PMCPMC11687933`. Neither form resolved. Both now use the Europe PMC file
+  endpoint that the article pages themselves load,
+  `https://europepmc.org/api/fulltextRepo?pmcId=…&type=FILE&fileName=…&mimeType=…`,
+  including the `.jpg` that publishers such as Springer Nature and Oxford
+  University Press leave off a `<graphic>` reference. An identifier that is not
+  a PMCID now leaves the file name alone rather than building a URL that 404s.
+
+- **A figure's image is its own.** `extract_figures()`, the structured figure
+  blocks and `ImageFetcher` took the first `<graphic>` anywhere inside a
+  `<fig>`. That is an inline formula's image when the caption contains
+  mathematics - PMC10775981's Fig 3 resolved to `pcbi.1011761.e012.jpg` - and a
+  figure supplement's image when eLife nests one inside its parent. Only a
+  graphic the figure carries directly, or in an `<alternatives>` of its own,
+  counts now.
+
+- **Figure supplements are linked to their parent.** A `<fig>` nested in
+  another was listed as an unrelated figure. `extract_figures()` and
+  `FigureInfo` now carry `parent_id` and `parent_label` for one, and its asset
+  carries its own label instead of its parent's.
+
+- **`extract_asset_refs()` reports each file once.** Every graphic inside a
+  figure was added a second time without a label by the pass over "standalone"
+  graphics (its `_is_inside_fig` check could never succeed, since ElementTree
+  has no parent axis), graphics in `<alternatives>` again, and each `<media>`
+  inside supplementary material twice: 139 references for 73 files across five
+  papers, 56 of 101 figure references unlabelled. There is now one `AssetRef`
+  per file-bearing element, in document order, typed and labelled by the block
+  that owns it, and a file two blocks declare is returned once. Supplementary
+  assets carry a MIME type, formula images are typed `FORMULA` rather than
+  counted as figures, and a table deposited as an image is typed `TABLE`.
+
 - **A display formula inside a paragraph gets a block of its own.** JATS allows
   a `<disp-formula>` inside a `<p>`, and PLOS always writes one that way.
   `get_full_text_sections_structured()` flattened it into the sentence that

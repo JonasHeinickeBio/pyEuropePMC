@@ -81,5 +81,5 @@ Key tips:
 - All extensions are importable from `pyeuropepmc.features.fulltext.extensions`.
 - `BatchProcessor` also has `process_xml_strings([(identifier, xml), ...])` and `process_directories([...])`.
 - `ReferenceResolver().resolve_batch(parser.extract_references())` looks references up in Europe PMC (network).
-- `FigureExtractor` finds no figures in Europe PMC XML; use `parser.extract_figures()`.
+- `ImageFetcher(...).extract_asset_refs()` returns one `AssetRef` per file, with `article_id` a PMCID to get Europe PMC download URLs; `FigureExtractor` reports figures, tables and supplementary files together.
 - See [XML parsing](../../features/parsing/README.md) and the [extensions reference](../../api/xml-parser-extensions.md).

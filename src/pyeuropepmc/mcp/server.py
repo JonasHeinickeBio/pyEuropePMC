@@ -39,7 +39,7 @@ Tools:
 
     Full-text & figures:
         fulltext_index_query  — Search local SQLite FTS5 full-text index
-        paper_figures         — Extract figures from PMC Open Access articles
+        paper_figures         — Figures, tables and supplementary files of a PMC article
 
     Screening & review:
         paper_screening       — PRISMA-compliant automated screening
@@ -57,6 +57,7 @@ Tools:
 from __future__ import annotations
 
 import argparse
+from collections import Counter
 from collections.abc import Callable
 from functools import partial
 from importlib.metadata import PackageNotFoundError, version as _pkg_version
@@ -582,25 +583,39 @@ async def paper_figures(
     pmcid: Annotated[str, Field(description="PMC ID of the article, e.g. PMC1234567")] = "",
     pmid: Annotated[str, Field(description="PubMed ID (alternative to pmcid)")] = "",
     doi: Annotated[str, Field(description="DOI (alternative to pmcid)")] = "",
+    include_tables: Annotated[bool, Field(description="Include <table-wrap> elements")] = True,
+    include_supplements: Annotated[
+        bool, Field(description="Include supplementary material")
+    ] = True,
 ) -> dict[str, Any]:
-    """Extract figures from PMC Open Access articles (labels, captions, and image URLs)."""
+    """Extract figures, tables and supplementary files from a PMC Open Access article.
+
+    Each item carries its label, caption and the Europe PMC URL its file can be
+    downloaded from. A figure supplement also names the figure it belongs to.
+    """
     _require_available(FIGURE_EXTRACTOR_AVAILABLE, "FigureExtractor")
     if not any([pmcid, pmid, doi]):
         raise ToolError("One of pmcid, pmid, or doi is required")
 
     extractor = _figure_extractor_cache.get()
+    identifier = {"pmcid": pmcid} if pmcid else {"pmid": pmid} if pmid else {"doi": doi}
     try:
-        if pmcid:
-            figures = await _run_blocking(extractor.extract, pmcid=pmcid)
-        elif pmid:
-            figures = await _run_blocking(extractor.extract, pmid=pmid)
-        else:
-            figures = await _run_blocking(extractor.extract, doi=doi)
+        figures = await _run_blocking(
+            extractor.extract,
+            include_tables=include_tables,
+            include_supplements=include_supplements,
+            **identifier,
+        )
     except ParsingError as exc:
         # A refused document is not "no figures": say so instead of reporting 0.
         raise ToolError(str(exc)) from exc
 
-    return {"figure_count": len(figures), "figures": [_to_serializable(f) for f in figures]}
+    items = [_as_dict(f) for f in figures]
+    return {
+        "figure_count": len(items),
+        "counts_by_type": dict(Counter(item.get("figure_type", "") for item in items)),
+        "figures": items,
+    }
 
 
 # ---------------------------------------------------------------------------

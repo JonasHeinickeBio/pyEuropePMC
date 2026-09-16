@@ -35,6 +35,7 @@ from xml.etree import ElementTree as ET  # nosec B405
 from pyeuropepmc.features.fulltext.config.element_patterns import ElementPatterns
 from pyeuropepmc.features.fulltext.extensions.mathml import MathMLConverter, serialize_mathml
 from pyeuropepmc.features.fulltext.parsers.base_parser import BaseParser
+from pyeuropepmc.features.fulltext.utils.figure_assets import own_graphic
 from pyeuropepmc.features.fulltext.utils.flat_blocks import FLOATS_TITLE, code_text
 from pyeuropepmc.features.fulltext.utils.table_grid import TableGrid, build_table_grid, find_table
 from pyeuropepmc.features.fulltext.utils.xml_helpers import BLOCK_LEVEL_TAGS, XMLHelper
@@ -1786,8 +1787,12 @@ class ContentBlockExtractor(BaseParser):
             else:
                 caption = XMLHelper.get_text_content(caption_elem)
 
+        # The figure's own graphic. A `.//graphic` search took the first one
+        # anywhere beneath the figure, which is an inline formula's image when
+        # the caption contains mathematics (PMC10775981 Fig 3 -> e012.jpg), and
+        # a figure supplement's image when the supplement is nested inside.
         uri = ""
-        graphic = elem.find(".//graphic")
+        graphic = own_graphic(elem)
         if graphic is not None:
             uri = str(
                 graphic.get("{http://www.w3.org/1999/xlink}href", "") or graphic.get("href", "")
