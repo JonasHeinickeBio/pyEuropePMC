@@ -128,6 +128,17 @@ All notable changes to PyEuropePMC are documented here.
   collapsed to single spaces like prose, running each of PMC10775981's listings
   onto one line.
 
+- **Figures and tables in `<floats-group>` reach every output.** NIH author
+  manuscripts keep every figure and table in `<floats-group>`, a sibling of
+  `<body>`, and every output but `extract_figures()` and `extract_tables()`
+  walked only the body: PMC5393345's figure and table were missing from the
+  structured sections, `to_plaintext()`, `to_markdown()` and
+  `get_full_text_sections()`. They are now gathered in a section titled
+  `Figures and Tables`, after the body and before the back matter. In the
+  structured output its `section_type` is `"body"`, since a figure is body
+  content wherever the XML keeps it; in `get_full_text_sections()` the entry has
+  no `type`. A `<sub-article>`'s floats are not the article's and are left out.
+
 - **A formula block's `mathml` is serialized in the MathML namespace.**
   `ET.tostring` invents a prefix for a namespace it was not told about, so the
   MathML came back as `<ns0:math xmlns:ns0="...">`. It now reads
