@@ -7,7 +7,7 @@ import requests
 
 from pyeuropepmc._useragent import get_user_agent
 
-from .error_codes import ErrorCodes
+from .error_codes import ErrorCodes, error_code_for_status
 from .exceptions import APIClientError, ValidationError
 
 __all__ = ["BaseAPIClient", "APIClientError"]
@@ -93,18 +93,8 @@ class BaseAPIClient:
         except requests.HTTPError as e:
             # Map HTTP status codes to appropriate error codes
             status_code = e.response.status_code if e.response is not None else "unknown"
-
-            # Select appropriate error code based on status
-            if status_code == 404:
-                error_code = ErrorCodes.HTTP404
-            elif status_code == 403:
-                error_code = ErrorCodes.HTTP403
-            elif status_code == 500:
-                error_code = ErrorCodes.HTTP500
-            elif status_code == 429:
-                error_code = ErrorCodes.RATE429
-            else:
-                error_code = ErrorCodes.NET001  # Generic network error
+            # NET001 only when the status has no code of its own.
+            error_code = error_code_for_status(status_code) or ErrorCodes.NET001
 
             context = {
                 "url": url,
@@ -305,20 +295,11 @@ class BaseAPIClient:
             self.logger.info(f"POST request to {url} succeeded with status {response.status_code}")
             return response
         except requests.HTTPError as e:
-            # Map HTTP status codes to appropriate error codes
-            status_code = e.response.status_code if e.response else "unknown"
-
-            # Select appropriate error code based on status
-            if status_code == 404:
-                error_code = ErrorCodes.HTTP404
-            elif status_code == 403:
-                error_code = ErrorCodes.HTTP403
-            elif status_code == 500:
-                error_code = ErrorCodes.HTTP500
-            elif status_code == 429:
-                error_code = ErrorCodes.RATE429
-            else:
-                error_code = ErrorCodes.NET001  # Generic network error
+            # Map HTTP status codes to appropriate error codes. "is not None":
+            # a Response for a 4xx/5xx is falsy (Response.__bool__ is .ok).
+            status_code = e.response.status_code if e.response is not None else "unknown"
+            # NET001 only when the status has no code of its own.
+            error_code = error_code_for_status(status_code) or ErrorCodes.NET001
 
             context = {
                 "url": url,

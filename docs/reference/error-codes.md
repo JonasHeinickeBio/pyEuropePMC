@@ -49,7 +49,7 @@ All exceptions are defined in `pyeuropepmc.core.exceptions` and derive from `PyE
 ## How SearchClient reports failed requests
 
 - `search()` checks the query, the page size and the format before sending anything, and raises `SEARCH001`, `SEARCH002` or `SEARCH004`.
-- A failed request, whether a network error, a timeout or an HTTP error status, is raised as `SearchError` with code `NET001`. The `APIClientError` it wraps is in `err.__cause__`. Its code is `HTTP403`, `HTTP404`, `HTTP500` or `RATE429` for those statuses, `FULL007` for a closed client, and `NET001` for anything else.
+- A failed request, whether a network error, a timeout or an HTTP error status, is raised as `SearchError` with code `NET001`. The `APIClientError` it wraps is in `err.__cause__`. Its code names the HTTP status: `AUTH401` for 401, `RATE429` for 429, and the `HTTP…` code for the other statuses in the [HTTP table](#http-status-http), such as `HTTP404` or `HTTP503`. It is `FULL007` for a closed client, and `NET001` for a network error, a timeout or a status without a code of its own.
 - `search_all()` and `fetch_all_pages()` do not raise when a request fails: they stop and return the records collected so far. `search_ids_only()` returns an empty list on any error.
 
 ## Network: NET
@@ -68,25 +68,25 @@ All exceptions are defined in `pyeuropepmc.core.exceptions` and derive from `PyE
 
 | Code | Meaning | Raised by | Typical fix |
 |---|---|---|---|
-| `HTTP400` | Bad request | Multi-source search clients | Simplify the query for that source |
+| `HTTP400` | Bad request | Requests by `ArticleClient`, `AnnotationsClient` and `FullTextClient`, and by `SearchClient` in `err.__cause__`; multi-source search clients | Simplify the query for that source |
 | `HTTP401` | Unauthorised | Not raised; a 401 response uses `AUTH401` | See `AUTH401` |
-| `HTTP403` | Access forbidden | Requests by `ArticleClient` and `FullTextClient`; multi-source search clients | Check the identifier; not all content is open |
-| `HTTP404` | Not found | Requests by `ArticleClient` and `FullTextClient`, for example `get_fulltext_content()` for an article without full-text XML | Check the ID; call `check_fulltext_availability()` first |
-| `HTTP405`, `HTTP406`, `HTTP410`, `HTTP415`, `HTTP416` | The HTTP status with that number | Multi-source search clients | Report a bug: the library builds these requests |
-| `HTTP407` | Proxy authentication required | Multi-source search clients | Put the proxy credentials in `HTTPS_PROXY` |
-| `HTTP408` | Request timeout | Multi-source search clients | Retry |
-| `HTTP413`, `HTTP414` | Request or URL too long | Multi-source search clients | Shorten the query or ask for fewer results |
+| `HTTP403` | Access forbidden | Requests by `ArticleClient`, `AnnotationsClient` and `FullTextClient`, and by `SearchClient` in `err.__cause__`; multi-source search clients | Check the identifier; not all content is open |
+| `HTTP404` | Not found | Requests by `ArticleClient`, `AnnotationsClient` and `FullTextClient`, and by `SearchClient` in `err.__cause__`, for example `get_fulltext_content()` for an article without full-text XML; multi-source search clients | Check the ID; call `check_fulltext_availability()` first |
+| `HTTP405`, `HTTP406`, `HTTP410`, `HTTP415`, `HTTP416` | The HTTP status with that number | Requests by `ArticleClient`, `AnnotationsClient` and `FullTextClient`, and by `SearchClient` in `err.__cause__`; multi-source search clients | Report a bug: the library builds these requests |
+| `HTTP407` | Proxy authentication required | Requests by `ArticleClient`, `AnnotationsClient` and `FullTextClient`, and by `SearchClient` in `err.__cause__`; multi-source search clients | Put the proxy credentials in `HTTPS_PROXY` |
+| `HTTP408` | Request timeout | Requests by `ArticleClient`, `AnnotationsClient` and `FullTextClient`, and by `SearchClient` in `err.__cause__`; multi-source search clients | Retry |
+| `HTTP413`, `HTTP414` | Request or URL too long | Requests by `ArticleClient`, `AnnotationsClient` and `FullTextClient`, and by `SearchClient` in `err.__cause__`; multi-source search clients | Shorten the query or ask for fewer results |
 | `HTTP429` | Too many requests | Not raised; a 429 response uses `RATE429` | See `RATE429` |
-| `HTTP500` | Internal server error | Requests by `ArticleClient` and `FullTextClient`; multi-source search clients | Retry later |
-| `HTTP501`, `HTTP502`, `HTTP503`, `HTTP504` | Server-side errors | Multi-source search clients | Retry later |
+| `HTTP500` | Internal server error | Requests by `ArticleClient`, `AnnotationsClient` and `FullTextClient`, and by `SearchClient` in `err.__cause__`; multi-source search clients | Retry later |
+| `HTTP501`, `HTTP502`, `HTTP503`, `HTTP504` | Server-side errors | Requests by `ArticleClient`, `AnnotationsClient` and `FullTextClient`, and by `SearchClient` in `err.__cause__`; multi-source search clients | Retry later |
 
 ## Authentication and rate limits: AUTH, RATE, RETRY
 
 | Code | Meaning | Raised by | Typical fix |
 |---|---|---|---|
-| `AUTH401` | The service rejected the credentials | Multi-source search clients | Europe PMC needs no key. For a source that needs one, pass `UnifiedSearch(credentials={"api_key": ...})` or set its variable, such as `CORE_API_KEY` |
+| `AUTH401` | The service rejected the credentials | Requests by `ArticleClient`, `AnnotationsClient` and `FullTextClient`, and by `SearchClient` in `err.__cause__`; multi-source search clients | Europe PMC needs no key. For a source that needs one, pass `UnifiedSearch(credentials={"api_key": ...})` or set its variable, such as `CORE_API_KEY` |
 | `AUTH403` | The credentials lack permission | Not raised | Check the key's permissions |
-| `RATE429` | Rate limit exceeded | Requests by `ArticleClient`, `FullTextClient` and `SearchClient` (in `err.__cause__`); multi-source search clients | Increase `rate_limit_delay`, send fewer requests, retry later |
+| `RATE429` | Rate limit exceeded | Requests by `ArticleClient`, `AnnotationsClient` and `FullTextClient`, and by `SearchClient` in `err.__cause__`; multi-source search clients | Increase `rate_limit_delay`, send fewer requests, retry later |
 | `RETRY001` | Retries exhausted | Multi-source search clients | Retry later; raise `rate_limit_delay` or lower `max_workers` in `UnifiedSearch` |
 | `RETRY002` | Invalid `Retry-After` header | Not raised | Wait and retry |
 

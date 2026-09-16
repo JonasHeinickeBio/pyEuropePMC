@@ -7,6 +7,17 @@ from pyeuropepmc.core.base import BaseAPIClient
 from pyeuropepmc.core.exceptions import APIClientError
 
 
+def _http_response(status_code: int) -> requests.Response:
+    """A real Response: unlike a Mock, it is falsy for 4xx/5xx (Response.__bool__ is .ok)."""
+    response = requests.Response()
+    response.status_code = status_code
+    response.reason = "Error"
+    response.url = "https://www.ebi.ac.uk/europepmc/webservices/rest/"
+    response._content = b""
+    response._content_consumed = True
+    return response
+
+
 @pytest.fixture
 def client():
     client_instance = BaseAPIClient(rate_limit_delay=1)
@@ -334,8 +345,7 @@ def test_get_http_error_handling(mock_sleep, client):
     with patch.object(client.session, "get") as mock_get:
         mock_response = MagicMock()
         mock_http_error = requests.HTTPError("404 Not Found")
-        mock_http_error.response = MagicMock()
-        mock_http_error.response.status_code = 404
+        mock_http_error.response = _http_response(404)
         mock_response.raise_for_status.side_effect = mock_http_error
         mock_get.return_value = mock_response
 
@@ -360,21 +370,17 @@ def test_post_http_error_handling(mock_sleep, client):
     with patch.object(client.session, "post") as mock_post:
         mock_response = MagicMock()
         mock_http_error = requests.HTTPError("400 Bad Request")
-        mock_http_error.response = MagicMock()
-        mock_http_error.response.status_code = 400
+        mock_http_error.response = _http_response(400)
         mock_response.raise_for_status.side_effect = mock_http_error
         mock_post.return_value = mock_response
 
         with pytest.raises(APIClientError) as exc_info:
             client._post("bad_request_endpoint", data={"invalid": "data"})
 
-        # Check that the exception has the correct error code
-        assert exc_info.value.error_code == ErrorCodes.NET001
-
-        # Check that the error message contains the expected content
-        error_str = str(exc_info.value)
-        assert "[NET001]" in error_str
-        assert "Network connection failed" in error_str
+        # A 400 has its own code; NET001 is for requests that got no status at all.
+        assert exc_info.value.error_code == ErrorCodes.HTTP400
+        assert exc_info.value.context["status_code"] == 400
+        assert "[HTTP400]" in str(exc_info.value)
 
 
 @pytest.mark.unit
