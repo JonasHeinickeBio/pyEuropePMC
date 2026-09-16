@@ -2,7 +2,7 @@
 
 This page explains the 93 JATS element types that occur in one Europe PMC full-text article, PMC12311175 (a review article in *Signal Transduction and Targeted Therapy*). It is a glossary for reading JATS XML and the output of the parser's schema tools.
 
-The list comes from `FullTextXMLParser.list_element_types()`, which returns the sorted tag names with namespace URIs removed. The **Recognized** column shows whether `validate_schema_coverage()` counts the tag as recognized: 63 of the 93 are. "Recognized" means the tag name appears in the parser's pattern configuration or in its list of common structural elements. It does not mean the element's content is extracted, nor does "no" mean it is ignored: `article-meta` and `license` are not "recognized", yet `extract_metadata()` and `extract_license()` read them.
+The list comes from `FullTextXMLParser.list_element_types()`, which returns the sorted tag names with namespace URIs removed. The **Recognized** column shows whether `validate_schema_coverage()` counts the tag as recognized: 77 of the 93 are. "Recognized" means the tag name appears in the parser's pattern configuration or in its list of common structural elements. It does not mean the element's content is extracted, nor does "no" mean it is ignored: `article-meta` and `license` are not "recognized", yet `extract_metadata()` and `extract_license()` read them.
 
 ```python
 from pathlib import Path
@@ -18,7 +18,7 @@ print(len(types), coverage["recognized_count"], coverage["unrecognized_elements"
 Output:
 
 ```text
-93 63 ['address', 'article-categories', 'article-meta']
+93 77 ['article-meta', 'contrib-id', 'custom-meta-group']
 ```
 
 Other articles use other elements; see [XML parsing](../features/parsing/README.md#inspect-the-document-structure) to list them for your own files.
@@ -44,7 +44,7 @@ Other articles use other elements; see [XML parsing](../features/parsing/README.
 | Element | Meaning | Recognized |
 |---|---|---|
 | `journal-meta` | Container for journal metadata | no |
-| `journal-id` | Journal identifier; the `journal-id-type` attribute names the scheme (for example `nlm-ta`) | no |
+| `journal-id` | Journal identifier; the `journal-id-type` attribute names the scheme (for example `nlm-ta`) | yes |
 | `journal-title-group` | Container for journal titles | no |
 | `journal-title` | Full journal title | yes |
 | `issn` | ISSN; `pub-type` distinguishes print and electronic | yes |
@@ -58,9 +58,9 @@ Other articles use other elements; see [XML parsing](../features/parsing/README.
 |---|---|---|
 | `article-meta` | Container for article metadata | no |
 | `article-id` | Article identifier; `pub-id-type` is `pmid`, `pmcid`, `doi` or `publisher-id` | yes |
-| `article-categories` | Container for subject categories | no |
-| `subj-group` | Group of subjects, for example the article type heading | no |
-| `subject` | One subject term | no |
+| `article-categories` | Container for subject categories | yes |
+| `subj-group` | Group of subjects, for example the article type heading | yes |
+| `subject` | One subject term | yes |
 | `title-group` | Container for the article title | no |
 | `article-title` | Article title; also the title of a cited work inside a reference | yes |
 | `abstract` | Abstract | yes |
@@ -75,9 +75,9 @@ Other articles use other elements; see [XML parsing](../features/parsing/README.
 | `volume` | Journal volume, of the article or of a cited work | yes |
 | `fpage` | First page, of the article or of a cited work | yes |
 | `lpage` | Last page, of the article or of a cited work | yes |
-| `elocation-id` | Electronic article number used instead of page numbers | no |
+| `elocation-id` | Electronic article number used instead of page numbers | yes |
 | `custom-meta-group` | Container for publisher-defined metadata | no |
-| `custom-meta` | One publisher-defined metadata item | no |
+| `custom-meta` | One publisher-defined metadata item | yes |
 | `meta-name` | Name of a custom metadata item | no |
 | `meta-value` | Value of a custom metadata item | no |
 
@@ -92,7 +92,7 @@ Other articles use other elements; see [XML parsing](../features/parsing/README.
 | `surname` | Family name | yes |
 | `given-names` | Given names or initials | yes |
 | `email` | E-mail address | yes |
-| `address` | Contact address of a contributor | no |
+| `address` | Contact address of a contributor | yes |
 | `aff` | Affiliation | yes |
 | `institution-wrap` | Container for an institution and its identifiers | yes |
 | `institution` | Institution name | no |
@@ -102,7 +102,7 @@ Other articles use other elements; see [XML parsing](../features/parsing/README.
 
 | Element | Meaning | Recognized |
 |---|---|---|
-| `permissions` | Container for copyright and licence information | no |
+| `permissions` | Container for copyright and licence information | yes |
 | `copyright-statement` | Copyright statement | yes |
 | `copyright-year` | Copyright year | yes |
 | `license` | Licence | no |
@@ -114,10 +114,10 @@ Other articles use other elements; see [XML parsing](../features/parsing/README.
 | Element | Meaning | Recognized |
 |---|---|---|
 | `funding-group` | Container for funding information | yes |
-| `award-group` | One grant or award | no |
+| `award-group` | One grant or award | yes |
 | `funding-source` | Funder name, often with a funder identifier | no |
-| `award-id` | Grant number | no |
-| `principal-award-recipient` | Person or organisation that received the award | no |
+| `award-id` | Grant number | yes |
+| `principal-award-recipient` | Person or organisation that received the award | yes |
 
 ## Footnotes
 
@@ -156,7 +156,7 @@ Other articles use other elements; see [XML parsing](../features/parsing/README.
 |---|---|---|
 | `ref-list` | Reference list | yes |
 | `ref` | One reference | yes |
-| `citation-alternatives` | Container for alternative forms of one citation | no |
+| `citation-alternatives` | Container for alternative forms of one citation | yes |
 | `element-citation` | Citation tagged field by field | yes |
 | `mixed-citation` | Citation with tagged fields and punctuation text between them | yes |
 | `person-group` | Authors or editors of a cited work | yes |
@@ -168,8 +168,8 @@ Other articles use other elements; see [XML parsing](../features/parsing/README.
 
 | Element | Meaning | Recognized |
 |---|---|---|
-| `processing-meta` | Information about how the XML was produced, such as the tagset and version | no |
-| `restricted-by` | Restriction on the tagset used, inside `processing-meta` | no |
+| `processing-meta` | Information about how the XML was produced, such as the tagset and version | yes |
+| `restricted-by` | Restriction on the tagset used, inside `processing-meta` | yes |
 
 ## JATS background
 
