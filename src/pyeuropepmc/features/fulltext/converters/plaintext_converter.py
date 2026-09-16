@@ -10,6 +10,13 @@ from xml.etree import ElementTree as ET  # nosec B405
 from pyeuropepmc.features.fulltext.config.element_patterns import ElementPatterns
 from pyeuropepmc.features.fulltext.parsers.author_parser import AuthorParser
 from pyeuropepmc.features.fulltext.parsers.base_parser import BaseParser
+from pyeuropepmc.features.fulltext.utils.flat_blocks import (
+    FLOATS_TITLE,
+    FlatBlock,
+    iter_flat_blocks,
+    plain_text,
+    table_plain_text,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -94,26 +101,31 @@ class PlaintextConverter(BaseParser):
                     if section_text:
                         text_parts.append(f"{section_text}\n\n")
 
-            # Bare <p> directly under <body>, with no <sec> wrapper - the
+            # Content directly under <body>, with no <sec> wrapper - the
             # opening paragraphs of many articles, and the whole body for
             # publishers like PLOS.
             #
             # This used to run only when the document had no <sec> at all, to
             # dodge the duplication that has since been fixed (#209). The guard
             # silently dropped those paragraphs from every article that had
-            # both: four in PMC12018715, three in PMC12126031. A bare <p> is in
-            # no section, so no section can emit it - there is nothing left to
-            # duplicate against.
-            # `_section_own_elements` rather than `./p`: it stops at <sec> but
-            # descends through wrappers, so a <p> inside a <boxed-text> sitting
-            # directly under <body> is found too. PMC6453151 lost one that way.
-            bare_texts = [
-                text
-                for para in self._section_own_elements(body_elem, "p")
-                if (text := self._text_excluding(para, "list"))
-            ]
+            # both: four in PMC12018715, three in PMC12126031. Content in no
+            # section is emitted by no section, so nothing duplicates it. The
+            # walk stops at <sec> but descends through wrappers, so a <p>
+            # inside a <boxed-text> directly under <body> is found too
+            # (PMC6453151).
+            bare_texts = self._blocks_plaintext(body_elem)
             if bare_texts:
                 text_parts.append("\n".join(bare_texts) + "\n\n")
+
+        # Figures and tables kept outside <body>, in <floats-group>: every one
+        # of an NIH author manuscript's. They reached no rendering at all.
+        floats = [
+            text
+            for group in (self._own_floats_groups(self.root) if self.root is not None else [])
+            for text in self._blocks_plaintext(group)
+        ]
+        if floats:
+            text_parts.append(f"{FLOATS_TITLE}\n" + "\n".join(floats) + "\n\n")
 
     def _add_acknowledgments_to_text(self, text_parts: list[str]) -> None:
         """Add acknowledgments to text parts."""
@@ -161,61 +173,30 @@ class PlaintextConverter(BaseParser):
         if titles:
             text_parts.append(f"{titles[0]}\n")
 
-        # Extract paragraphs with formatting. Own paragraphs only - `.//p` here
-        # duplicated every subsection's text into its parent as well (#209).
-        # <list> is rendered separately below, so it is excluded twice over:
-        # `stop_at` keeps a list's own <p> out of this list, and
-        # `_text_excluding` drops the list's text from a <p> that wraps one.
+        # The section's own blocks - not its subsections', which are rendered
+        # as sections in their own right (#209) - in document order.
         #
-        # `table-wrap` is deliberately NOT excluded, even though the renderer
-        # below now covers caption, cells and footer. Measured over 19,964
-        # body sentences, excluding it saved 35 duplicates and cost 106
-        # sentences outright - a table subtree carries more than those three
-        # parts. Leaving a table's text in its wrapping paragraph duplicates
-        # it; removing it loses it, and duplication is the safer failure.
-        # Two different mechanisms, and they are not interchangeable:
-        #
-        # `stop_at` decides which <p> count as this section's own. A <p> inside
-        # a <list-item>, a table cell or a table <caption> is rendered by the
-        # list/table renderers below, so it must not be collected here too.
-        #
-        # `_text_excluding` decides what a collected <p> contributes. It is
-        # applied to <list> only. Dropping a <table-wrap> subtree from a <p>
-        # that wraps one cost 106 sentences outright over the corpus: a table
-        # subtree carries more than the caption, cells and footer the renderer
-        # covers, and the rest has nowhere else to go.
-        paragraphs = [
-            text
-            for para in self._section_own_elements(section, "p", stop_at=("list", "table-wrap"))
-            if (text := self._text_excluding(para, "list"))
-        ]
-        for para_text in paragraphs:
-            formatted_text = self._process_formatting_in_text(para_text)
-            text_parts.append(f"{formatted_text}\n")
-
-        # Extract lists
-        lists = self._section_own_elements(section, "list")
-        for list_elem in lists:
-            list_text = self._process_list_plaintext(list_elem)
-            if list_text:
-                text_parts.append(f"{list_text}\n")
-
-        # Prefer <table-wrap> over the bare <table> it contains: the caption
-        # and <table-wrap-foot> are siblings of <table>, so selecting the inner
-        # element put them out of reach. The walk stops at whichever it matches
-        # first, so a wrapper is never returned alongside its own table, and a
-        # <table> with no wrapper is still found.
-        # `stop_at=("p",)`: a table nested inside a paragraph is already
-        # carried by that paragraph's own text, so rendering it here as well
-        # would emit it twice. Only tables that are siblings of the section's
-        # paragraphs need rendering.
-        tables = self._section_own_elements(section, "table-wrap", "table", stop_at=("p",))
-        for table_elem in tables:
-            table_text = self._process_table_plaintext(table_elem)
-            if table_text:
-                text_parts.append(f"{table_text}\n")
+        # This collected the section's <p> elements, then its lists, then its
+        # tables, which moved every list and table after the paragraphs around
+        # it, and rendered nothing else: a figure placed directly in a section
+        # lost its label and caption title, a table its label, a code listing
+        # everything. It also had to choose, for a table inside a paragraph,
+        # between rendering the table's text twice and losing part of it.
+        # `iter_flat_blocks` gives every element to exactly one block instead.
+        text_parts.extend(f"{text}\n" for text in self._blocks_plaintext(section))
 
         return "\n".join(text_parts)
+
+    def _blocks_plaintext(self, container: ET.Element) -> list[str]:
+        """The blocks ``container`` owns, each as plain text, in document order."""
+        texts: list[str] = []
+        for block in iter_flat_blocks(container):
+            text = plain_text(block)
+            if block.kind == "paragraph":
+                text = self._process_formatting_in_text(text)
+            if text:
+                texts.append(text)
+        return texts
 
     def _process_formatting_in_text(self, text: str) -> str:
         """Process formatting elements within text content."""
@@ -225,76 +206,39 @@ class PlaintextConverter(BaseParser):
         return text
 
     def _process_list_plaintext(self, list_elem: ET.Element) -> str:
-        """Process a list element to plain text."""
-        text_parts = []
-        list_type = list_elem.get("list-type", "bullet")
+        """Process a list element to plain text.
 
-        # Direct children only, and the whole of each item.
-        #
-        # This took `.//list-item`, which also matched the items of nested
-        # lists, and then rendered only `item_text[0]` - the first <p> of each.
-        # An item with two paragraphs lost the second; an item holding text
-        # directly, with no <p> at all, produced nothing. That loss used to be
-        # hidden because the enclosing <p> emitted the list's text as part of
-        # its own; now that it no longer does, this has to be complete.
-        # `itertext()` already carries any nested list, which is why the search
-        # is `./list-item` and not `.//list-item`.
-        for i, item in enumerate(list_elem.findall("./list-item"), 1):
-            item_text = " ".join("".join(item.itertext()).split())
-            if item_text:
-                marker = f"{i}. " if list_type == "ordered" else "• "
-                text_parts.append(f"{marker}{item_text}")
-
-        return "\n".join(text_parts)
+        Direct children only, and the whole of each item: `.//list-item` also
+        matched the items of nested lists, and taking the first <p> of each
+        lost the rest of an item with two paragraphs.
+        """
+        return plain_text(FlatBlock("list", list_elem))
 
     def _process_table_plaintext(self, table_elem: ET.Element) -> str:
         """Render a <table-wrap> (or a bare <table>) to plain text.
 
-        Caption, rows and footer. The footer carries the table's notes and
-        abbreviation keys; neither it nor the caption was rendered before,
-        because this was only ever handed the inner <table>.
+        Label and caption, one line per row laid out with its spans, then the
+        footer. Only the caption, the cells and the footer were rendered before:
+        a table's label reached no rendering at all.
+        """
+        return table_plain_text(table_elem)
+
+    def _process_appendix_plaintext(self, app_elem: ET.Element) -> str:
+        """Process an appendix element to plain text.
+
+        Its blocks, like a section's, and then its own sections. Only the
+        appendix's <p> were rendered, so an appendix that is a table came out
+        as its title alone.
         """
         text_parts = []
 
-        captions = self._extract_flat_texts(
-            table_elem, ".//caption", filter_empty=True, use_full_text=True
-        )
-        if captions:
-            text_parts.append(f"Table: {captions[0]}\n")
-
-        for row in table_elem.findall(".//tr"):
-            cells = []
-            for cell in row.findall(".//td") + row.findall(".//th"):
-                # The whole cell: taking only the first extracted string lost
-                # the rest of a cell holding several <p>.
-                cells.append(" ".join("".join(cell.itertext()).split()))
-            if cells:
-                text_parts.append(" | ".join(cells))
-
-        for foot in table_elem.findall(".//table-wrap-foot"):
-            foot_text = " ".join("".join(foot.itertext()).split())
-            if foot_text:
-                text_parts.append(foot_text)
-
-        return "\n".join(text_parts)
-
-    def _process_appendix_plaintext(self, app_elem: ET.Element) -> str:
-        """Process an appendix element to plain text."""
-        text_parts = []
-
-        # Extract appendix title
-        titles = self._extract_flat_texts(
-            app_elem, ".//title", filter_empty=True, use_full_text=True
-        )
-        if titles:
-            text_parts.append(f"Appendix: {titles[0]}")
-        else:
-            text_parts.append("Appendix")
-
-        # Extract appendix content
-        content = self._extract_flat_texts(app_elem, ".//p", filter_empty=True, use_full_text=True)
-        for para_text in content:
-            formatted_text = self._process_formatting_in_text(para_text)
-            text_parts.append(f"{formatted_text}")
+        titles = self._extract_flat_texts(app_elem, "title", filter_empty=True, use_full_text=True)
+        text_parts.append(f"Appendix: {titles[0]}" if titles else "Appendix")
+        text_parts.extend(self._blocks_plaintext(app_elem))
+        for sec in app_elem.iter():
+            if sec.tag == "sec":
+                section_text = self._process_section_plaintext(sec)
+                if section_text:
+                    text_parts.append(section_text)
 
         return "\n".join(text_parts)

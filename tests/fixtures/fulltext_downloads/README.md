@@ -18,6 +18,11 @@ by hand.
 | `PMC12738713.xml` | XML declaration, `xml:lang`, modern tagging |
 | `PMC12018715.xml` | 23 structured `<mixed-citation>` references — the fields were being filled by regex from flattened text (#226) |
 | `PMC13567752.xml` | 9 peer-review `<sub-article>` elements, each with its own `<body>` and `<contrib>` — these were returned as article sections (#222) and article authors (#227) |
+| `PMC10775981.xml` | 11 `<disp-formula>` inside `<p>`, each wrapping its MathML in an `<mml:mtable>`, and 14 `<preformat>` code listings — no formula block was produced and every conversion to LaTeX returned the empty string |
+| `PMC1764484.xml`  | Five tables whose `<thead>` cells are `<td>`, one with a three-row header grouped by `colspan="3"` cells; a `<ref-list>` inside `<body>`; section titles with `*` in them ("DRB1*0402") |
+| `PMC5393345.xml`  | NIH author manuscript: its figure and table sit in `<floats-group>`, outside `<body>`, and the table draws six compound structures as images inside cells |
+| `PMC11671585.xml` | 49 references, each a `<citation-alternatives>` holding an element and a mixed citation: the structured blocks gave each citation twice, repeated its label, and all 134 reference inline offsets were wrong |
+| `PMC11687933.xml` | eLife reviewed preprint: 23 `<aff>` and the assessment keywords live in `<sub-article>`, the editors have affiliations of their own, `<self-uri>` lists the bioRxiv preprint first, and the references include `<data-title>` software citations and `<collab>` authors (#251) |
 
 Keep them as the service returned them, apart from the trailing newline the
 repository's `end-of-file-fixer` hook adds — every file here has one, and it

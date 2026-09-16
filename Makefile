@@ -48,7 +48,7 @@ quality:
 	ruff check .
 	ruff format --check .
 	mypy .
-	bandit -r ./src --exclude "tests,.venv,.git,.mypy_cache,.pytest_cache" --skip "B101,B303"
+	bandit -c pyproject.toml -r ./src
 
 ## Run tests
 .PHONY: test
@@ -66,13 +66,13 @@ test-coverage:
 .PHONY: codescene
 codescene:
 	@echo "Running CodeScene analysis..."
-	@./scripts/codescene_analysis.sh
+	@./examples/scripts/codescene_analysis.sh
 
 ## Run CodeScene delta analysis
 .PHONY: codescene-delta
 codescene-delta:
 	@echo "Running CodeScene delta analysis..."
-	@./scripts/codescene_analysis.sh delta
+	@./examples/scripts/codescene_analysis.sh delta
 
 ## Run all code quality checks including CodeScene
 .PHONY: quality-full

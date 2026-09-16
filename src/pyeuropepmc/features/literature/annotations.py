@@ -243,6 +243,10 @@ class AnnotationsClient(BaseAPIClient):
                 self.logger.warning(f"Failed to cache annotations: {e}")
 
             return result_dict
+        except APIClientError:
+            # _get's error already names the failure (HTTP404, RATE429, ...).
+            self.logger.error("Failed to retrieve annotations for article IDs")
+            raise
         except Exception as e:
             error_context: dict[str, Any] = {
                 "article_ids": article_ids_str,
@@ -353,6 +357,10 @@ class AnnotationsClient(BaseAPIClient):
                 self.logger.warning(f"Failed to cache entity annotations: {e}")
 
             return result_dict
+        except APIClientError:
+            # _get's error already names the failure (HTTP404, RATE429, ...).
+            self.logger.error("Failed to retrieve entity annotations")
+            raise
         except Exception as e:
             error_context: dict[str, Any] = {
                 "entity_id": entity_id,
@@ -446,6 +454,10 @@ class AnnotationsClient(BaseAPIClient):
                 self.logger.warning(f"Failed to cache provider annotations: {e}")
 
             return result_dict
+        except APIClientError:
+            # _get's error already names the failure (HTTP404, RATE429, ...).
+            self.logger.error("Failed to retrieve provider annotations")
+            raise
         except Exception as e:
             error_context: dict[str, Any] = {"provider": provider, "endpoint": endpoint}
             self.logger.error("Failed to retrieve provider annotations")

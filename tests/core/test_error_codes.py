@@ -3,15 +3,22 @@ not already exercised indirectly via tests/core/test_exceptions.py."""
 
 from __future__ import annotations
 
+from pathlib import Path
+import re
+
 import pytest
 
 from pyeuropepmc.core.error_codes import (
+    ERROR_DOCS_URL,
+    ERROR_MESSAGES,
     ErrorCodes,
     create_error_from_response_with_recovery,
+    error_docs_url,
     format_error_message,
     format_error_response,
     generate_error_code,
     get_error_code_prefix,
+    get_error_message,
     get_error_message_by_string,
     get_error_severity,
     get_error_suggestion,
@@ -213,3 +220,54 @@ class TestRaiseForStatus:
     def test_raises_apiclient_error(self):
         with pytest.raises(APIClientError):
             raise_for_status(404, "/api/search", response_body="Not found")
+
+
+class TestErrorDocsLinks:
+    """``Docs:`` links lead to the section of the published page that lists the code.
+
+    They used to point at pyeuropepmc.rtfd.io, which never existed.
+    """
+
+    DOCS_PAGE = Path(__file__).resolve().parents[2] / "docs" / "reference" / "error-codes.md"
+
+    @classmethod
+    def _sections(cls) -> dict[str, str]:
+        """Section anchor (as GitHub Pages' kramdown derives it) -> section text."""
+        parts = re.split(r"^## (.+)$", cls.DOCS_PAGE.read_text(encoding="utf-8"), flags=re.M)
+        return {
+            re.sub(r"[^a-z0-9 -]", "", title.lower()).replace(" ", "-"): body
+            for title, body in zip(parts[1::2], parts[2::2], strict=True)
+        }
+
+    @staticmethod
+    def _listed_codes(section: str) -> set[str]:
+        """Codes named in a section, with ranges such as ``FULL012``–``FULL016`` expanded."""
+        codes = set(re.findall(r"`([A-Z]+\d{3})`", section))
+        for prefix, start, end in re.findall(r"`([A-Z]+)(\d{3})`–`[A-Z]+(\d{3})`", section):
+            codes.update(f"{prefix}{n:03d}" for n in range(int(start), int(end) + 1))
+        return codes
+
+    @pytest.mark.parametrize("code", list(ErrorCodes), ids=lambda c: c.value)
+    def test_link_points_at_the_section_listing_the_code(self, code: ErrorCodes) -> None:
+        url = error_docs_url(code)
+        page, _, anchor = url.partition("#")
+
+        assert page == ERROR_DOCS_URL
+        sections = self._sections()
+        assert anchor in sections, f"{url} names no section of {self.DOCS_PAGE.name}"
+        assert code.value in self._listed_codes(sections[anchor])
+
+    def test_every_docs_line_links_to_the_published_page(self) -> None:
+        messages = [
+            *ERROR_MESSAGES.values(),
+            get_error_message(ErrorCodes.NET001, include_help_link=True),
+        ]
+        links = [
+            line.removeprefix("Docs: ")
+            for message in messages
+            for line in message.splitlines()
+            if line.startswith("Docs: ")
+        ]
+
+        assert len(links) == 20  # the 19 HTTP messages and the help link
+        assert {link.partition("#")[0] for link in links} == {ERROR_DOCS_URL}

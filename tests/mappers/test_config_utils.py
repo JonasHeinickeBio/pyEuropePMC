@@ -60,33 +60,19 @@ class TestLoadRdfConfig:
     """Tests for load_rdf_config()."""
 
     def _setup_conf(self, tmp_path: Path, yaml_content: str) -> None:
-        """Create conf/rdf_map.yml in the path where load_rdf_config expects it.
+        """Write the rdf_map.yml that _packaged_files() points load_rdf_config at."""
+        tmp_path.joinpath("rdf_map.yml").write_text(yaml_content)
 
-        load_rdf_config() does::
-            Path(__file__).parent.parent.parent.parent / "conf" / "rdf_map.yml"
-
-        With ``__file__ = tmp_path/l1/l2/l3/l4/dummy.py`` (depth 4)::
-            .parent * 4 = tmp_path/l1
-            config path = tmp_path/l1/conf/rdf_map.yml
-        """
-        conf_dir = tmp_path / "l1" / "conf"
-        conf_dir.mkdir(parents=True, exist_ok=True)
-        conf_dir.joinpath("rdf_map.yml").write_text(yaml_content)
-
-    def _patch_file(self, tmp_path: Path) -> str:
-        """Return a __file__ path 4 levels deep above tmp_path/l1.
-
-        Path(__file__).parent.parent.parent.parent resolves to tmp_path/l1,
-        matching the project root where conf/ lives.
-        """
-        return str(tmp_path / "l1" / "l2" / "l3" / "l4" / "dummy.py")
+    def _packaged_files(self, tmp_path: Path) -> Any:
+        """Serve the packaged mapping files from ``tmp_path`` instead."""
+        return patch(
+            "pyeuropepmc.mappers.config_utils.config_file",
+            lambda name: tmp_path / name,
+        )
 
     def test_config_file_not_found(self, tmp_path: Path) -> None:
         """Fallback to default config when YAML does not exist."""
-        with patch(
-            "pyeuropepmc.mappers.config_utils.__file__",
-            self._patch_file(tmp_path),
-        ):
+        with self._packaged_files(tmp_path):
             config = load_rdf_config()
         assert config["named_graphs"] is not None
         assert "publications" in config["named_graphs"]
@@ -95,10 +81,7 @@ class TestLoadRdfConfig:
     def test_config_file_parse_error(self, tmp_path: Path) -> None:
         """Fallback to default config when YAML is malformed."""
         self._setup_conf(tmp_path, ": bad yaml\n  broken")
-        with patch(
-            "pyeuropepmc.mappers.config_utils.__file__",
-            self._patch_file(tmp_path),
-        ):
+        with self._packaged_files(tmp_path):
             config = load_rdf_config()
         assert config["named_graphs"] is not None
         assert config["base_uri"] == _get_default_rdf_config()["base_uri"]
@@ -124,10 +107,7 @@ _@prefix:
 _base_uri: "http://example.org/data/"
 """,
         )
-        with patch(
-            "pyeuropepmc.mappers.config_utils.__file__",
-            self._patch_file(tmp_path),
-        ):
+        with self._packaged_files(tmp_path):
             config = load_rdf_config()
         assert "authors" in config["named_graphs"]
         assert "institutions" not in config["named_graphs"]
@@ -144,10 +124,7 @@ _named_graphs:
 _@prefix: {}
 """,
         )
-        with patch(
-            "pyeuropepmc.mappers.config_utils.__file__",
-            self._patch_file(tmp_path),
-        ):
+        with self._packaged_files(tmp_path):
             config = load_rdf_config()
         assert "test_graph" in config["named_graphs"]
 
@@ -164,10 +141,7 @@ _quality_thresholds:
   low: 0.0
 """,
         )
-        with patch(
-            "pyeuropepmc.mappers.config_utils.__file__",
-            self._patch_file(tmp_path),
-        ):
+        with self._packaged_files(tmp_path):
             config = load_rdf_config()
         assert config["quality_thresholds"]["high"] == 0.9
         assert config["quality_thresholds"]["medium"] == 0.5
@@ -184,10 +158,7 @@ _defaults:
   include_content: false
 """,
         )
-        with patch(
-            "pyeuropepmc.mappers.config_utils.__file__",
-            self._patch_file(tmp_path),
-        ):
+        with self._packaged_files(tmp_path):
             config = load_rdf_config()
         assert config["defaults"]["include_content"] is False
 

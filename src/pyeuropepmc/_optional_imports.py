@@ -154,7 +154,8 @@ DEPENDENCY_GROUPS = {
     "visualization": ["matplotlib", "seaborn", "pandas", "numpy"],
     "export": ["xlsxwriter", "tabulate", "pandas"],
     "rdf": [
-        "rdflib_jsonld",  # rdflib-jsonld imports as rdflib_jsonld
+        # Empty: rdflib, a core dependency, writes JSON-LD itself since 6.0, so
+        # the extra no longer installs rdflib-jsonld.
         # `rdfizer` is intentionally absent: it is not part of the `rdf` extra,
         # so claiming it here would tell users to run `pip install
         # pyeuropepmc[rdf]` for a package that install does not provide.
@@ -172,7 +173,10 @@ DEPENDENCY_GROUPS = {
     ],
     "semanticscholar": ["semanticscholar"],
     # Enrichment bundle: what the enrichment clients can optionally use.
-    "enrichment": ["semanticscholar", "cryptography"],
+    # cryptography is not among them; signed search logs are the `signing` extra.
+    "enrichment": ["semanticscholar"],
+    # Downloads the published benchmark datasets from Hugging Face.
+    "benchmark": ["huggingface_hub"],
     "standard": [
         "pandas",
         "numpy",

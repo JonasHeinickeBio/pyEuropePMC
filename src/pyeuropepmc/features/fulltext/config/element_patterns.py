@@ -120,7 +120,20 @@ class ElementPatterns:
     # Reference/citation field patterns
     reference_patterns: dict[str, list[str]] = field(
         default_factory=lambda: {
-            "title": [".//article-title", ".//source", ".//title"],
+            # The cited work's own title comes before <source>, which names
+            # where it appeared. Software and datasets title themselves with
+            # <data-title> and give the repository as <source>, so every
+            # software citation in PMC11687933 was titled "GitHub", "CRAN" or
+            # "Sourceforge"; a book chapter's title is its <chapter-title> or,
+            # in PLOS markup, its <part-title>.
+            "title": [
+                ".//article-title",
+                ".//chapter-title",
+                ".//part-title",
+                ".//data-title",
+                ".//source",
+                ".//title",
+            ],
             "source": [".//source", ".//journal", ".//publication"],
             "year": [".//year", ".//date"],
             "month": [".//month"],

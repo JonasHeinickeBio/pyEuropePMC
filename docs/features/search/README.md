@@ -255,7 +255,7 @@ with SearchClient() as client:
             print("No results found")
 ```
 
-`EuropePMCError` is the exported name of `SearchError` from `pyeuropepmc.core.exceptions`. `search()` raises it when:
+`EuropePMCError` is the exported name of `PyEuropePMCError`, the base class of every exception in `pyeuropepmc.core.exceptions`, so it catches everything the library raises. `search()` raises `SearchError` when:
 
 - the query fails the local check in `SearchClient.validate_query()`: empty, shorter than two characters, an odd number of double quotes, or more than 30% special characters (error code `SEARCH001`);
 - `pageSize` is outside 1 to 1000 (`SEARCH002`);
