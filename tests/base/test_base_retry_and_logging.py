@@ -89,7 +89,7 @@ class TestGetRetries:
 
     @pytest.mark.parametrize(
         ("status_code", "error_code"),
-        [(404, ErrorCodes.HTTP404), (403, ErrorCodes.HTTP403), (400, ErrorCodes.NET001)],
+        [(404, ErrorCodes.HTTP404), (403, ErrorCodes.HTTP403), (418, ErrorCodes.NET001)],
     )
     def test_permanent_http_status_is_not_retried(self, client, status_code, error_code):
         with (
