@@ -272,7 +272,7 @@ _Notes: Means are computed over measured iterations; '-' indicates missing data.
 Run the modular benchmark locally and regenerate these artifacts:
 
 ```bash
-pytest -q tests/benchmark_article_client.py::test_modular_benchmark_system -q
+pytest tests/benchmark_article_client.py::test_modular_benchmark_system -m benchmark --force-enable-socket --timeout=3600
 ```
 
 - Detailed JSON results: `MODULAR_BENCHMARK_RESULTS.json`

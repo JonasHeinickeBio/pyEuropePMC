@@ -1,8 +1,6 @@
 # Citation graph walking
 
-This page covers two ways to follow citations from a known article: Europe PMC's citation and reference lists, and `CitationWalker`, which is designed to snowball through the Semantic Scholar citation graph.
-
-> **Known limitation:** `CitationWalker` currently returns no papers when it queries the live Semantic Scholar API. Its seed lookup returns a record without the `paperId` key the walker reads, and it reads citation and reference pages from `citations` and `references` keys, while the Semantic Scholar Graph API returns them under `data` as `citingPaper` and `citedPaper` entries. Use the Europe PMC route below until this is fixed.
+This page covers two ways to follow citations from a known article: Europe PMC's citation and reference lists, and `CitationWalker`, which snowballs through the Semantic Scholar citation graph.
 
 ## Citations and references from Europe PMC
 
@@ -88,7 +86,7 @@ from pyeuropepmc.features.citations.walker import CitationWalker, SnowballingStr
 | `max_depth` | `int` | `1` | Recursion depth as implemented: `0` follows one step, the default `1` follows two, and each increment adds one more |
 | `min_citations` | `int` | `0` | Papers with fewer citations are dropped and not followed further |
 
-The identifier is passed to Semantic Scholar unchanged; if the lookup fails, the walker uses the first result of a keyword search for the string. The method returns a tuple, so unpack it. Unless `skip_dedup=True`, the papers are deduplicated with `LiteratureMerger` and `report` is its [MergeReport](dedup.md#mergereport). Papers are `LiteratureResult` records with `source="semanticscholar"`.
+The identifier is passed to Semantic Scholar unchanged; if the lookup fails, the walker uses the first result of a keyword search for the string. Each step reads the first page (up to 100 records) of the paper's citations or references. References that Semantic Scholar has no record for carry no paper ID; they are skipped and not followed. With `SnowballingStrategy.BOTH` the two directions are walked independently, so a paper reached forward is still followed backward. The method returns a tuple, so unpack it. Unless `skip_dedup=True`, the papers are deduplicated with `LiteratureMerger` and `report` is its [MergeReport](dedup.md#mergereport). Papers are `LiteratureResult` records with `source="semanticscholar"`.
 
 ```python
 from pyeuropepmc.features.citations.walker import CitationWalker, SnowballingStrategy

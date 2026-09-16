@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 from unittest.mock import MagicMock
 
 import pytest
@@ -68,6 +69,41 @@ def test_load_source_tolerates_extra_kwargs():
     )
     assert client.rate_limit_delay == 2.0
     assert client.timeout == 9
+
+
+def test_load_source_warns_when_a_declared_credential_is_dropped(caplog):
+    """A credential the spec advertises must not vanish silently."""
+    spec = registry.get_source_spec("arxiv")
+    assert "api_key" not in spec.credential_kwargs  # arXiv declares no credentials
+
+    registry.register_source(
+        registry.SourceSpec("arxiv-with-key", spec.target, credential_kwargs=("api_key",)),
+    )
+    try:
+        with caplog.at_level(logging.WARNING, logger=registry.logger.name):
+            registry.load_source("arxiv-with-key", api_key="secret", timeout=9)
+    finally:
+        registry._REGISTRY.pop("arxiv-with-key", None)
+
+    messages = [r.getMessage() for r in caplog.records]
+    assert any("api_key" in m and "dropped" in m for m in messages), messages
+    assert all("secret" not in m for m in messages), "the credential value must not be logged"
+
+
+def test_load_source_does_not_warn_for_ordinary_extra_kwargs(caplog):
+    with caplog.at_level(logging.WARNING, logger=registry.logger.name):
+        registry.load_source("arxiv", timeout=9, not_a_credential=1)
+    assert caplog.records == []
+
+
+def test_openalex_adapter_accepts_the_email_credential():
+    """``credential_kwargs=("email",)`` on the openalex spec must reach the client."""
+    assert "email" in registry.get_source_spec("openalex").credential_kwargs
+
+    client = registry.load_source("openalex", email="polite@example.org", timeout=9)
+
+    assert client.enrichment_client.email == "polite@example.org"
+    assert client._mailto == "polite@example.org"
 
 
 class TestLoadEntryPointSources:
