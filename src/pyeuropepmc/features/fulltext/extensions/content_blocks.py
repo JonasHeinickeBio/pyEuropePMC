@@ -1640,7 +1640,22 @@ class ContentBlockExtractor(BaseParser):
     #: Parts of a <table-wrap> the table block represents in its own fields.
     #: Text anywhere else in the wrapper is appended to the block's ``text``.
     _TABLE_OWN_PARTS: ClassVar[frozenset[str]] = frozenset(
-        {"label", "caption", "table", "alternatives", "table-wrap-foot", "object-id", "graphic"}
+        {
+            "label",
+            "caption",
+            "table",
+            "alternatives",
+            "table-wrap-foot",
+            "object-id",
+            "graphic",
+            # the rows of a bare <table>, which the grid already holds
+            "thead",
+            "tbody",
+            "tfoot",
+            "tr",
+            "colgroup",
+            "col",
+        }
     )
 
     def _text_with_inlines(self, elem: ET.Element) -> tuple[str, list[InlineElement]]:

@@ -960,6 +960,15 @@ class TestTableBlockStructure:
         )
 
 
+class TestBareTableBlock:
+    def test_a_bare_table_holds_its_cells_once(self):
+        """Without a <table-wrap>, the rows were appended to the text a second time."""
+        xml = "<table><caption><p>Sample</p></caption><tr><td>a</td><td>b</td></tr></table>"
+        block = _extractor("<root/>")._handle_table(_elem(xml))[0]
+        assert block.text == "Sample a b"
+        assert block.rows == [["a", "b"]]
+
+
 class TestCollapseWhitespace:
     def test_offsets_follow_the_collapsed_text(self):
         raw = "  a \n\n <b>  c"
