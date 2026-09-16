@@ -177,6 +177,35 @@ class ErrorCodes(Enum):
     LICENSE002 = "LICENSE002"
 
 
+#: The error reference, docs/reference/error-codes.md, as published.
+ERROR_DOCS_URL = "https://jonasheinickebio.github.io/pyEuropePMC/reference/error-codes"
+
+# The page groups codes by prefix; these are its section anchors.
+_ERROR_DOCS_SECTIONS = {
+    "NET": "network-net",
+    "HTTP": "http-status-http",
+    "AUTH": "authentication-and-rate-limits-auth-rate-retry",
+    "RATE": "authentication-and-rate-limits-auth-rate-retry",
+    "RETRY": "authentication-and-rate-limits-auth-rate-retry",
+    "SEARCH": "search-search",
+    "FULL": "full-text-full",
+    "PARSE": "parsing-parse",
+    "VALID": "validation-valid",
+    "CONFIG": "configuration-config",
+    "QUERY": "query-builder-query",
+    "UNPAY": "unpaywall-unpay",
+    "GENERIC": "fallback-codes-generic",
+}
+_ERROR_DOCS_OTHER_SECTION = "other-codes-api-client-file-model-avail-license"
+
+
+def error_docs_url(error_code: ErrorCodes | str) -> str:
+    """Link to the section of the error reference that describes ``error_code``."""
+    code = error_code.value if isinstance(error_code, ErrorCodes) else error_code
+    section = _ERROR_DOCS_SECTIONS.get(code.rstrip("0123456789"), _ERROR_DOCS_OTHER_SECTION)
+    return f"{ERROR_DOCS_URL}#{section}"
+
+
 # Error messages mapping - centralized error messages with actionable guidance
 ERROR_MESSAGES: dict[str, str] = {
     # Network Error Codes (NET)
@@ -261,115 +290,115 @@ ERROR_MESSAGES: dict[str, str] = {
         "Bad request. The request was invalid or cannot be served.\n"
         "User: Check your request parameters, JSON/XML syntax, and ensure they match the API specification.\n"
         "Quick fix: Validate payload structure → Check required fields → Review API docs.\n"
-        "Docs: https://pyeuropepmc.rtfd.io/errors/HTTP400"
+        f"Docs: {error_docs_url(ErrorCodes.HTTP400)}"
     ),
     ErrorCodes.HTTP401.value: (
         "Unauthorized. Your API credentials are missing or invalid.\n"
         "User: Provide a valid API key or check your authentication headers.\n"
         "Quick fix: Generate new API key → Update credentials → Check header format.\n"
-        "Docs: https://pyeuropepmc.rtfd.io/errors/HTTP401"
+        f"Docs: {error_docs_url(ErrorCodes.HTTP401)}"
     ),
     ErrorCodes.HTTP403.value: (
         "Forbidden. You don't have permission to access this resource.\n"
         "User: Check your API credentials and access rights.\n"
         "Quick fix: Verify API key permissions → Check access level → Contact support.\n"
-        "Docs: https://pyeuropepmc.rtfd.io/errors/HTTP403"
+        f"Docs: {error_docs_url(ErrorCodes.HTTP403)}"
     ),
     ErrorCodes.HTTP404.value: (
         "Resource not found. The requested resource does not exist or has been removed.\n"
         "User: Verify the resource identifier and try again.\n"
         "Quick fix: Check resource ID → Verify endpoint → Try alternative resource.\n"
-        "Docs: https://pyeuropepmc.rtfd.io/errors/HTTP404"
+        f"Docs: {error_docs_url(ErrorCodes.HTTP404)}"
     ),
     ErrorCodes.HTTP405.value: (
         "Method not allowed. The HTTP method is not supported for this endpoint.\n"
         "User: Use the correct HTTP method for this operation.\n"
         "Quick fix: Check API docs for correct method → Change POST to GET or vice versa.\n"
-        "Docs: https://pyeuropepmc.rtfd.io/errors/HTTP405"
+        f"Docs: {error_docs_url(ErrorCodes.HTTP405)}"
     ),
     ErrorCodes.HTTP406.value: (
         "Not acceptable. The server cannot produce a response matching the requested content type.\n"
         "User: Check your Accept header and supported formats.\n"
         "Quick fix: Use supported format (json/xml) → Check API docs for format support.\n"
-        "Docs: https://pyeuropepmc.rtfd.io/errors/HTTP406"
+        f"Docs: {error_docs_url(ErrorCodes.HTTP406)}"
     ),
     ErrorCodes.HTTP407.value: (
         "Proxy authentication required. You need to authenticate with the proxy server.\n"
         "User: Provide proxy authentication credentials.\n"
         "Quick fix: Configure proxy credentials → Check proxy settings → Try again.\n"
-        "Docs: https://pyeuropepmc.rtfd.io/errors/HTTP407"
+        f"Docs: {error_docs_url(ErrorCodes.HTTP407)}"
     ),
     ErrorCodes.HTTP408.value: (
         "Request timeout. The server timed out waiting for the request.\n"
         "User: Try again or increase the timeout parameter.\n"
         "Quick fix: Increase timeout → Check network speed → Try again later.\n"
-        "Docs: https://pyeuropepmc.rtfd.io/errors/HTTP408"
+        f"Docs: {error_docs_url(ErrorCodes.HTTP408)}"
     ),
     ErrorCodes.HTTP410.value: (
         "Gone. The requested resource is no longer available and has been permanently removed.\n"
         "User: Check for updated documentation or alternative endpoints.\n"
         "Quick fix: Verify endpoint → Check for deprecation notices → Update to new endpoint.\n"
-        "Docs: https://pyeuropepmc.rtfd.io/errors/HTTP410"
+        f"Docs: {error_docs_url(ErrorCodes.HTTP410)}"
     ),
     ErrorCodes.HTTP413.value: (
         "Payload too large. The request payload exceeds server limits.\n"
         "User: Reduce the size of your request payload.\n"
         "Quick fix: Split large request → Reduce page size → Batch smaller requests.\n"
-        "Docs: https://pyeuropepmc.rtfd.io/errors/HTTP413"
+        f"Docs: {error_docs_url(ErrorCodes.HTTP413)}"
     ),
     ErrorCodes.HTTP414.value: (
         "URI too long. The request URL exceeds server limits.\n"
         "User: Shorten your request URL.\n"
         "Quick fix: Reduce query complexity → Use POST instead of GET → Batch requests.\n"
-        "Docs: https://pyeuropepmc.rtfd.io/errors/HTTP414"
+        f"Docs: {error_docs_url(ErrorCodes.HTTP414)}"
     ),
     ErrorCodes.HTTP415.value: (
         "Unsupported media type. The server does not support the request content type.\n"
         "User: Check your Content-Type header and use a supported format.\n"
         "Quick fix: Use supported format (application/json) → Check API docs → Update header.\n"
-        "Docs: https://pyeuropepmc.rtfd.io/errors/HTTP415"
+        f"Docs: {error_docs_url(ErrorCodes.HTTP415)}"
     ),
     ErrorCodes.HTTP416.value: (
         "Range not satisfiable. The requested range cannot be satisfied.\n"
         "User: Check your range request parameters.\n"
         "Quick fix: Verify range values → Check content length → Adjust range.\n"
-        "Docs: https://pyeuropepmc.rtfd.io/errors/HTTP416"
+        f"Docs: {error_docs_url(ErrorCodes.HTTP416)}"
     ),
     ErrorCodes.HTTP429.value: (
         "Too many requests. You have exceeded the rate limit.\n"
         "User: Wait before retrying, increase rate_limit_delay, or use an API key.\n"
         "Quick fix: Wait for rate limit reset → Increase rate_limit_delay → Use API key.\n"
-        "Docs: https://pyeuropepmc.rtfd.io/errors/HTTP429"
+        f"Docs: {error_docs_url(ErrorCodes.HTTP429)}"
     ),
     ErrorCodes.HTTP500.value: (
         "Internal server error. The server encountered an unexpected condition.\n"
         "User: Please try again later.\n"
         "Quick fix: Wait → Retry with backoff → Report if persistent.\n"
-        "Docs: https://pyeuropepmc.rtfd.io/errors/HTTP500"
+        f"Docs: {error_docs_url(ErrorCodes.HTTP500)}"
     ),
     ErrorCodes.HTTP501.value: (
         "Not implemented. The server does not support the requested functionality.\n"
         "User: Check if the feature is available or use an alternative approach.\n"
         "Quick fix: Verify feature availability → Check API docs → Use alternative endpoint.\n"
-        "Docs: https://pyeuropepmc.rtfd.io/errors/HTTP501"
+        f"Docs: {error_docs_url(ErrorCodes.HTTP501)}"
     ),
     ErrorCodes.HTTP502.value: (
         "Bad gateway. The server received an invalid response from an upstream server.\n"
         "User: Please try again later.\n"
         "Quick fix: Wait → Retry → Report if persistent.\n"
-        "Docs: https://pyeuropepmc.rtfd.io/errors/HTTP502"
+        f"Docs: {error_docs_url(ErrorCodes.HTTP502)}"
     ),
     ErrorCodes.HTTP503.value: (
         "Service unavailable. The server is temporarily unable to handle the request.\n"
         "User: Please try again later.\n"
         "Quick fix: Wait → Retry with backoff → Check status page.\n"
-        "Docs: https://pyeuropepmc.rtfd.io/errors/HTTP503"
+        f"Docs: {error_docs_url(ErrorCodes.HTTP503)}"
     ),
     ErrorCodes.HTTP504.value: (
         "Gateway timeout. The server did not receive a timely response from an upstream server.\n"
         "User: Please try again later.\n"
         "Quick fix: Wait → Retry → Check network stability.\n"
-        "Docs: https://pyeuropepmc.rtfd.io/errors/HTTP504"
+        f"Docs: {error_docs_url(ErrorCodes.HTTP504)}"
     ),
     # Authentication Error Codes (AUTH) - Extended
     ErrorCodes.AUTH401.value: "Authentication failed. Your API credentials are invalid or expired. Check your API key and ensure it is correctly configured.",
@@ -448,7 +477,7 @@ def get_error_message(error_code: ErrorCodes | str, include_help_link: bool = Fa
     message = ERROR_MESSAGES.get(code_str, "Unknown error. Please check your input and try again.")
 
     if include_help_link and "docs" not in message.lower():
-        message += f"\nDocs: https://pyeuropepmc.rtfd.io/errors/{code_str}"
+        message += f"\nDocs: {error_docs_url(code_str)}"
 
     return message
 

@@ -152,10 +152,10 @@ poetry run mypy src/
 ### Bandit
 
 ```bash
-poetry run bandit -r ./src --exclude "tests,.venv,.git,.mypy_cache,.pytest_cache" --skip "B101,B303"
+poetry run bandit -c pyproject.toml -r ./src
 ```
 
-CI passes the skip list on the command line. The pre-commit hook reads `[tool.bandit]` instead, which also skips B110 and B112, so findings of those two types pass locally and fail in CI.
+`[tool.bandit]` in `pyproject.toml` is the only configuration: CI, `make quality` and the pre-commit hook all read it. It skips B101 (`assert`) and B303 (weak hash functions). Bandit reads TOML with the standard library's `tomllib` on Python 3.11 and later, and with `tomli`, which pytest and mypy install, on 3.10.
 
 ### Pre-commit hooks
 
@@ -186,6 +186,14 @@ poetry run pre-commit run --all-files
 
 ```bash
 poetry run make quality
+```
+
+### tox (optional)
+
+`tox.ini` runs the same checks in isolated environments: `py310` to `py313` run the default test suite, `lint` runs ruff, `type-check` runs mypy, and `integration` runs `tests/integration` against the live services. Each installs the package with every extra and the `dev` dependency group from `pyproject.toml`, which needs tox 4.22 or later. CI does not use tox.
+
+```bash
+uvx tox -e py312
 ```
 
 ### CodeScene (optional)

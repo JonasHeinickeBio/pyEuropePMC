@@ -268,8 +268,11 @@ show_missing = true
 skip_covered = true
 fail_under = 75     # matches the cdci.yml coverage gate (--fail-under=75)
 
+# The one bandit configuration: CI, `make quality` and the pre-commit hook all
+# pass `-c pyproject.toml`. B110/B112 (try/except/pass and /continue) stay
+# enabled; CI always checked them, and src/ has no findings for either.
 [tool.bandit]
-skips = ["B101", "B303", "B110", "B112"]
+skips = ["B101", "B303"]
 exclude_dirs = [
   "tests",
   "docs",
@@ -290,20 +293,16 @@ paths = ["src"]
 # NOT the minimum Python this package supports (that's 3.10 - see
 # `requires-python` above); this is the syntax mypy itself is allowed to
 # *parse*, including inside third-party stub files it follows imports into.
-# numpy 2.5.x (resolved on Python >=3.12, see poetry.lock) ships stubs that
-# use PEP 695 `type X = ...` / `class Foo[T]` syntax throughout (__init__.pyi,
-# numpy.ma.core, numpy._typing.*, ...) - reachable transitively from rapidfuzz
-# (a core dependency) and from matplotlib/pandas (extras), not just from this
-# project's own two direct numpy imports. Under python_version = "3.10" mypy
-# refuses to even parse those files ("errors prevented further checking"),
-# which aborts the ENTIRE run - not just numpy-adjacent code - so this was
-# strictly worse than not gating at all. follow_imports overrides don't help:
-# mypy always processes PEP 561 inline-typed packages (numpy has a py.typed
-# marker) "normally", ignoring follow_imports settings for exactly this case.
-# Bumping to 3.12 doesn't loosen protection against 3.10-incompatible syntax
-# actually landing in src/: python-compatibility.yml separately compiles
-# every file under real 3.10/3.11/3.12/3.13 interpreters, which is a stronger,
-# runtime-accurate check than mypy's own syntax gate for that risk.
+# It was raised to 3.12 when poetry.lock resolved numpy 2.5.x on Python >=3.12:
+# those stubs use PEP 695 `type X = ...` / `class Foo[T]` syntax, which mypy
+# refuses to parse under python_version = "3.10", aborting the ENTIRE run.
+# follow_imports overrides don't help, because mypy always processes PEP 561
+# inline-typed packages such as numpy normally. The lock now pins numpy 2.2.6
+# for every Python (via the analytics/visualization/export extras), and mypy
+# passes under 3.10 with it; 3.12 is kept so a numpy update cannot bring the
+# abort back. python-compatibility.yml compiles every file under real
+# 3.10/3.11/3.12/3.13 interpreters, which guards src/ against syntax a
+# supported version lacks.
 python_version = "3.12"
 strict = true
 ignore_missing_imports = true
