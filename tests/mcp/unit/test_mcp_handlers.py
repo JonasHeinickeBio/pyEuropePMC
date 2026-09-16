@@ -607,6 +607,7 @@ class TestBibliographyTools:
         converter = MagicMock()
         resolver = MagicMock()
         monkeypatch.setattr(srv, "BIBLIOGRAPHY_AVAILABLE", True)
+        monkeypatch.setattr(srv, "BIBTEXPARSER_AVAILABLE", True)
         srv._bib_manager_cache.set(mgr)
         srv._bib_converter_cache.set(converter)
         srv._bib_resolver_cache.set(resolver)
@@ -656,6 +657,22 @@ class TestBibliographyTools:
         result = _run(srv.bib_to_csl(content="x"))
 
         assert result == [{"type": "article"}]
+
+    def test_bib_tools_need_the_bibliography_extra(self, bib_mocks, monkeypatch):
+        """Without bibtexparser the BibTeX tools say which extra to install."""
+        monkeypatch.setattr(srv, "BIBTEXPARSER_AVAILABLE", False)
+        with pytest.raises(ToolError, match=r"pip install pyeuropepmc\[bibliography\]"):
+            _run(srv.bib_parse_string(content="@article{k, title={T}}"))
+
+    def test_ref_tools_work_without_the_bibliography_extra(self, bib_mocks, monkeypatch):
+        """Resolving an identifier needs no bibtexparser, so no extra is demanded."""
+        _, _, resolver = bib_mocks
+        monkeypatch.setattr(srv, "BIBTEXPARSER_AVAILABLE", False)
+        ref = MagicMock()
+        ref.to_dict.return_value = {"doi": "10.1/x"}
+        resolver.resolve_doi.return_value = ref
+
+        assert _run(srv.ref_resolve_doi(doi="10.1/x")) == {"doi": "10.1/x"}
 
     def test_ref_resolve_doi_found(self, bib_mocks):
         _, _, resolver = bib_mocks

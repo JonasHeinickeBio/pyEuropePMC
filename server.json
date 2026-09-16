@@ -17,6 +17,13 @@
       "identifier": "pyeuropepmc",
       "version": "2.2.1",
       "runtimeHint": "uvx",
+      "packageArguments": [
+        {
+          "type": "positional",
+          "valueHint": "command",
+          "value": "mcp"
+        }
+      ],
       "transport": {
         "type": "stdio"
       }

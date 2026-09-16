@@ -3,7 +3,12 @@
 # This file is the SOURCE OF TRUTH for all RDF mappings.
 # The RML file (rml_mappings.ttl) is auto-generated from this YAML.
 #
-# After editing this file, run: python scripts/sync_rdf_mappings.py
+# After editing this file, run: python examples/scripts/sync_rdf_mappings.py
+# (or: make sync-rdf)
+#
+# "rdf:type" feeds the generated RML triples maps. RDFMapper types each entity
+# from the entity's own `types` field instead, whose defaults are set in the
+# model classes; keep the two in agreement.
 #
 # This file defines how entity fields map to RDF predicates.
 # URI generation patterns are handled dynamically in RDFMapper._generate_entity_uri()
@@ -244,7 +249,9 @@ TableRowEntity:
 
 # ReferenceEntity mapping
 ReferenceEntity:
-  "rdf:type": ["bibo:Article"]  # More specific than bibo:Document
+  # bibo:Document, not bibo:Article: a cited work may be a book, dataset or web
+  # page. Matches ReferenceEntity.types and the bibo:Document SHACL shape.
+  "rdf:type": ["bibo:Document"]
   fields:
     authors: {predicate: "bibo:authorList", datatype: "xsd:string"}
     raw_citation: {predicate: "dcterms:description", datatype: "xsd:string"}
@@ -399,8 +406,4 @@ FigureEntity:
   relationships:
     paper:
       predicate: "dcterms:isPartOf"
-      inverse: "frapo:isRecipientOf"
-      comment: "Principal investigators or researchers who receive this grant funding"
-    papers:
-      predicate: "frapo:funds"
-      inverse: "foaf:fundedBy"
+      inverse: dcterms:hasPart

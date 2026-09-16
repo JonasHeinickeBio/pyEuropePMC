@@ -122,7 +122,19 @@ print(deduplicate_by_identifier(papers, strict_conflicts=True))  # [[0], [1], [2
 
 In each group the record to keep is the one with the highest licence score, then the most full-text availability (PMCID, full-text or PDF URL, open-access flag, abstract), then the highest source priority. With `prefer_open_access=False` only source priority counts. The kept record receives a `dedup_id` such as `CORD-87685AEB21211374`, derived from the group's identifiers; records without duplicates get none.
 
-Known limitation: CC-BY-SA, CC-BY-NC and CC-BY-ND licences receive the same score as CC-BY.
+The licence score comes from the record's `license` value, the `license`, `license_url`, `oa_status` and `is_oa` fields of attached OpenAlex, Unpaywall or Crossref data, and its own `is_oa` and `oa_status`. When several licences are named, the most permissive one counts:
+
+| Licence | Score |
+|---|---|
+| CC0, public domain | 100 |
+| CC BY | 90 |
+| CC BY-SA | 80 |
+| CC BY-NC, CC BY-NC-SA, CC BY-NC-ND | 70 |
+| CC BY-ND | 60 |
+| An open-access flag, or text containing "open access" or "oa" | 50 |
+| Any other text containing "license" or "licence" | 10 |
+
+Creative Commons licences are recognised in the usual spellings, for example `cc-by-nc`, `CC BY-NC 4.0`, `https://creativecommons.org/licenses/by-nc/4.0/` and `Creative Commons Attribution-NonCommercial 4.0`.
 
 ## Source priority
 
@@ -146,7 +158,7 @@ Pass `DedupConfig(source_priority={...})` to change it. `UnifiedSearch` raises i
 | `dedup_rate` | `float` property | `duplicates_removed / total_input` |
 | `summary()` | `dict` | `total_input`, `total_output`, `duplicates_removed`, `dedup_rate` (4 decimals) and `by_match_level` |
 
-`by_match_level` counts records by `MatchLevel` name: `PMID_EXACT`, `DOI_EXACT`, `PMCID_EXACT`, `ARXIV_EXACT`, `IDENTIFIER_MATCH`, `FUZZY_TITLE` or `NON_PAPER`. Known limitation: removed retracted records are counted as `PMID_EXACT`, with the reason `"Retracted paper"`.
+`by_match_level` counts records by `MatchLevel` name: `PMID_EXACT`, `DOI_EXACT`, `PMCID_EXACT`, `ARXIV_EXACT`, `IDENTIFIER_MATCH`, `FUZZY_TITLE`, `NON_PAPER` or `RETRACTED`. Removed retracted records are counted as `RETRACTED`, with the reason `"Retracted paper"`.
 
 `MergeRecord` fields:
 

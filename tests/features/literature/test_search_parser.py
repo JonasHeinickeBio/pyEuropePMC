@@ -1317,6 +1317,33 @@ class TestParseSearchResultsWithEntities:
         entities_data = EuropePMCParser.parse_search_results_with_entities([])
         assert entities_data == []
 
+    def test_whole_search_response_is_unwrapped(self) -> None:
+        """A response dict yields one entity per record, not one for the response."""
+        response = {
+            "version": "6.9",
+            "hitCount": 2,
+            "resultList": {
+                "result": [
+                    {"pmid": "1", "title": "First"},
+                    {"pmid": "2", "title": "Second"},
+                ]
+            },
+        }
+        entities_data = EuropePMCParser.parse_search_results_with_entities(response)
+        assert [e["entity"].pmid for e in entities_data] == ["1", "2"]
+        assert [e["entity"].title for e in entities_data] == ["First", "Second"]
+
+    @pytest.mark.parametrize(
+        "response",
+        [
+            {"hitCount": 0, "resultList": {"result": []}},
+            {"hitCount": 0, "resultList": {}},
+            {"hitCount": 0, "resultList": None},
+        ],
+    )
+    def test_response_without_records_yields_nothing(self, response) -> None:
+        assert EuropePMCParser.parse_search_results_with_entities(response) == []
+
     def test_result_failure_logged_and_skipped(self) -> None:
         """Bad result is logged and skipped."""
         results = [

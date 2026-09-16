@@ -118,7 +118,7 @@ class TestEveryBlockIsFound:
 class TestCaptionFormulasAreNotTheFigure:
     """PMC10775981 Fig 3: three inline formulas precede the figure's graphic."""
 
-    PATH = ASSETS / "PMC10775981.xml"
+    PATH = DOWNLOADS / "PMC10775981.xml"
 
     def test_figure_extractor_picks_the_figure_not_the_equation(self, extractor):
         figures = extractor.extract_from_xml(read(self.PATH), pmcid="PMC10775981")

@@ -16,6 +16,7 @@ from typing import Any
 from xml.etree import ElementTree as ET  # nosec B405
 
 from pyeuropepmc.core.exceptions import ParsingError
+from pyeuropepmc.core.xml_parsing import is_refused, parse_xml
 from pyeuropepmc.features.fulltext.fulltext_parser import FullTextXMLParser
 from pyeuropepmc.features.fulltext.utils.asset_urls import (
     DEFAULT_IMAGE_EXTENSION,
@@ -310,21 +311,24 @@ class FigureExtractor:
     ) -> list[FigureInfo]:
         """Parse XML and extract figure elements.
 
-        Parsing goes through ``FullTextXMLParser`` so that a schema-based JATS
-        document, whose tags carry a default namespace, is matched by the same
-        unprefixed searches as the DTD-based JATS Europe PMC serves. Searching
-        for namespaced tags directly - as this did for the JATS1 namespace, which
-        Europe PMC documents do not use - found nothing in either form.
+        A document defusedxml refuses raises ``ParsingError``; one that is not
+        well-formed yields no figures. The document's own default namespace is
+        then stripped the way ``FullTextXMLParser`` strips it, so a schema-based
+        JATS document is matched by the same unprefixed searches as the
+        DTD-based JATS Europe PMC serves. Searching for namespaced tags directly
+        - as this did for the JATS1 namespace, which Europe PMC documents do not
+        use - found nothing in either form.
         """
         figures: list[FigureInfo] = []
 
         try:
-            root: ET.Element | None = FullTextXMLParser(xml_str).root
-        except ParsingError as e:
-            logger.error("XML parse error: %s", e)
+            root: ET.Element = parse_xml(xml_str, what="The figure XML")
+        except ParsingError as exc:
+            if is_refused(exc):
+                raise
+            logger.warning("Figure XML is not well formed, no figures extracted: %s", exc)
             return figures
-        if root is None:
-            return figures
+        root = FullTextXMLParser._strip_default_namespace(root)
 
         parents = parent_figure_map(root)
 
