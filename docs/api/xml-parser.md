@@ -48,10 +48,10 @@ Every method raises `ParsingError` (`PARSE003`) when nothing has been parsed. Th
 | `extract_affiliations()` | `list[dict]`, see [Affiliations](#affiliations) | – |
 | `extract_pub_date()` | `str \| None`: `YYYY`, `YYYY-MM` or `YYYY-MM-DD` | – |
 | `extract_keywords()` | `list[str]` | – |
-| `extract_funding()` | `list[dict]` with `source`, and when present `fundref_doi`, `award_id`, `recipients` (list of name dicts), `recipient_full` | – |
+| `extract_funding()` | `list[dict]` with `source`, and when present `fundref_doi`, `award_id` (the first), `award_ids` (all of them), `recipients` (list of name dicts), `recipient_full` | – |
 | `extract_license()` | `dict` with `url`, `text` and, when present, `type`; `{}` when there is no licence | – |
 | `extract_publisher()` | `dict` with `name` and, when present, `location`; `{}` when absent | – |
-| `extract_article_categories()` | `dict`: `{"subject_groups": [{"subjects": [...], "type": ...}]}`; `{}` when absent | – |
+| `extract_article_categories()` | `dict`: `article_type` (the root element's `article-type`) and `{"subject_groups": [{"subjects": [...], "type": ...}]}`; `{}` when absent | – |
 | `extract_tables()` | `list[dict]`, see [Tables](#tables) | wrapped |
 | `extract_figures()` | `list[dict]`, see [Figures](#figures) | wrapped |
 | `extract_references()` | `list[dict]`, see [References](#references) | wrapped |
@@ -80,7 +80,8 @@ Always present, with `None` or an empty value when not found:
 | `doi` | `str \| None` | Article DOI |
 | `pmcid` | `str \| None` | As written in the XML: `"PMC3258128"` or `"3258128"` |
 | `volume`, `issue` | `str \| None` | Volume and issue |
-| `pages` | `str \| None` | `"fpage-lpage"` or `"fpage"` |
+| `pages` | `str \| None` | `"fpage-lpage"` or `"fpage"`, from the article's own `<article-meta>`; `None` for an article paginated with `<elocation-id>` |
+| `elocation_id` | `str \| None` | The article's `<elocation-id>`, for example `"e1011761"` or `"RP99323"` |
 | `keywords` | `list[str]` | Same as `extract_keywords()` |
 
 Present only when the article has the information:
@@ -96,17 +97,17 @@ Present only when the article has the information:
 | `categories` | `dict` | Same as `extract_article_categories()` |
 | `history` | `list[dict]` | Editorial dates: `{"type": "received", "date": "2010-12-13"}` |
 | `correspondence` | `list[dict]` | `id`, `email`, `text` of `<corresp>` elements |
-| `self_uri` | `str` | The first `<self-uri>` link |
+| `self_uri` | `str` | The first `<self-uri>` link of the article's own front matter that is not a preprint version of it |
 | `counts` | `dict[str, int]` | From `<counts>`, for example `{"pages": 8}` |
 | `extended_metadata` | `dict` | Further values such as `alternative_title` and `article_version` |
 
 ## Affiliations
 
-`extract_affiliations()` returns one dict per `<aff>` element. Keys depend on the markup:
+`extract_affiliations()` returns one dict per `<aff>` element of the article's own front matter that belongs to an author. The editors' affiliations and those of the peer-review `<sub-article>` elements are left out. Keys depend on the markup:
 
 | Key | Present for | Description |
 |---|---|---|
-| `id`, `text` | all | Element ID and full text |
+| `id`, `text` | all | Element ID, and the text without the `<label>` marker or the `<institution-id>` identifiers |
 | `institution`, `city`, `country` | tagged or heuristically split affiliations | Parts of the address; missing parts are left out or `None` |
 | `institutions`, `institution_ids` | affiliations with `<institution-wrap>` | All institution names; identifiers such as `ROR` and `GRID` |
 | `markers`, `institution_text`, `parsed_institutions` | one `<aff>` holding several numbered institutions | Marker numbers, the text without markers, and one dict per institution |

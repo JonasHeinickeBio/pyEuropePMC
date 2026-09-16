@@ -27,7 +27,7 @@ except PyEuropePMCError as err:
 | `err.get_recovery_options()` | Short suggestions for this code |
 | `err.__cause__` | The original exception, when pyEuropePMC wrapped another error |
 
-Error messages currently end with a `Docs:` link to `pyeuropepmc.rtfd.io`. That site does not exist; use this page instead.
+The messages of the `HTTP` codes, and any message built with `get_error_message(code, include_help_link=True)`, end with a `Docs:` link to the section of this page that lists the code.
 
 ## Exception classes
 
@@ -125,8 +125,9 @@ All exceptions are defined in `pyeuropepmc.core.exceptions` and derive from `PyE
 |---|---|---|---|
 | `PARSE001` | Data is not valid JSON, or has the wrong type | `search_and_parse()` when a JSON response is not a dict; `EuropePMCParser.parse_json()`; the `QueryBuilder` field-list lookup | Check the input |
 | `PARSE002` | XML could not be parsed | `FullTextXMLParser` on malformed XML; `EuropePMCParser.parse_xml()` and `parse_dc()` | Check that the XML is complete |
-| `PARSE003` | No content to parse | `FullTextXMLParser` methods called before XML was loaded; `EuropePMCParser` given empty input; also XML that declares entities, which the parser rejects | Pass the XML to `FullTextXMLParser(xml)`; remove `<!ENTITY>` declarations |
+| `PARSE003` | No content to parse, or the wrong type | `FullTextXMLParser` methods called before XML was loaded; `FullTextXMLParser` given `None`, an empty string or `bytes`; `EuropePMCParser` given empty input | Pass a non-empty string to `FullTextXMLParser(xml)`; decode `bytes` first |
 | `PARSE004` | Unsupported format or structure | `search_and_parse()` when the response does not match `format`; `EuropePMCParser.parse_xml()` without result elements | Use a matching `format` |
+| `PARSE005` | The document declares an XML entity and was refused | Every entry point that parses XML: full text, search responses, the JATS normalizer, figure extraction, the bioRxiv manifest, benchmark metrics | Remove the `<!ENTITY>` declaration, or fetch the document from a source that does not use one |
 
 ## Validation: VALID
 
