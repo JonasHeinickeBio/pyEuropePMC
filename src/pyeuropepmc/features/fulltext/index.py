@@ -252,11 +252,13 @@ class FullTextIndex:
 
     def add(self, entry: IndexEntry) -> int:
         """
-        Add a document to the index.
+        Add a document to the index unless it is already there.
 
-        If a document with the same DOI or PMID already exists, it will
-        be skipped (no duplicate detection by default — use ``update()``
-        to replace).
+        A document is already there when a stored row has the same identifier,
+        compared the way ``update()`` compares them: the PMID if the entry has
+        one, otherwise the DOI, otherwise ``source_id``. An entry with none of
+        the three is always added. Nothing is written for a document that is
+        already there; use ``update()`` to replace it.
 
         Parameters
         ----------
@@ -266,8 +268,39 @@ class FullTextIndex:
         Returns
         -------
         int
-            Row ID of the inserted document.
+            Row ID of the inserted document, or of the stored one.
         """
+        existing = self._find_existing_rowid(entry)
+        if existing is not None:
+            return existing
+        return self._insert(entry)
+
+    def _find_existing_rowid(self, entry: IndexEntry) -> int | None:
+        """Row ID of the stored document with *entry*'s identifier, if any."""
+        where_clause = None
+        where_value = None
+        if entry.pmid:
+            where_clause = "pmid = ?"
+            where_value = entry.pmid
+        elif entry.doi:
+            where_clause = "doi = ?"
+            where_value = entry.doi
+        elif entry.source_id:
+            where_clause = "source_id = ?"
+            where_value = entry.source_id
+
+        if not where_clause:
+            return None
+        # where_clause is one of the fixed literals set above, never user
+        # input; the actual value is bound via the ? placeholder.
+        row = self.conn.execute(
+            f"SELECT id FROM papers_meta WHERE {where_clause} ORDER BY id LIMIT 1",  # nosec B608
+            (where_value,),
+        ).fetchone()
+        return int(row["id"]) if row else None
+
+    def _insert(self, entry: IndexEntry) -> int:
+        """Insert *entry* as a new row, without looking for an existing one."""
         meta_json = json.dumps(entry.metadata, default=str) if entry.metadata else "{}"
         cursor = self.conn.execute(
             """INSERT INTO papers_meta
@@ -329,11 +362,14 @@ class FullTextIndex:
         Returns
         -------
         int
-            Number of documents added.
+            Number of documents added; entries already in the index (see
+            ``add()``) are not counted.
         """
         count = 0
         for entry in entries:
             try:
+                if self._find_existing_rowid(entry) is not None:
+                    continue
                 self.add(entry)
                 count += 1
             except Exception as e:
@@ -356,34 +392,16 @@ class FullTextIndex:
         bool
             True if an existing document was updated.
         """
-        where_clause = None
-        where_value = None
-        if entry.pmid:
-            where_clause = "pmid = ?"
-            where_value = entry.pmid
-        elif entry.doi:
-            where_clause = "doi = ?"
-            where_value = entry.doi
-        elif entry.source_id:
-            where_clause = "source_id = ?"
-            where_value = entry.source_id
-
-        if where_clause and where_value:
-            # where_clause is one of the fixed literals set above, never
-            # user input; the actual value is bound via the ? placeholder.
-            cursor = self.conn.execute(
-                f"SELECT id FROM papers_meta WHERE {where_clause} LIMIT 1",  # nosec B608
-                (where_value,),
-            )
-            row = cursor.fetchone()
-            if row:
-                # Delete and re-insert
-                self.delete(row["id"])
-                self.add(entry)
-                return True
+        existing = self._find_existing_rowid(entry)
+        if existing is not None:
+            # Delete and re-insert. _insert, not add: an index written before
+            # add() skipped duplicates can hold a second row with this identifier.
+            self.delete(existing)
+            self._insert(entry)
+            return True
 
         # Insert as new
-        self.add(entry)
+        self._insert(entry)
         return False
 
     def delete(self, rowid: int) -> bool:
@@ -479,7 +497,7 @@ class FullTextIndex:
                     m.citation_count,
                     snippet(papers_fts, 1, '<b>', '</b>', '...', 40) AS abstract_snippet,
                     snippet(papers_fts, 0, '<b>', '</b>', '...', 40) AS title_snippet,
-                    snippet(papers_fts, 4, '<b>', '</b>', '...', 40) AS authors_snippet
+                    snippet(papers_fts, 3, '<b>', '</b>', '...', 40) AS authors_snippet
                 FROM papers_fts p
                 JOIN papers_meta m ON p.rowid = m.id
                 WHERE papers_fts MATCH ?
