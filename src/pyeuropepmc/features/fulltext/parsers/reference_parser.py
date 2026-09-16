@@ -25,10 +25,29 @@ _RE_TITLE_SOURCE = re.compile(r"^(.+?)\.\s+([A-Z][^0-9]*?)(?=\.|\d|\s+\d{4}|\s*$
 _RE_TITLE_YEAR = re.compile(r"^(.+?)\s*\(\s*(\d{4})\s*\)")
 _RE_WHITESPACE = re.compile(r"\s+")
 _RE_YEAR = re.compile(r"\b(19|20)\d{2}\b")
-_RE_VOL_PAGE = re.compile(r"\b(\d+)\s*[,:]\s*(\d+(?:-\d+)?)\b")
+# A page range is written with a hyphen, an en or em dash, or a minus sign.
+# Accepting only "-" stopped the match at the first page, so "48:662–667"
+# gave pages "662": 43 ranges in PMC1764484 lost their last page that way.
+_RE_VOL_PAGE = re.compile(r"\b(\d+)\s*[,:]\s*(\d+(?:\s*[-\u2010-\u2015\u2212]\s*\d+)?)\b")
+_RE_PAGE_DASH = re.compile(r"\s*[-\u2010-\u2015\u2212]\s*")
 _RE_VOL_YEAR = re.compile(r"\b(\d+)\s*\(\s*(\d{4})\s*\)")
 _RE_DOI = re.compile(r"(?:doi:\s*|https?://doi\.org/)([^\s,]+)", re.IGNORECASE)
 _RE_PMID = re.compile(r"pmid:\s*(\d+)", re.IGNORECASE)
+
+_XLINK_HREF = "{http://www.w3.org/1999/xlink}href"
+
+#: Contributors of a citation, in the order the citation lists them.
+_CONTRIBUTOR_TAGS = frozenset({"name", "string-name", "collab"})
+
+#: Elements that name the cited work or the work it appears in. Contributors
+#: written after one of these are not its authors - in "In: Hutt A, Haken H,
+#: editors." they are the editors of the book.
+_TITLE_TAGS = frozenset({"article-title", "chapter-title", "part-title", "data-title", "source"})
+
+#: `ext-link-type` values that carry an identifier, and the field each fills.
+#: BMC and Springer write these as empty elements with the value in
+#: `xlink:href`, so reading the element text found nothing.
+_EXT_LINK_IDENTIFIERS = {"doi": "doi", "pmid": "pmid", "pmcid": "pmcid", "pmc": "pmcid"}
 
 
 class ReferenceParser(BaseParser):
@@ -143,13 +162,44 @@ class ReferenceParser(BaseParser):
             self._extract_structured_citation_fields(citation, ref_data, supplied_pmid)
 
     def _extract_reference_authors(self, citation: ET.Element) -> list[str]:
-        """Extract author names from a reference citation element."""
-        return XMLHelper.extract_nested_texts(
-            citation,
-            ".//person-group[@person-group-type='author']/name",
-            ["surname", "given-names"],
-            join=", ",
-        )
+        """Extract author names from a reference citation element.
+
+        Authors are the <name>, <string-name> and <collab> children of the
+        author <person-group>, in order. Only <name> was read, so a
+        collaboration author was dropped: 4 of 4 in PMC11687933.
+
+        A citation without any <person-group> lists its contributors as
+        direct children - PLOS does this in every <mixed-citation>. Those
+        were not found at all, and the text pass that took over ran surname
+        and initials together as "NewtonSI" (53 of 53 references in
+        PMC10775981). Only the contributors before the title are authors; a
+        chapter's "In: Hutt A, Haken H, editors." comes after it.
+        """
+        groups = citation.findall(".//person-group")
+        if groups:
+            chosen = [g for g in groups if g.get("person-group-type") == "author"] or [
+                g for g in groups if not g.get("person-group-type")
+            ]
+            contributors = [child for g in chosen for child in g if child.tag in _CONTRIBUTOR_TAGS]
+        else:
+            contributors = []
+            for child in citation:
+                if child.tag in _TITLE_TAGS:
+                    break
+                if child.tag in _CONTRIBUTOR_TAGS:
+                    contributors.append(child)
+
+        authors = [self._format_contributor(c) for c in contributors]
+        return [a for a in authors if a]
+
+    @staticmethod
+    def _format_contributor(contributor: ET.Element) -> str:
+        """Format a person as "Surname, Given names", anything else as written."""
+        surname = XMLHelper.get_text_content(contributor.find("surname"))
+        given = XMLHelper.get_text_content(contributor.find("given-names"))
+        if surname or given:
+            return ", ".join(part for part in (surname, given) if part)
+        return XMLHelper.get_text_content(contributor)
 
     def _extract_authors_from_text(self, text: str) -> tuple[str | None, str]:
         """Extract authors from citation text and return remaining text."""
@@ -230,7 +280,15 @@ class ReferenceParser(BaseParser):
         logger.debug(f"Parsed mixed-citation text: {text} -> {ref_data}")
 
     def _extract_additional_patterns(self, text: str, ref_data: dict[str, str | None]) -> None:
-        """Extract additional patterns from citation text."""
+        """Extract additional patterns from citation text.
+
+        Like the rest of the text pass, this only fills fields the tagged
+        elements left empty. Volume, pages, DOI and PMID used to be assigned
+        unconditionally, so a guess replaced a correct tagged value: "385-430"
+        became "385", and a DOI followed directly by its <pub-id> PMID was
+        read as one string, "10.1098/rstb.2001.091011545699" (4 references
+        in PMC10775981).
+        """
         # Pattern 3: Year - look for 4-digit year, often in parentheses or after journal
         year_match = _RE_YEAR.search(text)
         if year_match and not ref_data.get("year"):
@@ -239,24 +297,27 @@ class ReferenceParser(BaseParser):
         # Pattern 4: Volume and pages - look for patterns like "12, 345" or "12:345-678"
         vol_page_match = _RE_VOL_PAGE.search(text)
         if vol_page_match:
-            ref_data["volume"] = vol_page_match.group(1)
-            ref_data["pages"] = vol_page_match.group(2)
+            if not ref_data.get("volume"):
+                ref_data["volume"] = vol_page_match.group(1)
+            if not ref_data.get("pages"):
+                ref_data["pages"] = _RE_PAGE_DASH.sub("-", vol_page_match.group(2))
         else:
             # Fallback: look for volume(year) pattern
             vol_year_match = _RE_VOL_YEAR.search(text)
             if vol_year_match:
-                ref_data["volume"] = vol_year_match.group(1)
+                if not ref_data.get("volume"):
+                    ref_data["volume"] = vol_year_match.group(1)
                 if not ref_data.get("year"):
                     ref_data["year"] = vol_year_match.group(2)
 
         # Pattern 5: DOI - look for doi: or http patterns
         doi_match = _RE_DOI.search(text)
-        if doi_match:
+        if doi_match and not ref_data.get("doi"):
             ref_data["doi"] = doi_match.group(1).strip(".,")
 
         # Pattern 6: PMID - look for PMID: followed by numbers
         pmid_match = _RE_PMID.search(text)
-        if pmid_match:
+        if pmid_match and not ref_data.get("pmid"):
             ref_data["pmid"] = pmid_match.group(1)
 
     def _extract_structured_citation_fields(
@@ -321,6 +382,18 @@ class ReferenceParser(BaseParser):
             ref_data["pmcid"] = self._extract_with_fallbacks(
                 citation, self.config.reference_patterns["pmcid"]
             )
+
+        # <ext-link ext-link-type="pmid" xlink:href="9008308"/> - the value is
+        # in the attribute, and the element is empty. Text-only citations
+        # from BMC and Springer tag their identifiers only this way, so
+        # every PMID was lost: 0 of 45 in PMC1764484.
+        for link in citation.iter("ext-link"):
+            field = _EXT_LINK_IDENTIFIERS.get((link.get("ext-link-type") or "").lower())
+            if field is None or ref_data.get(field):
+                continue
+            value = (link.text or "").strip() or (link.get(_XLINK_HREF) or "").strip()
+            if value:
+                ref_data[field] = value
 
         # Use supplied_pmid as fallback
         if not ref_data.get("pmid") and supplied_pmid:

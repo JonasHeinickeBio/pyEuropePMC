@@ -318,6 +318,16 @@ All notable changes to PyEuropePMC are documented here.
   blocks built from it ("Overview of the study.a The workflow"). Eight
   figure captions in PMC12738713 joined that way.
 
+- **PubMed EFetch records have their DOI, their own PMCID and full text.**
+  `PubMedClient.get_paper(pmid, use_efetch=True)` looked for the DOI inside
+  `<MedlineCitation>`, but EFetch puts a record's identifiers in
+  `<PubmedData><ArticleIdList>`, so the DOI was `None` for 5 of 5 measured
+  records; it now falls back to `<ELocationID EIdType="doi">` too. The PMCID
+  search covered the `<ArticleIdList>` of every cited reference as well, so a
+  record without a PMCID of its own reported a reference's (PMID 33093664).
+  Abstract sections and titles stopped at their first inline `<i>`, `<b>`,
+  `<sup>` or `<sub>`, and each author's ORCID and affiliations were dropped.
+
 - **The article title and abstract are labelled `section_type="front"`**, not
   `"body"`, so keeping only body sections no longer returns them a second time
   alongside the metadata. `front` is added to `SectionType` in the LinkML
@@ -493,6 +503,31 @@ All notable changes to PyEuropePMC are documented here.
   integration environment needed. A test hook that skipped by marker names no
   test uses is removed, and stale comments and the Copilot instructions are
   brought up to date.
+
+- **Reference authors are read in every JATS dialect.** PLOS lists a
+  `<mixed-citation>`'s contributors as bare `<name>` children, which were not
+  read, and the text pass that took over ran surname and initials together:
+  `"NewtonSI"` in all 53 references of PMC10775981. They now read
+  `"Newton, SI"`, and a chapter's editors, written after its title, are left
+  out. A `<collab>` or `<string-name>` among the authors is kept in place; the
+  4 collaboration authors of PMC11687933 were dropped.
+
+- **The citation text no longer overwrites tagged reference fields.** The pass
+  over a `<mixed-citation>`'s flattened text assigned volume, pages, DOI and
+  PMID even when the tagged elements had given them: `"385-430"` became `"385"`,
+  and a DOI followed by its PMID was read as `"10.1098/rstb.2001.091011545699"`
+  (4 references in PMC10775981). It now only fills fields that are empty.
+
+- **Identifiers in `<ext-link xlink:href>` are read.** BMC and Springer tag a
+  text-only citation's DOI, PMID and PMCID as empty `<ext-link>` elements with
+  the value in the link target, so every PMID was lost: 0 of 45 in PMC1764484.
+  A page range written with an en dash, "48:662–667", also lost its last page
+  in 43 references there.
+
+- **Software and dataset references are titled by their `<data-title>`**, not
+  by the repository in `<source>`: eLife's software citations were titled
+  "GitHub", "CRAN" and "Sourceforge". A book chapter's `<chapter-title>` or
+  `<part-title>` likewise comes before the book's title.
 
 ### 📚 Documentation
 
