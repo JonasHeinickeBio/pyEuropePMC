@@ -30,7 +30,7 @@ PMC3359999 research-article
 
 `PMC3359999.xml` is the full-text XML of that article; see [Full-text retrieval](../fulltext/README.md) to download it.
 
-`normalize_xml()` accepts `str` or `bytes`; `bytes` are decoded the way the XML declares them. `normalize_text(xml)` returns only `body_text` and `normalize_sections(xml)` only `sections`; both run the whole pipeline. The module functions `normalize_jats_xml(xml, **flags)` and `normalize_jats_text(xml)` create a normalizer and call it.
+`normalize_xml()` accepts `str` or `bytes`; `bytes` are decoded the way the XML declares them. A document that is not well-formed raises `ParsingError` with code `PARSE002`, and one that declares an entity is refused with `PARSE005`; see [Error codes](../../reference/error-codes.md). `normalize_text(xml)` returns only `body_text` and `normalize_sections(xml)` only `sections`; both run the whole pipeline. The module functions `normalize_jats_xml(xml, **flags)` and `normalize_jats_text(xml)` create a normalizer and call it.
 
 ## What the result contains
 
@@ -258,8 +258,7 @@ The commands read files as bytes, so a file is decoded the way its XML declarati
 
 ## Known limitations
 
-- Parse errors are not wrapped. Malformed XML raises `xml.etree.ElementTree.ParseError`; a document that declares an entity in its DOCTYPE raises `defusedxml.EntitiesForbidden`, a `ValueError` subclass. Catch both: `except (xml.etree.ElementTree.ParseError, ValueError)`.
 - The titles and text in `sections` are not whitespace- or dash-normalized (see step 8).
 - By default boxed text is removed from `body_text`.
-- Only the named entities in the built-in table are resolved. Any other, such as `&Auml;`, makes the document fail to parse.
+- Only the named entities in the built-in table are resolved. Any other, such as `&Auml;`, makes the document fail to parse with `PARSE002`.
 - A formula's text is its MathML text run together: superscripts and subscripts are not marked, so x² reads "x2".
