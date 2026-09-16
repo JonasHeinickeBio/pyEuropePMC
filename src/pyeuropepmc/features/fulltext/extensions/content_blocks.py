@@ -34,6 +34,7 @@ from xml.etree import ElementTree as ET  # nosec B405
 from pyeuropepmc.features.fulltext.config.element_patterns import ElementPatterns
 from pyeuropepmc.features.fulltext.extensions.mathml import MathMLConverter, serialize_mathml
 from pyeuropepmc.features.fulltext.parsers.base_parser import BaseParser
+from pyeuropepmc.features.fulltext.utils.flat_blocks import FLOATS_TITLE, code_text
 from pyeuropepmc.features.fulltext.utils.table_grid import TableGrid, build_table_grid, find_table
 from pyeuropepmc.features.fulltext.utils.xml_helpers import BLOCK_LEVEL_TAGS, XMLHelper
 
@@ -734,6 +735,7 @@ class ContentBlockExtractor(BaseParser):
             body_elem = self.root.find(".//body")
             if body_elem is not None:
                 self._collect_sections(body_elem, sections)
+            sections.extend(self._extract_floats_sections())
 
         # Extract article title section (appears first in output)
         article_title_section = self._extract_article_title()
@@ -754,6 +756,37 @@ class ContentBlockExtractor(BaseParser):
 
         logger.debug(f"Extracted {len(sections)} structured sections")
         return sections
+
+    def _extract_floats_sections(self) -> list[StructuredSection]:
+        """The figures and tables an article keeps in ``<floats-group>``.
+
+        NIH author manuscripts place every figure and table there, outside
+        ``<body>``, and ``extract_sections`` walked only the body: PMC5393345's
+        figure and table reached ``extract_figures()`` and ``extract_tables()``
+        and nothing else. They are body content wherever the XML stores them,
+        so the section is typed ``body``, placed after the body's sections.
+        """
+        if self.root is None:
+            return []
+        blocks: list[ContentBlock] = []
+        for group in self._own_floats_groups(self.root):
+            for child in group:
+                tag = self._get_local_tag(child.tag)
+                handler_name = self.JATS_BLOCK_TAGS.get(tag)
+                if handler_name and handler_name in self._handler_map:
+                    blocks.extend(self._handler_map[handler_name](child))
+                else:
+                    blocks.extend(self._handle_special_section_child(child, tag))
+        if not blocks:
+            return []
+        return [
+            StructuredSection(
+                title=FLOATS_TITLE,
+                content=blocks,
+                section_type="body",
+                section_path=FLOATS_TITLE,
+            )
+        ]
 
     def _collect_sections(
         self,
@@ -1843,11 +1876,16 @@ class ContentBlockExtractor(BaseParser):
         return metadata
 
     def _handle_code(self, elem: ET.Element) -> list[ContentBlock]:
-        """Handle <code> and <preformat> elements."""
+        """Handle <code> and <preformat> elements.
+
+        The text keeps its line breaks and indentation. It was collapsed to
+        single spaces like prose, which ran PMC10775981's fourteen listings
+        together into one line each.
+        """
         language = elem.get("language", elem.get("lang", ""))
-        text = XMLHelper.get_text_content(elem)
-        if text.strip():
-            return [ContentBlock.code(text=text.strip(), language=language)]
+        text = code_text(elem)
+        if text:
+            return [ContentBlock.code(text=text, language=language)]
         return []
 
     def _handle_media(self, elem: ET.Element) -> list[ContentBlock]:

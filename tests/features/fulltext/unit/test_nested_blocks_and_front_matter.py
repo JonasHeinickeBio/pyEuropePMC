@@ -154,8 +154,12 @@ class TestPlaintext:
     """to_plaintext() keeps nested table cells, and a figure label, apart."""
 
     def test_the_cells_of_a_table_inside_a_paragraph_stay_apart(self) -> None:
-        text = _squash(FullTextXMLParser(_article(f"<p>Doses:{TABLE}</p>")).to_plaintext())
-        assert "Group Dose A 10 mg B 20 mg" in text
+        text = FullTextXMLParser(_article(f"<p>Doses:{TABLE}</p>")).to_plaintext()
+        # A table is rendered as a block of its own now, one line per row.
+        lines = text.splitlines()
+        assert "Group | Dose" in lines
+        assert "A | 10 mg" in lines
+        assert "B | 20 mg" in lines
 
     def test_a_figure_label_stays_apart_from_its_caption(self) -> None:
         text = _squash(FullTextXMLParser(_article(f"<p>See{FIGURE}</p>")).to_plaintext())
