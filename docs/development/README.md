@@ -333,7 +333,6 @@ A maintainer makes a release in four steps:
 | `examples/` | example notebooks and scripts; `examples/scripts/` holds maintenance scripts such as `check_fields.py` and `codescene_analysis.sh` |
 | `benchmark_xmls/xml/` | the JATS XML files the parser benchmark reads |
 | `benchmarks/` | pipeline benchmark scripts and sample output |
-| `conf/` | RDF mapping configuration (`rdf_map.yml`, RML mappings, vocabulary); not included in the wheel |
 | `schemas/linkml/` | the LinkML schema for article content |
 | `shacl/` | SHACL shapes for the RDF output |
 | `server.json` | the MCP Registry entry for `pyeuropepmc-mcp` |
@@ -357,6 +356,7 @@ A maintainer makes a release in four steps:
 | `cache/` | `CacheConfig` and `CacheBackend`; the directory has no `__init__.py`, so import them from `pyeuropepmc` |
 | `storage/` | `ArtifactStore` |
 | `models/`, `builders/`, `mappers/`, `pipeline.py` | entity models, conversion of parser output into models, RDF mapping (`RDFMapper` and RML) and `PaperProcessingPipeline` |
+| `conf/` | the mapping files `rdf_map.yml`, `rml_mappings.ttl` and `rdfizer_config.ini` and the vocabulary `pyeuropepmc-vocab.ttl`; they ship in the wheel, and `pyeuropepmc.conf.config_file(name)` returns their path |
 | `cli/`, `mcp/` | the `pyeuropepmc` command (`benchmark`, `claim`, `normalize`, `unified_search`, `mcp`) and the `pyeuropepmc-mcp` server |
 | `benchmark/` | the parser benchmark suite behind `pyeuropepmc benchmark` |
 | `agentic/`, `claims/`, `prompts/`, `ui/` | LLM workflows, claim verification, prompt templates and the Flask web UI, which need the `agentic` and `ui` extras |
