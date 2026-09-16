@@ -510,13 +510,13 @@ def test_api_client_error_exception():
         raise APIClientError(ErrorCodes.NET001)
 
 
-# Test backoff functionality (challenging to test directly, but we can test the decorators exist)
+# The backoff decorator sits on the senders, not on _get/_post: those translate
+# the requests exceptions into APIClientError, which the decorator cannot see.
 @pytest.mark.unit
 def test_backoff_decorators_present():
-    """Test that backoff decorators are applied to methods."""
-    # Check that the methods have backoff attributes
-    assert hasattr(BaseAPIClient._get, "__wrapped__")
-    assert hasattr(BaseAPIClient._post, "__wrapped__")
+    """Test that backoff decorators are applied to the request senders."""
+    assert hasattr(BaseAPIClient._send_get, "__wrapped__")
+    assert hasattr(BaseAPIClient._send_post, "__wrapped__")
 
 
 @pytest.mark.unit
