@@ -17,17 +17,6 @@ from pyeuropepmc.core.exceptions import APIClientError
 pytestmark = pytest.mark.unit
 
 
-def _http_response(status_code: int) -> requests.Response:
-    """A real Response: unlike a Mock, it is falsy for 4xx/5xx (Response.__bool__ is .ok)."""
-    response = requests.Response()
-    response.status_code = status_code
-    response.reason = "Error"
-    response.url = "https://www.ebi.ac.uk/europepmc/webservices/rest/"
-    response._content = b""
-    response._content_consumed = True
-    return response
-
-
 class TestBaseAPIClientCoverage:
     """Additional test coverage for BaseAPIClient edge cases."""
 
@@ -422,3 +411,14 @@ class TestBaseAPIClientCoverage:
         with pytest.raises(APIClientError) as exc_info:
             self.client._post("https://example.com/test", data={})
         assert exc_info.value.error_code == ErrorCodes.FULL007
+
+
+def _http_response(status_code: int) -> requests.Response:
+    """A real Response: unlike a Mock, it is falsy for 4xx/5xx (Response.__bool__ is .ok)."""
+    response = requests.Response()
+    response.status_code = status_code
+    response.reason = "Error"
+    response.url = "https://www.ebi.ac.uk/europepmc/webservices/rest/"
+    response._content = b""
+    response._content_consumed = True
+    return response
