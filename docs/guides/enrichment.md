@@ -98,7 +98,7 @@ Known limitations:
 
 - An argument you pass takes precedence; the environment variable is used only when the argument is not given.
 - `enable_unpaywall=True` without an email, as argument or environment variable, raises `ValueError: unpaywall_email is required when enable_unpaywall=True`.
-- `rate_limit_delay` (seconds) is passed to every client; iCite gets at most 0.5. The Europe PMC and Semantic Scholar clients wait at least this long between requests. Known limitation: the other clients do not wait between requests and use the value only to size the wait after HTTP 429.
+- `rate_limit_delay` (seconds) is passed to every client; iCite gets at most 0.5. Each client waits at least this long between two of its requests, retries included; a response served from the cache does not count. For the clients built on `BaseEnrichmentClient`, it also sizes the backoff after an HTTP 429 without a usable `Retry-After` header.
 - `cache_config` is shared by all clients; see [Caching](../advanced/caching.md). Known limitation: a disk cache (`CacheConfig(enable_l2=True)`) is wiped when another cache opens the same directory, so it does not persist between runs.
 
 To use only the external APIs, with Unpaywall and caching:
@@ -166,7 +166,7 @@ with ICiteClient() as icite:
         print(metrics["rcr"], metrics["nih_percentile"])
 ```
 
-As with `enrich_paper()`, `enrich(doi=...)` raises `ValueError`; pass the identifier positionally or as `identifier=`. Used on their own, CrossRef, OpenAlex, Unpaywall, iCite, DataCite and ORCID raise `APIClientError` (importable from `pyeuropepmc`) on network errors, timeouts and HTTP errors other than 404. `RorClient` logs these errors and returns `None`.
+As with `enrich_paper()`, `enrich(doi=...)` raises `ValueError`; pass the identifier positionally or as `identifier=`. Used on their own, CrossRef, OpenAlex, Unpaywall, iCite, ROR, DataCite and ORCID raise `APIClientError` (importable from `pyeuropepmc`) on network errors, timeouts and HTTP errors other than 404. When `OpenAlexClient` looks up an author's institution in ROR and that request fails, it logs the error and keeps the OpenAlex institution data.
 
 All clients below are importable from `pyeuropepmc.features.enrich`. Every result also has a `source` key.
 
