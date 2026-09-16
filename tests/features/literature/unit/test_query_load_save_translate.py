@@ -10,6 +10,7 @@ This module tests the integration with the search-query package for:
 
 import json
 from pathlib import Path
+import sys
 import tempfile
 from unittest.mock import patch
 
@@ -514,3 +515,61 @@ class TestSearchQueryNotAvailable:
 
         with pytest.raises(QueryBuilderError, match="search-query package is required"):
             qb.evaluate(records)
+
+
+class TestSearchQueryPackageMissing:
+    """The CONFIG003 fallback must fire when search-query is not installed.
+
+    The tests above make ``parse()`` raise once it is called, which only covers
+    a failure *inside* the package.  These simulate the package being absent
+    altogether by poisoning ``sys.modules``, so the ``from search_query...``
+    statements themselves raise ImportError.
+    """
+
+    @pytest.fixture
+    def no_search_query(self, monkeypatch):
+        """Make every ``import search_query...`` raise ImportError."""
+        for name in [
+            m for m in sys.modules if m == "search_query" or m.startswith("search_query.")
+        ]:
+            monkeypatch.setitem(sys.modules, name, None)
+        for name in ("search_query", "search_query.parser", "search_query.search_file"):
+            monkeypatch.setitem(sys.modules, name, None)
+
+    def test_from_string(self, no_search_query) -> None:
+        with pytest.raises(QueryBuilderError, match="search-query package is required"):
+            QueryBuilder.from_string("cancer", platform="pubmed")
+
+    def test_from_file(self, no_search_query, tmp_path) -> None:
+        search_file = tmp_path / "search.json"
+        search_file.write_text(json.dumps({"search_string": "cancer", "platform": "pubmed"}))
+        with pytest.raises(QueryBuilderError, match="search-query package is required"):
+            QueryBuilder.from_file(str(search_file))
+
+    def test_save(self, no_search_query, tmp_path) -> None:
+        qb = QueryBuilder().keyword("cancer")
+        with pytest.raises(QueryBuilderError, match="search-query package is required"):
+            qb.save(str(tmp_path / "out.json"))
+
+    def test_translate(self, no_search_query) -> None:
+        qb = QueryBuilder().keyword("cancer")
+        with pytest.raises(QueryBuilderError, match="search-query package is required"):
+            qb.translate("wos")
+
+    def test_to_query_object(self, no_search_query) -> None:
+        qb = QueryBuilder().keyword("cancer")
+        with pytest.raises(QueryBuilderError, match="search-query package is required"):
+            qb.to_query_object()
+
+    def test_evaluate(self, no_search_query) -> None:
+        qb = QueryBuilder().keyword("cancer")
+        records = {"r1": {"title": "test", "colrev_status": "rev_included"}}
+        with pytest.raises(QueryBuilderError, match="search-query package is required"):
+            qb.evaluate(records)
+
+    def test_constructor_disables_validation_instead_of_raising(self, no_search_query) -> None:
+        """``validate=True`` degrades to a warning when the package is absent."""
+        with pytest.warns(UserWarning, match="search-query package not available"):
+            qb = QueryBuilder(validate=True)
+        assert qb._validate is False
+        assert qb.keyword("cancer").build() == "cancer"

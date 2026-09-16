@@ -137,10 +137,26 @@ pone.0357759.t001 Table 1 Powder metallurgy steps employed.
 ['Steps', 'Details'] 9 ['Milling Method', 'Ball milling (RETSCH PM400)']
 ```
 
-Each table is a dict with `id`, `label`, `caption`, `footer` (text of the table footnotes, or `None`), `headers` and `rows`, plus `column_groups` when the table has `<colgroup>` markup.
+Each table is a dict with `id`, `label`, `caption`, `footer` (text of the table footnotes, or `None`), `headers`, `header_rows`, `rows`, `spans` and `cell_graphics`, plus `column_groups` when the table has `<colgroup>` markup.
 
-- `headers` holds the `<th>` cells of the first header row. It is `[]` when the table has no `<thead>`, and also when the header cells are tagged `<td>`, which many journals do.
-- `rows` holds the `<td>` cells of every `<tbody>` row, as strings. Spanning cells are not expanded.
+- `headers` has one label per column. A header of several rows is combined top to bottom, and a header cell spanning several columns labels each of them. It is `[]` when the table has no header row. Header cells tagged `<td>`, which many journals use, count.
+- `header_rows` and `rows` hold the header rows and the body rows as strings, every row as wide as the table. A cell spanning several positions has its text at the top-left one and `""` at the others, so each value stays under its own header.
+- `spans` lists the cells that span, as `{"row", "column", "rowspan", "colspan"}` with `row` counting the header rows first; `cell_graphics` lists images inside cells. A cell holding nothing but an image reads `"[graphic: <file>]"`.
+
+A table with a three-row header:
+
+```python
+table = plos.extract_tables()[2]
+print(table["headers"][:3])
+print(table["header_rows"][1][:3], table["spans"][0])
+```
+
+Output:
+
+```text
+['Std', 'Run', 'Inputparameter 1 / A: Composition / wt.%']
+['', '', 'A: Composition'] {'row': 0, 'column': 0, 'rowspan': 3, 'colspan': 1}
+```
 
 To load a table into pandas, allow for empty headers:
 
@@ -276,14 +292,16 @@ Each block is a dict with `type` and `schema_version`, plus the fields that appl
 | `heading` | `text` |
 | `paragraph` | `text`; `inlines`, a list of `{type, text, position, length}` dicts for cross-references and formatting, with `ref_type` and `target_id` for cross-references |
 | `list` | `items`, `list_type` |
-| `table` | `label`, `caption`, `rows` (header and body rows), `text` (label, caption, cells and footer in one string), `inlines`, `metadata` |
+| `table` | `label`, `caption`, `rows` (header rows first, laid out as in `extract_tables()`), `text` (label, caption, cells and footer in one string), `inlines` (positions in `text`), `metadata` (`header_rows`, the number of header rows; `footer`; and when present `spans`, `cell_graphics` and `cell_inlines`, the inline elements of each cell as `{row, column, inlines}`) |
 | `figure` | `label`, `caption`, `uri`, `target_id`, `inlines` |
-| `formula` | `tex`, `label`, `mathml` |
+| `formula` | `text` (the expression as plain text), `tex` (LaTeX), `label`, `mathml`, `uri` |
 | `code`, `quote`, `boxed_text` | `text` |
 | `definition_list` | `definition_terms` |
 | `unknown_block` | `jats_tag`, `text` for elements without a dedicated block type |
 
-A `<table-wrap>`, `<table>` or `<fig>` inside a `<p>` becomes its own block: the paragraph is split into a paragraph block with the text before it, the table or figure block, and a paragraph block with the text after it. In PMC12311175, for example, the section "Tumor-induced immune suppression" contains a paragraph, then a `figure` block labelled `Fig. 1`, then the rest of the paragraph. Display formulas (`<disp-formula>`) inside a `<p>` are not split out; see [Known limitations](#known-limitations).
+A `<table-wrap>`, `<table>`, `<fig>` or `<disp-formula>` inside a `<p>` becomes its own block: the paragraph is split into a paragraph block with the text before it, the table, figure or formula block, and a paragraph block with the text after it. In PMC12311175, for example, the section "Tumor-induced immune suppression" contains a paragraph, then a `figure` block labelled `Fig. 1`, then the rest of the paragraph.
+
+A `formula` block carries the expression three ways: `text` is the plain text as a reader sees it, `tex` is LaTeX converted from the MathML (or the document's own `<tex-math>` when it ships one), and `mathml` is the MathML itself, serialized in the MathML namespace. `label` holds the equation number, which is kept out of `text`. `to_plaintext()`, `to_markdown()` and `get_full_text_sections()` render a display formula on a line of its own, after the section's paragraphs, as the expression followed by its label.
 
 For `StructuredSection` and `ContentBlock` objects instead of dicts, with methods to split sections into chunks for retrieval, use `ContentBlockExtractor`; see [Content blocks](../../api/xml-parser-extensions.md#content-blocks).
 
@@ -425,8 +443,8 @@ For normalized text for text mining, with canonical section types and BioC outpu
 These were found by checking the parser's output against the source XML of real Europe PMC articles.
 
 - **Floats outside the body.** Tables and figures in `<floats-group>`, where NIH author manuscripts put them, are returned by `extract_tables()` and `extract_figures()` but are missing from the structured sections, `to_plaintext()`, `to_markdown()` and `get_full_text_sections()`.
-- **Display formulas.** A `<disp-formula>` inside a `<p>` becomes part of the paragraph's text: there is no formula block, the MathML is dropped, and subscripts and superscripts become plain characters (x² reads "x2").
-- **Tables.** `extract_tables()` drops header rows whose cells are `<td>` (`headers` is `[]`) and reads only the first `<th>` header row; `colspan` and `rowspan` are ignored in every output.
+- **Display formulas.** The `text` of a formula block is the flattened MathML, so subscripts and superscripts become plain characters (x² reads "x2"); `tex` carries the structure. `to_plaintext()`, `to_markdown()` and `get_full_text_sections()` render that flattened text, not the LaTeX, and place a display formula after the section's paragraphs rather than where it stood.
+- **Tables.** A spanning cell's text appears once, at its top-left position; the positions it covers are `""`, not filled with its value, so fill them yourself where a value applies to every row it spans. `to_plaintext()` and `to_markdown()` do not use this layout; see *Text renderings*.
 - **Figures.** `graphic_uri` and the figure block's `uri` are taken from the first `<graphic>` anywhere in the figure, which can be a formula image inside the caption. Figure supplements are listed as separate figures, not linked to their parent.
 - **Metadata.**
   - `pages` is read from the first `<fpage>` and `<lpage>` in the document. For articles that use `<elocation-id>` instead, which is not extracted, it is the page range of a reference.

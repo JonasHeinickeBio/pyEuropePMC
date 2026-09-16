@@ -64,7 +64,7 @@ _PATTERNS = {
         r"retrospective|observational|clinical\s+trial|controlled\s+trial)",
         re.IGNORECASE,
     ),
-    "time": re.compile(
+    "time_frame": re.compile(
         r"\b(over|within|during|at|after|before|following)\s+(\d+\s*(?:days?|weeks?|months?|years?)|"
         r"short-term|long-term|immediate|acute|chronic|follow-up)",
         re.IGNORECASE,
@@ -75,6 +75,11 @@ _PATTERNS = {
         re.IGNORECASE,
     ),
 }
+
+# Pattern names that differ from the PICOElements field they fill.  "time" was
+# the default key before it was renamed to match the field; custom pattern
+# dicts written against that name still fill ``time_frame``.
+_ELEMENT_ALIASES = {"time": "time_frame"}
 
 # Common PICO question starters
 _QUESTION_STARTERS = re.compile(
@@ -179,7 +184,9 @@ class PICOParser:
         Parameters
         ----------
         patterns : dict, optional
-            Custom regex patterns for PICO elements. Uses defaults if None.
+            Custom regex patterns for PICO elements, keyed by the
+            :class:`PICOElements` field each one fills (``"time"`` is accepted
+            for ``time_frame``). Uses defaults if None.
         """
         self.patterns = patterns or _PATTERNS
 
@@ -202,7 +209,8 @@ class PICOParser:
         identifiers: dict[str, list[str]] = {}
 
         # Attempt pattern matches for each element
-        for element, pattern in self.patterns.items():
+        for name, pattern in self.patterns.items():
+            element = _ELEMENT_ALIASES.get(name, name)
             matches = pattern.findall(cleaned)
             if matches:
                 # For patterns with groups, take the last group as the value

@@ -6,12 +6,38 @@ data from multiple sources (PubMed, Semantic Scholar, OpenAlex, etc.) into
 a consistent format for downstream processing.
 """
 
-from typing import TYPE_CHECKING, Annotated, Any
+import re
+from typing import TYPE_CHECKING, Any
 
 from pydantic import BaseModel, ConfigDict, Field, field_serializer, field_validator
 
 if TYPE_CHECKING:
     from pyeuropepmc.models.paper import PaperEntity
+
+#: Source names the package itself produces.  ``LiteratureResult.source`` is not
+#: limited to these: a source registered with
+#: :func:`pyeuropepmc.features.search.registry.register_source` reports its own name.
+BUILTIN_SOURCES: frozenset[str] = frozenset(
+    {
+        "europepmc",
+        "pubmed",
+        "semanticscholar",
+        "openalex",
+        "crossref",
+        "unpaywall",
+        "arxiv",
+        "clinicaltrials",
+        "zenodo",
+        "doaj",
+        "dblp",
+        "hal",
+        "core",
+        "icite",
+    }
+)
+
+#: A source name: lower-case letters and digits, optionally joined by ``_ . -``.
+_SOURCE_NAME = re.compile(r"^[a-z0-9]+(?:[_.-][a-z0-9]+)*$")
 
 
 class Author(BaseModel):
@@ -91,7 +117,9 @@ class LiteratureResult(BaseModel):
     citation_count : Optional[int]
         Number of citations
     source : str
-        Source system (pubmed, semanticscholar, openalex, etc.)
+        Source system (pubmed, semanticscholar, openalex, etc.).  Any
+        lower-case identifier is accepted so registered third-party sources can
+        use their own name; the value is stripped and lower-cased.
     source_id : str
         Original source identifier
     """
@@ -107,12 +135,7 @@ class LiteratureResult(BaseModel):
     journal: str | None = Field(None, description="Journal name (normalized)")
     abstract: str | None = Field(None, description="Paper abstract")
     citation_count: int | None = Field(None, description="Number of citations")
-    source: Annotated[
-        str,
-        Field(
-            pattern="^(europepmc|pubmed|semanticscholar|openalex|crossref|unpaywall|arxiv|clinicaltrials|zenodo|doaj|dblp|hal|core|icite)$"
-        ),
-    ] = Field(..., description="Source system identifier")
+    source: str = Field(..., description="Source system identifier")
     source_id: str = Field(..., description="Original source identifier")
     extra_metadata: dict[str, Any] | None = Field(
         None, description="Source-specific extra metadata"
@@ -159,29 +182,24 @@ class LiteratureResult(BaseModel):
             return None
         return v.strip()
 
-    @field_validator("source")
+    @field_validator("source", mode="before")
     @classmethod
-    def validate_source(cls, v: str) -> str:
-        """Validate source is from allowed list."""
-        valid_sources = {
-            "europepmc",
-            "pubmed",
-            "semanticscholar",
-            "openalex",
-            "crossref",
-            "unpaywall",
-            "arxiv",
-            "clinicaltrials",
-            "zenodo",
-            "doaj",
-            "dblp",
-            "hal",
-            "core",
-            "icite",
-        }
-        if v not in valid_sources:
-            raise ValueError(f"Invalid source: {v}. Must be one of: {valid_sources}")
-        return v
+    def validate_source(cls, v: Any) -> Any:
+        """Normalize the source name and check that it is a plain identifier.
+
+        The set of sources is open — the search registry is pluggable — so this
+        only rejects values that cannot be a source name, such as an empty
+        string or one containing spaces.
+        """
+        if not isinstance(v, str):
+            return v  # let pydantic's str validation report the type error
+        name = v.strip().lower()
+        if not _SOURCE_NAME.match(name):
+            raise ValueError(
+                f"Invalid source: {v!r}. Use a lower-case identifier such as "
+                f"'pubmed' or 'my_repo' (built-in: {sorted(BUILTIN_SOURCES)})"
+            )
+        return name
 
     @field_serializer("publication_year")
     def serialize_year(self, year: int | None) -> int | None:

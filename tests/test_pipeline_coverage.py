@@ -147,28 +147,68 @@ class TestEnrichPaper:
         assert pipeline._enrich_paper(PaperEntity()) is None
 
     def test_success_updates_paper_fields(self, pipeline):
+        """Values come from result["merged"], the shape enrich_paper() returns."""
         pipeline.enricher = MagicMock()
         pipeline.enricher.enrich_paper.return_value = {
-            "citation_count": 10,
-            "influential_citation_count": 3,
-            "fields_of_study": ["Biology"],
+            "identifier": "10.1/x",
+            "doi": "10.1/x",
+            "sources": ["semantic_scholar"],
+            "semantic_scholar": {"citation_count": 10},
+            "merged": {
+                "citation_count": 10,
+                "influential_citation_count": 3,
+                "fields_of_study": ["Biology"],
+            },
         }
         paper = PaperEntity(doi="10.1/x")
         result = pipeline._enrich_paper(paper)
-        assert result["citation_count"] == 10
+        assert result["merged"]["citation_count"] == 10
         assert paper.citation_count == 10
+        assert paper.influential_citation_count == 3
         assert paper.fields_of_study == ["Biology"]
+
+    def test_top_level_keys_are_not_read(self, pipeline):
+        pipeline.enricher = MagicMock()
+        pipeline.enricher.enrich_paper.return_value = {"citation_count": 10, "merged": {}}
+        paper = PaperEntity(doi="10.1/x")
+        pipeline._enrich_paper(paper)
+        assert paper.citation_count is None
+
+    def test_missing_merged_values_keep_existing_ones(self, pipeline):
+        pipeline.enricher = MagicMock()
+        pipeline.enricher.enrich_paper.return_value = {"merged": {"citation_count": 5}}
+        paper = PaperEntity(doi="10.1/x", fields_of_study=["Medicine"])
+        pipeline._enrich_paper(paper)
+        assert paper.citation_count == 5
+        assert paper.fields_of_study == ["Medicine"]
 
     def test_success_updates_authors(self, pipeline):
         pipeline.enricher = MagicMock()
         author = AuthorEntity(id="a1", full_name="Jane Doe")
         pipeline.enricher.enrich_paper.return_value = {
-            "citation_count": 1,
-            "authors": [{"name": "Jane Doe", "orcid": "0000-0001"}],
+            "merged": {
+                "citation_count": 1,
+                "authors": [{"name": "Jane Doe", "orcid": "0000-0001"}],
+            }
         }
         paper = PaperEntity(doi="10.1/x", authors=[author])
         pipeline._enrich_paper(paper)
         assert author.orcid == "0000-0001"
+
+    def test_updates_the_author_entities_passed_in(self, pipeline):
+        """build_paper_entities() returns authors separately from the paper."""
+        pipeline.enricher = MagicMock()
+        author = AuthorEntity(id="a1", full_name="Jane Doe")
+        pipeline.enricher.enrich_paper.return_value = {
+            "merged": {
+                "authors": [
+                    {"name": "Jane Doe", "openalex_id": "A123", "semantic_scholar_id": "S9"}
+                ]
+            }
+        }
+        paper = PaperEntity(doi="10.1/x")  # no paper.authors
+        pipeline._enrich_paper(paper, [author])
+        assert (author.openalex_id, author.semantic_scholar_id) == ("A123", "S9")
 
     def test_enrich_returns_none_data(self, pipeline):
         pipeline.enricher = MagicMock()
@@ -328,3 +368,66 @@ class TestSaveRdf:
         with patch.object(pipeline.rdf_mapper, "serialize_graph"):
             path = pipeline._save_rdf(graph, "PMC1")
         assert path.suffix == ".xml"
+
+
+_ARTICLE_XML = """<?xml version="1.0"?>
+<article xmlns:xlink="http://www.w3.org/1999/xlink">
+<front>
+<journal-meta><journal-title>Test Journal</journal-title></journal-meta>
+<article-meta>
+<article-id pub-id-type="pmcid">PMC1234567</article-id>
+<article-id pub-id-type="doi">10.1234/test.2021.001</article-id>
+<title-group><article-title>Enrichment reaches the graph</article-title></title-group>
+<contrib-group>
+<contrib contrib-type="author"><name><surname>Smith</surname><given-names>John</given-names></name></contrib>
+</contrib-group>
+</article-meta>
+</front>
+<body><sec><title>Introduction</title><p>Text.</p></sec></body>
+</article>
+"""
+
+
+class TestEnrichmentReachesRdf:
+    """process_paper(): enrichment values must end up in the entities and the graph."""
+
+    def test_citation_counts_fields_and_author_ids_are_in_the_graph(self, pipeline):
+        from rdflib import URIRef
+
+        pipeline.enricher = MagicMock()
+        pipeline.enricher.enrich_paper.return_value = {
+            "identifier": "10.1234/test.2021.001",
+            "doi": "10.1234/test.2021.001",
+            "pmid": None,
+            "sources": ["semantic_scholar", "openalex"],
+            "merged": {
+                "citation_count": 42,
+                "influential_citation_count": 7,
+                "fields_of_study": ["Medicine"],
+                "authors": [{"name": "John Smith", "orcid": "0000-0002-1825-0097"}],
+            },
+        }
+
+        with patch.object(pipeline, "_get_search_data", return_value=None):
+            result = pipeline.process_paper(
+                xml_content=_ARTICLE_XML, pmcid="PMC1234567", save_rdf=False
+            )
+
+        paper = result["entities"]["paper"]
+        author = result["entities"]["authors"][0]
+        assert (paper.citation_count, paper.influential_citation_count) == (42, 7)
+        assert paper.fields_of_study == ["Medicine"]
+        assert author.orcid == "0000-0002-1825-0097"
+
+        g = result["rdf_graph"]
+        vocab = "https://w3id.org/pyeuropepmc/vocab#"
+        counts = {
+            str(p): int(o)
+            for p, o in g.predicate_objects()
+            if str(p) in (f"{vocab}citationCount", f"{vocab}influentialCitationCount")
+        }
+        assert counts == {f"{vocab}citationCount": 42, f"{vocab}influentialCitationCount": 7}
+        subjects = set(g.objects(predicate=URIRef("http://purl.org/dc/terms/subject")))
+        assert any(str(s) == "Medicine" for s in subjects)
+        orcids = set(g.objects(predicate=URIRef("http://purl.org/spar/datacite/orcid")))
+        assert any(str(o).endswith("0000-0002-1825-0097") for o in orcids), orcids
