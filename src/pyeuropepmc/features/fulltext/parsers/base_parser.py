@@ -86,22 +86,6 @@ class BaseParser:
         return XMLHelper.get_text_content(element, exclude_tags=frozenset(skip_tags))
 
     @staticmethod
-    def _display_formula_text(formula: ET.Element) -> str:
-        """A ``<disp-formula>`` as one line of plain text, label last.
-
-        A display formula is set on its own line wherever the document is
-        rendered. Leaving it inside the sentence that introduces it produced
-        "models of the form y˙=F(y(t),θ,t,…), (1) with N-dimensional state
-        vector", which is neither the prose nor the equation.
-        """
-        label = ""
-        label_elem = formula.find("label")
-        if label_elem is not None:
-            label = XMLHelper.get_text_content(label_elem)
-        body = XMLHelper.get_text_content(formula, exclude_tags=frozenset({"label"}))
-        return " ".join(part for part in (body, label) if part).strip()
-
-    @staticmethod
     def _own_bodies(root: ET.Element) -> list[ET.Element]:
         """The <body> elements belonging to this article, not to a sub-article.
 
@@ -126,6 +110,30 @@ class BaseParser:
                     walk(child)
 
         if root.tag == "body":
+            return [root]
+        walk(root)
+        return found
+
+    @staticmethod
+    def _own_floats_groups(root: ET.Element) -> list[ET.Element]:
+        """The ``<floats-group>`` elements of this article, not of a sub-article.
+
+        NIH author manuscripts keep every figure and table there, outside
+        ``<body>``, and cite them from the text. Anything that walks only the
+        body - every rendering did - loses them.
+        """
+        found: list[ET.Element] = []
+
+        def walk(elem: ET.Element) -> None:
+            for child in elem:
+                if child.tag in ("sub-article", "response", "body", "back"):
+                    continue
+                if child.tag == "floats-group":
+                    found.append(child)
+                else:
+                    walk(child)
+
+        if root.tag == "floats-group":
             return [root]
         walk(root)
         return found
