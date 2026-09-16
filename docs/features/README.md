@@ -108,7 +108,7 @@ More: [Systematic Review Tracking](systematic-review-tracking.md) and [Search lo
 | MeSH terms and PICO questions | [MeSH and PICO](mesh-pico.md) |
 | Cache API responses and downloads | [Caching](caching/README.md) |
 
-The `pyeuropepmc` command (`pyeuropepmc --help`) offers the `normalize`, `unified_search`, `claim` and `benchmark` command groups, and `pyeuropepmc-mcp` runs an MCP server for MCP clients.
+The `pyeuropepmc` command (`pyeuropepmc --help`) offers the `normalize`, `unified_search`, `claim` and `benchmark` command groups, and `pyeuropepmc mcp` (or the `pyeuropepmc-mcp` command) runs an MCP server for MCP clients.
 
 ## Feature comparison
 
