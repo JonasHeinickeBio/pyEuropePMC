@@ -42,7 +42,7 @@ from typing import Any
 import unicodedata
 from xml.etree import ElementTree as ET  # nosec B405
 
-import defusedxml.ElementTree as DefusedET
+from pyeuropepmc.core.xml_parsing import parse_xml
 
 logger = logging.getLogger(__name__)
 
@@ -478,7 +478,7 @@ class JATSNormalizer:
             xml_content = xml_content.decode("utf-8")
         xml_content = self._pre_resolve_entities(xml_content)
 
-        root: ET.Element = DefusedET.fromstring(xml_content)
+        root: ET.Element = parse_xml(xml_content, what="The JATS XML")
 
         # Deep copy to avoid mutating original
         root = copy.deepcopy(root)

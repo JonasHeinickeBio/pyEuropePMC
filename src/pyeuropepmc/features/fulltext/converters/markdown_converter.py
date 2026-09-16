@@ -13,6 +13,7 @@ from pyeuropepmc.features.fulltext.parsers.author_parser import AuthorParser
 from pyeuropepmc.features.fulltext.parsers.base_parser import BaseParser
 from pyeuropepmc.features.fulltext.parsers.metadata_parser import MetadataParser
 from pyeuropepmc.features.fulltext.utils.flat_blocks import (
+    FLOATS_TITLE,
     FlatBlock,
     code_fence,
     code_text,
@@ -118,6 +119,17 @@ class MarkdownConverter(BaseParser):
                     section_md = self._process_section_markdown(sec, level=2)
                     if section_md:
                         md_parts.append(f"{section_md}\n\n")
+
+            # Figures and tables kept outside <body>, in <floats-group>: see the
+            # same note in plaintext_converter.
+            floats = [
+                block
+                for group in (self._own_floats_groups(self.root) if self.root is not None else [])
+                for block in self._blocks_markdown(group)
+            ]
+            if floats:
+                md_parts.append(f"## {escape_markdown(FLOATS_TITLE)}\n\n")
+                md_parts.extend(floats)
 
             self._add_back_matter_to_markdown(md_parts)
 

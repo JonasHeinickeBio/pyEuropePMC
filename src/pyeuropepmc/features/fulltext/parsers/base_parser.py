@@ -39,7 +39,7 @@ class BaseParser:
         if self.root is None:
             raise ParsingError(
                 ErrorCodes.PARSE003,
-                {"message": "No XML content has been parsed. Call parse() first."},
+                message="No XML content has been parsed. Call parse() first.",
             )
 
     def _get_text_content(self, element: ET.Element | None) -> str:
@@ -154,6 +154,30 @@ class BaseParser:
                     walk(child)
 
         if root.tag == "body":
+            return [root]
+        walk(root)
+        return found
+
+    @staticmethod
+    def _own_floats_groups(root: ET.Element) -> list[ET.Element]:
+        """The ``<floats-group>`` elements of this article, not of a sub-article.
+
+        NIH author manuscripts keep every figure and table there, outside
+        ``<body>``, and cite them from the text. Anything that walks only the
+        body - every rendering did - loses them.
+        """
+        found: list[ET.Element] = []
+
+        def walk(elem: ET.Element) -> None:
+            for child in elem:
+                if child.tag in ("sub-article", "response", "body", "back"):
+                    continue
+                if child.tag == "floats-group":
+                    found.append(child)
+                else:
+                    walk(child)
+
+        if root.tag == "floats-group":
             return [root]
         walk(root)
         return found
