@@ -31,6 +31,26 @@ __all__ = ["OrcidClient"]
 _ORCID_PATTERN = re.compile(r"(\d{4}-\d{4}-\d{4}-\d{3}[0-9X])")
 
 
+def _get(obj: Any, *keys: str) -> Any:
+    """Follow *keys* through nested dicts; ``None`` once a level is missing.
+
+    The v3.0 JSON writes an absent value as ``null`` (``"biography": null``,
+    ``"end-date": null`` for a current position), so ``d.get(key, {})`` is not
+    enough: the key exists and holds ``None``.
+    """
+    for key in keys:
+        if not isinstance(obj, dict):
+            return None
+        obj = obj.get(key)
+    return obj
+
+
+def _list(obj: Any, *keys: str) -> list[Any]:
+    """Like :func:`_get` for a list value, with ``[]`` for anything else."""
+    value = _get(obj, *keys)
+    return value if isinstance(value, list) else []
+
+
 class OrcidClient(BaseEnrichmentClient):
     """
     Client for ORCID API enrichment.
@@ -157,10 +177,9 @@ class OrcidClient(BaseEnrichmentClient):
         if not data:
             return []
 
-        groups = data.get("group", [])
         works: list[dict[str, Any]] = []
-        for group in groups:
-            for summary in group.get("work-summary", []):
+        for group in _list(data, "group"):
+            for summary in _list(group, "work-summary"):
                 work = self._parse_work_summary(summary)
                 if work:
                     works.append(work)
@@ -194,72 +213,47 @@ class OrcidClient(BaseEnrichmentClient):
 
     @staticmethod
     def _parse_profile(data: dict[str, Any]) -> dict[str, Any]:
-        """Parse ORCID profile JSON into a clean dict."""
+        """Parse an ORCID API v3.0 record into a clean dict."""
         profile: dict[str, Any] = {}
+        person = _get(data, "person")
 
         # Name
-        name = data.get("person", {}).get("name", {})
-        given = (name.get("given-names") or {}).get("value", "")
-        family = (name.get("family-name") or {}).get("value", "")
+        given = _get(person, "name", "given-names", "value") or ""
+        family = _get(person, "name", "family-name", "value") or ""
         profile["name"] = f"{given} {family}".strip()
         profile["given_name"] = given
         profile["family_name"] = family
-        profile["credit_name"] = (name.get("credit-name") or {}).get("value")
+        profile["credit_name"] = _get(person, "name", "credit-name", "value")
 
         # Other names
-        other_names = data.get("person", {}).get("other-names", {}).get("other-name", [])
-        profile["other_names"] = [n.get("content") for n in other_names if n.get("content")]
+        profile["other_names"] = [
+            n["content"] for n in _list(person, "other-names", "other-name") if _get(n, "content")
+        ]
 
         # Biography
-        bio = data.get("person", {}).get("biography", {})
-        profile["biography"] = bio.get("content")
+        profile["biography"] = _get(person, "biography", "content")
 
         # Keywords
-        keywords = data.get("person", {}).get("keywords", {}).get("keyword", [])
-        profile["keywords"] = [k.get("content") for k in keywords if k.get("content")]
+        profile["keywords"] = [
+            k["content"] for k in _list(person, "keywords", "keyword") if _get(k, "content")
+        ]
 
         # Researcher URLs
-        urls = data.get("person", {}).get("researcher-urls", {}).get("researcher-url", [])
         profile["urls"] = {
-            u.get("url-name", ""): u.get("url", {}).get("value", "")
-            for u in urls
-            if u.get("url", {}).get("value")
+            (_get(u, "url-name") or ""): _get(u, "url", "value")
+            for u in _list(person, "researcher-urls", "researcher-url")
+            if _get(u, "url", "value")
         }
 
-        # Employment (summaries)
-        emp = (
-            data.get("activities-summary", {}).get("employments", {}).get("employment-summary", [])
-        )
-        profile["employments"] = [
-            {
-                "organization": e.get("organization", {}).get("name"),
-                "department": e.get("department-name"),
-                "role": e.get("role-title"),
-                "start": f"{e.get('start-date', {}).get('year', {}).get('value', '')}",
-                "end": f"{e.get('end-date', {}).get('year', {}).get('value', '')}",
-            }
-            for e in emp
-        ]
-
-        # Education
-        edu = data.get("activities-summary", {}).get("educations", {}).get("education-summary", [])
-        profile["educations"] = [
-            {
-                "organization": e.get("organization", {}).get("name"),
-                "department": e.get("department-name"),
-                "role": e.get("role-title"),
-                "start": f"{e.get('start-date', {}).get('year', {}).get('value', '')}",
-                "end": f"{e.get('end-date', {}).get('year', {}).get('value', '')}",
-            }
-            for e in edu
-        ]
+        activities = _get(data, "activities-summary")
+        profile["employments"] = OrcidClient._parse_affiliations(activities, "employment")
+        profile["educations"] = OrcidClient._parse_affiliations(activities, "education")
 
         # Works summary
-        works = data.get("activities-summary", {}).get("works", {}).get("group", [])
         profile["works"] = []
         seen_dois: set[str] = set()
-        for group in works:
-            for summary in group.get("work-summary", []):
+        for group in _list(activities, "works", "group"):
+            for summary in _list(group, "work-summary"):
                 work = OrcidClient._parse_work_summary(summary)
                 if work:
                     doi = work.get("doi", "")
@@ -272,30 +266,63 @@ class OrcidClient(BaseEnrichmentClient):
         return profile
 
     @staticmethod
+    def _parse_affiliations(activities: Any, kind: str) -> list[dict[str, Any]]:
+        """Read the employments (*kind* ``"employment"``) or educations of a record.
+
+        API v3.0 groups these entries::
+
+            "employments": {"affiliation-group": [
+                {"summaries": [{"employment-summary": {...}}]}
+            ]}
+        """
+        entries: list[dict[str, Any]] = []
+        for group in _list(activities, f"{kind}s", "affiliation-group"):
+            for item in _list(group, "summaries"):
+                summary = _get(item, f"{kind}-summary")
+                if not isinstance(summary, dict):
+                    continue
+                entries.append(
+                    {
+                        "organization": _get(summary, "organization", "name"),
+                        "department": summary.get("department-name"),
+                        "role": summary.get("role-title"),
+                        "start": _get(summary, "start-date", "year", "value") or "",
+                        "end": _get(summary, "end-date", "year", "value") or "",
+                    }
+                )
+        return entries
+
+    @staticmethod
     def _parse_work_summary(summary: dict[str, Any]) -> dict[str, Any] | None:
         """Parse a single work summary entry."""
-        title_data = summary.get("title", {}).get("title", {})
-        title = title_data.get("value") if isinstance(title_data, dict) else None
+        title = _get(summary, "title", "title", "value")
         if not title:
             return None
 
         # Extract DOI from external IDs
         doi = None
-        ext_ids = summary.get("external-ids", {}).get("external-id", [])
-        for eid in ext_ids:
-            if eid.get("external-id-type") == "doi":
-                doi = normalize_doi(eid.get("external-id-value", ""))
+        for eid in _list(summary, "external-ids", "external-id"):
+            if _get(eid, "external-id-type") == "doi":
+                doi = normalize_doi(_get(eid, "external-id-value") or "")
                 break
 
-        pub_date = summary.get("publication-date", {})
-        year = pub_date.get("year", {}).get("value") if pub_date else None
+        year = _get(summary, "publication-date", "year", "value")
+        try:
+            year_int = int(year) if year else None
+        except (TypeError, ValueError):
+            year_int = None
+
+        # v3.0 wraps the journal title in a value object: {"value": "..."}
+        journal_title = summary.get("journal-title")
+        if isinstance(journal_title, dict):
+            journal_title = journal_title.get("value")
 
         return {
             "title": title,
             "doi": doi or None,
-            "year": int(year) if year else None,
+            "year": year_int,
             "type": summary.get("type"),
-            "journal_title": summary.get("journal-title"),
+            "journal_title": journal_title,
             "visibility": summary.get("visibility"),
             "path": summary.get("path"),
         }

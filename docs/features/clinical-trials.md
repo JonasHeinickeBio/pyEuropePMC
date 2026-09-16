@@ -123,7 +123,7 @@ The model accepts unknown keyword arguments and stores them unvalidated, so a mi
 
 `to_literature_result()` builds a `LiteratureResult` with the sponsors as authors, the start year as `publication_year`, `"Clinical Trial <phase>"` as `journal` and `extra_metadata` keys `nct_id`, `status`, `phase`, `conditions`, `interventions` (names), `enrollment` and `sponsors`.
 
-`ClinicalTrial.from_literature_result(result)` fills `nct_id`, `title`, `status`, `phase` and `conditions`. Known limitation: it reads the status from `extra_metadata["status"]`, but `ClinicalTrialsClient` stores it as `overall_status`, so trials from the client get `status="UNKNOWN"`. Copy the status yourself:
+`ClinicalTrial.from_literature_result(result)` fills `nct_id`, `title`, `status`, `phase` and `conditions`. It reads the status from `extra_metadata["status"]`, as written by `to_literature_result()`, or from `extra_metadata["overall_status"]`, as written by `ClinicalTrialsClient`. A missing or empty status or phase falls back to `"UNKNOWN"` or `"NA"`.
 
 ```python
 from pyeuropepmc.features.search import ClinicalTrialsClient
@@ -133,7 +133,6 @@ with ClinicalTrialsClient() as client:
     result = client.get_paper("NCT04527549")
 
 trial = ClinicalTrial.from_literature_result(result)
-trial = trial.model_copy(update={"status": result.extra_metadata["overall_status"]})
 print(trial.nct_id, trial.status, trial.phase)
 ```
 

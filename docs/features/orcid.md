@@ -35,7 +35,7 @@ if profile:
 | `other_names`, `keywords` | `list[str]` | |
 | `biography` | `str` or `None` | |
 | `urls` | `dict[str, str]` | Link name to URL |
-| `employments`, `educations` | `list[dict]` | Dicts with `organization`, `department`, `role`, `start` and `end` |
+| `employments`, `educations` | `list[dict]` | Dicts with `organization`, `department`, `role`, `start` and `end`, read from the record's `affiliation-group` entries. `start` and `end` are years as strings; `end` is `""` for a current position |
 | `works` | `list[dict]` | Works as returned by `get_works()`; repeated DOIs are dropped |
 
 ### Works
@@ -50,17 +50,13 @@ for work in works:
     print(work["year"], work["type"], work["title"])
 ```
 
-`get_works(orcid)` returns a list of dicts with `title`, `doi` (normalized, or `None`), `year` (`int` or `None`), `type`, `journal_title`, `visibility` and `path`, or an empty list when the iD cannot be read or the request fails.
+`get_works(orcid)` returns a list of dicts with `title`, `doi` (normalized, or `None`), `year` (`int` or `None`), `type`, `journal_title` (`str` or `None`), `visibility` and `path`, or an empty list when the iD cannot be read or the request fails.
+
+Values the ORCID record leaves empty (`null` in the API response), such as a missing biography or publication date, come back as `None` or an empty list.
 
 ### Identifier formats
 
 `0000-0002-1825-0097`, `https://orcid.org/0000-0002-1825-0097` and `orcid.org/0000-0002-1825-0097` are all accepted; the first iD found in the string is used.
-
-### Known limitations
-
-- `employments` and `educations` are read from `employment-summary` and `education-summary` lists. ORCID API v3.0 nests these entries in `affiliation-group` objects, so both lists come back empty.
-- A record whose biography is `null` in the ORCID response makes `get_profile()` and `enrich()` raise `AttributeError`.
-- `journal_title` is ORCID's value object, for example `{"value": "Journal of Psychoceramics"}`, not a string.
 
 ## NIH iCite
 
