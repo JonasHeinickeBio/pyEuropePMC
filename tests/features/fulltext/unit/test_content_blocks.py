@@ -249,23 +249,72 @@ class TestToChunks:
             assert c["section_path"] == "T"
 
 
-class TestSplitBlockIntoChunks:
+class TestSplitText:
     def test_splits_by_sentence(self):
-        chunks: list[dict] = []
-        text = "One. Two. Three. Four. Five."
-        StructuredSection._split_block_into_chunks(
-            text, max_chars=10, chunks=chunks, section_title="S"
-        )
-        assert len(chunks) > 1
-        assert all(c["section_path"] == "S" for c in chunks)
+        pieces = StructuredSection._split_text("One. Two. Three. Four. Five.", max_chars=10)
+        assert pieces == ["One. Two.", "Three.", "Four.", "Five."]
 
     def test_single_short_sentence(self):
-        chunks: list[dict] = []
-        StructuredSection._split_block_into_chunks(
-            "Hi.", max_chars=100, chunks=chunks, section_title="S"
+        assert StructuredSection._split_text("Hi.", max_chars=100) == ["Hi."]
+
+    def test_a_sentence_too_long_is_split_at_spaces(self):
+        pieces = StructuredSection._split_text("aaaa bbbb cccc dddd", max_chars=9)
+        assert pieces == ["aaaa bbbb", "cccc dddd"]
+
+    def test_a_word_too_long_is_cut(self):
+        assert StructuredSection._split_text("abcdefghij", max_chars=4) == ["abcd", "efgh", "ij"]
+
+    def test_no_piece_is_longer_than_asked(self):
+        text = ("A long sentence without an end " * 40) + ". Short one."
+        assert all(len(p) <= 50 for p in StructuredSection._split_text(text, max_chars=50))
+
+
+class TestToChunksProvenanceAndOrder:
+    """The four defects of to_chunks()."""
+
+    def _section(self, *texts: str) -> StructuredSection:
+        return StructuredSection(
+            title="Statistics",
+            section_path="Methods/Statistics",
+            section_type="body",
+            content=[ContentBlock.paragraph(t) for t in texts],
         )
-        assert len(chunks) == 1
-        assert chunks[0]["text"] == "Hi."
+
+    def test_section_path_is_the_path_not_the_title(self):
+        chunks = self._section("short").to_chunks()
+        assert chunks[0]["section_path"] == "Methods/Statistics"
+
+    def test_pieces_of_a_split_block_keep_the_section_type(self):
+        chunks = self._section("A sentence here. " * 40).to_chunks(max_tokens=20)
+        assert len(chunks) > 1
+        assert {c["section_type"] for c in chunks} == {"body"}
+
+    def test_chunks_come_in_document_order(self):
+        """The pieces of a long block were emitted before the text gathered ahead of it."""
+        chunks = self._section(
+            "First, short.", "Long sentence number two. " * 30, "Last."
+        ).to_chunks(max_tokens=40, overlap=0)
+        texts = [c["text"] for c in chunks]
+        assert texts[0] == "First, short."
+        assert texts[-1] == "Last."
+        assert [c["chunk_index"] for c in chunks] == list(range(len(chunks)))
+
+    def test_overlap_is_counted_in_tokens(self):
+        """Compared with a limit in characters, the overlap kept four times too much."""
+        blocks = [f"{letter * 36}" for letter in "abcdef"]  # 9 tokens each
+        chunks = self._section(*blocks).to_chunks(max_tokens=20, overlap=9)
+        # Each chunk repeats exactly one block of the previous one - 9 tokens.
+        assert [c["text"].split("\n\n") for c in chunks] == [
+            [blocks[0], blocks[1]],
+            [blocks[1], blocks[2]],
+            [blocks[2], blocks[3]],
+            [blocks[3], blocks[4]],
+            [blocks[4], blocks[5]],
+        ]
+
+    def test_empty_blocks_are_skipped(self):
+        section = self._section("", "text", "")
+        assert [c["text"] for c in section.to_chunks()] == ["text"]
 
 
 class TestToLangchainDocuments:
@@ -982,3 +1031,172 @@ class TestCollapseWhitespace:
         text, inlines = ContentBlockExtractor._collapse_whitespace("a b", [inline])
         assert text == "a b"
         assert inlines == []
+
+
+def _inline_reads(block: ContentBlock, inline: InlineElement) -> str:
+    return block.text[inline.position : inline.position + inline.length]
+
+
+class TestInlineBoundarySpacing:
+    """An inline element's text was taken stripped, and the space went with it."""
+
+    def test_trailing_space_inside_a_superscript(self):
+        blocks = _extractor("<root/>")._handle_paragraph(_elem("<p>R<sup>2 </sup>= 0.90</p>"))
+        assert blocks[0].text == "R2 = 0.90"
+        sup = blocks[0].inlines[0]
+        assert _inline_reads(blocks[0], sup) == "2"
+
+    def test_leading_space_inside_an_italic(self):
+        blocks = _extractor("<root/>")._handle_paragraph(
+            _elem("<p>E.<italic> coli</italic> grew</p>")
+        )
+        assert blocks[0].text == "E. coli grew"
+        assert _inline_reads(blocks[0], blocks[0].inlines[0]) == "coli"
+
+    def test_bold_ending_in_a_space_inside_a_caption(self):
+        extractor = _extractor("<root/>")
+        text, inlines = extractor._text_with_inlines(
+            _elem("<caption><p><bold>'*' </bold>indicate binding</p></caption>")
+        )
+        assert text == "'*' indicate binding"
+        assert text[inlines[0].position : inlines[0].position + inlines[0].length] == "'*'"
+
+    def test_no_space_is_invented(self):
+        blocks = _extractor("<root/>")._handle_paragraph(
+            _elem("<p>PM<sub>2.5</sub> and H<sub>2</sub>O</p>")
+        )
+        assert blocks[0].text == "PM2.5 and H2O"
+
+
+class TestReferenceBlocks:
+    def _refs(self, back: str) -> list[ContentBlock]:
+        xml = f"<article><body><sec><p>x</p></sec></body><back>{back}</back></article>"
+        sections = _extractor(xml)._extract_reference_sections()
+        return [b for s in sections for b in s.content]
+
+    def test_label_once_and_offsets_past_it(self):
+        refs = self._refs(
+            '<ref-list><ref id="CR1"><label>1.</label><mixed-citation>Rowlett, V. W. Impact in '
+            "<italic>Escherichia coli</italic>. <italic>J. Bacteriol.</italic> (2017)."
+            "</mixed-citation></ref></ref-list>"
+        )
+        block = refs[0]
+        assert block.text == "1. Rowlett, V. W. Impact in Escherichia coli. J. Bacteriol. (2017)."
+        assert block.target_id == "CR1"
+        assert [_inline_reads(block, i) for i in block.inlines] == [
+            "Escherichia coli",
+            "J. Bacteriol.",
+        ]
+
+    def test_citation_alternatives_give_the_citation_once(self):
+        refs = self._refs(
+            '<ref-list><ref id="r1"><label>2</label><citation-alternatives>'
+            "<element-citation><person-group><name><surname>Smith</surname>"
+            "<given-names>J</given-names></name></person-group><source>Nature</source>"
+            "<year>2020</year></element-citation>"
+            "<mixed-citation>Smith, J. <italic>Nature</italic> 2020.</mixed-citation>"
+            "</citation-alternatives></ref></ref-list>"
+        )
+        assert refs[0].text == "2 Smith, J. Nature 2020."
+
+    def test_element_citation_fields_are_kept_apart(self):
+        refs = self._refs(
+            '<ref-list><ref id="r1"><element-citation><person-group><name><surname>Bartel</surname>'
+            "<given-names>DP</given-names></name></person-group>"
+            "<article-title>MicroRNAs</article-title><source>Cell</source><year>2004</year>"
+            "<volume>116</volume><fpage>281</fpage><lpage>297</lpage></element-citation></ref></ref-list>"
+        )
+        assert refs[0].text == "Bartel DP MicroRNAs Cell 2004 116 281 297"
+
+    def test_no_space_against_punctuation(self):
+        refs = self._refs(
+            '<ref-list><ref id="r1"><element-citation><source>Cell</source>, (<year>2004</year>);'
+            "<volume>116</volume>.</element-citation></ref></ref-list>"
+        )
+        assert refs[0].text == "Cell, (2004); 116."
+
+    def test_a_sub_articles_references_are_not_the_articles(self):
+        xml = (
+            "<article><back><ref-list><ref id='a'><mixed-citation>Own.</mixed-citation></ref></ref-list>"
+            "</back><sub-article><back><ref-list><ref id='b'><mixed-citation>Review.</mixed-citation>"
+            "</ref></ref-list></back></sub-article></article>"
+        )
+        sections = _extractor(xml)._extract_reference_sections()
+        assert [b.text for s in sections for b in s.content] == ["Own."]
+
+
+class TestReferenceListInTheBody:
+    def test_given_once_as_back_matter(self):
+        """PMC1764484 keeps its references in a <sec> of the body; they came back twice."""
+        xml = (
+            "<article><body><sec><title>Intro</title><p>Text.</p></sec>"
+            "<sec><title>References</title><sec><ref-list><ref id='B1'>"
+            "<mixed-citation>Carcassi C. HLA haplotypes.</mixed-citation></ref></ref-list></sec></sec>"
+            "</body></article>"
+        )
+        sections = _extractor(xml).extract_sections()
+        carrying = [
+            (s.section_type, s.title)
+            for s in sections
+            for b in s.content
+            if "Carcassi" in (b.text or "")
+        ]
+        assert carrying == [("back", "References")]
+
+
+class TestFootnoteBlocks:
+    def test_label_once_and_offsets_past_it(self):
+        extractor = _extractor("<root/>")
+        blocks = extractor._extract_fn_group_blocks(
+            _elem(
+                "<fn-group><fn><label>a</label><p>Adjusted for <italic>age</italic>.</p></fn></fn-group>"
+            )
+        )
+        block = blocks[0]
+        assert block.text == "a Adjusted for age."
+        assert _inline_reads(block, block.inlines[0]) == "age"
+
+
+class TestListInlines:
+    def test_each_inline_names_its_item_and_keeps_its_target(self):
+        extractor = _extractor("<root/>")
+        xml = (
+            "<list><list-item><p>plain</p></list-item>"
+            '<list-item><p>see <xref ref-type="bibr" rid="r1">[1]</xref></p></list-item></list>'
+        )
+        block = extractor._handle_list(_elem(xml))[0]
+        inline = block.inlines[0]
+        assert inline.metadata == {"item": 1}
+        assert block.items[1][inline.position : inline.position + inline.length] == "[1]"
+        assert (inline.ref_type, inline.target_id) == ("bibr", "r1")
+        assert block.metadata["item_inlines"][0]["item"] == 1
+
+    def test_definition_list_inlines_name_their_term_or_definition(self):
+        extractor = _extractor("<root/>")
+        xml = (
+            "<def-list><def-item><term><italic>n</italic></term>"
+            "<def><p>sample <bold>size</bold></p></def></def-item></def-list>"
+        )
+        block = extractor._handle_def_list(_elem(xml))[0]
+        assert [i.metadata for i in block.inlines] == [{"term": 0}, {"definition": 0}]
+
+
+class TestBareBodyOrder:
+    def test_blocks_outside_any_section_keep_document_order(self):
+        """Bare <p> came first and every other block after them."""
+        xml = (
+            "<article><body><p>Reply one.</p><disp-quote><p>Comment two.</p></disp-quote>"
+            "<p>Reply two.</p></body></article>"
+        )
+        sections = _extractor(xml).extract_sections()
+        body = next(s for s in sections if s.section_path == "body")
+        assert [b.text for b in body.content] == ["Reply one.", "Comment two.", "Reply two."]
+
+    def test_supplementary_material_outside_a_section_is_kept(self):
+        xml = (
+            "<article><body><p>See the data.</p><supplementary-material>"
+            "<caption><title>S1 Data</title></caption></supplementary-material></body></article>"
+        )
+        sections = _extractor(xml).extract_sections()
+        body = next(s for s in sections if s.section_path == "body")
+        assert "S1 Data" in [b.text for b in body.content]
