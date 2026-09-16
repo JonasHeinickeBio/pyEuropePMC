@@ -197,7 +197,7 @@ print(paper.title, paper.doi, len(batch))
 `PubMedClient(rate_limit_delay=0.35, timeout=15, cache_config=None, email=None, tool_name="pyeuropepmc")`:
 
 - `search()` runs ESearch and then ESummary; `sort` is the E-utilities sort value, such as `"relevance"` or `"date"`.
-- `get_paper(pmid, use_efetch=False)` and `get_papers_batch(pmids, use_efetch=False)` use ESummary. With `use_efetch=True` they read the full EFetch record, which adds MeSH terms, publication types, keywords and grants under `pubmed_data`, with one request per PMID.
+- `get_paper(pmid, use_efetch=False)` and `get_papers_batch(pmids, use_efetch=False)` use ESummary. With `use_efetch=True` they read the full EFetch record, with one request per PMID. It adds MeSH terms, publication types, keywords and grants under `pubmed_data`, the PMCID, and each author's ORCID and affiliations (several joined with `"; "`). The DOI and PMCID are the record's own, from its `<PubmedData><ArticleIdList>`, with the DOI falling back to `<ELocationID>`; a record without a PMCID gets `pmcid=None`.
 - `pmid_for_citation(author=None, year=None, journal=None, volume=None, first_page=None, title=None)` resolves a citation with ECitMatch and returns the PMID or `None`.
 
 ### Semantic Scholar and OpenAlex

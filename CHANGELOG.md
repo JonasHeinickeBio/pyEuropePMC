@@ -274,6 +274,16 @@ All notable changes to PyEuropePMC are documented here.
   blocks built from it ("Overview of the study.a The workflow"). Eight
   figure captions in PMC12738713 joined that way.
 
+- **PubMed EFetch records have their DOI, their own PMCID and full text.**
+  `PubMedClient.get_paper(pmid, use_efetch=True)` looked for the DOI inside
+  `<MedlineCitation>`, but EFetch puts a record's identifiers in
+  `<PubmedData><ArticleIdList>`, so the DOI was `None` for 5 of 5 measured
+  records; it now falls back to `<ELocationID EIdType="doi">` too. The PMCID
+  search covered the `<ArticleIdList>` of every cited reference as well, so a
+  record without a PMCID of its own reported a reference's (PMID 33093664).
+  Abstract sections and titles stopped at their first inline `<i>`, `<b>`,
+  `<sup>` or `<sub>`, and each author's ORCID and affiliations were dropped.
+
 - **The article title and abstract are labelled `section_type="front"`**, not
   `"body"`, so keeping only body sections no longer returns them a second time
   alongside the metadata. `front` is added to `SectionType` in the LinkML

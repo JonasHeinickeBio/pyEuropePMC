@@ -45,9 +45,6 @@ FULL_EFETCH_XML = """<?xml version="1.0"?>
         <Keyword>gene editing</Keyword>
         <Keyword>CRISPR</Keyword>
       </KeywordList>
-      <ArticleIdList>
-        <ArticleId IdType="doi">10.1234/CRISPR.2022</ArticleId>
-      </ArticleIdList>
       <GrantList>
         <Grant>
           <GrantID>R01-12345</GrantID>
@@ -56,9 +53,13 @@ FULL_EFETCH_XML = """<?xml version="1.0"?>
         </Grant>
       </GrantList>
     </MedlineCitation>
-    <ArticleIdList>
-      <ArticleId IdType="pmc">PMC1234567</ArticleId>
-    </ArticleIdList>
+    <PubmedData>
+      <ArticleIdList>
+        <ArticleId IdType="pubmed">12345678</ArticleId>
+        <ArticleId IdType="doi">10.1234/CRISPR.2022</ArticleId>
+        <ArticleId IdType="pmc">PMC1234567</ArticleId>
+      </ArticleIdList>
+    </PubmedData>
   </PubmedArticle>
 </PubmedArticleSet>
 """
