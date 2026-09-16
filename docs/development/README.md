@@ -349,7 +349,7 @@ A maintainer makes a release in four steps:
 | `storage/` | `ArtifactStore` |
 | `models/`, `builders/`, `mappers/`, `pipeline.py` | entity models, conversion of parser output into models, RDF mapping (`RDFMapper` and RML) and `PaperProcessingPipeline` |
 | `conf/` | the mapping files `rdf_map.yml`, `rml_mappings.ttl` and `rdfizer_config.ini` and the vocabulary `pyeuropepmc-vocab.ttl`; they ship in the wheel, and `pyeuropepmc.conf.config_file(name)` returns their path |
-| `cli/`, `mcp/` | the `pyeuropepmc` command (`benchmark`, `claim`, `normalize`, `unified_search`) and the `pyeuropepmc-mcp` server |
+| `cli/`, `mcp/` | the `pyeuropepmc` command (`benchmark`, `claim`, `normalize`, `unified_search`, `mcp`) and the `pyeuropepmc-mcp` server |
 | `benchmark/` | the parser benchmark suite behind `pyeuropepmc benchmark` |
 | `agentic/`, `claims/`, `prompts/`, `ui/` | LLM workflows, claim verification, prompt templates and the Flask web UI, which need the `agentic` and `ui` extras |
 | `utils/` | helpers, search logging (`SearchLog`), dependency checks and text matching |
