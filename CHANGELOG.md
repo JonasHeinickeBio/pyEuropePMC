@@ -26,6 +26,16 @@ All notable changes to PyEuropePMC are documented here.
 
 ### 🐛 Bug Fixes
 
+- **A table or figure inside a paragraph gets a block of its own.** JATS
+  allows a `<table-wrap>` or `<fig>` inside a `<p>`, and
+  `get_full_text_sections_structured()` folded it into the paragraph block:
+  no table or figure block, so the rows and caption were out of reach, and the
+  cells ran together with nothing between them. PMC12311175 nests seven tables
+  and nine figures that way; its structured output had no table or figure
+  block at all, and 703 cell boundaries ran together. The paragraph is now split
+  around the element: the text before it, a table or figure block with label,
+  caption and rows, then the text after.
+
 - **Article metadata is read from the article's own front matter.** Every field
   in `<article-meta>` has a namesake elsewhere in the document, and the lookups
   searched all of them. `extract_metadata()["pages"]` took the page range of the
@@ -58,16 +68,6 @@ All notable changes to PyEuropePMC are documented here.
 - **`self_uri` is not an earlier version of the article.** eLife lists the
   preprint and each reviewed preprint before the version of record, so
   PMC11687933 reported the bioRxiv DOI of its preprint.
-
-- **A table or figure inside a paragraph gets a block of its own.** JATS
-  allows a `<table-wrap>` or `<fig>` inside a `<p>`, and
-  `get_full_text_sections_structured()` folded it into the paragraph block:
-  no table or figure block, so the rows and caption were out of reach, and the
-  cells ran together with nothing between them. PMC12311175 nests seven tables
-  and nine figures that way; its structured output had no table or figure
-  block at all, and 703 cell boundaries ran together. The paragraph is now split
-  around the element: the text before it, a table or figure block with label,
-  caption and rows, then the text after.
 
 - **`to_plaintext()` keeps the cells of such a table apart again**, as 2.0.0
   did. 2.2 built a paragraph's text with a walker of its own that put nothing
