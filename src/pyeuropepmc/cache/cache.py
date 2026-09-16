@@ -20,19 +20,22 @@ from pathlib import Path
 import sqlite3
 import tempfile
 import threading
+import time
 from typing import Any, TypeVar
 
 from pyeuropepmc.core.error_codes import ErrorCodes
 from pyeuropepmc.core.exceptions import ConfigurationError
 
 try:
-    from cachetools import TTLCache
+    from cachetools import TLRUCache, TTLCache
 
     CACHETOOLS_AVAILABLE = True
     TTLCacheType: type | None = TTLCache
+    TLRUCacheType: type | None = TLRUCache
 except ImportError:
     CACHETOOLS_AVAILABLE = False
     TTLCacheType = None
+    TLRUCacheType = None
 
 # diskcache is kept as optional fallback (not currently used)
 # Type checking imports
@@ -171,7 +174,7 @@ class CacheConfig:
     size_limit_mb : int
         Maximum cache size in megabytes
     eviction_policy : str
-        Policy for cache eviction ('least-recently-used', 'least-frequently-used')
+        Policy the L2 layer uses to evict entries; one of EVICTION_POLICIES
     enable_l2 : bool
         Whether to enable L2 persistent cache with diskcache
     ttl_by_type : dict[CacheDataType, int]
@@ -179,6 +182,17 @@ class CacheConfig:
     namespace_version : int
         Version number for namespace-based invalidation
     """
+
+    # Eviction policies the L2 layer (diskcache) accepts. L1 always evicts
+    # least-recently-used entries; cachetools offers nothing else with TTLs.
+    EVICTION_POLICIES = frozenset(
+        {
+            "least-recently-stored",
+            "least-recently-used",
+            "least-frequently-used",
+            "none",
+        }
+    )
 
     # Default TTLs per data type (in seconds)
     DEFAULT_TTLS = {
@@ -214,7 +228,9 @@ class CacheConfig:
         size_limit_mb : int, optional
             Maximum L1 cache size in megabytes (default: 500)
         eviction_policy : str, optional
-            Policy for cache eviction (default: 'least-recently-used')
+            Policy the L2 layer uses to evict entries once l2_size_limit_mb is
+            reached; one of EVICTION_POLICIES (default: 'least-recently-used').
+            L1 always evicts least-recently-used entries.
         enable_l2 : bool, optional
             Whether to enable L2 persistent cache (default: False)
         l2_size_limit_mb : int, optional
@@ -258,29 +274,50 @@ class CacheConfig:
             self.enable_l2 = False
 
         # Validate parameters
-        if self.ttl < 0:
-            raise ConfigurationError(
-                ErrorCodes.CONFIG001,
-                context={"parameter": "ttl", "value": ttl, "reason": "must be >= 0"},
-            )
+        self._require_int("ttl", ttl, minimum=0)
+        self._require_int("size_limit_mb", size_limit_mb, minimum=1)
+        self._require_int("l2_size_limit_mb", l2_size_limit_mb, minimum=1)
+        self._require_int("namespace_version", namespace_version, minimum=1)
 
-        if self.size_limit_mb < 1:
+        if eviction_policy not in self.EVICTION_POLICIES:
             raise ConfigurationError(
                 ErrorCodes.CONFIG001,
                 context={
-                    "parameter": "size_limit_mb",
-                    "value": size_limit_mb,
-                    "reason": "must be >= 1",
+                    "parameter": "eviction_policy",
+                    "value": eviction_policy,
+                    "reason": f"must be one of {sorted(self.EVICTION_POLICIES)}",
                 },
             )
 
-        if self.namespace_version < 1:
+    @staticmethod
+    def _require_int(parameter: str, value: Any, *, minimum: int) -> None:
+        """
+        Check that a configuration value is an integer of at least ``minimum``.
+
+        Raises
+        ------
+        ConfigurationError
+            If the value is not an integer, or is below the minimum. A wrong
+            type raises the same error as a wrong value, so that callers only
+            have to handle ConfigurationError.
+        """
+        if isinstance(value, bool) or not isinstance(value, int):
             raise ConfigurationError(
                 ErrorCodes.CONFIG001,
                 context={
-                    "parameter": "namespace_version",
-                    "value": namespace_version,
-                    "reason": "must be >= 1",
+                    "parameter": parameter,
+                    "value": value,
+                    "reason": f"must be an int, got {type(value).__name__}",
+                },
+            )
+
+        if value < minimum:
+            raise ConfigurationError(
+                ErrorCodes.CONFIG001,
+                context={
+                    "parameter": parameter,
+                    "value": value,
+                    "reason": f"must be >= {minimum}",
                 },
             )
 
@@ -328,6 +365,11 @@ class CacheBackend:
         L2 persistent cache
     """
 
+    # Upper bound on the store times kept for invalidate_older_than. Records
+    # are dropped on delete and clear; this caps what a long-running process
+    # can accumulate from entries that expired or were evicted on their own.
+    MAX_TRACKED_STORE_TIMES = 50_000
+
     def __init__(self, config: CacheConfig):
         """
         Initialize cache backend.
@@ -338,10 +380,19 @@ class CacheBackend:
             Cache configuration object
         """
         self.config = config
-        self.l1_cache: Any | None = None  # cachetools.TTLCache type
+        self.l1_cache: Any | None = None  # cachetools.TLRUCache type
         self.l2_cache: Any | None = None  # diskcache.Cache type
         self._tags: dict[str, set[str]] = {}  # Map tags to cache keys
         self._lock = threading.Lock()  # Single-flight lock for cache misses
+        # TTL of the entry currently being written to L1, read by _l1_time_to_use
+        self._l1_pending_ttl: dict[str, float] = {}
+        self._l1_write_lock = threading.Lock()
+        # Wall-clock store time per key, for invalidate_older_than
+        self._store_times: dict[str, float] = {}
+
+        # Logical operation counters: one lookup counts once, however many
+        # layers it had to ask.
+        self._overall_stats: dict[str, int] = {"hits": 0, "misses": 0}
 
         # Statistics per layer
         self._stats: dict[str, dict[str, int | float]] = {
@@ -415,19 +466,22 @@ class CacheBackend:
             return False
 
         try:
-            # L1: In-memory cache with short TTL for hot data
+            # L1: In-memory cache with per-entry TTL for hot data
             # Convert MB to approximate max items (assume ~1KB per item)
             l1_maxsize = min(self.config.size_limit_mb * 1024, 10000)
-            if TTLCache is not None:
-                self.l1_cache = TTLCache(maxsize=l1_maxsize, ttl=self.config.ttl)
+            if TLRUCacheType is not None:
+                # TLRUCache asks `ttu` for each entry's expiry time, which lets
+                # a `set(expire=...)` or a data type's TTL apply per entry
+                # instead of one TTL for the whole cache.
+                self.l1_cache = TLRUCacheType(maxsize=l1_maxsize, ttu=self._l1_time_to_use)
 
                 logger.info(
-                    f"L1 cache initialized: TTL={self.config.ttl}s, "
+                    f"L1 cache initialized: default TTL={self.config.ttl}s, "
                     f"maxsize={l1_maxsize}, namespace=v{self.config.namespace_version}"
                 )
                 return True
             else:
-                logger.warning("TTLCache not available despite CACHETOOLS_AVAILABLE=True")
+                logger.warning("TLRUCache not available despite CACHETOOLS_AVAILABLE=True")
                 self.config.enabled = False
                 self.l1_cache = None
                 return False
@@ -438,26 +492,73 @@ class CacheBackend:
             self.l1_cache = None
             return False
 
+    def _l1_time_to_use(self, key: str, value: Any, now: float) -> float:
+        """
+        Return the monotonic time at which an L1 entry expires.
+
+        Called by ``cachetools.TLRUCache`` once per write. ``_l1_set`` records
+        the TTL of the entry it is about to store; anything written straight
+        into ``l1_cache`` falls back to the configured default TTL.
+        """
+        ttl = self._l1_pending_ttl.get(key, self.config.ttl)
+        return now + ttl
+
+    def _record_store_time(self, key: str) -> None:
+        """
+        Remember when this backend stored ``key``, for invalidate_older_than.
+
+        Records are dropped again by ``delete()`` and ``clear()``. Once more
+        than ``MAX_TRACKED_STORE_TIMES`` accumulate, the oldest are discarded;
+        those entries are then left to their TTL, like entries another process
+        wrote.
+        """
+        self._store_times[key] = time.time()
+
+        if len(self._store_times) <= self.MAX_TRACKED_STORE_TIMES:
+            return
+
+        # Trim in batches so the sort is amortized over many writes.
+        keep = int(self.MAX_TRACKED_STORE_TIMES * 0.9)
+        by_age = sorted(self._store_times, key=self._store_times.__getitem__)
+        for stale_key in by_age[: len(by_age) - keep]:
+            del self._store_times[stale_key]
+
+    def _l1_set(self, key: str, value: Any, ttl: float) -> bool:
+        """
+        Store an entry in L1 with its own TTL.
+
+        Returns
+        -------
+        bool
+            True if the entry was stored. A TTL of zero or less expires
+            immediately, and TLRUCache drops such an entry rather than
+            storing it.
+        """
+        if self.l1_cache is None:
+            return False
+
+        with self._l1_write_lock:
+            self._l1_pending_ttl[key] = ttl
+            try:
+                self.l1_cache[key] = value
+            finally:
+                self._l1_pending_ttl.pop(key, None)
+            return key in self.l1_cache
+
     def _initialize_l2_cache(self) -> None:
-        """Initialize L2 persistent cache."""
+        """
+        Initialize L2 persistent cache.
+
+        An existing database in ``cache_dir`` is reused, so entries survive a
+        restart and concurrent backends on one directory share them. The
+        database is only removed when its schema cannot be used (see
+        :func:`_validate_diskcache_schema`).
+        """
         try:
             cache_dir = self.config.cache_dir
             cache_dir.mkdir(parents=True, exist_ok=True)
 
-            # For test environments, ensure clean cache directory to avoid schema issues
-            # Remove any existing cache.db file to force fresh schema creation
-            db_path = cache_dir / "cache.db"
-            if db_path.exists():
-                try:
-                    os.remove(db_path)
-                    logger.debug(f"Removed existing cache.db for fresh schema: {db_path}")
-                    # Also remove any WAL/SHM files
-                    for suffix in ["-wal", "-shm", "-journal"]:
-                        wal_path = cache_dir / f"cache.db{suffix}"
-                        if wal_path.exists():
-                            os.remove(wal_path)
-                except OSError as e:
-                    logger.warning(f"Could not remove existing cache.db: {e}")
+            self._prepare_l2_database(cache_dir)
 
             # Initialize diskcache with size limit
             size_limit_bytes = self.config.l2_size_limit_mb * 1024 * 1024
@@ -465,7 +566,7 @@ class CacheBackend:
                 self.l2_cache = diskcache.Cache(
                     str(cache_dir),
                     size_limit=size_limit_bytes,
-                    eviction_policy="least-recently-used",
+                    eviction_policy=self.config.eviction_policy,
                 )
 
                 # Test the L2 cache with a simple operation to ensure it works
@@ -495,6 +596,50 @@ class CacheBackend:
             logger.warning(f"Failed to initialize L2 cache: {e}. Continuing with L1 only.")
             self.l2_cache = None
             self.config.enable_l2 = False
+
+    @staticmethod
+    def _prepare_l2_database(cache_dir: Path) -> None:
+        """
+        Make an existing diskcache database in ``cache_dir`` usable, keeping its data.
+
+        Databases written by older diskcache versions can lack columns the
+        installed version needs; those are migrated in place. A database that
+        cannot be opened or migrated at all is removed, together with its
+        SQLite sidecar files and the ``.val`` files whose entries it indexed,
+        so diskcache can create a fresh one without leaving orphans behind.
+
+        Parameters
+        ----------
+        cache_dir : Path
+            Directory holding the diskcache database.
+        """
+        db_path = cache_dir / "cache.db"
+        if not db_path.exists():
+            return
+
+        try:
+            if _validate_diskcache_schema(cache_dir):
+                logger.debug(f"Reusing existing L2 database: {db_path}")
+                return
+            reason = "schema is not compatible"
+        except ConfigurationError as e:
+            # _check_and_migrate_schema already removed the unusable database.
+            reason = str(e)
+
+        logger.warning(f"Discarding unusable L2 database at {db_path}: {reason}")
+        for path in [db_path, *(cache_dir / f"cache.db{s}" for s in ("-wal", "-shm", "-journal"))]:
+            try:
+                path.unlink(missing_ok=True)
+            except OSError as e:
+                logger.warning(f"Could not remove {path}: {e}")
+
+        # The removed database was the only index of the .val files diskcache
+        # wrote for large values; without it they are unreachable.
+        for orphan in cache_dir.rglob("*.val"):
+            try:
+                orphan.unlink()
+            except OSError as e:
+                logger.debug(f"Could not remove orphaned value file {orphan}: {e}")
 
     def _normalize_key(
         self, prefix: str, data_type: CacheDataType | None = None, **kwargs: Any
@@ -688,6 +833,12 @@ class CacheBackend:
         -------
         Any
             Cached value or default
+
+        Notes
+        -----
+        Per-layer statistics count one lookup per layer queried, so a value
+        found in L2 is an L1 miss and an L2 hit. The ``overall`` statistics
+        count the lookup once.
         """
         if not self.config.enabled:
             return default
@@ -697,28 +848,50 @@ class CacheBackend:
             if key in self.l1_cache:
                 value = self.l1_cache[key]
                 self._stats["l1"]["hits"] += 1
+                self._overall_stats["hits"] += 1
                 logger.debug(f"L1 cache hit: {key}")
                 return value
             self._stats["l1"]["misses"] += 1
 
         # L2 cache check
         if layer in (None, CacheLayer.L2) and self.config.enable_l2 and self.l2_cache is not None:
-            value = self.l2_cache.get(key)
+            value, expire_time = self.l2_cache.get(key, expire_time=True)
             if value is not None:
                 self._stats["l2"]["hits"] += 1
+                self._overall_stats["hits"] += 1
                 logger.debug(f"L2 cache hit: {key}")
-                # Promote to L1
-                if self.l1_cache is not None:
-                    try:
-                        self.l1_cache[key] = value
-                        logger.debug(f"Promoted to L1: {key}")
-                    except Exception as e:
-                        logger.debug(f"L1 promotion failed: {e}")
+                self._promote_to_l1(key, value, expire_time)
                 return value
             self._stats["l2"]["misses"] += 1
 
+        self._overall_stats["misses"] += 1
         logger.debug(f"Cache miss (all layers): {key}")
         return default
+
+    def _promote_to_l1(self, key: str, value: Any, expire_time: float | None) -> None:
+        """
+        Copy an L2 hit into L1, keeping the remaining lifetime of the entry.
+
+        Parameters
+        ----------
+        key : str
+            Cache key
+        value : Any
+            Value read from L2
+        expire_time : float or None
+            Unix timestamp at which the L2 entry expires, or None when it
+            has no expiry.
+        """
+        if self.l1_cache is None:
+            return
+
+        ttl = self.config.ttl if expire_time is None else expire_time - time.time()
+        try:
+            if self._l1_set(key, value, ttl):
+                self._record_store_time(key)
+                logger.debug(f"Promoted to L1: {key} (TTL: {ttl:.0f}s)")
+        except Exception as e:
+            logger.debug(f"L1 promotion failed: {e}")
 
     def set(
         self,
@@ -741,7 +914,8 @@ class CacheBackend:
         value : Any
             Value to cache (must be picklable for L2)
         expire : int, optional
-            TTL in seconds (overrides data_type default)
+            TTL in seconds (overrides data_type default). Applies to both
+            layers.
         tag : str, optional
             Tag for grouping related entries
         data_type : CacheDataType, optional
@@ -760,16 +934,21 @@ class CacheBackend:
         success = False
 
         # Determine TTL
-        ttl = expire or (self.config.get_ttl(data_type) if data_type else self.config.ttl)
+        if expire is not None:
+            ttl = expire
+        else:
+            ttl = self.config.get_ttl(data_type) if data_type else self.config.ttl
 
         try:
             # Write to L1 cache
             if layer in (None, CacheLayer.L1) and self.l1_cache is not None:
                 try:
-                    self.l1_cache[key] = value
-                    self._stats["l1"]["sets"] += 1
-                    logger.debug(f"L1 cache set: {key} (TTL: {ttl}s)")
-                    success = True
+                    if self._l1_set(key, value, ttl):
+                        self._stats["l1"]["sets"] += 1
+                        logger.debug(f"L1 cache set: {key} (TTL: {ttl}s)")
+                        success = True
+                    else:
+                        logger.debug(f"L1 cache skipped expired entry: {key} (TTL: {ttl}s)")
                 except Exception as e:
                     logger.warning(f"L1 cache set error for key {key}: {e}")
                     self._stats["l1"]["errors"] += 1
@@ -788,6 +967,9 @@ class CacheBackend:
                 except Exception as e:
                     logger.warning(f"L2 cache set error for key {key}: {e}")
                     self._stats["l2"]["errors"] += 1
+
+            if success:
+                self._record_store_time(key)
 
             # Track tag if provided
             if success and tag:
@@ -842,6 +1024,7 @@ class CacheBackend:
 
         # Remove from tag tracking if deleted
         if deleted:
+            self._store_times.pop(key, None)
             for tag, keys in list(self._tags.items()):
                 if key in keys:
                     keys.discard(key)
@@ -888,6 +1071,7 @@ class CacheBackend:
 
             # Clear tag tracking
             self._tags.clear()
+            self._store_times.clear()
 
             return success
 
@@ -972,9 +1156,10 @@ class CacheBackend:
                 l2_stats["size_limit_mb"] = self.config.l2_size_limit_mb
                 stats["layers"]["l2"] = l2_stats
 
-            # Overall stats (combined)
-            total_hits = sum(self._stats[layer]["hits"] for layer in ["l1", "l2"])
-            total_misses = sum(self._stats[layer]["misses"] for layer in ["l1", "l2"])
+            # Overall stats: one lookup counts once, however many layers it
+            # had to ask. Writes and deletes stay per-layer sums.
+            total_hits = self._overall_stats["hits"]
+            total_misses = self._overall_stats["misses"]
             total_sets = sum(self._stats[layer]["sets"] for layer in ["l1", "l2"])
             total_deletes = sum(self._stats[layer]["deletes"] for layer in ["l1", "l2"])
             total_errors = sum(self._stats[layer]["errors"] for layer in ["l1", "l2"])
@@ -1036,6 +1221,7 @@ class CacheBackend:
 
     def reset_stats(self) -> None:
         """Reset statistics counters for all layers."""
+        self._overall_stats = {"hits": 0, "misses": 0}
         self._stats = {
             "l1": {
                 "hits": 0,
@@ -1114,10 +1300,11 @@ class CacheBackend:
 
     def invalidate_older_than(self, seconds: int) -> int:
         """
-        Invalidate cache entries older than specified time.
+        Invalidate cache entries stored more than ``seconds`` ago.
 
-        Note: With TTLCache, entries are automatically expired based on TTL.
-        This method is provided for API compatibility but has limited functionality.
+        Entries expire on their own once their TTL runs out; this removes
+        entries that are still live but older than the given age, from every
+        layer.
 
         Parameters
         ----------
@@ -1127,19 +1314,34 @@ class CacheBackend:
         Returns
         -------
         int
-            Number of entries invalidated (always 0 with TTLCache as expiration is automatic)
+            Number of entries invalidated
+
+        Notes
+        -----
+        The store time of an entry is recorded when this backend writes or
+        promotes it. L2 entries written by another process or an earlier run
+        have no recorded store time here and are left to their TTL.
 
         Examples
         --------
         >>> cache.invalidate_older_than(3600)  # Remove entries > 1 hour old
         """
-        if not self.config.enabled or self.cache is None:
+        if not self.config.enabled:
             return 0
 
-        # TTLCache automatically handles expiration based on TTL
-        # No manual age-based invalidation is needed or possible
-        logger.info("Age-based invalidation not needed with TTLCache (automatic TTL expiration)")
-        return 0
+        cutoff = time.time() - seconds
+        stale_keys = [key for key, stored in self._store_times.items() if stored <= cutoff]
+
+        count = 0
+        for key in stale_keys:
+            if self.delete(key):
+                count += 1
+            else:
+                # Already gone (expired or evicted); stop tracking it.
+                self._store_times.pop(key, None)
+
+        logger.info(f"Invalidated {count} entries older than {seconds}s")
+        return count
 
     def warm_cache(
         self, entries: dict[str, Any], ttl: int | None = None, tag: str | None = None
@@ -1291,10 +1493,10 @@ class CacheBackend:
 
     def compact(self) -> bool:
         """
-        Compact cache storage to reclaim space.
+        Compact cache storage to reclaim space in every layer.
 
-        Note: With TTLCache, compaction is automatic as expired entries
-        are removed on access. This method is provided for API compatibility.
+        L1 drops its expired entries; L2 removes its expired rows and then
+        evicts entries until it is back under its size limit.
 
         Returns
         -------
@@ -1309,10 +1511,16 @@ class CacheBackend:
             return False
 
         try:
-            # TTLCache automatically removes expired entries on access
-            # Force iteration to trigger cleanup
+            # cachetools removes expired entries on access; force iteration
+            # to trigger the cleanup.
             _ = list(self.cache.keys())
-            logger.info("Cache compacted successfully (expired entries cleaned on access)")
+
+            if self.config.enable_l2 and self.l2_cache is not None:
+                removed = self.l2_cache.expire()
+                self.l2_cache.cull()
+                logger.debug(f"L2 compaction removed {removed} expired entries")
+
+            logger.info("Cache compacted successfully")
             return True
         except Exception as e:
             logger.error(f"Cache compact error: {e}")
@@ -1321,7 +1529,9 @@ class CacheBackend:
 
     def get_keys(self, pattern: str | None = None, limit: int = 1000) -> list[str]:
         """
-        Get cache keys, optionally filtered by pattern.
+        Get cache keys from every layer, optionally filtered by pattern.
+
+        L1 keys come first, then the L2 keys that are not already in L1.
 
         Parameters
         ----------
@@ -1340,18 +1550,32 @@ class CacheBackend:
         >>> cache.get_keys('search:*', limit=100)
         ['search:a1b2c3', 'search:d4e5f6', ...]
         """
-        if not self.config.enabled or self.cache is None:
+        if not self.config.enabled or self.l1_cache is None:
             return []
 
         try:
             import fnmatch
 
-            keys = []
-            for key in list(self.cache.keys()):
-                if pattern is None or fnmatch.fnmatch(key, pattern):
-                    keys.append(key)
-                    if len(keys) >= limit:
-                        break
+            keys: list[str] = []
+            seen: set[str] = set()
+
+            def collect(candidates: Any) -> bool:
+                """Add matching keys; return False once the limit is reached."""
+                for key in candidates:
+                    key = str(key)
+                    if key in seen:
+                        continue
+                    if pattern is None or fnmatch.fnmatch(key, pattern):
+                        keys.append(key)
+                        seen.add(key)
+                        if len(keys) >= limit:
+                            return False
+                return True
+
+            if collect(list(self.l1_cache.keys())) and (
+                self.config.enable_l2 and self.l2_cache is not None
+            ):
+                collect(list(self.l2_cache))
 
             return keys
         except Exception as e:
@@ -1375,6 +1599,8 @@ class CacheBackend:
 
             # Clear tag tracking
             self._tags.clear()
+            self._store_times.clear()
+            self._l1_pending_ttl.clear()
 
             logger.info("Multi-layer cache closed successfully")
 
@@ -1541,6 +1767,8 @@ def _normalize_single_value(value: Any) -> Any:
 __all__ = [
     "CacheConfig",
     "CacheBackend",
+    "CacheDataType",
+    "CacheLayer",
     "cached",
     "normalize_query_params",
     "CACHETOOLS_AVAILABLE",
