@@ -138,11 +138,11 @@ Present only when the article has the information:
 |---|---|---|
 | `id`, `label` | `str \| None` | `id` attribute and label of `<ref>` |
 | `citation_type` | `str \| None` | `element-citation` or `mixed-citation` |
-| `authors` | `str \| None` | All author names in one string, for example `"Bartel, DP"` |
-| `title` | `str \| None` | Title of the cited work; falls back to `source` when there is none |
+| `authors` | `str \| None` | All authors in one string, in citation order: people as `"Surname, Given names"`, collaborations as written, for example `"Johnson, MB, International DS-PNDM Consortium"`. Editors are left out |
+| `title` | `str \| None` | Title of the cited work: `<article-title>`, `<chapter-title>`, `<part-title>` or, for software and data, `<data-title>`; falls back to `source` when there is none |
 | `source` | `str \| None` | Journal or book title |
 | `year`, `volume`, `pages` | `str \| None` | Year, volume, page range |
-| `doi`, `pmid`, `pmcid` | `str \| None` | Identifiers |
+| `doi`, `pmid`, `pmcid` | `str \| None` | Identifiers, from `<pub-id>` or from the target of an identifier `<ext-link>` |
 | `raw_citation` | `str` | Only for some untagged citations: the citation text |
 
 ## Flat sections

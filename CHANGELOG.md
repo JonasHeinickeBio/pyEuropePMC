@@ -51,6 +51,31 @@ All notable changes to PyEuropePMC are documented here.
   alongside the metadata. `front` is added to `SectionType` in the LinkML
   schema. Code that relied on the old label needs to accept `front`.
 
+- **Reference authors are read in every JATS dialect.** PLOS lists a
+  `<mixed-citation>`'s contributors as bare `<name>` children, which were not
+  read, and the text pass that took over ran surname and initials together:
+  `"NewtonSI"` in all 53 references of PMC10775981. They now read
+  `"Newton, SI"`, and a chapter's editors, written after its title, are left
+  out. A `<collab>` or `<string-name>` among the authors is kept in place; the
+  4 collaboration authors of PMC11687933 were dropped.
+
+- **The citation text no longer overwrites tagged reference fields.** The pass
+  over a `<mixed-citation>`'s flattened text assigned volume, pages, DOI and
+  PMID even when the tagged elements had given them: `"385-430"` became `"385"`,
+  and a DOI followed by its PMID was read as `"10.1098/rstb.2001.091011545699"`
+  (4 references in PMC10775981). It now only fills fields that are empty.
+
+- **Identifiers in `<ext-link xlink:href>` are read.** BMC and Springer tag a
+  text-only citation's DOI, PMID and PMCID as empty `<ext-link>` elements with
+  the value in the link target, so every PMID was lost: 0 of 45 in PMC1764484.
+  A page range written with an en dash, "48:662–667", also lost its last page
+  in 43 references there.
+
+- **Software and dataset references are titled by their `<data-title>`**, not
+  by the repository in `<source>`: eLife's software citations were titled
+  "GitHub", "CRAN" and "Sourceforge". A book chapter's `<chapter-title>` or
+  `<part-title>` likewise comes before the book's title.
+
 ### 📚 Documentation
 
 - **The documentation matches the code again.** Audits of README.md and every

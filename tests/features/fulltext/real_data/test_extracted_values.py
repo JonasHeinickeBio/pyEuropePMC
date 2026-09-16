@@ -107,6 +107,19 @@ class TestAffiliationsAndFigures:
         assert len(document.parser.extract_figures()) == len(figs)
 
 
+XLINK_HREF = "{http://www.w3.org/1999/xlink}href"
+
+
+def _citations(document):
+    """(ref, citation) for each <ref> of the article's own reference list."""
+    for ref_elem in document.root.findall("./back//ref"):
+        for tag in ("element-citation", "mixed-citation", "nlm-citation", "citation"):
+            citation = ref_elem.find(f".//{tag}")
+            if citation is not None:
+                yield ref_elem, citation
+                break
+
+
 class TestReferences:
     def test_structured_citations_keep_their_own_title(self, document):
         """A <mixed-citation> with structure was regex-guessed and mangled."""
@@ -158,6 +171,98 @@ class TestReferences:
                     )
         if not checked:
             pytest.skip(f"{document.pmcid} has no multi-author structured citation")
+
+    def test_surname_and_given_names_are_kept_apart(self, document):
+        """PLOS lists bare <name> children, which came back as "NewtonSI"."""
+        checked = 0
+        references = {r.get("id"): r for r in document.parser.extract_references()}
+        for ref_elem, citation in _citations(document):
+            name = next(
+                (
+                    n
+                    for n in citation.iter("name")
+                    if n.findtext("surname") and n.findtext("given-names")
+                ),
+                None,
+            )
+            if name is None:
+                continue
+            checked += 1
+            expected = (
+                f"{normalise(name.findtext('surname'))}, {normalise(name.findtext('given-names'))}"
+            )
+            got = references.get(ref_elem.get("id"), {}).get("authors") or ""
+            assert expected in normalise(got), (
+                f"{document.pmcid} ref {ref_elem.get('id')}: {got!r}"
+            )
+        if not checked:
+            pytest.skip(f"{document.pmcid} has no citation with a <name>")
+
+    def test_tagged_pages_and_identifiers_are_not_overwritten(self, document):
+        """The text pass replaced "385-430" with "385" and ran a DOI into its PMID."""
+        checked = 0
+        references = {r.get("id"): r for r in document.parser.extract_references()}
+        for ref_elem, citation in _citations(document):
+            got = references.get(ref_elem.get("id"), {})
+            fpage, lpage = citation.findtext(".//fpage"), citation.findtext(".//lpage")
+            if fpage:
+                checked += 1
+                expected = f"{normalise(fpage)}-{normalise(lpage)}" if lpage else normalise(fpage)
+                assert got.get("pages") == expected, f"{document.pmcid} {ref_elem.get('id')}"
+            for kind in ("doi", "pmid"):
+                tagged = citation.findtext(f".//pub-id[@pub-id-type='{kind}']")
+                if tagged:
+                    checked += 1
+                    assert got.get(kind) == normalise(tagged), (
+                        f"{document.pmcid} {ref_elem.get('id')}"
+                    )
+        if not checked:
+            pytest.skip(f"{document.pmcid} has no tagged pages or identifiers in its references")
+
+    def test_identifiers_in_ext_link_targets_are_read(self, document):
+        """BMC puts a PMID only in <ext-link xlink:href>; 0 of 45 were found."""
+        checked = 0
+        references = {r.get("id"): r for r in document.parser.extract_references()}
+        for ref_elem, citation in _citations(document):
+            for link in citation.iter("ext-link"):
+                kind = {"pmid": "pmid", "pmcid": "pmcid", "doi": "doi"}.get(
+                    link.get("ext-link-type") or ""
+                )
+                if kind is None or citation.find(f".//pub-id[@pub-id-type='{kind}']") is not None:
+                    continue
+                target = normalise(link.text) or normalise(link.get(XLINK_HREF))
+                if not target:
+                    continue
+                checked += 1
+                got = references.get(ref_elem.get("id"), {}).get(kind)
+                assert got == target, f"{document.pmcid} {ref_elem.get('id')} {kind}: {got!r}"
+        if not checked:
+            pytest.skip(f"{document.pmcid} has no identifier <ext-link> in its references")
+
+    def test_collaboration_authors_are_kept(self, document):
+        checked = 0
+        references = {r.get("id"): r for r in document.parser.extract_references()}
+        for ref_elem, citation in _citations(document):
+            for collab in citation.findall(".//person-group[@person-group-type='author']/collab"):
+                checked += 1
+                got = references.get(ref_elem.get("id"), {}).get("authors") or ""
+                assert normalise("".join(collab.itertext())) in normalise(got)
+        if not checked:
+            pytest.skip(f"{document.pmcid} has no <collab> author in its references")
+
+    def test_software_and_data_are_titled_by_their_data_title(self, document):
+        """The title came back as the repository: "GitHub", "CRAN"."""
+        checked = 0
+        references = {r.get("id"): r for r in document.parser.extract_references()}
+        for ref_elem, citation in _citations(document):
+            data_title = citation.find(".//data-title")
+            if data_title is None or citation.find(".//article-title") is not None:
+                continue
+            checked += 1
+            got = references.get(ref_elem.get("id"), {}).get("title")
+            assert normalise(got) == normalise("".join(data_title.itertext()))
+        if not checked:
+            pytest.skip(f"{document.pmcid} has no <data-title> citation")
 
 
 class TestLicence:
