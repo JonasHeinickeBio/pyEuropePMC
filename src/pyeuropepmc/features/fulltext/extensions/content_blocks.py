@@ -23,6 +23,7 @@ of docling, pubmed_parser, and ncbijs/jats.
 from __future__ import annotations
 
 import contextlib
+import dataclasses
 from dataclasses import dataclass, field
 from enum import Enum
 import logging
@@ -31,7 +32,9 @@ from typing import Any, ClassVar
 from xml.etree import ElementTree as ET  # nosec B405
 
 from pyeuropepmc.features.fulltext.config.element_patterns import ElementPatterns
+from pyeuropepmc.features.fulltext.extensions.mathml import MathMLConverter, serialize_mathml
 from pyeuropepmc.features.fulltext.parsers.base_parser import BaseParser
+from pyeuropepmc.features.fulltext.utils.table_grid import TableGrid, build_table_grid, find_table
 from pyeuropepmc.features.fulltext.utils.xml_helpers import BLOCK_LEVEL_TAGS, XMLHelper
 
 logger = logging.getLogger(__name__)
@@ -635,10 +638,17 @@ class ContentBlockExtractor(BaseParser):
         "media": "media",
     }
 
-    # A <table-wrap>, <table> or <fig> inside a <p> is not part of the paragraph's
-    # prose. Folding it into the paragraph block lost its rows and caption and ran
-    # its cells together, so _handle_paragraph splits the paragraph around it.
-    PARAGRAPH_SPLIT_TAGS: ClassVar[frozenset[str]] = frozenset({"table-wrap", "table", "fig"})
+    # A <table-wrap>, <table>, <fig> or <disp-formula> inside a <p> is not part
+    # of the paragraph's prose. Folding it into the paragraph block lost its
+    # rows, caption or MathML and ran its text into the sentence around it, so
+    # _handle_paragraph splits the paragraph around it.
+    #
+    # A display formula is set on its own line by every renderer of the source
+    # document; leaving it inline produced sentences like "models of the form
+    # y˙=F(y(t),θ,t,…), (1) with N-dimensional state vector".
+    PARAGRAPH_SPLIT_TAGS: ClassVar[frozenset[str]] = frozenset(
+        {"table-wrap", "table", "fig", "disp-formula"}
+    )
 
     def __init__(
         self,
@@ -1480,34 +1490,93 @@ class ContentBlockExtractor(BaseParser):
         return []
 
     def _handle_formula(self, elem: ET.Element) -> list[ContentBlock]:
-        """Handle <disp-formula> and <inline-formula> elements."""
+        """Handle ``<disp-formula>`` and ``<inline-formula>`` elements.
+
+        Three renderings of the same expression, because no one of them serves
+        every consumer:
+
+        ``text``
+            the formula as a reader sees it, so a rendering that only knows
+            about plain text still carries the equation;
+        ``tex``
+            LaTeX, from the MathML by way of :class:`MathMLConverter`, or from
+            an author-supplied ``<tex-math>`` when the document ships one;
+        ``mathml``
+            the MathML itself, in the default MathML namespace.
+
+        ``tex`` used to hold the flattened plain text - "y˙=F(y(t),θ,t,…)" -
+        which is not LaTeX and compiles as nothing.
+        """
         label = ""
         label_elem = elem.find("label")
         if label_elem is not None:
             label = XMLHelper.get_text_content(label_elem)
 
-        # Try to extract MathML first
         mathml_elem = elem.find(".//mml:math", self._get_namespace_map())
+        if mathml_elem is None:
+            mathml_elem = next(
+                (e for e in elem.iter() if self._get_local_tag(e.tag) == "math"), None
+            )
+
         tex = ""
         mathml_str = ""
-
         if mathml_elem is not None:
-            mathml_str = ET.tostring(mathml_elem, encoding="unicode")
-            # Basic MathML -> plain text fallback
-            tex = XMLHelper.get_text_content(mathml_elem)
+            mathml_str = serialize_mathml(mathml_elem)
+            with contextlib.suppress(Exception):
+                tex = MathMLConverter().convert_to_latex(mathml_elem).strip()
 
-        # Fallback to alt-text or plain text
-        if not tex.strip():
-            alt_text = elem.find("alt-text")
-            if alt_text is not None:
-                tex = XMLHelper.get_text_content(alt_text)
-            else:
-                tex = XMLHelper.get_text_content(elem)
+        # A <tex-math> is the author's own LaTeX and beats anything derived.
+        tex_math = next((e for e in elem.iter() if self._get_local_tag(e.tag) == "tex-math"), None)
+        if tex_math is not None and (tex_math.text or "").strip():
+            tex = (tex_math.text or "").strip()
 
-        block = ContentBlock.formula(tex=tex.strip(), label=label)
+        text = self._formula_text(elem)
+        if not tex:
+            tex = text
+
+        block = ContentBlock.formula(tex=tex, label=label)
+        block.text = text
         if mathml_str:
             block.mathml = mathml_str
+        uri = self._formula_graphic_uri(elem)
+        if uri:
+            block.uri = uri
+        if not text and not tex:
+            block.parse_status = "partial"
+            block.quality_score = 0.5
+            block.parser_notes = ["formula carries neither text nor MathML"]
         return [block]
+
+    def _formula_text(self, elem: ET.Element) -> str:
+        """The formula as plain text, without its label or any alt text.
+
+        The label is carried separately, and repeating it here would put "(1)"
+        into the middle of the equation.
+        """
+        parts: list[str] = []
+        for child in elem:
+            tag = self._get_local_tag(child.tag)
+            if tag in ("label", "alt-text", "object-id", "permissions"):
+                continue
+            parts.append(XMLHelper.get_text_content(child))
+            if child.tail:
+                parts.append(child.tail)
+        text = " ".join(" ".join(p.split()) for p in parts if p and p.strip())
+        if text.strip():
+            return text.strip()
+        alt_text = elem.find("alt-text")
+        if alt_text is not None:
+            return XMLHelper.get_text_content(alt_text)
+        return XMLHelper.get_text_content(elem)
+
+    def _formula_graphic_uri(self, elem: ET.Element) -> str:
+        """The rendered image a publisher ships alongside the MathML, if any."""
+        for child in elem.iter():
+            if self._get_local_tag(child.tag) == "graphic":
+                href = self._get_xlink_href(child)
+                if href:
+                    return str(href)
+        return ""
 
     def _handle_figure(self, elem: ET.Element) -> list[ContentBlock]:
         """Handle <fig> elements with inline-aware caption extraction."""
@@ -1568,37 +1637,97 @@ class ContentBlockExtractor(BaseParser):
                     blocks.append(ContentBlock.unknown_block(jats_tag=tag, text=text.strip()))
         return blocks
 
-    def _extract_table_rows(
-        self, elem: ET.Element
-    ) -> tuple[list[list[str]], list[list[list[dict[str, Any]]]]]:
-        """Extract cell rows and inlines from a table element."""
-        rows: list[list[str]] = []
-        cell_inlines: list[list[list[dict[str, Any]]]] = []
-        for tbody in elem.iter():
-            if self._get_local_tag(tbody.tag) in ("tbody", "thead"):
-                for tr in tbody:
-                    if self._get_local_tag(tr.tag) != "tr":
-                        continue
-                    row_cells: list[str] = []
-                    row_inlines: list[list[dict[str, Any]]] = []
-                    for cell in tr:
-                        tag = self._get_local_tag(cell.tag)
-                        if tag in ("td", "th"):
-                            cell_parts, cell_ils, _ = self._extract_inlines_recursive(cell, 0)
-                            cell_text = "".join(cell_parts).strip()
-                            if not cell_text:
-                                cell_text = XMLHelper.get_text_content(cell).strip()
-                            row_cells.append(cell_text)
-                            if cell_ils:
-                                row_inlines.append([i.to_dict() for i in cell_ils])
-                    if row_cells:
-                        rows.append(row_cells)
-                        if row_inlines:
-                            cell_inlines.append(row_inlines)
-        return rows, cell_inlines
+    #: Parts of a <table-wrap> the table block represents in its own fields.
+    #: Text anywhere else in the wrapper is appended to the block's ``text``.
+    _TABLE_OWN_PARTS: ClassVar[frozenset[str]] = frozenset(
+        {
+            "label",
+            "caption",
+            "table",
+            "alternatives",
+            "table-wrap-foot",
+            "object-id",
+            "graphic",
+            # the rows of a bare <table>, which the grid already holds
+            "thead",
+            "tbody",
+            "tfoot",
+            "tr",
+            "colgroup",
+            "col",
+        }
+    )
+
+    def _text_with_inlines(self, elem: ET.Element) -> tuple[str, list[InlineElement]]:
+        """An element's text, whitespace collapsed, with inlines indexing into it."""
+        parts, inlines, _ = self._extract_inlines_recursive(elem, 0)
+        return self._collapse_whitespace("".join(parts), inlines)
+
+    @staticmethod
+    def _collapse_whitespace(
+        raw: str, inlines: list[InlineElement]
+    ) -> tuple[str, list[InlineElement]]:
+        """Collapse runs of whitespace in ``raw`` and move ``inlines`` with the text.
+
+        Positions were counted in ``raw``. Collapsing without remapping them is
+        how the offsets of a table's inlines came to point at the wrong
+        characters, or past the end of the text altogether.
+        """
+        out: list[str] = []
+        new_index: list[int] = [-1] * len(raw)
+        pending_space = False
+        for index, char in enumerate(raw):
+            if char.isspace():
+                pending_space = bool(out)
+                continue
+            if pending_space:
+                out.append(" ")
+                pending_space = False
+            new_index[index] = len(out)
+            out.append(char)
+        text = "".join(out)
+
+        moved: list[InlineElement] = []
+        for inline in inlines:
+            span = range(max(0, inline.position), min(len(raw), inline.position + inline.length))
+            placed = [new_index[i] for i in span if new_index[i] >= 0]
+            if not placed:
+                continue
+            inline.position = placed[0]
+            inline.length = placed[-1] + 1 - placed[0]
+            inline.text = text[inline.position : inline.position + inline.length]
+            moved.append(inline)
+        return text, moved
 
     def _handle_table(self, elem: ET.Element) -> list[ContentBlock]:
-        """Handle <table-wrap> and <table> elements with cell structure."""
+        """Handle ``<table-wrap>`` and ``<table>`` elements.
+
+        The block carries:
+
+        ``rows``
+            header rows first, then body rows, each as wide as the table. A
+            spanning cell's text stands at its top-left position; the other
+            positions it covers hold ``""``.
+        ``metadata["header_rows"]``
+            how many of ``rows`` are header rows.
+        ``metadata["spans"]``, ``metadata["cell_graphics"]``
+            ``{row, column, rowspan, colspan}`` per spanning cell, and
+            ``{row, column, uri}`` per image in a cell.
+        ``metadata["footer"]``
+            the text of ``<table-wrap-foot>``.
+        ``metadata["cell_inlines"]``
+            ``{row, column, inlines}`` per cell with inline elements; positions
+            there index the cell's own text.
+        ``text``, ``inlines``
+            label, caption, cells and footer in one string, and every inline
+            element of the table with its position in that string.
+
+        Rows used to be read cell by cell with ``colspan`` and ``rowspan``
+        ignored, so every cell after a spanning one sat in the wrong column;
+        the footer and the boundary between header and body were not recorded
+        at all; and ``inlines`` held cell-relative positions against a ``text``
+        they did not index.
+        """
         label = ""
         label_elem = elem.find("label")
         if label_elem is not None:
@@ -1608,49 +1737,110 @@ class ContentBlockExtractor(BaseParser):
         caption_inlines: list[InlineElement] = []
         caption_elem = elem.find("caption")
         if caption_elem is not None:
-            caption_parts, caption_il_dicts, _ = self._extract_inlines_recursive(caption_elem, 0)
-            caption = "".join(caption_parts).strip()
-            caption_inlines = caption_il_dicts
-            if not caption:
-                caption = XMLHelper.get_text_content(caption_elem)
+            caption, caption_inlines = self._text_with_inlines(caption_elem)
 
-        text = XMLHelper.get_text_content(elem).strip()
+        # Cell text and inlines are computed once per cell, and the grid is laid
+        # out from the same text so the two cannot disagree.
+        per_cell: dict[int, tuple[str, list[InlineElement]]] = {}
 
-        rows, cell_inlines = self._extract_table_rows(elem)
+        def cell_text(cell: ET.Element) -> str:
+            text, inlines = self._text_with_inlines(cell)
+            per_cell[id(cell)] = (text, inlines)
+            return text
 
-        # Extract inlines from table-wrap-foot (fn elements with inline formatting)
-        foot_inlines: list[InlineElement] = []
-        for twf in elem.iter():
-            if self._get_local_tag(twf.tag) == "table-wrap-foot":
-                for fn in twf:
-                    if self._get_local_tag(fn.tag) == "fn":
-                        fn_parts, fn_ils, _ = self._extract_inlines_recursive(fn, 0)
-                        foot_inlines.extend(fn_ils)
+        table = find_table(elem)
+        grid = build_table_grid(table, cell_text) if table is not None else None
 
-        block = ContentBlock.table_block(label=label, caption=caption, text=text, rows=rows)
-        # Aggregate all inlines: cell inlines + caption inlines + foot inlines
-        all_inlines: list[InlineElement] = list(caption_inlines) + list(foot_inlines)
-        if cell_inlines:
-            block.metadata = block.metadata or {}
-            block.metadata["cell_inlines"] = cell_inlines
-            for row in cell_inlines:
-                for cell_inline_list in row:
-                    if isinstance(cell_inline_list, list):
-                        for cell_inline_dict in cell_inline_list:
-                            if isinstance(cell_inline_dict, dict):
-                                all_inlines.append(
-                                    InlineElement(
-                                        type=InlineElementType(
-                                            cell_inline_dict.get("type", "unknown_inline")
-                                        ),
-                                        text=cell_inline_dict.get("text", ""),
-                                        position=cell_inline_dict.get("position", 0),
-                                        length=cell_inline_dict.get("length", 0),
-                                    )
-                                )
+        footer_parts = [
+            self._text_with_inlines(foot)
+            for foot in elem
+            if self._get_local_tag(foot.tag) == "table-wrap-foot"
+        ]
+
+        # The block's text is assembled from the same parts the fields hold, so
+        # every inline can be given its offset in it.
+        cell_pieces, cell_inline_rows = self._table_cell_pieces(grid, per_cell)
+        others = [
+            self._text_with_inlines(child)
+            for child in elem
+            if self._get_local_tag(child.tag) not in self._TABLE_OWN_PARTS
+        ]
+        text, all_inlines = self._join_pieces(
+            [(label, []), (caption, caption_inlines), *cell_pieces, *footer_parts, *others]
+        )
+
+        block = ContentBlock.table_block(
+            label=label,
+            caption=caption,
+            text=text,
+            rows=grid.rows if grid is not None else [],
+        )
+        footer = " ".join(part for part, _ in footer_parts if part)
+        block.metadata = self._table_metadata(grid, footer, cell_inline_rows)
         if all_inlines:
             block.inlines = all_inlines
         return [block]
+
+    @staticmethod
+    def _table_cell_pieces(
+        grid: TableGrid | None,
+        per_cell: dict[int, tuple[str, list[InlineElement]]],
+    ) -> tuple[list[tuple[str, list[InlineElement]]], list[dict[str, Any]]]:
+        """Each placed cell's text and inlines in reading order, and its inline record."""
+        pieces: list[tuple[str, list[InlineElement]]] = []
+        records: list[dict[str, Any]] = []
+        if grid is None:
+            return pieces, records
+        for cell in sorted(grid.cells, key=lambda c: (c.row, c.column)):
+            text, inlines = per_cell.get(id(cell.element), (cell.text, []))
+            # An image-only cell has no text of its own, only its reference.
+            pieces.append((text or cell.text, inlines))
+            if inlines:
+                records.append(
+                    {
+                        "row": cell.row,
+                        "column": cell.column,
+                        "inlines": [inline.to_dict() for inline in inlines],
+                    }
+                )
+        return pieces, records
+
+    @staticmethod
+    def _join_pieces(
+        pieces: list[tuple[str, list[InlineElement]]],
+    ) -> tuple[str, list[InlineElement]]:
+        """Join texts with single spaces, re-basing each inline onto the joined text."""
+        texts: list[str] = []
+        inlines: list[InlineElement] = []
+        offset = 0
+        for text, own in pieces:
+            if not text:
+                continue
+            if texts:
+                offset += 1  # the separating space
+            inlines.extend(
+                dataclasses.replace(inline, position=offset + inline.position) for inline in own
+            )
+            texts.append(text)
+            offset += len(text)
+        return " ".join(texts), inlines
+
+    @staticmethod
+    def _table_metadata(
+        grid: TableGrid | None, footer: str, cell_inline_rows: list[dict[str, Any]]
+    ) -> dict[str, Any]:
+        metadata: dict[str, Any] = {}
+        if grid is not None:
+            metadata["header_rows"] = grid.header_row_count
+            if spans := grid.spans():
+                metadata["spans"] = spans
+            if graphics := grid.cell_graphics():
+                metadata["cell_graphics"] = graphics
+        if footer:
+            metadata["footer"] = footer
+        if cell_inline_rows:
+            metadata["cell_inlines"] = cell_inline_rows
+        return metadata
 
     def _handle_code(self, elem: ET.Element) -> list[ContentBlock]:
         """Handle <code> and <preformat> elements."""
@@ -2151,15 +2341,12 @@ class ContentBlockExtractor(BaseParser):
 
     @staticmethod
     def _convert_inline_formula(elem: ET.Element) -> str:
-        """Attempt to extract LaTeX from an inline formula element."""
-        # Try MathML first
+        """Extract LaTeX from an inline formula element."""
         mathml_elem = elem.find(".//mml:math", {"mml": "http://www.w3.org/1998/Math/MathML"})
-        if mathml_elem is not None:
-            with contextlib.suppress(ImportError, Exception):
-                from pyeuropepmc.features.fulltext.extensions.mathml import MathMLConverter
-
-                converter = MathMLConverter(inline=True)
-                return converter.convert_to_latex(mathml_elem)
-
-        # Fallback: extract plain text
-        return XMLHelper.get_text_content(mathml_elem) if mathml_elem is not None else ""
+        if mathml_elem is None:
+            return ""
+        with contextlib.suppress(Exception):
+            latex = MathMLConverter(inline=True).convert_to_latex(mathml_elem).strip()
+            if latex:
+                return latex
+        return XMLHelper.get_text_content(mathml_elem)

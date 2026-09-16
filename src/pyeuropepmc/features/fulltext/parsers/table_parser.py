@@ -10,6 +10,7 @@ from xml.etree import ElementTree as ET  # nosec B405
 
 from pyeuropepmc.features.fulltext.config.element_patterns import ElementPatterns
 from pyeuropepmc.features.fulltext.parsers.base_parser import BaseParser
+from pyeuropepmc.features.fulltext.utils.table_grid import build_table_grid, find_table
 
 logger = logging.getLogger(__name__)
 
@@ -28,7 +29,25 @@ class TableParser(BaseParser):
         Returns
         -------
         list[dict[str, Any]]
-            List of table dictionaries with id, label, caption, headers, and rows
+            One dict per ``<table-wrap>``:
+
+            ``id``, ``label``, ``caption``, ``footer``
+                as in the document; ``None`` where absent.
+            ``headers``
+                one label per column, combined from every header row (see
+                :meth:`TableGrid.header_labels`); ``[]`` without a header row.
+            ``header_rows``, ``rows``
+                the header rows and the body rows, each as wide as the table.
+                A spanning cell's text stands at its top-left position and the
+                positions it also covers hold ``""``.
+            ``spans``
+                ``{row, column, rowspan, colspan}`` for each cell covering more
+                than one position; ``row`` counts ``header_rows`` first.
+            ``cell_graphics``
+                ``{row, column, uri}`` for each image inside a cell. A cell
+                holding nothing but an image reads ``[graphic: <uri>]``.
+            ``column_groups``
+                only when the table has ``<colgroup>`` markup.
         """
         self._require_root()
 
@@ -58,29 +77,32 @@ class TableParser(BaseParser):
         table_data["label"] = self._extract_first_text_from_element(table_wrap, label_patterns)
         table_data["caption"] = self._extract_first_text_from_element(table_wrap, caption_patterns)
 
-        # Extract table footer if present
-        footer_patterns = {"table_wrap_foot": ".//table-wrap-foot"}
-        table_data["footer"] = self._extract_first_text_from_element(table_wrap, footer_patterns)
+        # Every footer, not only the first: notes and abbreviation keys can
+        # sit in separate <table-wrap-foot> elements.
+        footers = self._extract_flat_texts(
+            table_wrap, ".//table-wrap-foot", filter_empty=True, use_full_text=True
+        )
+        table_data["footer"] = " ".join(footers) if footers else None
 
         # Extract column group information
         colgroups = self._extract_column_groups(table_wrap)
         if colgroups:
             table_data["column_groups"] = colgroups
 
-        # Find table element
-        table_elem = None
-        for elem in table_wrap.iter():
-            if elem.tag == "table":
-                table_elem = elem
-                break
-
+        table_elem = find_table(table_wrap)
         if table_elem is not None:
-            headers, rows = self._parse_table(table_elem)
-            table_data["headers"] = headers
-            table_data["rows"] = rows
+            grid = build_table_grid(table_elem)
+            table_data["headers"] = grid.header_labels()
+            table_data["header_rows"] = grid.header_rows
+            table_data["rows"] = grid.body_rows
+            table_data["spans"] = grid.spans()
+            table_data["cell_graphics"] = grid.cell_graphics()
         else:
             table_data["headers"] = []
+            table_data["header_rows"] = []
             table_data["rows"] = []
+            table_data["spans"] = []
+            table_data["cell_graphics"] = []
 
         return table_data
 
@@ -128,47 +150,3 @@ class TableParser(BaseParser):
             if texts:
                 return texts[0]
         return None
-
-    def _parse_table(self, table_elem: ET.Element) -> tuple[list[str], list[list[str]]]:
-        """Parse a table element into headers and rows."""
-        headers = self._extract_table_headers(table_elem)
-        rows = self._extract_table_rows(table_elem)
-        return headers, rows
-
-    def _find_element_by_tag(self, parent: ET.Element, tag: str) -> ET.Element | None:
-        """Find the first element with a specific tag."""
-        for elem in parent.iter():
-            if elem.tag == tag:
-                return elem
-        return None
-
-    def _extract_table_headers(self, table_elem: ET.Element) -> list[str]:
-        """Extract headers from table's thead element."""
-        thead = self._find_element_by_tag(table_elem, "thead")
-        if thead is None:
-            return []
-
-        header_row = self._find_element_by_tag(thead, "tr")
-        if header_row is None:
-            return []
-
-        return self._extract_flat_texts(
-            header_row, ".//th", filter_empty=False, use_full_text=True
-        )
-
-    def _extract_table_rows(self, table_elem: ET.Element) -> list[list[str]]:
-        """Extract rows from table's tbody element."""
-        rows: list[list[str]] = []
-        tbody = self._find_element_by_tag(table_elem, "tbody")
-        if tbody is None:
-            return rows
-
-        for tr in tbody.iter():
-            if tr.tag == "tr":
-                row_data = self._extract_flat_texts(
-                    tr, "td", filter_empty=False, use_full_text=True
-                )
-                if row_data:
-                    rows.append(row_data)
-
-        return rows

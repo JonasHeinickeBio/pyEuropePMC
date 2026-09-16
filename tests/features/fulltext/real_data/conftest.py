@@ -16,7 +16,7 @@ FIXTURE_DIR = pathlib.Path(__file__).resolve().parents[3] / "fixtures" / "fullte
 SENTENCE = re.compile(r"(?<=[.!?])\s+")
 
 #: Rendered as blocks of their own even where JATS places them inside a <p>.
-OWN_BLOCKS = frozenset({"fig", "table-wrap", "table"})
+OWN_BLOCKS = frozenset({"fig", "table-wrap", "table", "disp-formula"})
 
 
 def squash(text: str | None) -> str:
@@ -28,31 +28,44 @@ def normalise(text: str | None) -> str:
     return " ".join((text or "").split())
 
 
-def paragraph_text(para: ET.Element) -> str:
-    """Text of ``para`` with any figure or table nested in it left out.
+def paragraph_segments(para: ET.Element) -> list[str]:
+    """The runs of prose in ``para``, cut where a block of its own interrupts.
 
-    Joining a nested <fig> onto the paragraph around it made "sentences" of
-    the paragraph's last sentence run into the figure label ("...malignant
-    cells.15,16 Fig.") and of a label run into its caption ("Figure 1.
-    Affinity..."). They matched only because 2.2.1 folded the figure into the
-    paragraph. The figure's own <p> are still counted where they stand, as for
-    a figure outside a paragraph; test_nested_blocks.py checks the rest of it.
+    JATS lets a <fig>, <table-wrap> or <disp-formula> sit inside a <p>. Each
+    is rendered as a block in its own right, so the paragraph around it is
+    genuinely two runs of prose, not one: PMC10775981 writes "models of the
+    form", then equation (1), then "with N-dimensional state-vector y". No
+    correct rendering can place those two halves next to each other, so they
+    are checked as separate runs rather than joined.
+
+    Joining them across the gap is what the earlier version did, and it also
+    made "sentences" of a paragraph's last sentence run into a figure label
+    ("...malignant cells.15,16 Fig.") and of a label run into its caption
+    ("Figure 1. Affinity..."). They matched only because 2.2.1 folded the
+    figure into the paragraph. The blocks' own text is checked in
+    test_nested_blocks.py and test_formulas.py.
     """
+    segments: list[str] = []
     parts: list[str] = []
+
+    def cut() -> None:
+        segments.append("".join(parts))
+        parts.clear()
 
     def walk(node: ET.Element) -> None:
         if node.text:
             parts.append(node.text)
         for child in node:
             if child.tag in OWN_BLOCKS:
-                parts.append(" ")
+                cut()
             else:
                 walk(child)
             if child.tail:
                 parts.append(child.tail)
 
     walk(para)
-    return "".join(parts)
+    cut()
+    return [s for s in segments if s.strip()]
 
 
 def sentences(element: ET.Element) -> dict[str, int]:
@@ -64,11 +77,12 @@ def sentences(element: ET.Element) -> dict[str, int]:
     """
     counts: dict[str, int] = {}
     for para in element.findall(".//p"):
-        raw = normalise(paragraph_text(para))
-        for part in SENTENCE.split(raw):
-            key = squash(part)
-            if len(key) > 60:
-                counts[key] = counts.get(key, 0) + 1
+        for segment in paragraph_segments(para):
+            raw = normalise(segment)
+            for part in SENTENCE.split(raw):
+                key = squash(part)
+                if len(key) > 60:
+                    counts[key] = counts.get(key, 0) + 1
     return counts
 
 

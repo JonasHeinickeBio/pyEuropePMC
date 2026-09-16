@@ -34,6 +34,87 @@ All notable changes to PyEuropePMC are documented here.
 
 ### 🐛 Bug Fixes
 
+- **A display formula inside a paragraph gets a block of its own.** JATS allows
+  a `<disp-formula>` inside a `<p>`, and PLOS always writes one that way.
+  `get_full_text_sections_structured()` flattened it into the sentence that
+  introduced it: PMC10775981 has eleven display formulas and produced no formula
+  block at all, only paragraphs reading "models of the form y˙=F(y(t),θ,t,…), (1)
+  with N-dimensional state-vector y". The paragraph is now split around the
+  formula, as it already was around a table or figure. `to_plaintext()`,
+  `to_markdown()` and `get_full_text_sections()` render the formula on a line of
+  its own, after the section's paragraphs.
+
+- **A formula block carries LaTeX in `tex`, not the flattened text.** `tex` held
+  whatever `get_text_content()` made of the MathML - "y˙=F(y(t),θ,t,…)" - which
+  compiles as nothing. It now holds LaTeX converted from the MathML, or the
+  document's own `<tex-math>` where it ships one. The plain text moved to `text`,
+  so a consumer that only reads text still gets the equation, and the equation
+  number stays in `label` instead of being run into the expression. The
+  publisher's rendered image, where there is one, is kept in `uri`.
+
+- **`MathMLConverter` reads namespaced MathML.** `_handle_mtable` looked for rows
+  with `findall("mtr")`, which matches nothing once the document declares the
+  MathML namespace - which every Europe PMC document does. Every `<mtable>`
+  converted to the empty string, and with it every PLOS display formula, since
+  they all wrap their content in a one-row table. Rows are found by local name
+  now, and a one-cell table unwraps instead of becoming a 1x1 `array`. Array rows
+  are separated by `\\`, not by a newline, which is not a row separator in LaTeX.
+
+- **`MathMLConverter` writes accents, scripts and symbols correctly.** An
+  `<mover>` over a combining mark is an accent, so `η̄` is `\bar{\eta}` rather than
+  `{\eta}^{¯}`, and `ẋ` is `\dot{x}`; `<munder>`/`<mover>` on anything else are
+  `\underset`/`\overset`, not subscripts; limits on a big operator stay
+  `\sum_{j=1}^{N}`. Greek letters and mathematical symbols become LaTeX commands
+  instead of Unicode characters, `mathvariant` is kept (`\mathbf{y}`, not
+  `\text{y}`), an author's `<annotation encoding="application/x-tex">` wins over
+  anything derived, `<mfenced>` and `<mspace>` are handled, and a base is braced
+  only where the script would otherwise mis-bind. Spacing follows the operator:
+  `x + y`, but `(x)` and `\theta,`. Fences go through a delimiter table, so
+  `<mfenced open="{">` is `\left\{`, not the error `\left{`; styled letters
+  such as `ℝ` or a mathematical bold `x` become `\mathbb{R}` and `\mathbf{x}`;
+  LaTeX's special characters are escaped; and an explicit space at the end of a
+  group no longer turns into a backslash that escapes the closing brace.
+  Measured with pdflatex on 1,654 formulas from 32 open-access papers, 711
+  compiled and 275 were empty before; 1,650 compile now. The other four use a
+  character outside mathematics, such as a Latin "ꝏ" for infinity.
+
+- **`extract_tables()` finds header rows whose cells are `<td>`.** Header
+  labels were read from `<th>` cells only, so a `<thead>` tagged with `<td>` -
+  as many journals do - gave `headers == []`: all five tables of PMC1764484,
+  both of PMC3359999. Every header row is read now, not only the first, and
+  `headers` has one label per column, combined top to bottom
+  ("Inputparameter 1 / A: Composition / wt.%"). The rows themselves are in the
+  new `header_rows`. A `<th>` in a body row, which was dropped, is kept.
+
+- **Tables are laid out with their `colspan` and `rowspan`.** Cells were read
+  in document order with both attributes ignored, so every cell after a
+  spanning one moved into the wrong column. In PMC12311175's Table 4 a drug's
+  name and mechanism span every row of its trials, and 110 of the 120 body rows
+  came back two cells short, their values under the wrong headers. Every row of
+  `extract_tables()` and of the structured `table` block is now as wide as the
+  table, with a spanning cell's text at its top-left position and `""` at the
+  others; `spans` records which cells span.
+
+- **The structured `table` block records its footer and its header rows.**
+  `metadata["footer"]` holds the `<table-wrap-foot>` text and
+  `metadata["header_rows"]` how many of `rows` are header rows; neither was
+  recorded. A cell holding only an image - PMC5393345 draws six compound
+  structures that way - reads `[graphic: <file>]` instead of `""`, in both
+  outputs, and `cell_graphics` lists every image in a cell.
+
+- **A table block's inline positions index its `text`.** They were positions
+  within each cell, stored against the text of the whole table: 207 of 207 in
+  PMC1764484 pointed at the wrong characters. `metadata["cell_inlines"]` now
+  names the cell each entry belongs to (`{row, column, inlines}`); it was a
+  list of lists that skipped cells without inlines, so no entry could be traced
+  back to its cell.
+
+- **A formula block's `mathml` is serialized in the MathML namespace.**
+  `ET.tostring` invents a prefix for a namespace it was not told about, so the
+  MathML came back as `<ns0:math xmlns:ns0="...">`. It now reads
+  `<math xmlns="http://www.w3.org/1998/Math/MathML">`, the form a renderer
+  expects.
+
 - **A table or figure inside a paragraph gets a block of its own.** JATS
   allows a `<table-wrap>` or `<fig>` inside a `<p>`, and
   `get_full_text_sections_structured()` folded it into the paragraph block:
