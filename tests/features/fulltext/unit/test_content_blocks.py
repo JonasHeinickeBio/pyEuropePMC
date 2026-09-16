@@ -886,3 +886,99 @@ class TestFormulaBlockFields:
         block = extractor._handle_formula(_elem("<disp-formula/>"))[0]
         assert block.parse_status == "partial"
         assert block.parser_notes
+
+
+class TestTableBlockStructure:
+    XML = (
+        '<table-wrap xmlns:xlink="http://www.w3.org/1999/xlink"><label>Table 1</label>'
+        "<caption><p>Doses of <italic>drug</italic></p></caption>"
+        "<table><thead>"
+        '<tr><td rowspan="2">Name</td><td colspan="2">Dose</td></tr>'
+        "<tr><td>low</td><td>high</td></tr>"
+        "</thead><tbody>"
+        '<tr><td>A <xref ref-type="bibr" rid="r1">[1]</xref></td><td>1</td><td>2</td></tr>'
+        '<tr><td><graphic xlink:href="s.jpg"/></td><td>3</td><td>4</td></tr>'
+        "</tbody></table>"
+        "<table-wrap-foot><fn><p>Doses in <bold>mg</bold>.</p></fn></table-wrap-foot>"
+        "</table-wrap>"
+    )
+
+    def _block(self):
+        return _extractor("<root/>")._handle_table(_elem(self.XML))[0]
+
+    def test_rows_are_laid_out_with_spans(self):
+        assert self._block().rows == [
+            ["Name", "Dose", ""],
+            ["", "low", "high"],
+            ["A [1]", "1", "2"],
+            ["[graphic: s.jpg]", "3", "4"],
+        ]
+
+    def test_header_rows_are_marked(self):
+        assert self._block().metadata["header_rows"] == 2
+
+    def test_spans_and_graphics_are_recorded(self):
+        metadata = self._block().metadata
+        assert metadata["spans"] == [
+            {"row": 0, "column": 0, "rowspan": 2, "colspan": 1},
+            {"row": 0, "column": 1, "rowspan": 1, "colspan": 2},
+        ]
+        assert metadata["cell_graphics"] == [{"row": 3, "column": 0, "uri": "s.jpg"}]
+
+    def test_footer_is_recorded(self):
+        assert self._block().metadata["footer"] == "Doses in mg."
+
+    def test_every_inline_indexes_the_block_text(self):
+        """Cell-relative offsets were stored against the whole table's text."""
+        block = self._block()
+        assert {i.type.value for i in block.inlines} >= {"italic", "xref", "bold"}
+        for inline in block.inlines:
+            assert block.text[inline.position : inline.position + inline.length] == inline.text
+
+    def test_cell_inlines_say_which_cell_they_belong_to(self):
+        cell_inlines = self._block().metadata["cell_inlines"]
+        assert cell_inlines == [
+            {
+                "row": 2,
+                "column": 0,
+                "inlines": [
+                    {
+                        "type": "xref",
+                        "text": "[1]",
+                        "position": 2,
+                        "length": 3,
+                        "ref_type": "bibr",
+                        "target_id": "r1",
+                    }
+                ],
+            }
+        ]
+
+    def test_text_holds_label_caption_cells_and_footer(self):
+        assert self._block().text == (
+            "Table 1 Doses of drug Name Dose low high A [1] 1 2 [graphic: s.jpg] 3 4 Doses in mg."
+        )
+
+
+class TestBareTableBlock:
+    def test_a_bare_table_holds_its_cells_once(self):
+        """Without a <table-wrap>, the rows were appended to the text a second time."""
+        xml = "<table><caption><p>Sample</p></caption><tr><td>a</td><td>b</td></tr></table>"
+        block = _extractor("<root/>")._handle_table(_elem(xml))[0]
+        assert block.text == "Sample a b"
+        assert block.rows == [["a", "b"]]
+
+
+class TestCollapseWhitespace:
+    def test_offsets_follow_the_collapsed_text(self):
+        raw = "  a \n\n <b>  c"
+        inline = InlineElement(type=InlineElementType.BOLD, text="c", position=12, length=1)
+        text, inlines = ContentBlockExtractor._collapse_whitespace(raw, [inline])
+        assert text == "a <b> c"
+        assert text[inlines[0].position : inlines[0].position + inlines[0].length] == "c"
+
+    def test_an_inline_of_only_whitespace_is_dropped(self):
+        inline = InlineElement(type=InlineElementType.BOLD, text=" ", position=1, length=1)
+        text, inlines = ContentBlockExtractor._collapse_whitespace("a b", [inline])
+        assert text == "a b"
+        assert inlines == []
