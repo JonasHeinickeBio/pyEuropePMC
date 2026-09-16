@@ -8,13 +8,14 @@ and managing namespaces for RDF graphs.
 from __future__ import annotations
 
 import os
-from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     from rdflib import Dataset, Graph, Namespace
 
 import yaml
+
+from pyeuropepmc.conf import config_file
 
 
 def load_rdf_config() -> dict[str, Any]:
@@ -27,9 +28,7 @@ def load_rdf_config() -> dict[str, Any]:
         RDF configuration including named graphs, ontologies, and settings
     """
     try:
-        # Default to conf/rdf_map.yml in project root
-        base_path = Path(__file__).parent.parent.parent.parent
-        config_path = str(base_path / "conf" / "rdf_map.yml")
+        config_path = str(config_file("rdf_map.yml"))
 
         if os.path.exists(config_path):
             with open(config_path, encoding="utf-8") as f:

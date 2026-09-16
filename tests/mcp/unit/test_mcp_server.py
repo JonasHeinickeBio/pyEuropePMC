@@ -118,6 +118,25 @@ class TestRequireAvailable:
         with pytest.raises(ToolError, match=pattern):
             srv._require_available(False, "Thing", "extra")
 
+    def test_core_feature_gets_no_install_hint(self):
+        """No extra provides a core module, so none is suggested."""
+        with pytest.raises(ToolError, match="part of the core install") as excinfo:
+            srv._require_available(False, "Thing")
+        assert "pip install" not in str(excinfo.value)
+
+
+class TestAvailabilityFlags:
+    def test_llm_tools_follow_langchain(self):
+        """The agentic modules import without their extra; LangChain decides."""
+        from pyeuropepmc.agentic.llm_client import LANGCHAIN_AVAILABLE
+
+        assert srv.LLM_AVAILABLE is LANGCHAIN_AVAILABLE
+
+    def test_bib_tools_follow_bibtexparser(self):
+        from pyeuropepmc.features.bibliography import BIBTEXPARSER_AVAILABLE
+
+        assert srv.BIBTEXPARSER_AVAILABLE is BIBTEXPARSER_AVAILABLE
+
 
 class TestDedupReport:
     def test_extracts_expected_fields(self):
