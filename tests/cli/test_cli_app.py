@@ -64,3 +64,41 @@ class TestCLIApp:
         )
         assert result.returncode == 0
         assert "pyeuropepmc" in result.stdout
+
+
+class TestMCPCommand:
+    """``pyeuropepmc mcp`` runs the MCP server.
+
+    A client that launches the package with ``uvx pyeuropepmc`` gets the
+    console script named after the distribution, which is this CLI. Without
+    this subcommand such a client starts the CLI, is shown its help text and
+    never speaks MCP - which is what ``server.json`` used to ask clients to do.
+    """
+
+    def setup_method(self) -> None:
+        self.runner = CliRunner()
+
+    def test_command_is_registered(self) -> None:
+        """The subcommand server.json points at exists."""
+        result = self.runner.invoke(app, ["--help"])
+        assert result.exit_code == 0
+        assert "mcp" in result.output
+
+    def test_arguments_reach_the_server(self, monkeypatch: pytest.MonkeyPatch) -> None:
+        """Options after ``mcp`` are passed on unchanged, not parsed by click."""
+        from pyeuropepmc.mcp import server
+
+        seen: list[list[str]] = []
+        monkeypatch.setattr(server, "_main_entry", lambda argv=None: seen.append(list(argv or [])))
+
+        result = self.runner.invoke(app, ["mcp", "--transport", "sse", "--port", "9999"])
+
+        assert result.exit_code == 0
+        assert seen == [["--transport", "sse", "--port", "9999"]]
+
+    def test_help_comes_from_the_server(self) -> None:
+        """``--help`` describes the server's options, not an empty click command."""
+        result = self.runner.invoke(app, ["mcp", "--help"])
+        assert result.exit_code == 0
+        assert "--transport" in result.output
+        assert "--log-level" in result.output

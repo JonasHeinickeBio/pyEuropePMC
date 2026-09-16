@@ -357,7 +357,7 @@ A maintainer makes a release in four steps:
 | `cache/` | `CacheConfig` and `CacheBackend`; the directory has no `__init__.py`, so import them from `pyeuropepmc` |
 | `storage/` | `ArtifactStore` |
 | `models/`, `builders/`, `mappers/`, `pipeline.py` | entity models, conversion of parser output into models, RDF mapping (`RDFMapper` and RML) and `PaperProcessingPipeline` |
-| `cli/`, `mcp/` | the `pyeuropepmc` command (`benchmark`, `claim`, `normalize`, `unified_search`) and the `pyeuropepmc-mcp` server |
+| `cli/`, `mcp/` | the `pyeuropepmc` command (`benchmark`, `claim`, `normalize`, `unified_search`, `mcp`) and the `pyeuropepmc-mcp` server |
 | `benchmark/` | the parser benchmark suite behind `pyeuropepmc benchmark` |
 | `agentic/`, `claims/`, `prompts/`, `ui/` | LLM workflows, claim verification, prompt templates and the Flask web UI, which need the `agentic` and `ui` extras |
 | `utils/` | helpers, search logging (`SearchLog`), dependency checks and text matching |

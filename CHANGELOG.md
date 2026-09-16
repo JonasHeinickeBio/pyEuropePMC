@@ -37,6 +37,14 @@ All notable changes to PyEuropePMC are documented here.
   PubMed and figure paths treat it like any other unparseable response. Ruff now
   reports any other XML parser (rules S313-S319, and a ban on importing lxml).
 
+- **A manual release run can no longer publish to pypi.org from a branch.** The
+  `environment` input of `release.yml` defaulted to `pypi` and nothing tied
+  publishing to a tag, so `gh workflow run release.yml --ref <branch>` uploaded
+  a branch snapshot to the real index and burned that version number for good.
+  The default is now `testpypi`; asking for `pypi` outside a `v*` tag fails in
+  the first step of `verify`, and `publish` checks the target again immediately
+  before the upload.
+
 ### 🐛 Bug Fixes
 
 - **A display formula inside a paragraph gets a block of its own.** JATS allows
@@ -335,6 +343,25 @@ All notable changes to PyEuropePMC are documented here.
   `tests/fixtures/fulltext_downloads/PMC3258128.xml` goes from 77.8% to 86.1%.
   A pattern written with a namespace prefix (`.//mml:math`) now contributes the
   local name, which is what the document tags are compared as.
+
+- **The MCP Registry entry starts the server, not the command-line tool.**
+  `server.json` asked clients to run `uvx pyeuropepmc`, which starts the
+  `pyeuropepmc` CLI - the console script named after the distribution - and
+  prints its help instead of speaking MCP. The entry now passes the `mcp`
+  subcommand.
+
+### ✨ Features
+
+- **`pyeuropepmc mcp` runs the MCP server**, the same server as the
+  `pyeuropepmc-mcp` command. A client that starts the package with
+  `uvx pyeuropepmc` gets the console script named after the distribution, and
+  had no way to ask for the other one.
+
+### 🔧 Maintenance
+
+- **`twine check --strict` runs on the wheel and the sdist before publishing**,
+  with `readme_renderer[md]` installed, so a `README.md` that PyPI cannot render
+  fails the build instead of the upload.
 
 ### 📚 Documentation
 
