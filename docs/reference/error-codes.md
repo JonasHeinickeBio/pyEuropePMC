@@ -27,7 +27,7 @@ except PyEuropePMCError as err:
 | `err.get_recovery_options()` | Short suggestions for this code |
 | `err.__cause__` | The original exception, when pyEuropePMC wrapped another error |
 
-Error messages currently end with a `Docs:` link to `pyeuropepmc.rtfd.io`. That site does not exist; use this page instead.
+The messages of the `HTTP` codes, and any message built with `get_error_message(code, include_help_link=True)`, end with a `Docs:` link to the section of this page that lists the code.
 
 ## Exception classes
 
