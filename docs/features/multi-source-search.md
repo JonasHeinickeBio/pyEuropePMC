@@ -175,7 +175,7 @@ registry.register_source(
 
 `SourceSpec(name, target, extras=(), pip_extra=None, capabilities=frozenset({"search"}), credential_kwargs=())`. Registering an existing name raises `ValueError` unless you pass `replace=True`. `registry.load_entry_point_sources(group="pyeuropepmc.sources")` calls each zero-argument function published under that entry-point group; call it before creating `UnifiedSearch`.
 
-The client class must accept `rate_limit_delay`, `timeout` or the credential names as keyword arguments (others are dropped) and return `LiteratureResult` objects from `search(query, limit=...)`. `LiteratureResult.source` only accepts the built-in names listed under [LiteratureResult](#literatureresult), so records from a new source must use one of them.
+The client class must accept `rate_limit_delay`, `timeout` or the credential names as keyword arguments (others are dropped) and return `LiteratureResult` objects from `search(query, limit=...)`. Its records can carry the source's own name, for example `LiteratureResult(source="my_repo", ...)`; the deduplicator ranks a name it does not know below the built-in sources.
 
 ## Using a source client directly
 
@@ -261,14 +261,12 @@ All clients return `pyeuropepmc.models.LiteratureResult`, a Pydantic model:
 | `journal` | `str` or `None` | |
 | `abstract` | `str` or `None` | |
 | `citation_count` | `int` or `None` | |
-| `source` | `str` | One of `europepmc`, `pubmed`, `semanticscholar`, `openalex`, `crossref`, `unpaywall`, `arxiv`, `clinicaltrials`, `zenodo`, `doaj`, `dblp`, `hal`, `core`, `icite` |
+| `source` | `str` | The source's name, stripped and lower-cased. The built-in sources use `europepmc`, `pubmed`, `semanticscholar`, `openalex`, `crossref`, `unpaywall`, `arxiv`, `clinicaltrials`, `zenodo`, `doaj`, `dblp`, `hal`, `core` and `icite`; a [registered source](#register-a-source) uses its own name. A value that is not a plain identifier (lower-case letters and digits joined by `_`, `.` or `-`) raises `ValidationError` |
 | `source_id` | `str` | Identifier within the source |
 | `extra_metadata` | `dict` or `None` | Source-specific values |
 | `semantic_scholar_data`, `openalex_data`, `pubmed_data` | `dict` or `None` | Raw source records |
 
 Semantic Scholar records have `source="semanticscholar"`, while the registry key is `semantic_scholar`. The model accepts additional fields. `to_paper_entity()` converts a result to a `PaperEntity`, and `merge(other)` returns a new result that fills this result's empty fields from `other`.
-
-Known limitation: author names given as surname followed by initials, the form PubMed and Europe PMC use, are reversed during normalization, so `Smith J` becomes `J, Smith`.
 
 ## Normalization utilities
 
@@ -282,12 +280,13 @@ from pyeuropepmc.features.literature import (
     normalize_doi,
     normalize_mesh_terms,
     normalize_paper_title,
+    normalize_pmid,
 )
-from pyeuropepmc.features.literature.normalization import normalize_pmid
 
 print(normalize_doi("https://doi.org/10.1000/ABC.123"))              # 10.1000/abc.123
 print(is_valid_doi("10.1000/xyz"), is_valid_doi("abc"))              # True False
 print(normalize_author_name("John Smith"))                           # Smith, John
+print(normalize_author_name("Smith JA"))                             # Smith, JA
 print(normalize_paper_title("  CRISPR   screens.  "))                # CRISPR screens
 print(normalize_abstract("BACKGROUND: Some   text."))                # Some text.
 print(normalize_mesh_terms(["neoplasms", "Neoplasms", " Humans "]))  # ['neoplasms', 'Humans']
@@ -297,9 +296,9 @@ print(normalize_pmid("PMID:12345678"))                               # 12345678
 | Function | Returns |
 |---|---|
 | `normalize_doi(doi)` | Lower-cased DOI without resolver or `doi:` prefix; `None` if it is not a DOI |
-| `is_valid_doi(doi)`, `is_valid_pmid(pmid)` | `bool`; import `is_valid_pmid` from `pyeuropepmc.features.literature.normalization` |
-| `normalize_pmid(pmid)` | The digits as a `str`, or `None`; import from `pyeuropepmc.features.literature.normalization` |
-| `normalize_author_name(name)` | `"First Last"` becomes `"Last, First"`; `"Last, First"` is kept |
+| `is_valid_doi(doi)`, `is_valid_pmid(pmid)` | `bool` |
+| `normalize_pmid(pmid)` | The digits as a `str`, or `None` |
+| `normalize_author_name(name)` | `"First Last"` becomes `"Last, First"`; `"Last, First"` is kept; `"Last Initials"`, the form PubMed and Europe PMC use, becomes `"Last, Initials"` (`"Smith JA"` → `"Smith, JA"`). An all-capitals name such as `"WANG LI"` is read as `"First Last"`, because nothing marks the surname |
 | `normalize_author_list(authors)` | The list of author dicts with normalized names |
 | `normalize_paper_title(title)` | Unicode NFKC, collapsed whitespace, trailing punctuation removed |
 | `normalize_abstract(abstract, strip_headers=True)` | Section labels such as `BACKGROUND:` removed, whitespace collapsed |
