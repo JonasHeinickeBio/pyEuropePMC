@@ -2186,17 +2186,20 @@ class FullTextClient(BaseAPIClient):
                 )
                 return False
 
-            # Create temporary file for the archive
-            with tempfile.NamedTemporaryFile() as temp_file:
-                # Download archive content
-                for chunk in response.iter_content(chunk_size=8192):
-                    if chunk:
-                        temp_file.write(chunk)
-                temp_file.flush()
+            # Create temporary file for the archive. Closing it (delete=False)
+            # before reopening it by name for gzip.open() is required on
+            # Windows, which refuses a second handle on a file still open
+            # elsewhere; the fd is cleaned up in `finally`.
+            temp_fd, temp_name = tempfile.mkstemp()
+            try:
+                with os.fdopen(temp_fd, "wb") as temp_file:
+                    for chunk in response.iter_content(chunk_size=8192):
+                        if chunk:
+                            temp_file.write(chunk)
 
                 # An archive holds many articles; keep only the requested one.
                 try:
-                    with gzip.open(temp_file.name, "rb") as gz_file:
+                    with gzip.open(temp_name, "rb") as gz_file:
                         article_xml = _extract_article_xml(gz_file, pmcid)
                 except gzip.BadGzipFile:
                     self.logger.debug(f"Invalid gzip file: {archive_url}")
@@ -2204,6 +2207,8 @@ class FullTextClient(BaseAPIClient):
                 except (DefusedET.ParseError, DefusedXmlException, EOFError) as e:
                     self.logger.debug(f"Unreadable bulk archive {archive_url}: {e}")
                     return False
+            finally:
+                os.unlink(temp_name)
 
             if article_xml is None:
                 self.logger.debug(f"PMC{pmcid} not found in bulk archive {archive_name}")
