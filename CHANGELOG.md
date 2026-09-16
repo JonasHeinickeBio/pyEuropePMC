@@ -363,6 +363,17 @@ All notable changes to PyEuropePMC are documented here.
   with `readme_renderer[md]` installed, so a `README.md` that PyPI cannot render
   fails the build instead of the upload.
 
+- **Contributor tooling matches the repository.** `make codescene`,
+  `make codescene-delta` and `make quality-full` call
+  `examples/scripts/codescene_analysis.sh` where the script is. CI, `make
+  quality` and the pre-commit hook read one bandit configuration from
+  `pyproject.toml`; the hook used to skip two checks that CI ran. `tox.ini`
+  installs the package with every extra and the `dev` dependency group instead
+  of a stale hand-written list, and gains the `--run-integration` flag its
+  integration environment needed. A test hook that skipped by marker names no
+  test uses is removed, and stale comments and the Copilot instructions are
+  brought up to date.
+
 ### 📚 Documentation
 
 - **The caching, search logging, systematic review tracking and schema coverage
@@ -385,19 +396,6 @@ All notable changes to PyEuropePMC are documented here.
   `pyeuropepmc.rtfd.io/errors/<CODE>`, which never existed. It now links to the
   section of the published error-codes page that lists the code, and a test
   checks that every code is listed in the section its link names.
-
-### 🔧 Maintenance
-
-- **Contributor tooling matches the repository.** `make codescene`,
-  `make codescene-delta` and `make quality-full` call
-  `examples/scripts/codescene_analysis.sh` where the script is. CI, `make
-  quality` and the pre-commit hook read one bandit configuration from
-  `pyproject.toml`; the hook used to skip two checks that CI ran. `tox.ini`
-  installs the package with every extra and the `dev` dependency group instead
-  of a stale hand-written list, and gains the `--run-integration` flag its
-  integration environment needed. A test hook that skipped by marker names no
-  test uses is removed, and stale comments and the Copilot instructions are
-  brought up to date.
 
 ## [2.2.1] - 2026-09-15
 
