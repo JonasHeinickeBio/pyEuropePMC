@@ -146,26 +146,34 @@ class TestAffiliationsAndFigures:
         assert len(document.parser.extract_affiliations()) == len(expected)
 
     def test_affiliation_text_has_no_label_or_institution_id(self, document):
-        """A ROR URL or a GRID code ran into the institution name."""
+        """A ROR URL or a GRID code ran into the institution name.
+
+        Compared with the affiliation's own text minus those subtrees, not by
+        looking for the label as a substring: a label "1" also occurs in the
+        postal code "Singapore 117597".
+        """
+        skip = {"label", "institution-id"}
+
+        def text_without(node):
+            parts = [node.text or ""]
+            for child in node:
+                if child.tag not in skip:
+                    parts.append(text_without(child))
+                parts.append(child.tail or "")
+            return "".join(parts)
+
         checked = 0
         for aff, got in zip(
             _expected_author_affiliations(document),
             document.parser.extract_affiliations(),
             strict=True,
         ):
-            noise = [
-                normalise("".join(e.itertext()))
-                for tag in ("label", "institution-id")
-                for e in aff.iter(tag)
-            ]
-            noise = [n for n in noise if n]
-            if not noise:
+            if not any(e.tag in skip for e in aff.iter()):
                 continue
             checked += 1
-            for fragment in noise:
-                assert squash(fragment) not in squash(got.get("text")), (
-                    f"{document.pmcid} {aff.get('id')}: {fragment!r} in {got.get('text')!r}"
-                )
+            assert squash(got.get("text")) == squash(text_without(aff)), (
+                f"{document.pmcid} {aff.get('id')}: {got.get('text')!r}"
+            )
         if not checked:
             pytest.skip(f"{document.pmcid} has no <label> or <institution-id> in an <aff>")
 
