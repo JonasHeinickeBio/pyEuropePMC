@@ -29,8 +29,7 @@ import re
 from typing import Any
 from xml.etree import ElementTree as ET  # nosec B405
 
-import defusedxml.ElementTree as DefusedET
-
+from pyeuropepmc.core.xml_parsing import parse_xml
 from pyeuropepmc.features.fulltext.fulltext_parser import FullTextXMLParser
 from pyeuropepmc.features.fulltext.utils.xml_helpers import XMLHelper
 
@@ -427,9 +426,21 @@ def _extract_all_tags(root: ET.Element) -> set[str]:
     return tags
 
 
-def _get_all_body_text(xml_content: str) -> str:
+def _root_for(xml_content: str, root: ET.Element | None) -> ET.Element:
+    """The caller's tree, or a fresh parse of ``xml_content``.
+
+    ``compute_all_metrics`` parses once and passes the tree to every metric.
+    Parsing the same article five times cost about a third of its runtime,
+    because defusedxml parses in Python rather than in the C accelerator.
+    """
+    if root is not None:
+        return root
+    return parse_xml(xml_content, what="The benchmark XML")
+
+
+def _get_all_body_text(xml_content: str, root: ET.Element | None = None) -> str:
     """Extract all text content from the <body> element (naive but complete)."""
-    root: ET.Element = DefusedET.fromstring(xml_content)
+    root = _root_for(xml_content, root)
 
     body = _find_first_with_local_tag(root, "body")
     if body is None:
@@ -587,6 +598,8 @@ def compute_element_coverage(
     parser: FullTextXMLParser,
     xml_content: str,
     config_tags: set[str] | None = None,
+    *,
+    root: ET.Element | None = None,
 ) -> dict[str, Any]:
     """
     Measure what fraction of XML element types the parser is configured to handle.
@@ -601,12 +614,15 @@ def compute_element_coverage(
         Override the set of tags the parser claims to handle.
         If omitted, derived from ``ElementPatterns`` configuration.
 
+    root : xml.etree.ElementTree.Element, optional
+        Already-parsed tree to use instead of parsing ``xml_content`` again.
+
     Returns
     -------
     dict with keys: ``score``, ``total_elements``, ``covered_elements``,
     ``missing_elements``, ``coverage_pct``, ``element_lists``.
     """
-    root: ET.Element = DefusedET.fromstring(xml_content)
+    root = _root_for(xml_content, root)
 
     found_tags = _extract_all_tags(root)
 
@@ -877,6 +893,8 @@ def _xpath_to_tag(xpath: str) -> str | None:
 def compute_text_fidelity(
     parser: FullTextXMLParser,
     xml_content: str,
+    *,
+    root: ET.Element | None = None,
 ) -> dict[str, Any]:
     """
     Measure how much body text the parser captures vs what's in the XML.
@@ -884,12 +902,17 @@ def compute_text_fidelity(
     Compares the total character count of text extracted by the structured
     parser against the naive text content of the ``<body>`` element.
 
+    Parameters
+    ----------
+    root : xml.etree.ElementTree.Element, optional
+        Already-parsed tree to use instead of parsing ``xml_content`` again.
+
     Returns
     -------
     dict with keys: ``score``, ``body_chars``, ``extracted_chars``,
     ``ratio``, ``word_overlap``.
     """
-    body_text = _get_all_body_text(xml_content)
+    body_text = _get_all_body_text(xml_content, root)
     body_chars = len(body_text)
     body_words = body_text.split()
     body_word_set = set(body_words)
@@ -982,18 +1005,25 @@ def _match_section_paths(
 def compute_section_accuracy(
     parser: FullTextXMLParser,
     xml_content: str,
+    *,
+    root: ET.Element | None = None,
 ) -> dict[str, Any]:
     """
     Measure section boundary accuracy.
 
     Compares section titles and nesting from raw XML vs parser output.
 
+    Parameters
+    ----------
+    root : xml.etree.ElementTree.Element, optional
+        Already-parsed tree to use instead of parsing ``xml_content`` again.
+
     Returns
     -------
     dict with keys: ``score``, ``expected_sections``, ``found_sections``,
     ``title_match_ratio``, ``depth_consistency``.
     """
-    root: ET.Element = DefusedET.fromstring(xml_content)
+    root = _root_for(xml_content, root)
 
     expected_sections = _get_section_titles_from_xml(root)
     expected_paths = {s["section_path"] for s in expected_sections if s["section_path"]}
@@ -1094,16 +1124,23 @@ def compute_section_accuracy(
 def compute_inline_recall(
     parser: FullTextXMLParser,
     xml_content: str,
+    *,
+    root: ET.Element | None = None,
 ) -> dict[str, Any]:
     """
     Measure recall of inline content elements (xref, bold, italic, etc.).
+
+    Parameters
+    ----------
+    root : xml.etree.ElementTree.Element, optional
+        Already-parsed tree to use instead of parsing ``xml_content`` again.
 
     Returns
     -------
     dict with keys: ``score``, ``by_type``, ``total_in_xml``,
     ``total_found``, ``overall_recall``.
     """
-    root: ET.Element = DefusedET.fromstring(xml_content)
+    root = _root_for(xml_content, root)
 
     xml_counts = _count_inline_elements_in_xml(root)
 
@@ -1165,6 +1202,8 @@ def compute_inline_recall(
 def compute_metadata_accuracy(
     parser: FullTextXMLParser,
     xml_content: str,
+    *,
+    root: ET.Element | None = None,
 ) -> dict[str, Any]:
     """
     Measure accuracy of metadata extraction.
@@ -1172,11 +1211,16 @@ def compute_metadata_accuracy(
     Compares extracted title, DOI, PMID, PMCID, and authors against
     ground truth from raw XML.
 
+    Parameters
+    ----------
+    root : xml.etree.ElementTree.Element, optional
+        Already-parsed tree to use instead of parsing ``xml_content`` again.
+
     Returns
     -------
     dict with keys: ``score``, ``fields``, ``exact_matches``, ``total_fields``.
     """
-    root: ET.Element = DefusedET.fromstring(xml_content)
+    root = _root_for(xml_content, root)
 
     expected = _get_expected_metadata(root)
 
@@ -1260,11 +1304,14 @@ def compute_all_metrics(
     """
     results: dict[str, Any] = {}
 
-    results["element_coverage"] = compute_element_coverage(parser, xml_content)
-    results["text_fidelity"] = compute_text_fidelity(parser, xml_content)
-    results["section_accuracy"] = compute_section_accuracy(parser, xml_content)
-    results["inline_recall"] = compute_inline_recall(parser, xml_content)
-    results["metadata_accuracy"] = compute_metadata_accuracy(parser, xml_content)
+    # One parse for all five metrics; each used to parse the same text itself.
+    root = parse_xml(xml_content, what="The benchmark XML")
+
+    results["element_coverage"] = compute_element_coverage(parser, xml_content, root=root)
+    results["text_fidelity"] = compute_text_fidelity(parser, xml_content, root=root)
+    results["section_accuracy"] = compute_section_accuracy(parser, xml_content, root=root)
+    results["inline_recall"] = compute_inline_recall(parser, xml_content, root=root)
+    results["metadata_accuracy"] = compute_metadata_accuracy(parser, xml_content, root=root)
 
     # Composite score (equal weight)
     scores = [

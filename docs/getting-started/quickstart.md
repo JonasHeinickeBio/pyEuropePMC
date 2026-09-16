@@ -140,7 +140,7 @@ except PyEuropePMCError as err:
     print(err.is_retryable())  # False
 ```
 
-`SearchClient` raises `EuropePMCError`. When a request fails, whether from a network error or an HTTP error status, the code is `NET001` and `err.__cause__` holds the underlying `APIClientError`, whose code names the status, such as `HTTP500` or `RATE429`. `ArticleClient` and `FullTextClient` raise `APIClientError` for failed requests. [Error codes](../reference/error-codes.md) lists every code.
+`SearchClient` raises `SearchError`. When a request fails, whether from a network error or an HTTP error status, the code is `NET001` and `err.__cause__` holds the underlying `APIClientError`, whose code names the status, such as `HTTP500` or `RATE429`. `ArticleClient` and `FullTextClient` raise `APIClientError` for failed requests. [Error codes](../reference/error-codes.md) lists every code.
 
 ## Next steps
 

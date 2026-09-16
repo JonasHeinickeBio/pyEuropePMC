@@ -1,50 +1,38 @@
 # Copilot Coding Agent Instructions for PyEuropePMC
 
-## Project Overview
-- **PyEuropePMC** is a modular Python toolkit for searching, retrieving, and analyzing scientific literature from Europe PMC.
-- Core modules: `search.py` (querying), `fulltext.py` (content retrieval), `ftp_downloader.py` (bulk downloads), `parser.py` (response parsing), `cache.py` (optional diskcache-based caching), `filters.py` (advanced result filtering).
-- All code is Python 3.10+ and type-annotated. Type safety, robust error handling, and test coverage are enforced.
+`docs/development/README.md` is the maintained developer guide; when this file and that guide disagree, the guide wins.
 
-## Architecture & Patterns
-- **Main entry point:** `src/pyeuropepmc/` (all public APIs are exposed here; see `__init__.py`).
-- **Clients:** `SearchClient`, `FullTextClient`, and `FTPDownloader` are the main user-facing classes. Use context managers for resource management.
-- **Caching:** Optional, via `CacheBackend` in `cache.py`. If `diskcache` is missing, fallback is safe and import will not break.
-- **Filtering:** Two filtering functions in `filters.py` for post-query result filtering (supports partial/case-insensitive matching):
-  - `filter_pmc_papers`: AND logic - papers must match ALL criteria, and ALL terms within each criteria set (MeSH, keywords, abstract).
-  - `filter_pmc_papers_or`: OR logic - papers match if ANY criteria set matches, and ANY term within each set can match.
-- **Error handling:** Custom exceptions in each module; all API errors are wrapped in project-specific exceptions.
-- **Testing:** All new features require tests in `tests/` (mirroring module structure). Use pytest. `tests/conftest.py` infers category markers (`functional` and `integration` from the directory, `unit` for any test in no other category), so mark explicitly only what it cannot infer, such as `slow`, `network` or `e2e`.
+## Project overview
+- **PyEuropePMC** searches, downloads, parses and analyses scientific literature from Europe PMC and other sources (PubMed, arXiv, ClinicalTrials.gov and more).
+- Python 3.10–3.13, fully type-annotated; the package lives in `src/pyeuropepmc/`.
+- Public names are exported lazily from `src/pyeuropepmc/__init__.py`: `SearchClient`, `ArticleClient`, `FullTextClient`, `FTPDownloader`, `FullTextXMLParser`, `QueryBuilder`, `UnifiedSearch` and others.
 
-## Developer Workflow
-- **Install:** Use Poetry (`poetry install`).
-- **Run tests:** poetry run pytest (all), poetry run pytest -k <pattern> (subset), poetry run pytest --cov=src/pyeuropepmc (coverage).
-- **Static checks:** `pre-commit run --all-files` (runs ruff, mypy, bandit, etc.).
-- **Linting:** `ruff check .` and `ruff format .` (see `pyproject.toml` for config).
-- **Type checking:** `mypy src/` (strict mode, see `pyproject.toml`).
-- **CI:** GitHub Actions in `.github/workflows/ci.yml` (tests, lint, type check, coverage for 3.10–3.12).
-- **Release:** Use `bump2version`, update changelog, run full test suite, then publish via Poetry/Twine.
+## Layout
+- `core/`: the base API client, `ErrorCodes` and the exceptions derived from `PyEuropePMCError`.
+- `features/literature/`: the Europe PMC clients, `QueryBuilder`, pagination, and the result filters `filter_pmc_papers` (every criterion must match) and `filter_pmc_papers_or` (any criterion may match) in `filters.py`.
+- `features/fulltext/`: `FullTextClient`, `FullTextXMLParser`, the JATS normalizer, the full-text index and figure extraction.
+- `features/search/` (`UnifiedSearch` and its sources), `features/enrich/` (`PaperEnricher`), `features/citations/`, `features/bibliography/`, `features/analytics/`.
+- `cache/` (`CacheConfig`, `CacheBackend`; caching is opt-in), `models/`, `builders/`, `mappers/` (RDF), `cli/` (the `pyeuropepmc` command) and `mcp/` (the `pyeuropepmc-mcp` server).
+- Optional features load their libraries lazily and raise `OptionalDependencyError` naming the extra to install; see `src/pyeuropepmc/_optional_imports.py`.
 
-## Project Conventions
-- **Imports:** Absolute imports within `pyeuropepmc`. All public APIs re-exported in `__init__.py`.
-- **Docstrings:** Google style. All public methods/classes must have docstrings.
-- **Error handling:** Never raise raw exceptions; always wrap in project-specific exceptions.
-- **Tests:** Place in `tests/` with same substructure as `src/pyeuropepmc/`. Use fixtures for sample data.
-- **Pre-commit:** All code must pass pre-commit before PR/merge.
-- **Commit messages:** Conventional Commits (see `docs/development/README.md`).
+## Conventions
+- **Errors:** raise the project exceptions with an `ErrorCodes` member; every code is documented in `docs/reference/error-codes.md`.
+- **XML:** parse with defusedxml only. Ruff rejects the standard-library parsers (S313–S319) and lxml.
+- **Docstrings:** every public class and function has one; most modules use NumPy-style `Parameters`/`Returns` sections.
+- **Imports:** absolute imports within `pyeuropepmc`.
+- **Commits and pull request titles:** Conventional Commits (`type(scope): description`).
 
-## Integration Points
-- **External dependencies:** `requests`, `diskcache` (optional), `pandas`, `numpy`, `rdflib`, `flask`, `tqdm`, etc. (see `pyproject.toml`).
-- **Bulk downloads:** Use `FTPDownloader` for FTP-based retrieval; see `examples/` for usage.
-- **Filtering:** Two filtering approaches available:
-  - `filter_pmc_papers`: AND logic for precise, specific results (all criteria must match)
-  - `filter_pmc_papers_or`: OR logic for broad, exploratory results (any criteria can match)
-  - See `examples/filtering_demo.ipynb` for usage comparisons.
+## Tests
+- pytest, in `tests/`. `tests/conftest.py` infers category markers (`functional` and `integration` from the directory, `unit` for any test in no other category), so mark explicitly only what it cannot infer, such as `slow`, `network` or `e2e`.
+- The default run is offline: pytest-socket blocks the network, and slow, functional, network, benchmark and e2e tests are deselected.
+- Skip a test that needs an optional package with `pytest.mark.skipif(not is_dependency_available("<package>"), ...)`.
 
-## Examples & Documentation
-- See `examples/` for usage patterns and advanced scenarios.
-- See `docs/` for API reference, advanced usage, and development guidelines.
+## Workflow
+- Set up with `poetry install --all-extras`; the `dev` dependency group is included.
+- Before a pull request: `poetry run pytest`, `poetry run ruff check src/ tests/`, `poetry run ruff format --check src/ tests/`, `poetry run mypy src/`, and `poetry run pre-commit run --all-files`.
+- CI: `cdci.yml` (lint, types, bandit and the tests with coverage), `unit-tests.yml` (core dependencies only), `python-compatibility.yml` (Python 3.10–3.13) and `zizmor.yml`. Pull requests merge only when the required checks pass.
+- Releases: pushing a `vX.Y.Z` tag runs `release.yml`, which publishes to PyPI with trusted publishing; see `docs/development/ci-and-release-workflow.md`.
 
-## When in Doubt
-- Prefer mirroring patterns from `search.py`, `cache.py`, and `filters.py`.
-- Always add/modify tests for new or changed features.
-- Ask for clarification if a workflow or pattern is unclear or missing.
+## Examples and documentation
+- `examples/` holds numbered example folders, for instance `examples/07-advanced-filtering/07-filtering-demo.ipynb` for the two filters.
+- `docs/` holds the user guides, the API reference and the development guides.

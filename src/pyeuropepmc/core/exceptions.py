@@ -1011,8 +1011,13 @@ class ModelError(PyEuropePMCError):
         self.actual_value = actual_value
 
 
-# Convenience aliases for backward compatibility
-EuropePMCError = SearchError  # Legacy alias
+# Convenience aliases for backward compatibility.
+#
+# ``EuropePMCError`` is the name the library documents for "catch anything this
+# library raises", so it has to be the common base class. It used to alias
+# ``SearchError``, which silently let every other error type -- full text,
+# parsing, validation -- escape an ``except EuropePMCError`` block.
+EuropePMCError = PyEuropePMCError  # Legacy alias for the common base class
 
 
 def create_error_from_response(

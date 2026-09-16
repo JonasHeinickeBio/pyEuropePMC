@@ -152,10 +152,10 @@ poetry run mypy src/
 ### Bandit
 
 ```bash
-poetry run bandit -r ./src --exclude "tests,.venv,.git,.mypy_cache,.pytest_cache" --skip "B101,B303"
+poetry run bandit -c pyproject.toml -r ./src
 ```
 
-CI passes the skip list on the command line. The pre-commit hook reads `[tool.bandit]` instead, which also skips B110 and B112, so findings of those two types pass locally and fail in CI.
+`[tool.bandit]` in `pyproject.toml` is the only configuration: CI, `make quality` and the pre-commit hook all read it. It skips B101 (`assert`) and B303 (weak hash functions). Bandit reads TOML with the standard library's `tomllib` on Python 3.11 and later, and with `tomli`, which pytest and mypy install, on 3.10.
 
 ### Pre-commit hooks
 
@@ -186,6 +186,14 @@ poetry run pre-commit run --all-files
 
 ```bash
 poetry run make quality
+```
+
+### tox (optional)
+
+`tox.ini` runs the same checks in isolated environments: `py310` to `py313` run the default test suite, `lint` runs ruff, `type-check` runs mypy, and `integration` runs `tests/integration` against the live services. Each installs the package with every extra and the `dev` dependency group from `pyproject.toml`, which needs tox 4.22 or later. CI does not use tox.
+
+```bash
+uvx tox -e py312
 ```
 
 ### CodeScene (optional)
@@ -325,7 +333,6 @@ A maintainer makes a release in four steps:
 | `examples/` | example notebooks and scripts; `examples/scripts/` holds maintenance scripts such as `check_fields.py` and `codescene_analysis.sh` |
 | `benchmark_xmls/xml/` | the JATS XML files the parser benchmark reads |
 | `benchmarks/` | pipeline benchmark scripts and sample output |
-| `conf/` | RDF mapping configuration (`rdf_map.yml`, RML mappings, vocabulary); not included in the wheel |
 | `schemas/linkml/` | the LinkML schema for article content |
 | `shacl/` | SHACL shapes for the RDF output |
 | `server.json` | the MCP Registry entry for `pyeuropepmc-mcp` |
@@ -349,7 +356,8 @@ A maintainer makes a release in four steps:
 | `cache/` | `CacheConfig` and `CacheBackend`; the directory has no `__init__.py`, so import them from `pyeuropepmc` |
 | `storage/` | `ArtifactStore` |
 | `models/`, `builders/`, `mappers/`, `pipeline.py` | entity models, conversion of parser output into models, RDF mapping (`RDFMapper` and RML) and `PaperProcessingPipeline` |
-| `cli/`, `mcp/` | the `pyeuropepmc` command (`benchmark`, `claim`, `normalize`, `unified_search`) and the `pyeuropepmc-mcp` server |
+| `conf/` | the mapping files `rdf_map.yml`, `rml_mappings.ttl` and `rdfizer_config.ini` and the vocabulary `pyeuropepmc-vocab.ttl`; they ship in the wheel, and `pyeuropepmc.conf.config_file(name)` returns their path |
+| `cli/`, `mcp/` | the `pyeuropepmc` command (`benchmark`, `claim`, `normalize`, `unified_search`, `mcp`) and the `pyeuropepmc-mcp` server |
 | `benchmark/` | the parser benchmark suite behind `pyeuropepmc benchmark` |
 | `agentic/`, `claims/`, `prompts/`, `ui/` | LLM workflows, claim verification, prompt templates and the Flask web UI, which need the `agentic` and `ui` extras |
 | `utils/` | helpers, search logging (`SearchLog`), dependency checks and text matching |

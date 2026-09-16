@@ -24,6 +24,17 @@ def squash(text: str | None) -> str:
     return re.sub(r"\s+", "", text or "")
 
 
+def unescape_markdown(text: str | None) -> str:
+    """The text a CommonMark renderer shows for Markdown source.
+
+    Only backslash escapes are resolved: ``DRB1\\*0402`` reads ``DRB1*0402``.
+    ``to_markdown()`` escapes every character that would otherwise change
+    what a renderer does with the text, so comparing the article's sentences
+    against the raw source would report each escape as lost text.
+    """
+    return re.sub(r"\\([!-/:-@\[-`{-~])", r"\1", text or "")
+
+
 def normalise(text: str | None) -> str:
     return " ".join((text or "").split())
 

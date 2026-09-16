@@ -67,18 +67,18 @@ Output:
 
 ```text
 PARSE002 ParseError
-PARSE003 EntitiesForbidden
+PARSE005 EntitiesForbidden
 PARSE003 None
 ```
 
 | Input | Error code | `__cause__` |
 |---|---|---|
 | Malformed XML, including an undeclared named entity such as `&alpha;` | `PARSE002` | `xml.etree.ElementTree.ParseError` |
-| A DOCTYPE that declares an entity | `PARSE003` | `defusedxml.EntitiesForbidden` |
+| A DOCTYPE that declares an entity | `PARSE005` | `defusedxml.EntitiesForbidden` |
 | `None`, an empty string, `bytes` or another type | `PARSE003` | none |
 | Calling an extraction method before anything was parsed | `PARSE003` | none |
 
-`ParsingError` derives from `PyEuropePMCError`, not from `xml.etree.ElementTree.ParseError`, so `except ParseError` does not catch it. The `PARSE003` message always reads "Content cannot be None or empty", whatever the cause; look at `__cause__` for the real reason. Numeric character references such as `&#x0003c;` parse normally.
+`ParsingError` derives from `PyEuropePMCError`, not from `xml.etree.ElementTree.ParseError`, so `except ParseError` does not catch it; catch `ParsingError` instead. Every entry point that parses XML raises it the same way, and the message names the cause: which entity a refused document declares, or the line and column of a malformed one. Numeric character references such as `&#x0003c;` parse normally.
 
 ## Metadata, authors and affiliations
 
@@ -97,7 +97,7 @@ Hepato-specific microRNA-122 facilitates accumulation of newly synthesized miRNA
 10.1093/nar/gkr715 3258128 None
 ```
 
-`extract_metadata()` returns a dict. These keys are always present, with `None` or an empty value when the article lacks them: `title`, `abstract`, `authors` (a list of name strings), `journal` (a dict with `title`, `volume`, `issue` and, when present, ISSNs, publisher and journal IDs), `pub_date` (a string such as `"2012-01"`), `doi`, `pmcid` (as written in the XML, with or without the `PMC` prefix), `volume`, `issue`, `pages` and `keywords`. Other keys, such as `pmid`, `identifiers`, `license`, `copyright`, `publisher`, `funding`, `categories`, `history`, `correspondence`, `self_uri`, `counts` and `extended_metadata`, appear only for some articles, so read them with `.get()`. The [reference](../../api/xml-parser.md#extract_metadata) describes every key.
+`extract_metadata()` returns a dict. These keys are always present, with `None` or an empty value when the article lacks them: `title`, `abstract`, `authors` (a list of name strings), `journal` (a dict with `title`, `volume`, `issue` and, when present, ISSNs, publisher and journal IDs), `pub_date` (a string such as `"2012-01"`), `doi`, `pmcid` (as written in the XML, with or without the `PMC` prefix), `volume`, `issue`, `pages`, `elocation_id` and `keywords`. Other keys, such as `pmid`, `identifiers`, `license`, `copyright`, `publisher`, `funding`, `categories`, `history`, `correspondence`, `self_uri`, `counts` and `extended_metadata`, appear only for some articles, so read them with `.get()`. The [reference](../../api/xml-parser.md#extract_metadata) describes every key.
 
 Separate methods return single parts of the front matter:
 
@@ -116,6 +116,8 @@ Output:
 ```
 
 The keys of an affiliation depend on how it is tagged: tagged affiliations have `institution`, `city`, `country` and sometimes `institutions` and `institution_ids`; untagged ones, like these, have `markers`, `institution_text` and `parsed_institutions`. `extract_keywords()`, `extract_funding()` and `extract_article_categories()` return the corresponding metadata values.
+
+Front matter is read from the article's own `<front>`, never from the whole document: a peer-review `<sub-article>` has authors, affiliations and keywords of its own, a `<related-article>` in `<article-meta>` carries the companion paper's pagination, and every reference has a `<volume>`, an `<fpage>` and an `<lpage>`. `extract_affiliations()` additionally leaves out the affiliations of the editors, which are told apart by which `<contrib>` elements cite them.
 
 ## Tables
 
@@ -230,7 +232,7 @@ Each reference has `id`, `label`, `citation_type` (`element-citation` or `mixed-
 
 ## Sections
 
-`get_full_text_sections()` returns the body as a flat list of `{"title", "content"}` dicts, where `content` is the section's own paragraphs joined by blank lines:
+`get_full_text_sections()` returns the body as a flat list of `{"title", "content"}` dicts, where `content` is the section's own blocks as plain text, in document order, joined by blank lines:
 
 ```python
 sections = parser.get_full_text_sections()
@@ -248,9 +250,10 @@ MicroRNAs (miRNAs) are small conserved RNAs of ∼22 nt which negatively
 ```
 
 - There is one entry per `<sec>` in the article's own body, in document order; a subsection is a separate entry, and a section that only contains subsections has empty `content`. The list gives no nesting information.
-- Paragraphs that sit directly in `<body>`, outside any `<sec>`, form one untitled entry placed after all sections.
+- Content that sits directly in `<body>`, outside any `<sec>`, forms one untitled entry placed after all sections.
+- Figures and tables kept in `<floats-group>` form an entry titled `Figures and Tables` after that, with no `type` key.
 - Back matter follows, with a third key `type`: `author_notes`, `acknowledgments`, `appendix` or `glossary`.
-- Only paragraph text is included: table cells, figure labels and code listings are not.
+- A block is rendered as in `to_plaintext()`: a figure as its label and caption on one line, a table as its label and caption followed by one line per row, a display formula followed by its label, a code listing with its line breaks, and a list or definition list one item per line. A table, figure, formula, list or listing inside a `<p>` splits that paragraph where it stands.
 
 ### Structured sections
 
@@ -281,7 +284,8 @@ The method returns a list of dicts (`StructuredSection.to_dict()`), in this orde
 1. A section titled `Article Title` with `section_type` `"front"`, holding the title as a `heading` block.
 2. A section titled `Abstract` with `section_type` `"front"`.
 3. One section per `<sec>` in the body, with `section_type` `"body"`. Nested sections are separate entries; `section_path` joins the titles with `/`, for example `"Results/Gene mutation prediction"`. Paragraphs directly in `<body>` form an untitled section with `section_path` `"body"`.
-4. Back matter such as footnotes, notes and references, with `section_type` `"back"`, and appendices with `"appendix"`.
+4. When the article keeps figures and tables in `<floats-group>`, outside `<body>` - every NIH author manuscript does - a section titled `Figures and Tables`, also with `section_type` `"body"`, holding a block for each.
+5. Back matter such as footnotes, notes and references, with `section_type` `"back"`, and appendices with `"appendix"`. A reference list placed inside `<body>`, as some BioMed Central articles do, is given here once, as References, and not in the body section that holds it.
 
 Filter on `section_type == "body"` to get the main text only.
 
@@ -290,8 +294,8 @@ Each block is a dict with `type` and `schema_version`, plus the fields that appl
 | Block `type` | Fields |
 |---|---|
 | `heading` | `text` |
-| `paragraph` | `text`; `inlines`, a list of `{type, text, position, length}` dicts for cross-references and formatting, with `ref_type` and `target_id` for cross-references |
-| `list` | `items`, `list_type` |
+| `paragraph` | `text`; `inlines`, a list of `{type, text, position, length}` dicts for cross-references and formatting, with `ref_type` and `target_id` for cross-references. A reference in the References section is one paragraph - its label, then its citation (the `<mixed-citation>` when there is one) - with `target_id` set to the `<ref>`'s `id`, so a cross-reference's `target_id` finds it |
+| `list` | `items`, `list_type`; `inlines` whose `metadata["item"]` names the item their position indexes |
 | `table` | `label`, `caption`, `rows` (header rows first, laid out as in `extract_tables()`), `text` (label, caption, cells and footer in one string), `inlines` (positions in `text`), `metadata` (`header_rows`, the number of header rows; `footer`; and when present `spans`, `cell_graphics` and `cell_inlines`, the inline elements of each cell as `{row, column, inlines}`) |
 | `figure` | `label`, `caption`, `uri`, `target_id`, `inlines` |
 | `formula` | `text` (the expression as plain text), `tex` (LaTeX), `label`, `mathml`, `uri` |
@@ -324,9 +328,15 @@ Authors: Shuai Li, Juanjuan Zhu, Hanjiang F
 ['# Hepato-specific microRNA-122 facilitates accumulation of newly synthesized miRNA through regulating PRKRA', '## Abstract', '## INTRODUCTION', '## MATERIALS AND METHODS']
 ```
 
-`to_plaintext()` returns, separated by blank lines: the title; `Authors: ...`; `Abstract` and its text; each body section's title, paragraphs, lists (items prefixed with `• ` or `1. `) and tables; the paragraphs outside any section; then `Acknowledgments`, `Author Notes`, `Appendix: <title>` and `Glossary` blocks. A table directly in a section is written as `Table: <caption>`, one line per row with cells joined by ` | `, then its footnotes. A table or figure nested in a paragraph stays in that paragraph's text, with its cells, label and caption separated by spaces.
+`to_plaintext()` returns, separated by blank lines: the title; `Authors: ...`; `Abstract` and its text; each body section's title and its blocks in document order; the content outside any section; `Figures and Tables` followed by the figures and tables of `<floats-group>`; then `Acknowledgments`, `Author Notes`, `Appendix: <title>` (with the appendix's blocks and sections) and `Glossary` blocks. Blocks are written as follows:
 
-`to_markdown()` returns the title as `#`, `**Authors:**`, `**Journal:**` and `**DOI:**` lines, `## Abstract`, the paragraphs outside any section, the body sections as `##` headings with subsections one level deeper, and `## Acknowledgments`, `## Author Notes`, `## Appendix` and `## Glossary` sections. It contains paragraph text only: no tables, list markers, figures or references, and characters such as `*` and `_` are not escaped.
+- a paragraph as its text; a table, figure, formula, list or listing inside it splits it where it stands;
+- a list one item per line, prefixed with `• `, or `1. ` for `list-type="order"`; an item with its own label gets no prefix;
+- a table as its label and caption (`Table: <caption>` when it has no label), one line per row with the non-empty cells joined by ` | `, then its footnotes;
+- a figure or supplementary item as its label, caption and any other text on one line;
+- a display formula as its text followed by its label, and a code listing with its line breaks and indentation.
+
+`to_markdown()` returns the title as `#`, `**Authors:**`, `**Journal:**` and `**DOI:**` lines, `## Abstract`, the content outside any section, the body sections as `##` headings with subsections one level deeper, `## Figures and Tables` for `<floats-group>`, and `## Acknowledgments`, `## Author Notes`, `## Appendix: <title>` and `## Glossary` sections. Within a section the blocks come in document order: a table as a `**label** caption` line and a GitHub-style pipe table (with an empty header row when the table has none), a figure as `**label** caption`, a list as `- ` or `1. ` items, and a code listing as a fenced block tagged with its `language`. All text taken from the document is escaped with a backslash wherever a character would change how Markdown renders it: the backslash, the backtick, `*`, `_`, `[`, `]`, `<`, `>`, `~`, `|` and `$` anywhere, and `#`, `+`, `-` or a number followed by `.` or `)` at the start of a paragraph. Code listings are not escaped.
 
 ## Inspect the document structure
 
@@ -442,25 +452,23 @@ For normalized text for text mining, with canonical section types and BioC outpu
 
 These were found by checking the parser's output against the source XML of real Europe PMC articles.
 
-- **Floats outside the body.** Tables and figures in `<floats-group>`, where NIH author manuscripts put them, are returned by `extract_tables()` and `extract_figures()` but are missing from the structured sections, `to_plaintext()`, `to_markdown()` and `get_full_text_sections()`.
-- **Display formulas.** The `text` of a formula block is the flattened MathML, so subscripts and superscripts become plain characters (x² reads "x2"); `tex` carries the structure. `to_plaintext()`, `to_markdown()` and `get_full_text_sections()` render that flattened text, not the LaTeX, and place a display formula after the section's paragraphs rather than where it stood.
-- **Tables.** A spanning cell's text appears once, at its top-left position; the positions it covers are `""`, not filled with its value, so fill them yourself where a value applies to every row it spans. `to_plaintext()` and `to_markdown()` do not use this layout; see *Text renderings*.
+- **Floats outside the body.** Figures and tables in `<floats-group>` are gathered under `Figures and Tables` after the body, not placed where the text first cites them.
+- **Display formulas.** The `text` of a formula block is the flattened MathML, so subscripts and superscripts become plain characters (x² reads "x2"); `tex` carries the structure. `to_plaintext()`, `to_markdown()` and `get_full_text_sections()` render that flattened text, not the LaTeX.
+- **Tables.** A spanning cell's text appears once, at its top-left position; the positions it covers are `""`, not filled with its value, so fill them yourself where a value applies to every row it spans. A Markdown pipe table cannot express a span, so there a spanning cell stands in its first column only.
 - **Figures.** `graphic_uri` and the figure block's `uri` are taken from the first `<graphic>` anywhere in the figure, which can be a formula image inside the caption. Figure supplements are listed as separate figures, not linked to their parent.
 - **Metadata.**
-  - `pages` is read from the first `<fpage>` and `<lpage>` in the document. For articles that use `<elocation-id>` instead, which is not extracted, it is the page range of a reference.
   - Only the first `<abstract>` is used, so author summaries and digests are missing.
-  - Keywords and affiliations are collected from the whole document, including peer-review sub-articles, so an eLife article's keywords can end with the assessment terms "Important" or "Compelling", and editors' affiliations are included.
-  - `extract_funding()` keeps only the first award ID and the first recipient of each award group.
+  - `extract_funding()` reports one recipient as `recipient_full`; the rest are in `recipients`.
+  - An affiliation's address is split by heuristics, so `city`, `postal_code` and `country` are often wrong for markup that does not tag them.
 - **References.**
   - `authors` is one string that cannot always be split into people; PLOS references run surname and initials together ("NewtonSI"), and collaboration authors are dropped.
   - `title` falls back to `source` for software and some books.
   - A pass over the flattened citation text can overwrite correctly tagged pages or DOIs.
 - **Structured sections.**
-  - Front-matter `<notes>` are typed `back`, and the `peer_review` section type is never produced.
+  - Front-matter `<notes>` are typed `back`. The `peer_review` section type is produced only by `PeerReviewExtractor`; `get_full_text_sections_structured()` leaves sub-articles out.
   - Appendix sections have no `section_path`, and a path is ambiguous when a title contains `/`.
-  - Paragraph text can run two words together where an inline element's text ends in a space (for example "IC50values"), and code blocks lose their line breaks.
-- **Text renderings.** `to_plaintext()`, `to_markdown()` and `get_full_text_sections()` omit code listings, table labels, and the labels and caption titles of figures placed directly in a section. `to_plaintext()` renders an appendix that consists of a table as its title only, and moves a section's lists and tables after its paragraphs.
-- **Errors and size.** The `PARSE003` error text does not describe the actual cause. There are no size or depth limits; a document nested a few thousand levels deep fails in section extraction with `ParsingError`.
+- **Text renderings.** `to_plaintext()`, `to_markdown()` and `get_full_text_sections()` render the title of a `<boxed-text>` or `<disp-quote>` and the `<label>` of a section or footnote as nothing, and a `<ref-list>` placed inside `<body>` not at all. `to_markdown()` renders a display formula as its flattened text rather than LaTeX, and emphasis, sub- and superscripts as plain text.
+- **Size and depth.** There are no size or depth limits; a document nested a few thousand levels deep fails in section extraction with `ParsingError`.
 
 ## See also
 

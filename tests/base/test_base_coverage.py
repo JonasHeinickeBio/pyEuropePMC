@@ -17,6 +17,13 @@ from pyeuropepmc.core.exceptions import APIClientError
 pytestmark = pytest.mark.unit
 
 
+@pytest.fixture(autouse=True)
+def no_sleep():
+    """Keep the retry backoff and the rate-limit delay out of the clock."""
+    with patch("time.sleep"):
+        yield
+
+
 class TestBaseAPIClientCoverage:
     """Additional test coverage for BaseAPIClient edge cases."""
 

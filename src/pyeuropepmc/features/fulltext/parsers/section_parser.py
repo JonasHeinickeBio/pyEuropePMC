@@ -9,6 +9,11 @@ from xml.etree import ElementTree as ET  # nosec B405
 
 from pyeuropepmc.features.fulltext.config.element_patterns import ElementPatterns
 from pyeuropepmc.features.fulltext.parsers.base_parser import BaseParser
+from pyeuropepmc.features.fulltext.utils.flat_blocks import (
+    FLOATS_TITLE,
+    iter_flat_blocks,
+    plain_text,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -48,29 +53,22 @@ class SectionParser(BaseParser):
 
                 # Body-level content that sits outside any <sec> - the whole
                 # body for publishers like PLOS, and the opening paragraphs
-                # elsewhere.
-                #
-                # `_section_own_elements` rather than `./p`: it stops at <sec>
-                # but descends through wrappers, so a <p> inside a <boxed-text>
-                # placed directly under <body> is found too. PMC6453151 lost
-                # one that way.
-                bare_ps = self._section_own_elements(body_elem, "p")
-                bare_formulas = self._section_own_elements(body_elem, "disp-formula")
-                if bare_ps or bare_formulas:
-                    para_texts: list[str] = []
-                    for p in bare_ps:
-                        # A display formula is emitted on its own below, as
-                        # for a formula inside a section.
-                        text = self._text_excluding(p, "disp-formula")
-                        if text:
-                            para_texts.append(text)
-                    for formula in bare_formulas:
-                        text = self._display_formula_text(formula)
-                        if text:
-                            para_texts.append(text)
-                    para_text = "\n\n".join(para_texts)
-                    if para_text:
-                        sections.append({"title": "", "content": para_text})
+                # elsewhere. The walk stops at <sec> but descends through
+                # wrappers, so a <p> inside a <boxed-text> placed directly
+                # under <body> is found too; PMC6453151 lost one that way.
+                bare_text = self._blocks_text(body_elem)
+                if bare_text:
+                    sections.append({"title": "", "content": bare_text})
+
+            # Figures and tables kept outside <body>, in <floats-group>: every
+            # one of an NIH author manuscript's. Body content, so no `type`.
+            floats = "\n\n".join(
+                text
+                for group in (self._own_floats_groups(self.root) if self.root is not None else [])
+                if (text := self._blocks_text(group))
+            )
+            if floats:
+                sections.append({"title": FLOATS_TITLE, "content": floats})
 
             # Extract additional content structures
             sections.extend(self._extract_additional_content_structures())
@@ -106,13 +104,14 @@ class SectionParser(BaseParser):
                     {"title": "Acknowledgments", "content": content, "type": "acknowledgments"}
                 )
 
-        # Appendices
+        # Appendices, laid out like sections: their tables and figures as
+        # blocks rather than run together into one string.
         app_patterns = self.config.appendix_patterns.get("app", [])
         for pattern in app_patterns:
             elements = self.root.findall(pattern) if self.root else []
             for elem in elements:
                 title = self._extract_flat_texts(elem, ".//title", use_full_text=True)
-                content = self._get_text_content(elem)
+                content = self._appendix_text(elem)
                 if content:
                     structures.append(
                         {
@@ -136,26 +135,36 @@ class SectionParser(BaseParser):
         return structures
 
     def _extract_section_structure(self, section: ET.Element) -> dict[str, str]:
-        """Extract section title and content."""
+        """Extract section title and content.
+
+        The content is the section's own blocks - not its subsections', which
+        `.//p` swept up and returned twice (#209) - in document order, each as
+        plain text and separated by a blank line.
+
+        Only paragraphs were returned before: a table reached ``content`` only
+        through the ``<p>`` inside its cells and caption, so its label and most
+        of its cells did not; a figure lost its label and caption title; a code
+        listing and a definition list were missing altogether.
+        """
         title = self._extract_flat_texts(section, "title", filter_empty=False, use_full_text=True)
-        # Own paragraphs only: `.//p` also swept up every subsection's text,
-        # which was then returned again under the subsection itself (#209).
-        #
-        # A <disp-formula> is taken out of the paragraph and emitted after it,
-        # the way <list> and <table-wrap> already are in to_plaintext(): the
-        # structured blocks make each display formula a block of its own, and
-        # a flat rendering that keeps it mid-sentence disagrees with them
-        # about where the prose ends.
-        paragraphs: list[str] = []
-        for para in self._section_own_elements(section, "p"):
-            text = self._text_excluding(para, "disp-formula")
-            if text:
-                paragraphs.append(text)
-        for formula in self._section_own_elements(section, "disp-formula"):
-            text = self._display_formula_text(formula)
-            if text:
-                paragraphs.append(text)
         return {
             "title": title[0] if title else "",
-            "content": "\n\n".join(paragraphs) if paragraphs else "",
+            "content": self._blocks_text(section),
         }
+
+    @staticmethod
+    def _blocks_text(container: ET.Element) -> str:
+        """The blocks ``container`` owns as plain text, separated by blank lines."""
+        return "\n\n".join(
+            text for block in iter_flat_blocks(container) if (text := plain_text(block))
+        )
+
+    def _appendix_text(self, appendix: ET.Element) -> str:
+        """An appendix's blocks, then each of its sections with its title."""
+        parts = [self._blocks_text(appendix)]
+        for sec in appendix.iter():
+            if sec.tag != "sec":
+                continue
+            structure = self._extract_section_structure(sec)
+            parts.extend((structure["title"], structure["content"]))
+        return "\n\n".join(part for part in parts if part)
