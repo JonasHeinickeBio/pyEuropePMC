@@ -249,6 +249,7 @@ MicroRNAs (miRNAs) are small conserved RNAs of ∼22 nt which negatively
 
 - There is one entry per `<sec>` in the article's own body, in document order; a subsection is a separate entry, and a section that only contains subsections has empty `content`. The list gives no nesting information.
 - Content that sits directly in `<body>`, outside any `<sec>`, forms one untitled entry placed after all sections.
+- Figures and tables kept in `<floats-group>` form an entry titled `Figures and Tables` after that, with no `type` key.
 - Back matter follows, with a third key `type`: `author_notes`, `acknowledgments`, `appendix` or `glossary`.
 - A block is rendered as in `to_plaintext()`: a figure as its label and caption on one line, a table as its label and caption followed by one line per row, a display formula followed by its label, a code listing with its line breaks, and a list or definition list one item per line. A table, figure, formula, list or listing inside a `<p>` splits that paragraph where it stands.
 
@@ -281,7 +282,8 @@ The method returns a list of dicts (`StructuredSection.to_dict()`), in this orde
 1. A section titled `Article Title` with `section_type` `"front"`, holding the title as a `heading` block.
 2. A section titled `Abstract` with `section_type` `"front"`.
 3. One section per `<sec>` in the body, with `section_type` `"body"`. Nested sections are separate entries; `section_path` joins the titles with `/`, for example `"Results/Gene mutation prediction"`. Paragraphs directly in `<body>` form an untitled section with `section_path` `"body"`.
-4. Back matter such as footnotes, notes and references, with `section_type` `"back"`, and appendices with `"appendix"`.
+4. When the article keeps figures and tables in `<floats-group>`, outside `<body>` - every NIH author manuscript does - a section titled `Figures and Tables`, also with `section_type` `"body"`, holding a block for each.
+5. Back matter such as footnotes, notes and references, with `section_type` `"back"`, and appendices with `"appendix"`.
 
 Filter on `section_type == "body"` to get the main text only.
 
@@ -324,7 +326,7 @@ Authors: Shuai Li, Juanjuan Zhu, Hanjiang F
 ['# Hepato-specific microRNA-122 facilitates accumulation of newly synthesized miRNA through regulating PRKRA', '## Abstract', '## INTRODUCTION', '## MATERIALS AND METHODS']
 ```
 
-`to_plaintext()` returns, separated by blank lines: the title; `Authors: ...`; `Abstract` and its text; each body section's title and its blocks in document order; the content outside any section; then `Acknowledgments`, `Author Notes`, `Appendix: <title>` (with the appendix's blocks and sections) and `Glossary` blocks. Blocks are written as follows:
+`to_plaintext()` returns, separated by blank lines: the title; `Authors: ...`; `Abstract` and its text; each body section's title and its blocks in document order; the content outside any section; `Figures and Tables` followed by the figures and tables of `<floats-group>`; then `Acknowledgments`, `Author Notes`, `Appendix: <title>` (with the appendix's blocks and sections) and `Glossary` blocks. Blocks are written as follows:
 
 - a paragraph as its text; a table, figure, formula, list or listing inside it splits it where it stands;
 - a list one item per line, prefixed with `• `, or `1. ` for `list-type="order"`; an item with its own label gets no prefix;
@@ -332,7 +334,7 @@ Authors: Shuai Li, Juanjuan Zhu, Hanjiang F
 - a figure or supplementary item as its label, caption and any other text on one line;
 - a display formula as its text followed by its label, and a code listing with its line breaks and indentation.
 
-`to_markdown()` returns the title as `#`, `**Authors:**`, `**Journal:**` and `**DOI:**` lines, `## Abstract`, the content outside any section, the body sections as `##` headings with subsections one level deeper, and `## Acknowledgments`, `## Author Notes`, `## Appendix: <title>` and `## Glossary` sections. Within a section the blocks come in document order: a table as a `**label** caption` line and a GitHub-style pipe table (with an empty header row when the table has none), a figure as `**label** caption`, a list as `- ` or `1. ` items, and a code listing as a fenced block tagged with its `language`. All text taken from the document is escaped with a backslash wherever a character would change how Markdown renders it: the backslash, the backtick, `*`, `_`, `[`, `]`, `<`, `>`, `~`, `|` and `$` anywhere, and `#`, `+`, `-` or a number followed by `.` or `)` at the start of a paragraph. Code listings are not escaped.
+`to_markdown()` returns the title as `#`, `**Authors:**`, `**Journal:**` and `**DOI:**` lines, `## Abstract`, the content outside any section, the body sections as `##` headings with subsections one level deeper, `## Figures and Tables` for `<floats-group>`, and `## Acknowledgments`, `## Author Notes`, `## Appendix: <title>` and `## Glossary` sections. Within a section the blocks come in document order: a table as a `**label** caption` line and a GitHub-style pipe table (with an empty header row when the table has none), a figure as `**label** caption`, a list as `- ` or `1. ` items, and a code listing as a fenced block tagged with its `language`. All text taken from the document is escaped with a backslash wherever a character would change how Markdown renders it: the backslash, the backtick, `*`, `_`, `[`, `]`, `<`, `>`, `~`, `|` and `$` anywhere, and `#`, `+`, `-` or a number followed by `.` or `)` at the start of a paragraph. Code listings are not escaped.
 
 ## Inspect the document structure
 
@@ -448,7 +450,7 @@ For normalized text for text mining, with canonical section types and BioC outpu
 
 These were found by checking the parser's output against the source XML of real Europe PMC articles.
 
-- **Floats outside the body.** Tables and figures in `<floats-group>`, where NIH author manuscripts put them, are returned by `extract_tables()` and `extract_figures()` but are missing from the structured sections, `to_plaintext()`, `to_markdown()` and `get_full_text_sections()`.
+- **Floats outside the body.** Figures and tables in `<floats-group>` are gathered under `Figures and Tables` after the body, not placed where the text first cites them.
 - **Display formulas.** The `text` of a formula block is the flattened MathML, so subscripts and superscripts become plain characters (x² reads "x2"); `tex` carries the structure. `to_plaintext()`, `to_markdown()` and `get_full_text_sections()` render that flattened text, not the LaTeX.
 - **Tables.** A spanning cell's text appears once, at its top-left position; the positions it covers are `""`, not filled with its value, so fill them yourself where a value applies to every row it spans. A Markdown pipe table cannot express a span, so there a spanning cell stands in its first column only.
 - **Figures.** `graphic_uri` and the figure block's `uri` are taken from the first `<graphic>` anywhere in the figure, which can be a formula image inside the caption. Figure supplements are listed as separate figures, not linked to their parent.

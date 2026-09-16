@@ -9,7 +9,11 @@ from xml.etree import ElementTree as ET  # nosec B405
 
 from pyeuropepmc.features.fulltext.config.element_patterns import ElementPatterns
 from pyeuropepmc.features.fulltext.parsers.base_parser import BaseParser
-from pyeuropepmc.features.fulltext.utils.flat_blocks import iter_flat_blocks, plain_text
+from pyeuropepmc.features.fulltext.utils.flat_blocks import (
+    FLOATS_TITLE,
+    iter_flat_blocks,
+    plain_text,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -55,6 +59,16 @@ class SectionParser(BaseParser):
                 bare_text = self._blocks_text(body_elem)
                 if bare_text:
                     sections.append({"title": "", "content": bare_text})
+
+            # Figures and tables kept outside <body>, in <floats-group>: every
+            # one of an NIH author manuscript's. Body content, so no `type`.
+            floats = "\n\n".join(
+                text
+                for group in (self._own_floats_groups(self.root) if self.root is not None else [])
+                if (text := self._blocks_text(group))
+            )
+            if floats:
+                sections.append({"title": FLOATS_TITLE, "content": floats})
 
             # Extract additional content structures
             sections.extend(self._extract_additional_content_structures())
