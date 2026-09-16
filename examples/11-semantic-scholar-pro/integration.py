@@ -36,16 +36,20 @@ def main():
         print("-" * 40)
 
         merged = result['merged']
+        author_names = [a.get('name', '') for a in merged.get('authors', [])]
+        journal = merged.get('journal')
+        if isinstance(journal, dict):
+            journal = journal.get('title') or journal.get('name')
         print(f"Title: {merged.get('title', 'N/A')}")
-        print(f"Authors: {merged.get('author_string', 'N/A')[:100]}...")
-        print(f"Journal: {merged.get('journal_title', 'N/A')}")
-        print(f"Year: {merged.get('pub_year', 'N/A')}")
+        print(f"Authors: {', '.join(author_names)[:100]}...")
+        print(f"Journal: {journal or 'N/A'}")
+        print(f"Year: {merged.get('publication_year') or merged.get('publication_date', 'N/A')}")
         print(f"Citation count: {merged.get('citation_count', 'N/A')}")
 
         # Open access status
-        if merged.get('open_access_status'):
-            print(f"OA Status: {merged['open_access_status']}")
-            print(f"OA URL: {merged.get('oa_url', 'N/A')[:60]}...")
+        if merged.get('oa_status'):
+            print(f"OA Status: {merged['oa_status']}")
+            print(f"OA URL: {(merged.get('oa_url') or 'N/A')[:60]}...")
 
         # Topics/Fields of study
         if merged.get('topics'):
@@ -57,14 +61,15 @@ def main():
         print("\n\nSource Breakdown")
         print("-" * 40)
 
-        for source, data in result.items():
-            if source != 'merged':
-                print(f"\n{source.upper()}:")
-                if data:
-                    print(f"  Title: {data.get('title', 'N/A')[:60]}...")
-                    print(f"  Citation count: {data.get('citation_count', 'N/A')}")
-                else:
-                    print("  No data available")
+        # One entry per enabled source; result['sources'] lists those that answered
+        for source in ('europepmc', 'crossref', 'openalex', 'semantic_scholar', 'unpaywall'):
+            data = result.get(source)
+            print(f"\n{source.upper()}:")
+            if data:
+                print(f"  Title: {(data.get('title') or 'N/A')[:60]}...")
+                print(f"  Citation count: {data.get('citation_count', 'N/A')}")
+            else:
+                print("  No data available")
 
         # Example 2: Enrich multiple papers
         print("\n\n" + "=" * 60)
@@ -81,7 +86,7 @@ def main():
             print(f"\n{i}. Enriching: {doi}")
             try:
                 result = enricher.enrich_paper(doi=doi)
-                title = result['merged'].get('title', 'N/A')[:60]
+                title = (result['merged'].get('title') or 'N/A')[:60]
                 citations = result['merged'].get('citation_count', 'N/A')
                 print(f"   Title: {title}...")
                 print(f"   Citations: {citations}")

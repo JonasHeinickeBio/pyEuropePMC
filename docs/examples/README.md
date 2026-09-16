@@ -159,4 +159,4 @@ The `examples/` folder holds longer scripts and Jupyter notebooks. They are not 
 | [10-annotations](https://github.com/JonasHeinickeBio/pyEuropePMC/tree/main/examples/10-annotations) | Europe PMC text-mining annotations and their conversion to RDF |
 | [10-rdf-mapping](https://github.com/JonasHeinickeBio/pyEuropePMC/tree/main/examples/10-rdf-mapping) | Data models, RDF conversion and knowledge-graph structure |
 | [10-semantic-scholar](https://github.com/JonasHeinickeBio/pyEuropePMC/tree/main/examples/10-semantic-scholar) | The Semantic Scholar enrichment client |
-| [11-semantic-scholar-pro](https://github.com/JonasHeinickeBio/pyEuropePMC/tree/main/examples/11-semantic-scholar-pro) | The `semanticscholar` library: bulk search, rate limiting and typed responses |
+| [11-semantic-scholar-pro](https://github.com/JonasHeinickeBio/pyEuropePMC/tree/main/examples/11-semantic-scholar-pro) | `ProfessionalSemanticScholarClient`, the wrapper around the `semanticscholar` library: paper and author lookups, bulk search and rate limiting |

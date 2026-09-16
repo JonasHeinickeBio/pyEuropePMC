@@ -47,6 +47,11 @@ _ARXIV_ID_PATTERN = re.compile(
     r"(?:arxiv:|http://arxiv.org/abs/|https://arxiv.org/abs/)(\d+\.\d+|\w+/\d+)"
 )
 
+# An arXiv API error is returned as a normal Atom feed holding a single entry
+# whose <id> points at the error namespace; without this check the error text
+# comes back as a search result titled "Error".
+_ARXIV_ERROR_MARKER = "arxiv.org/api/errors"
+
 
 class ArxivClient(BaseLiteratureClient):
     """
@@ -120,7 +125,10 @@ class ArxivClient(BaseLiteratureClient):
         sort : str, optional
             Sort order: ``"relevance"`` (default), ``"date"``, or ``"title"``.
         **kwargs
-            Additional parameters (id_list, etc.).
+            ``categories``: one arXiv subject category or a list/comma-separated
+            string of them (e.g. ``"cs.AI"`` or ``["cs.AI", "cs.LG"]``).  The
+            categories are OR-ed together and AND-ed onto *query*.
+            ``id_list``: comma-separated arXiv IDs for a targeted lookup.
 
         Returns
         -------
@@ -128,7 +136,7 @@ class ArxivClient(BaseLiteratureClient):
             List of search results as Pydantic models.
         """
         params: dict[str, Any] = {
-            "search_query": query,
+            "search_query": self._apply_categories(query, kwargs.get("categories")),
             "max_results": min(limit, 2000),
         }
         if sort:
@@ -147,6 +155,23 @@ class ArxivClient(BaseLiteratureClient):
             return []
 
         return self._parse_feed(raw)
+
+    @staticmethod
+    def _apply_categories(query: str, categories: Any) -> str:
+        """Restrict *query* to arXiv subject categories with ``cat:`` clauses."""
+        if not categories:
+            return query
+        if isinstance(categories, str):
+            cats = [c.strip() for c in categories.split(",") if c.strip()]
+        else:
+            cats = [str(c).strip() for c in categories if str(c).strip()]
+        if not cats:
+            return query
+
+        clause = " OR ".join(f"cat:{c}" for c in cats)
+        if not query or not query.strip():
+            return f"({clause})"
+        return f"({query}) AND ({clause})"
 
     def get_paper(
         self,
@@ -235,7 +260,11 @@ class ArxivClient(BaseLiteratureClient):
                 authors = normalize_author_list(author_list)
 
         year = raw_result.get("year")
-        pub_year = int(year) if year else None
+        try:
+            pub_year = int(year) if year else None
+        except (TypeError, ValueError):
+            logger.debug("arXiv entry %r has an unparseable date %r", source_id, year)
+            pub_year = None
 
         journal = raw_result.get("journal")
         if journal:
@@ -288,18 +317,40 @@ class ArxivClient(BaseLiteratureClient):
             logger.warning("arXiv feed could not be parsed, no results: %s", exc)
             return []
 
-        # Check for total results > 0
+        # Check for total results > 0. A malformed or missing count is not a
+        # reason to throw away the entries the feed does carry.
         total = root.find(f"{{{_OPENSEARCH_NS}}}totalResults")
-        if total is not None and int(total.text or "0") == 0:
-            return []
+        if total is not None:
+            try:
+                if int((total.text or "0").strip()) == 0:
+                    return []
+            except ValueError:
+                logger.debug("arXiv returned a non-numeric totalResults: %r", total.text)
 
         results: list[LiteratureResult] = []
         for entry in root.findall(f"{{{_ATOM_NS}}}entry"):
+            if self._is_error_entry(entry):
+                continue
             parsed = self._parse_entry(entry)
             if parsed:
                 results.append(parsed)
 
         return results
+
+    @staticmethod
+    def _is_error_entry(entry: ElementTree.Element) -> bool:
+        """True for the placeholder entry arXiv returns to report a bad request."""
+        id_tag = entry.find(f"{{{_ATOM_NS}}}id")
+        if id_tag is None or not id_tag.text:
+            return False
+        if _ARXIV_ERROR_MARKER not in id_tag.text:
+            return False
+        summary = entry.find(f"{{{_ATOM_NS}}}summary")
+        logger.warning(
+            "arXiv API error: %s",
+            (summary.text or "").strip() if summary is not None else id_tag.text.strip(),
+        )
+        return True
 
     def _parse_entry(self, entry: ElementTree.Element) -> LiteratureResult | None:
         """Parse a single Atom entry into a LiteratureResult."""

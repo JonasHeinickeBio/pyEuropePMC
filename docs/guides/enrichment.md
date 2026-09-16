@@ -45,13 +45,13 @@ print(merged.get("citation_count"), merged.get("citation_counts"))
 print(merged.get("is_oa"), merged.get("oa_url"))
 ```
 
-`enrich_paper()` has no `doi` parameter, so `enrich_paper(doi=...)` raises `ValueError`. Pass the identifier positionally or as `identifier=`.
+Pass the identifier positionally or as `identifier=`. `doi=`, `pmid=` and `pmcid=` are accepted as synonyms, so `enrich_paper(doi="10.1371/journal.pone.0308090")` does the same; they are not forwarded to the sources.
 
 | Parameter | Type | Default | Description |
 |---|---|---|---|
-| `identifier` | `str \| None` | `None` | DOI, DOI URL (`https://doi.org/...`), PMID or PMCID. `None` raises `ValueError`. |
+| `identifier` | `str \| None` | `None` | DOI, DOI URL (`https://doi.org/...`), PMID or PMCID; also accepted as `doi=`, `pmid=` or `pmcid=`. Without any of them, `ValueError` is raised. |
 | `save_responses` | `bool` | `False` | Write each source's response and the whole result to JSON files |
-| `save_dir` | `str \| Path \| None` | `None` | Directory for those files; `None` means `./enrichment_responses` |
+| `save_dir` | `str \| Path \| None` | `None` | Directory for those files; `None` means `./enrichment_responses`. The files are `raw_<source>_<key>.json` and `merged_<key>.json`, where `<key>` is the resolved DOI, or the identifier you passed when no DOI was found, with every character other than letters, digits and `-` replaced by `_` |
 | `**kwargs` | | | Passed to every source client's `enrich()` |
 
 Before querying the sources, the enricher runs one Europe PMC search to find the DOI, PMID and PMCID it was not given. This lookup also runs when `enable_europepmc=False`. iCite receives the PMID; the other sources receive the DOI, or the PMID or original identifier when no DOI was found. The sources are queried in parallel. A source that raises an exception or returns nothing is logged and left out of `sources`.
@@ -68,9 +68,7 @@ Before querying the sources, the enricher runs one Europe PMC search to find the
 | `europepmc`, `crossref`, `openalex`, `semantic_scholar`, `icite`, `unpaywall`, `datacite`, `ror` | `dict \| None` | One entry per enabled source (and always `ror`): that client's normalised response, or `None` |
 | `merged` | `dict` | The merged record (see [Merge rules](#merge-rules)); `{}` when no source returned data |
 
-Known limitations:
-- `enricher.generate_enrichment_report(result)` raises `AttributeError` when `merged["journal"]` is a string, which is what Europe PMC supplies in the default configuration.
-- With `save_responses=True`, nothing is written when no DOI was resolved; the error is only logged.
+`enricher.generate_enrichment_report(result)` returns a short text summary of a result. It reads `merged["journal"]` both as the string Europe PMC supplies and as a dict with `title` or `name`.
 
 ## Configuration
 
@@ -166,7 +164,7 @@ with ICiteClient() as icite:
         print(metrics["rcr"], metrics["nih_percentile"])
 ```
 
-As with `enrich_paper()`, `enrich(doi=...)` raises `ValueError`; pass the identifier positionally or as `identifier=`. Used on their own, CrossRef, OpenAlex, Unpaywall, iCite, DataCite and ORCID raise `APIClientError` (importable from `pyeuropepmc`) on network errors, timeouts and HTTP errors other than 404. `RorClient` logs these errors and returns `None`.
+Pass the identifier positionally or as `identifier=`. The DOI-keyed clients (CrossRef, OpenAlex, Semantic Scholar, Unpaywall, DataCite) also accept it as `doi=`, `ICiteClient` as `pmid=` and `OrcidClient` as `orcid=`. Used on their own, CrossRef, OpenAlex, Unpaywall, iCite, DataCite and ORCID raise `APIClientError` (importable from `pyeuropepmc`) on network errors, timeouts and HTTP errors other than 404. `RorClient` logs these errors and returns `None`.
 
 All clients below are importable from `pyeuropepmc.features.enrich`. Every result also has a `source` key.
 
@@ -209,13 +207,13 @@ with SemanticScholarClient(api_key=None) as s2:
 | `get_recommendations_for_paper(paper_id, limit=None, fields=None, use_cache=True)` | `list[dict]` | `limit` is capped at 500. An invalid paper ID raises `ValueError`; API errors return `[]`. |
 | `get_recommendations_for_papers(positive_paper_ids, negative_paper_ids=None, limit=None, fields=None, use_cache=True)` | `list[dict]` | An empty `positive_paper_ids`, an invalid ID, or an ID in both lists raises `ValueError`; API errors return `[]`. IDs may contain letters, digits, `:`, `.`, `/`, `_` and `-`. |
 
-Known limitation: `search_papers()` returns at most 100 papers; a larger `limit` is reduced to 100.
+`search_papers()` returns up to `limit` papers, at most 1000; a larger `limit` is reduced to 1000. Semantic Scholar serves 100 papers per request, so a `limit` above 100 makes one request per further 100 papers.
 
 Without an API key, the Semantic Scholar API allows fewer requests; set `SEMANTIC_SCHOLAR_API_KEY` or pass `api_key`.
 
 ### Bulk search
 
-`search_papers(..., bulk=True)` sends the query to Semantic Scholar's bulk search endpoint, which returns papers without relevance ranking. The default, `bulk=False`, uses relevance search. Either way a call returns at most 100 papers.
+`search_papers(..., bulk=True)` sends the query to Semantic Scholar's bulk search endpoint, which returns papers without relevance ranking. The default, `bulk=False`, uses relevance search. Either way a call returns at most 1000 papers.
 
 ```python
 from pyeuropepmc import SemanticScholarClient
@@ -244,7 +242,7 @@ if paper:
 results = client.search_paper("cancer", bulk=True, limit=50)
 ```
 
-Its methods are `get_paper`, `get_papers`, `search_paper`, `get_paper_authors`, `get_author`, `search_author`, `get_recommendations` and `get_recommendations_from_lists`. `search_paper()` raises `ValueError` when `limit` is outside 1 to 100.
+Its methods are `get_paper`, `get_papers`, `search_paper`, `get_paper_authors`, `get_author`, `search_author`, `get_recommendations` and `get_recommendations_from_lists`. `search_paper()` raises `ValueError` when `limit` is outside 1 to 1000; it requests at most 100 papers per page and reads further pages up to `limit`.
 
 ## Merge rules
 

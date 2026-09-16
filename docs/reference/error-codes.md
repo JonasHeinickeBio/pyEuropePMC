@@ -149,6 +149,8 @@ All exceptions are defined in `pyeuropepmc.core.exceptions` and derive from `PyE
 | `CONFIG002` | Invalid configuration value | Not raised | — |
 | `CONFIG003` | A required package is missing | `QueryBuilder.save()`, `from_file()`, `from_string()`, `translate()`, `to_query_object()` and `evaluate()` when `search-query` cannot be imported | `search-query` is a base dependency: reinstall pyeuropepmc |
 
+`QueryBuilder(validate=True)` is the exception: it checks for `search-query` in the constructor, warns and continues with validation off rather than raising `CONFIG003` later.
+
 ## Query builder: QUERY
 
 | Code | Meaning | Raised by | Typical fix |

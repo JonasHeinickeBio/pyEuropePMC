@@ -780,6 +780,24 @@ class FullTextXMLParser:
         recognized_patterns.update(
             self._extract_elements_from_patterns(self.config.object_id_patterns["patterns"])
         )
+        recognized_patterns.update(
+            self._extract_elements_from_dict_patterns(self.config.math_patterns)
+        )
+        recognized_patterns.update(
+            self._extract_elements_from_dict_patterns(self.config.formatting_patterns)
+        )
+        recognized_patterns.update(
+            self._extract_elements_from_dict_patterns(self.config.extended_metadata_patterns)
+        )
+        recognized_patterns.update(
+            self._extract_elements_from_dict_patterns(self.config.content_structure_patterns)
+        )
+        recognized_patterns.update(
+            self._extract_elements_from_dict_patterns(self.config.award_patterns)
+        )
+        recognized_patterns.update(
+            self._extract_elements_from_dict_patterns(self.config.appendix_patterns)
+        )
 
         # Add common structural elements
         recognized_patterns.update(self._get_common_structural_elements())
@@ -793,6 +811,9 @@ class FullTextXMLParser:
         parts = pattern.split("/")
         for part in parts:
             elem_name = part.split("[")[0].strip()
+            # Document tags are compared without their namespace, so a
+            # prefixed pattern such as ".//mml:math" contributes "math".
+            elem_name = elem_name.rsplit(":", 1)[-1]
             if elem_name and not elem_name.startswith("@"):
                 elements.add(elem_name)
         return elements

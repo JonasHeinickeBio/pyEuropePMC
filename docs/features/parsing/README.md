@@ -325,8 +325,8 @@ Output:
 ```text
 DocumentSchema(has_tables=False, has_figures=True, has_supplementary=True, has_acknowledgments=False, has_funding=False, citation_types=['element-citation'], table_structure='jats')
 72
-72 56 77.8
-['article-categories', 'article-meta', 'award-id'] 38
+72 62 86.1
+['article-meta', 'fax', 'fn'] 38
 ```
 
 - `detect_schema()` returns a `DocumentSchema` describing which structures the document contains.

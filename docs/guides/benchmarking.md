@@ -28,15 +28,15 @@ pyeuropepmc benchmark run-extra --xml-dir ./my_xmls --output extra.json
 | `list-datasets` | `--verbose/-v` | Lists the standard datasets with article counts and sizes |
 | `dataset-info NAME` | | Shows the metadata of one standard dataset |
 | `download NAME` | `--data-dir/-d DIR`, `--force/-f` | Downloads a standard dataset |
-| `run DATASET` | `--data-dir/-d`, `--local-path/-l`, `--limit/-n`, `--output/-o`, `--profile/-p`, `--profile-memory/-m`, `--skip-errors/-s` | Runs all metrics on a dataset. `DATASET` is a standard dataset name, or `local` together with `--local-path`. |
+| `run DATASET` | `--data-dir/-d`, `--local-path/-l`, `--limit/-n`, `--output/-o`, `--profile/-p`, `--profile-memory/-m`, `--skip-errors/-s` or `--no-skip-errors` | Runs all metrics on a dataset. `DATASET` is a standard dataset name, or `local` together with `--local-path`. |
 | `run-file FILE` | `--output/-o` | Runs all metrics on one XML file; `--output` saves the metrics as JSON |
 | `run-extra` | `--xml-dir/-d` (default `benchmark_xmls/xml`), `--output/-o` (default `benchmark_xmls/benchmark_results.json`) | Measures parse speed and counts sections, content blocks and inline elements |
 | `fetch-xmls` | `--target/-t` (default `55`), `--output-dir/-o` (default `benchmark_xmls/xml`), `--rate-limit/-r` (default `0.5` seconds) | Searches Europe PMC for open-access articles with full text and downloads their XML |
 | `profile FILE` | `--top/-t` (default `20`) | Times the parsing pipeline with cProfile |
 | `profile-memory FILE` | `--top/-t` (default `15`) | Traces memory allocations of the parsing pipeline with tracemalloc |
-| `report FILE` | `--verbose/-v` | Prints a saved report (see [Reports](#reports) for a known limitation) |
+| `report FILE` | `--verbose/-v` | Prints a saved report (see [Reports](#reports)) |
 
-`run` prints the composite score, the number of successfully parsed articles and the total parse time; the per-metric scores are in the saved report. `--skip-errors` has no effect: an article that fails to read or parse is always counted as failed and skipped.
+`run` prints the composite score, the number of successfully parsed articles and the total parse time; the per-metric scores are in the saved report. By default (`--skip-errors`) an article that fails to read or parse is counted as failed and skipped; with `--no-skip-errors` the first such error stops the run.
 
 ## Datasets
 
@@ -67,7 +67,7 @@ pyeuropepmc benchmark dataset-info PMC_sample_1943
 pyeuropepmc benchmark download PMC_sample_1943
 ```
 
-Known limitation: `run` decides whether a standard dataset is downloaded by looking for `*.xml` files. `PMC_sample_1943`, `eLife_984` and `biorxiv-10k-test-2000` contain `*.nxml` files, so `run` reports them as not downloaded and offers to download them again. Benchmark these datasets with [`BenchmarkRunner`](#benchmarkrunner), which reads the `*.nxml` files directly.
+`PMC_sample_1943`, `eLife_984` and `biorxiv-10k-test-2000` store their articles as `*.nxml` files and `PLOS_1000` as `*.xml`. `run` and `download` treat a dataset as downloaded when its directory holds files with that dataset's extension.
 
 ## Metrics
 
@@ -136,31 +136,31 @@ Output (timings vary):
 ============================================================
   Function-Level Profile: PMC12900525.xml
 ============================================================
-  Total time: 0.0488s (52,509 calls)
+  Total time: 0.2477s (52,527 calls)
 
   Top functions by cumulative time:
   Function                                        Calls    Total  Per Call
   -----------------------------------------------------------------------
-  get_full_text_sections_structured                   1   0.0223  0.000000
-  extract_sections                                    1   0.0130  0.000000
-  extract_references                                  1   0.0098  0.000000
-  _extract_single_reference                          29   0.0096  0.000000
-  _extract_additional_structures                      1   0.0088  0.000000
+  get_full_text_sections_structured                   1   0.1238  0.123798
+  extract_sections                                    1   0.0736  0.073598
+  _handle_table                                       7   0.0507  0.007241
+  content_block_extractor                             1   0.0480  0.047999
+  _extract_additional_structures                      1   0.0480  0.047995
 
   Parser method breakdown:
-    get_full_text_sections_structured            : 0.0223s
-    extract_references                           : 0.0098s
-    get_full_text_sections                       : 0.0033s
-    parse                                        : 0.0027s
-    extract_metadata                             : 0.0027s
-    extract_tables                               : 0.0025s
-    extract_authors                              : 0.0002s
-    extract_figures                              : 0.0001s
+    get_full_text_sections_structured            : 0.1238s
+    extract_references                           : 0.0433s
+    get_full_text_sections                       : 0.0146s
+    extract_metadata                             : 0.0135s
+    parse                                        : 0.0106s
+    extract_tables                               : 0.0084s
+    extract_authors                              : 0.0033s
+    extract_figures                              : 0.0002s
 ```
 
 The profile includes the one-off import of the parser's extension modules, which can appear as `_find_and_load` rows.
 
-Known limitation: the Per Call column always shows `0.000000`. Per-call times are available from Python in `profile_text(xml)["by_function"][name]["percall_cum_s"]`.
+Per Call is the cumulative time divided by the number of calls, `profile_text(xml)["by_function"][name]["percall_cum_s"]`; `percall_raw_s` holds the time spent in the function itself per call.
 
 ### Memory allocation
 
@@ -168,33 +168,33 @@ Known limitation: the Per Call column always shows `0.000000`. Per-call times ar
 pyeuropepmc benchmark profile-memory benchmark_xmls/xml/PMC12900525.xml --top 3
 ```
 
-Output:
+Output (the start of the standard-library paths shortened to `...`):
 
 ```text
 ============================================================
   Memory Profile: PMC12900525.xml
 ============================================================
-  Peak memory   : 2.08 MiB
+  Peak memory   : 2.09 MiB
   Current memory: 1.76 MiB
-  Allocated     : 2.08 MiB
+  Allocated     : 2.09 MiB
 
   Top allocations:
   Size (KiB)  Location
   --------------------------------------------------
-       479.6  unknown
-       290.1  unknown
-       258.6  unknown
+       479.6  .../lib/python3.10/xml/etree/ElementTree.py:1718
+       290.1  .../lib/python3.10/xml/etree/ElementTree.py:1656
+       260.4  <frozen importlib._bootstrap_external>:672
 
   Allocations by module:
-    stdlib                                  : 1210.8 KiB
-    <frozen importlib._bootstrap_external>  : 261.9 KiB
-    pyeuropepmc.features                    : 63.5 KiB
-    <string>                                : 7.3 KiB
+    stdlib                                  : 1211.0 KiB
+    <frozen importlib._bootstrap_external>  : 264.4 KiB
+    pyeuropepmc.features                    : 62.8 KiB
+    <string>                                : 7.4 KiB
 ```
 
 `Allocated` repeats the peak value.
 
-Known limitation: the Location column always shows `unknown`. The allocation sites are available from Python: each entry of `profile_memory(xml)["top_allocations"]` has `filename`, `lineno`, `function` and `trace`.
+Location is the allocation site, `<file>:<line>`, from the `filename` and `lineno` of each `profile_memory(xml)["top_allocations"]` entry. tracemalloc records no function names, so the entries' `function` is empty.
 
 ### Profiling a whole run
 
@@ -220,7 +220,48 @@ pyeuropepmc benchmark run local --local-path benchmark_xmls/xml --limit 10 --pro
 | `aggregate_overall` | The same statistics over all articles, plus `total_articles` |
 | `article_results[]` | `dataset`, `article` (file name without extension), `metrics` (the output of `compute_all_metrics`) and `metadata` (`file_size_bytes`, `parse_time_seconds`, and `profiling` or `memory` when enabled) |
 
-Known limitation: `pyeuropepmc benchmark report FILE`, with or without `--verbose`, stops with `TypeError: unsupported format string passed to dict.__format__` on reports written by `run`. Print a saved report from Python instead:
+`pyeuropepmc benchmark report FILE` prints the parser version, creation time, article counts and total parse time, then for each dataset the article count, mean parse time and composite score, and the overall composite and per-metric mean scores. `--verbose` adds each article's composite score and parse time:
+
+```bash
+pyeuropepmc benchmark run local --local-path benchmark_xmls/xml --limit 3 --output results.json
+pyeuropepmc benchmark report results.json --verbose
+```
+
+Output (timings vary):
+
+```text
+============================================================
+  Benchmark Report: pyEuropePMC Benchmark Report
+============================================================
+  Parser version  : 2.2.1
+  Created         : 2026-09-16T10:07:46.446804+00:00
+  Articles        : 3
+  Successful      : 3
+  Failed          : 0
+  Parse time      : 0.06s
+
+  Per-dataset summaries:
+
+  [local]
+    Articles       : 3
+    Parse time     : 0.018s (mean)
+    Composite score: 0.9992
+
+  Overall:
+    Composite score: 0.9992
+      element_coverage              : 0.9962
+      inline_recall                 : 1.0000
+      metadata_accuracy             : 1.0000
+      section_accuracy              : 1.0000
+      text_fidelity                 : 1.0000
+
+  Per-article details:
+    PMC12900525                    [local]  score=0.9977  parse=0.0289s
+    PMC12967033                    [local]  score=1.0000  parse=0.0144s
+    PMC13125388                    [local]  score=1.0000  parse=0.0119s
+```
+
+From Python:
 
 ```python
 from pyeuropepmc.benchmark import BenchmarkReport
@@ -281,7 +322,7 @@ print(sample.info.article_count, sample.info.size_gb)
 | `iter_articles()` | iterator of `Path` | Files matching the dataset's pattern (`*.xml`, or `*.nxml` for three standard datasets); raises `FileNotFoundError` if the directory does not exist |
 | `get_article_paths(limit=None)` | `list[Path]` | The same files as a list |
 | `article_count` | `int` | Number of matching files on disk |
-| `is_downloaded` | `bool` | Whether the directory contains `*.xml` files |
+| `is_downloaded` | `bool` | Whether the directory contains files matching the dataset's pattern |
 | `info` | `DatasetInfo` | `name`, `source`, `size_gb`, `article_count`, `description` |
 | `to_dict()` | `dict` | Dataset metadata for reports |
 
@@ -305,7 +346,7 @@ report.save_json("results.json")
 | `limit` | `int \| None` | `None` | Maximum number of articles per dataset |
 | `config` | `Any` | `None` | Passed to `FullTextXMLParser(config=...)` |
 | `report_title` | `str \| None` | `None` | Report title; `None` means `"pyEuropePMC Benchmark Report"` |
-| `skip_errors` | `bool` | `True` | Recorded in the report metadata; failing articles are always skipped |
+| `skip_errors` | `bool` | `True` | Skip an article that fails to read or parse and record it in `stats["parse_errors"]`; with `False` the error is raised and the run stops. Recorded in the report metadata |
 | `profile` | `bool` | `False` | Collect cProfile data for each article |
 | `profile_memory` | `bool` | `False` | Collect tracemalloc data for each article |
 | `profile_top_n` | `int` | `20` | Number of functions kept in the profile summaries |

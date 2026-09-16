@@ -742,11 +742,24 @@ class EuropePMCParser:
     def parse_search_results_with_entities(
         search_results: list[dict[str, Any]] | dict[str, Any],
     ) -> list[dict[str, Any]]:
-        """Parse search results and create entities_data format suitable for RDF conversion."""
+        """Parse search results and create entities_data format suitable for RDF conversion.
+
+        Accepts the list of records (``response["resultList"]["result"]``),
+        the whole search response (a dict with a ``resultList``), or a single
+        record dict.
+        """
         entities_data = []
 
-        # Handle both single result and list of results
-        results_list = [search_results] if isinstance(search_results, dict) else search_results
+        # A full search response carries its records under resultList.result;
+        # any other dict is a single record.
+        if isinstance(search_results, dict) and "resultList" in search_results:
+            result_list = search_results.get("resultList") or {}
+            records = result_list.get("result") if isinstance(result_list, dict) else None
+            results_list: list[Any] = EuropePMCParser._validate_result_list(records)
+        elif isinstance(search_results, dict):
+            results_list = [search_results]
+        else:
+            results_list = search_results
 
         for result in results_list:
             try:
