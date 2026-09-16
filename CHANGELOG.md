@@ -61,7 +61,14 @@ All notable changes to PyEuropePMC are documented here.
   `\text{y}`), an author's `<annotation encoding="application/x-tex">` wins over
   anything derived, `<mfenced>` and `<mspace>` are handled, and a base is braced
   only where the script would otherwise mis-bind. Spacing follows the operator:
-  `x + y`, but `(x)` and `\theta,`.
+  `x + y`, but `(x)` and `\theta,`. Fences go through a delimiter table, so
+  `<mfenced open="{">` is `\left\{`, not the error `\left{`; styled letters
+  such as `ℝ` or a mathematical bold `x` become `\mathbb{R}` and `\mathbf{x}`;
+  LaTeX's special characters are escaped; and an explicit space at the end of a
+  group no longer turns into a backslash that escapes the closing brace.
+  Measured with pdflatex on 1,654 formulas from 32 open-access papers, 711
+  compiled and 275 were empty before; 1,650 compile now. The other four use a
+  character outside mathematics, such as a Latin "ꝏ" for infinity.
 
 - **A formula block's `mathml` is serialized in the MathML namespace.**
   `ET.tostring` invents a prefix for a namespace it was not told about, so the

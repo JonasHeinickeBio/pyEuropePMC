@@ -433,3 +433,68 @@ class TestSerializeMathml:
         elem = DefusedET.fromstring(f'<math xmlns="{MML}"/>')
         xml = serialize_mathml(elem)
         assert xml in (f'<math xmlns="{MML}" />', f'<math xmlns="{MML}"/>')
+
+
+class TestSymbolsThatStoppedPdflatex:
+    """Each of these made pdflatex stop on a real Europe PMC formula."""
+
+    def test_tensor_product(self, conv):
+        assert conv._handle_mo(_mml("<mo>\u2297</mo>")) == "\\otimes"
+
+    def test_divides_bar_is_mid(self, conv):
+        assert conv._handle_mo(_mml("<mo>\u2223</mo>")) == "\\mid"
+
+    def test_colon_equals(self, conv):
+        assert conv._handle_mo(_mml("<mo>\u2254</mo>")) == ":="
+
+    def test_brace_operator_is_escaped(self, conv):
+        """A set written with <mo>{</mo> is a literal brace, not a TeX group."""
+        elem = _mml("<mrow><mo>{</mo><mi>x</mi><mo>}</mo></mrow>")
+        assert conv._handle_mrow(elem) == "\\{x\\}"
+
+    def test_styled_letter_by_its_unicode_name(self, conv):
+        assert conv._handle_mi(_mml("<mi>\u211d</mi>")) == "\\mathbb{R}"
+        assert conv._handle_mi(_mml("<mi>\U0001d431</mi>")) == "\\mathbf{x}"
+
+    def test_unknown_letter_is_set_as_text(self, conv):
+        assert conv._handle_mi(_mml("<mi>\u015b</mi>")) == "\\text{\u015b}"
+
+    def test_limit_written_as_an_operator_takes_its_limits_below(self, conv):
+        elem = _mml(
+            "<munder><mo>lim</mo><mrow><mi>x</mi><mo>\u2192</mo><mn>0</mn></mrow></munder>"
+        )
+        assert conv._handle_munder(elem) == "\\lim_{x \\rightarrow 0}"
+
+
+class TestDelimiters:
+    def test_brace_fence(self, conv):
+        elem = _mml('<mfenced open="{" close=""><mi>x</mi></mfenced>')
+        assert conv._handle_mfenced(elem) == "\\left\\{x\\right."
+
+    def test_angle_fence_is_separated_from_a_letter(self, conv):
+        """ "\\left\\langleI" is an undefined control sequence."""
+        elem = _mml('<mfenced open="\u27e8" close="\u27e9"><mi>I</mi></mfenced>')
+        assert conv._handle_mfenced(elem) == "\\left\\langle I\\right\\rangle"
+
+    def test_unknown_fence_becomes_the_null_delimiter(self, conv):
+        elem = _mml('<mfenced open="\u2605" close=")"><mi>x</mi></mfenced>')
+        assert conv._handle_mfenced(elem) == "\\left.x\\right)"
+
+
+class TestTextMode:
+    def test_specials_are_escaped_inside_text(self, conv):
+        assert conv._handle_mtext(_mml("<mtext>a &amp; b_1 50%</mtext>")) == (
+            "\\text{a \\& b\\_1 50\\%}"
+        )
+
+    def test_whitespace_only_mtext_is_a_space(self, conv):
+        assert conv._handle_mtext(_mml("<mtext> </mtext>")) == "\\ "
+
+
+class TestTrailingSpace:
+    def test_a_trailing_explicit_space_does_not_escape_the_closing_brace(self, conv):
+        """``e^{\\tau \\ }`` stripped to ``e^{\\tau \\}``: an unbalanced group."""
+        elem = _mml("<msup><mi>e</mi><mrow><mi>\u03c4</mi><mspace/></mrow></msup>")
+        latex = conv._handle_msup(elem)
+        assert latex == "e^{\\tau}"
+        assert latex.count("{") == latex.count("}")

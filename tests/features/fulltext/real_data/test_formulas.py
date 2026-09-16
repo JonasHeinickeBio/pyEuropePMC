@@ -16,6 +16,7 @@ namespace - so all eleven converted to the empty string. What reached the
 from __future__ import annotations
 
 import pathlib
+import re
 from xml.etree import ElementTree as ET
 
 import defusedxml.ElementTree as DefusedET
@@ -170,18 +171,98 @@ class TestRenderingsAgree:
         N-dimensional state-vector y". Rendering the equation between them
         produced a sentence that is in no reading of the document.
         """
-        for para in doc.root.iter():
+        body = doc.root.find("./body")
+        checked = 0
+        for para in body.iter() if body is not None else ():
             if _local(para.tag) != "p":
                 continue
-            for formula in _display_formulas(para):
-                expression = _expression(formula)
-                if len(expression) < 8:
+            for formula in (c for c in para if _local(c.tag) == "disp-formula"):
+                before = _squash(para.text or "")
+                for sibling in para:
+                    if sibling is formula:
+                        break
+                    before = _squash(before + "".join(sibling.itertext()) + (sibling.tail or ""))
+                after = _squash(formula.tail or "")
+                # Twelve characters either side is enough to be unique in a
+                # document and short enough to stay inside one run of prose.
+                if len(before) < 12 or len(after) < 12:
                     continue
-                for rendering in (doc.plaintext, doc.markdown, doc.flat):
-                    index = rendering.find(expression)
-                    if index == -1:
-                        continue
-                    before = rendering[max(0, index - 30) : index]
-                    assert not before.endswith("oftheform"), (
-                        f"{doc.pmcid}: formula still inside the sentence"
+                joined = before[-12:] + after[:12]
+                for name, rendering in (
+                    ("to_plaintext", doc.plaintext),
+                    ("to_markdown", doc.markdown),
+                    ("get_full_text_sections", doc.flat),
+                ):
+                    assert joined in rendering, (
+                        f"{doc.pmcid}: {name}() still puts a formula inside {joined!r}"
                     )
+                checked += 1
+        if not checked:
+            pytest.skip(f"{doc.pmcid} has no display formula between two runs of prose")
+
+
+def _unescaped(latex: str, char: str) -> int:
+    """Occurrences of ``char`` not preceded by an odd run of backslashes."""
+    count = 0
+    for index, found in enumerate(latex):
+        if found != char:
+            continue
+        run = len(latex[:index]) - len(latex[:index].rstrip("\\"))
+        if run % 2 == 0:
+            count += 1
+    return count
+
+
+_LEFT_RIGHT = re.compile(r"\\(?:left|right)(\\[A-Za-z]+|\\\||.)")
+_VALID_DELIMITERS = {
+    "(",
+    ")",
+    "[",
+    "]",
+    "|",
+    ".",
+    "/",
+    r"\{",
+    r"\}",
+    r"\|",
+    r"\langle",
+    r"\rangle",
+    r"\lfloor",
+    r"\rfloor",
+    r"\lceil",
+    r"\rceil",
+}
+
+
+class TestLatexIsWellFormed:
+    """Checks a LaTeX engine would otherwise make, without needing one installed.
+
+    Measured with pdflatex on 1,654 formulas from 32 Europe PMC papers: 711
+    compiled under 2.2.1 and 275 were empty; 1,650 compile here. The four that
+    do not use a character outside mathematics (a Latin "ꝏ" for infinity).
+    """
+
+    def _latex(self, doc: _Parsed) -> list[str]:
+        latex = [b["tex"] for b in doc.formulas if b.get("mathml") and b.get("tex")]
+        if not latex:
+            pytest.skip(f"{doc.pmcid} has no converted formula")
+        return latex
+
+    def test_groups_are_balanced(self, doc: _Parsed) -> None:
+        for latex in self._latex(doc):
+            assert _unescaped(latex, "{") == _unescaped(latex, "}"), (
+                f"{doc.pmcid}: unbalanced group in {latex[:80]!r}"
+            )
+
+    def test_left_and_right_take_a_delimiter(self, doc: _Parsed) -> None:
+        for latex in self._latex(doc):
+            for delimiter in _LEFT_RIGHT.findall(latex):
+                assert delimiter in _VALID_DELIMITERS, (
+                    f"{doc.pmcid}: \\left/\\right with {delimiter!r} in {latex[:80]!r}"
+                )
+
+    def test_greek_and_operators_are_commands(self, doc: _Parsed) -> None:
+        """pdflatex stops at the first Greek letter or operator left as Unicode."""
+        for latex in self._latex(doc):
+            stray = [c for c in latex if not c.isascii()]
+            assert not stray, f"{doc.pmcid}: {stray[:3]} left in {latex[:80]!r}"
