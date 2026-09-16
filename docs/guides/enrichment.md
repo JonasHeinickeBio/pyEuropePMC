@@ -244,7 +244,7 @@ if paper:
 results = client.search_paper("cancer", bulk=True, limit=50)
 ```
 
-Its methods are `get_paper`, `get_papers`, `search_paper`, `get_paper_authors`, `get_author`, `search_author`, `get_recommendations` and `get_recommendations_from_lists`. `search_paper()` raises `ValueError` when `limit` is outside 1 to 100.
+Its methods are `get_paper`, `get_papers`, `search_paper`, `get_paper_authors`, `get_author`, `search_author`, `get_recommendations` and `get_recommendations_from_lists`. `search_paper()` raises `ValueError` when `limit` is outside 1 to 1000; it requests at most 100 papers per page and reads further pages up to `limit`.
 
 ## Merge rules
 
