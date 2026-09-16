@@ -7,11 +7,11 @@ if a DOI has an Open Access version and where to download it.
 
 import logging
 from typing import Any
-
-import requests
+from urllib.parse import quote
 
 from pyeuropepmc.core.base import BaseAPIClient
 from pyeuropepmc.core.error_codes import ErrorCodes
+from pyeuropepmc.core.exceptions import APIClientError, UnpaywallError
 
 __all__ = ["UnpaywallClient"]
 
@@ -37,9 +37,7 @@ class UnpaywallClient(BaseAPIClient):
 
     def __init__(self, email: str, rate_limit_delay: float = 0.6) -> None:
         if not email or "@" not in email:
-            from pyeuropepmc.core.exceptions import UnpaywallError as UnpaywallErrorImpl
-
-            raise UnpaywallErrorImpl(
+            raise UnpaywallError(
                 ErrorCodes.VALID002,
                 {"message": "Valid email address is required for Unpaywall API"},
             )
@@ -58,46 +56,48 @@ class UnpaywallClient(BaseAPIClient):
         Returns
         -------
         dict or None
-            Unpaywall record if found, None if not found or error
+            Unpaywall record, or None if Unpaywall does not know the DOI
+
+        Raises
+        ------
+        UnpaywallError
+            If the DOI is empty (``VALID003``), or the request fails for any other
+            reason than a 404 (``NET001``)
         """
         if not doi:
-            from pyeuropepmc.core.exceptions import UnpaywallError as UnpaywallErrorImpl
+            raise UnpaywallError(ErrorCodes.VALID003, {"message": "DOI cannot be empty"})
 
-            raise UnpaywallErrorImpl(ErrorCodes.VALID003, {"message": "DOI cannot be empty"})
-
-        url = f"{self.BASE_URL}{doi}"
+        # _get prepends BASE_URL, so pass the DOI relative to it. Quote what a URL
+        # path cannot carry (such as "#", "?" or spaces) but keep "/" and the
+        # other characters a path allows, which DOIs routinely contain.
+        endpoint = quote(doi.strip(), safe="/:@!$&'()*+,;=")
         params = {"email": self.email}
 
         try:
-            response = self._get(url, params=params)
-            if response is None:
-                return None
-            data: dict[str, Any] | None = response.json()
-
-            if response.status_code != 200:
-                logger.warning(f"Unpaywall returned status {response.status_code} for DOI {doi}")
-                return None
-
-            return data
-
-        except requests.HTTPError as e:
-            if e.response is not None and e.response.status_code == 404:
+            response = self._get(endpoint, params=params)
+        except APIClientError as e:
+            # _get has already turned HTTP and network failures into APIClientError.
+            # A closed client is a usage error, not a failed lookup.
+            if e.error_code == ErrorCodes.FULL007:
+                raise
+            status_code = e.context.get("status_code")
+            if status_code == 404:
                 logger.debug(f"DOI not found in Unpaywall: {doi}")
                 return None
-            raise UnpaywallErrorImpl(
-                ErrorCodes.NET001,
-                {
-                    "message": f"HTTP error {e.response.status_code} while looking up DOI {doi}",
-                    "doi": doi,
-                },
-            ) from e
-        except requests.RequestException as e:
-            from pyeuropepmc.core.exceptions import UnpaywallError as UnpaywallErrorImpl
+            if isinstance(status_code, int):
+                message = f"HTTP error {status_code} while looking up DOI {doi}"
+            else:
+                message = f"Network error while looking up DOI {doi}: {e.context.get('error', e)}"
+            raise UnpaywallError(ErrorCodes.NET001, {"message": message, "doi": doi}) from e
 
-            raise UnpaywallErrorImpl(
-                ErrorCodes.NET001,
-                {"message": f"Network error while looking up DOI {doi}: {e}", "doi": doi},
-            ) from e
+        if response is None:
+            return None
+        if response.status_code != 200:
+            logger.warning(f"Unpaywall returned status {response.status_code} for DOI {doi}")
+            return None
+
+        data: dict[str, Any] | None = response.json()
+        return data
 
     def get_oa_status(self, doi: str) -> str | None:
         """
