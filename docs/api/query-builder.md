@@ -102,9 +102,11 @@ Raises `ValueError` for an unknown field name and `QueryBuilderError` (`QUERY001
 | `date_range(2020, 2023)` | `(PUB_YEAR:[2020 TO 2023])` |
 | `date_range(start_year=2020)` | `(PUB_YEAR:[2020 TO <current year>])`, using the year at the time of the call |
 | `date_range(end_year=2020)` | `(PUB_YEAR:[1000 TO 2020])` |
-| `date_range(start_date="2020-01-01", end_date="2023-12-31")` | `(PUB_YEAR:[2020-01-01 TO 2023-12-31])` |
+| `date_range(start_date="2020-01-01", end_date="2023-12-31")` | `(FIRST_PDATE:[2020-01-01 TO 2023-12-31])` |
+| `date_range(start_date="2020-01-01")` | `(FIRST_PDATE:[2020-01-01 TO *])` |
+| `date_range(end_date="2023-12-31")` | `(FIRST_PDATE:[* TO 2023-12-31])` |
 
-Europe PMC's `PUB_YEAR` field holds years. For day precision, search `FIRST_PDATE` with `field("first_pdate", "[2020-01-01 TO 2023-12-31]", escape=False)` instead of passing dates to `date_range()`.
+Europe PMC's `PUB_YEAR` field holds years, so years produce a `PUB_YEAR` range and full dates a `FIRST_PDATE` range, the field that stores the first publication date. `field("first_pdate", "[2020-01-01 TO 2023-12-31]", escape=False)` builds the same part by hand.
 
 Raises `QueryBuilderError` (`QUERY002`) for a year before 1000 or after next year, a start after the end, or a date not in `YYYY-MM-DD` form. With no arguments nothing is added.
 
