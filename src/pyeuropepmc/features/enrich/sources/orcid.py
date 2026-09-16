@@ -44,7 +44,7 @@ class OrcidClient(BaseEnrichmentClient):
     Examples
     --------
     >>> client = OrcidClient()
-    >>> profile = client.enrich(orcid="0000-0002-1825-0097")
+    >>> profile = client.enrich("0000-0002-1825-0097")
     >>> if profile:
     ...     print(f"Name: {profile.get('name')}")
     ...     print(f"Works: {len(profile.get('works', []))}")
@@ -95,8 +95,8 @@ class OrcidClient(BaseEnrichmentClient):
         Parameters
         ----------
         identifier : str
-            ORCID iD (e.g. ``"0000-0002-1825-0097"``).
-            Accepts bare iDs, URLs, and https://orcid.org/ prefixes.
+            ORCID iD (e.g. ``"0000-0002-1825-0097"``); may also be passed as
+            ``orcid=``. Accepts bare iDs, URLs, and https://orcid.org/ prefixes.
         **kwargs
             Additional parameters (unused).
 
@@ -105,6 +105,7 @@ class OrcidClient(BaseEnrichmentClient):
         dict or None
             Profile data with keys: name, works, affiliations, etc.
         """
+        identifier = self._identifier_or_alias(identifier, kwargs, "orcid")
         if identifier is None:
             logger.warning("ORCID enrichment requires an identifier")
             return None

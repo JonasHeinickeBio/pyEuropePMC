@@ -21,7 +21,9 @@ class FigureEntity(BaseEntity):
     figure_label : Optional[str]
         Figure label (e.g., "Figure 1")
     graphic_uri : Optional[str]
-        URI to the figure graphic/image file
+        URI of the figure graphic/image file. May be a relative reference such
+        as the file name in JATS ``<graphic xlink:href="pone.0012345.g001"/>``;
+        an absolute URI must be well formed.
 
     Examples
     --------
@@ -46,24 +48,35 @@ class FigureEntity(BaseEntity):
 
     def validate(self) -> None:
         """Validate figure data."""
-        from pyeuropepmc.models.utils import validate_and_normalize_uri
-
         # Validate URI if provided
         if self.graphic_uri:
-            self.graphic_uri = validate_and_normalize_uri(self.graphic_uri)
+            self.graphic_uri = _normalize_graphic_uri(self.graphic_uri)
 
         super().validate()
 
     def normalize(self) -> None:
         """Normalize figure data (trim whitespace, validate URIs)."""
-        from pyeuropepmc.models.utils import (
-            normalize_string_field,
-            validate_and_normalize_uri,
-        )
+        from pyeuropepmc.models.utils import normalize_string_field
 
         self.caption = normalize_string_field(self.caption)
         self.figure_label = normalize_string_field(self.figure_label)
         if self.graphic_uri:
-            self.graphic_uri = validate_and_normalize_uri(self.graphic_uri)
+            self.graphic_uri = _normalize_graphic_uri(self.graphic_uri)
 
         super().normalize()
+
+
+def _normalize_graphic_uri(value: str) -> str | None:
+    """Trim a graphic reference; check it as a URI only when it is absolute.
+
+    JATS points at figure files with relative references (the ``xlink:href``
+    of ``<graphic>``), which have no scheme and are left as they are.
+    """
+    from urllib.parse import urlparse
+
+    from pyeuropepmc.models.utils import normalize_string_field, validate_and_normalize_uri
+
+    trimmed = normalize_string_field(value)
+    if trimmed and urlparse(trimmed).scheme:
+        return validate_and_normalize_uri(trimmed)
+    return trimmed

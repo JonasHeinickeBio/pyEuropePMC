@@ -9,6 +9,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 import json
 import logging
 from pathlib import Path
+import re
 from typing import Any, cast
 from urllib.parse import urlparse
 
@@ -52,9 +53,9 @@ class PaperEnricher:
     ...     crossref_email="your@email.com"
     ... )
     >>> enricher = PaperEnricher(config)
-    >>> enriched = enricher.enrich_paper(doi="10.1371/journal.pone.0123456")
+    >>> enriched = enricher.enrich_paper("10.1371/journal.pone.0123456")
     >>> print(f"Sources: {enriched.get('sources')}")
-    >>> print(f"Citations: {enriched.get('citation_count')}")
+    >>> print(f"Citations: {enriched['merged'].get('citation_count')}")
     """
 
     def __init__(self, config: EnrichmentConfig) -> None:
@@ -194,7 +195,8 @@ class PaperEnricher:
         Parameters
         ----------
         identifier : str, optional
-            Paper identifier — DOI, DOI URL, PMID or PMCID.
+            Paper identifier — DOI, DOI URL, PMID or PMCID. May also be passed
+            as ``doi=``, ``pmid=`` or ``pmcid=``.
         save_responses : bool, optional
             Write raw + merged JSON to ``save_dir`` (default: ``False``).
         save_dir : str or Path, optional
@@ -212,6 +214,10 @@ class PaperEnricher:
         ValueError
             If no identifier is provided.
         """
+        # enrich_paper(doi=...) and friends: take the alias, and keep all of
+        # them out of the kwargs forwarded to every source.
+        aliases = [kwargs.pop(key, None) for key in ("doi", "pmcid", "pmid")]
+        identifier = identifier or next((value for value in aliases if value), None)
         if not identifier:
             raise ValueError("An identifier (DOI, DOI URL, PMID or PMCID) is required")
 
@@ -310,14 +316,15 @@ class PaperEnricher:
 
         logger.info(f"Saving API responses to {save_dir}")
 
-        doi = results.get("doi", "unknown")
-        # Sanitize DOI for filename
-        safe_doi = doi.replace("/", "_").replace(".", "_")
+        # Name the files after the DOI; without one (a PMID or PMCID that
+        # Europe PMC could not map to a DOI) fall back to the identifier given.
+        key = results.get("doi") or results.get("identifier") or "unknown"
+        safe_doi = re.sub(r"[^A-Za-z0-9-]+", "_", str(key)).strip("_") or "unknown"
 
         # Save raw responses for each source
         for source in results:
             if (
-                source not in ["identifier", "doi", "sources", "merged"]
+                source not in ["identifier", "doi", "pmid", "sources", "merged"]
                 and results.get(source) is not None
             ):
                 filename = save_dir / f"raw_{source}_{safe_doi}.json"

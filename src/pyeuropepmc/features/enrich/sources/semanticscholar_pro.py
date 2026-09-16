@@ -60,8 +60,8 @@ class ProfessionalSemanticScholarClient:
     Examples
     --------
     >>> client = ProfessionalSemanticScholarClient(api_key="your_key")
-    >>> paper = client.get_paper("10.1093/mind/lix.236.433")
-    >>> print(f"Citations: {paper.citationCount}")
+    >>> paper = client.get_paper("DOI:10.1093/mind/lix.236.433")
+    >>> print(f"Citations: {paper['citation_count']}")
     """
 
     def __init__(
