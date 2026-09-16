@@ -33,6 +33,7 @@ Examples
 
 from __future__ import annotations
 
+import codecs
 import copy
 from dataclasses import dataclass
 import html
@@ -475,7 +476,7 @@ class JATSNormalizer:
         """
         # Pre-resolve XML entities that the XML parser can't handle
         if isinstance(xml_content, bytes):
-            xml_content = xml_content.decode("utf-8")
+            xml_content = self._decode_xml_bytes(xml_content)
         xml_content = self._pre_resolve_entities(xml_content)
 
         root: ET.Element = DefusedET.fromstring(xml_content)
@@ -583,11 +584,14 @@ class JATSNormalizer:
         """Pre-resolve XML entities that the XML parser can't handle.
 
         Resolves named entities like ``&alpha;`` to their Unicode characters
-        before the XML parser sees them. Also handles numeric character
-        references.
+        before the XML parser sees them.
 
         Skips standard XML entities (&amp; &lt; &gt; &quot; &apos;) that
-        the XML parser handles natively.
+        the XML parser handles natively, and leaves numeric character
+        references alone for the same reason. Decoding those here turned an
+        escaped ``&#x0003c;`` into a raw ``<`` and ``&#x00026;`` into a raw
+        ``&`` before parsing, so the document stopped being well-formed:
+        PMC3258128 and PMC12311175 raised ``ParseError``.
         """
         # Standard XML entities — must NOT be replaced (parser handles them)
         _SKIP_ENTITIES = {"&amp;", "&lt;", "&gt;", "&quot;", "&apos;"}
@@ -599,17 +603,42 @@ class JATSNormalizer:
             entity_name = entity[1:-1]  # strip & and ;
             xml_text = xml_text.replace(f"&{entity_name};", char)
 
-        # Numeric character references: &#xHHHH; and &#DDDD;
-        def _replace_numeric(match: re.Match[str]) -> str:
-            if match.group(1):
-                # Hex: &#xHHHH;
-                return chr(int(match.group(1), 16))
-            # Decimal: &#DDDD;
-            return chr(int(match.group(2)))
-
-        xml_text = re.sub(r"&#x([0-9a-fA-F]+);|&#(\d+);", _replace_numeric, xml_text)
-
         return xml_text
+
+    #: Byte order marks, longest first: the UTF-32 LE mark begins with the
+    #: UTF-16 LE one.
+    _BOMS: tuple[tuple[bytes, str], ...] = (
+        (codecs.BOM_UTF32_LE, "utf-32"),
+        (codecs.BOM_UTF32_BE, "utf-32"),
+        (codecs.BOM_UTF8, "utf-8-sig"),
+        (codecs.BOM_UTF16_LE, "utf-16"),
+        (codecs.BOM_UTF16_BE, "utf-16"),
+    )
+
+    _XML_DECLARED_ENCODING = re.compile(
+        rb"""^<\?xml[^>]*?\sencoding\s*=\s*["']([A-Za-z][A-Za-z0-9._-]*)["']"""
+    )
+
+    @classmethod
+    def _decode_xml_bytes(cls, data: bytes) -> str:
+        """Decode an XML document the way an XML parser would.
+
+        A byte order mark decides first, then the ``encoding`` of the XML
+        declaration, then UTF-8. Decoding every document as UTF-8 raised
+        ``UnicodeDecodeError`` for one that declares ISO-8859-1 and is
+        written that way. A declared encoding Python does not know is
+        treated as UTF-8, as before.
+        """
+        for bom, encoding in cls._BOMS:
+            if data.startswith(bom):
+                return data.decode(encoding)
+        declared = cls._XML_DECLARED_ENCODING.match(data)
+        encoding = declared.group(1).decode("ascii") if declared else "utf-8"
+        try:
+            codecs.lookup(encoding)
+        except LookupError:
+            encoding = "utf-8"
+        return data.decode(encoding)
 
     # ------------------------------------------------------------------
     # Layer 1: Namespace stripping
@@ -657,13 +686,18 @@ class JATSNormalizer:
     # ------------------------------------------------------------------
 
     def _strip_display_tags(self, root: ET.Element) -> None:
-        """Strip inline display tags, preserving text content.
+        """Strip inline display tags and flatten cross-references in the body.
 
-        For ``_INLINE_TAGS`` (bold, italic, etc.): remove the element
-        wrapper but keep the text and tail.
+        With ``strip_display_markup``, ``_INLINE_TAGS`` (bold, italic, etc.)
+        are unwrapped: the element goes, and its text, children and tail stay
+        where they were.
 
-        For ``_FLATTEN_TAGS`` (xref, ext-link, uri): replace with
-        text content (or rid/href if text is empty).
+        With ``flatten_xrefs``, ``_FLATTEN_TAGS`` (xref, ext-link, uri) are
+        replaced with their text content (or rid/href if text is empty).
+
+        Each flag controls only its own tags. Both used to run whenever
+        either flag was set, so ``strip_display_markup=False`` - the CLI's
+        ``--no-markup`` - changed nothing.
         """
         body = self._find_body(root)
         if body is None:
@@ -673,40 +707,50 @@ class JATSNormalizer:
 
     def _walk_and_strip(self, elem: ET.Element) -> None:
         """Recursively strip display tags from element tree."""
-        children_to_process = list(elem)
-        for child in children_to_process:
-            local_tag = child.tag
-
-            if local_tag in _INLINE_TAGS:
-                # Strip inline tag: merge text/tail into parent
-                self._merge_element_text_into_parent(elem, child)
-            elif local_tag in _FLATTEN_TAGS:
+        index = 0
+        while index < len(elem):
+            child = elem[index]
+            if self.config.strip_display_markup and child.tag in _INLINE_TAGS:
+                # Its children now stand at `index` and are looked at next.
+                self._unwrap_element(elem, index)
+            elif self.config.flatten_xrefs and child.tag in _FLATTEN_TAGS:
                 # Flatten xref/ext-link: use text or rid/href
                 self._flatten_element(elem, child)
             else:
                 # Recurse into remaining elements
                 self._walk_and_strip(child)
+                index += 1
 
-    def _merge_element_text_into_parent(self, parent: ET.Element, child: ET.Element) -> None:
-        """Remove an inline element but preserve its text in the parent."""
-        idx = list(parent).index(child)
+    @staticmethod
+    def _unwrap_element(parent: ET.Element, index: int) -> None:
+        """Replace ``parent[index]`` with its content, keeping everything in place.
 
-        # Combine: parent's tail-before + child.text + child.tail
-        before = parent[idx - 1].tail if idx > 0 else parent.text
-        before = before or ""
+        The element's text, children and tail stay where they were. Its
+        children used to be flattened to text with it, so an <xref> inside a
+        <bold> was gone even with ``flatten_xrefs=False``.
+        """
+        child = parent[index]
+        grandchildren = list(child)
 
-        child_text = self._get_all_text(child)
-        child_tail = child.tail or ""
+        def append_before(text: str) -> None:
+            if not text:
+                return
+            if index > 0:
+                previous = parent[index - 1]
+                previous.tail = (previous.tail or "") + text
+            else:
+                parent.text = (parent.text or "") + text
 
-        combined = before + child_text + child_tail
-
-        # Update parent
-        if idx > 0:
-            parent[idx - 1].tail = combined
+        append_before(child.text or "")
+        if grandchildren:
+            last = grandchildren[-1]
+            last.tail = (last.tail or "") + (child.tail or "")
         else:
-            parent.text = combined
+            append_before(child.tail or "")
 
         parent.remove(child)
+        for offset, grandchild in enumerate(grandchildren):
+            parent.insert(index + offset, grandchild)
 
     def _flatten_element(self, parent: ET.Element, child: ET.Element) -> None:
         """Flatten a xref/ext-link to text content (or ID fallback)."""
@@ -753,17 +797,32 @@ class JATSNormalizer:
     # ------------------------------------------------------------------
 
     def _drop_mathml(self, root: ET.Element) -> None:
-        """Remove MathML elements, keeping inline formula text."""
-        for math_tag in ("math", "mml:math"):
-            for elem in root.iter(math_tag):
-                # Get text content before removing
-                text = self._get_all_text(elem)
-                parent = self._find_parent(root, elem)
-                if parent is not None:
-                    # Try to preserve text in parent
-                    if elem.text:
-                        parent.text = (parent.text or "") + text + (elem.tail or "")
-                    parent.remove(elem)
+        """Remove MathML elements, keeping the formula's text in their place.
+
+        The text used to be kept only when the <math> element had text of its
+        own, which MathML never has - it is all in <mi>, <mo> and <mn> - so
+        every formula vanished from the text, and the tail after it with it.
+        Where <alternatives> also offers a <tex-math>, that already gives the
+        formula as text, and the MathML is dropped without a copy.
+
+        Namespace prefixes are stripped before this runs, so ``mml:math`` is
+        plain ``math`` by now.
+        """
+        parents = {child: parent for parent in root.iter() for child in parent}
+        for elem in list(root.iter("math")):
+            parent = parents.get(elem)
+            if parent is None:
+                continue
+            index = list(parent).index(elem)
+            has_tex = parent.tag == "alternatives" and parent.find("tex-math") is not None
+            text = "" if has_tex else " ".join(self._get_all_text(elem).split())
+            replacement = text + (elem.tail or "")
+            if index > 0:
+                previous = parent[index - 1]
+                previous.tail = (previous.tail or "") + replacement
+            else:
+                parent.text = (parent.text or "") + replacement
+            parent.remove(elem)
 
     # ------------------------------------------------------------------
     # Layer 5: Section type canonicalization
@@ -783,8 +842,6 @@ class JATSNormalizer:
             return sections
 
         self._extract_sections_recursive(body, sections, depth=0)
-        # Reverse to restore document order (children were appended before parents)
-        sections.reverse()
         return sections
 
     def _extract_sections_recursive(
@@ -796,8 +853,9 @@ class JATSNormalizer:
         """Recursively extract sections with canonical types.
 
         When called with a parent element, iterates its children.
-        For each ``<sec>`` child, extracts text and type, appends it
-        to sections, then recurses into it for subsections.
+        For each ``<sec>`` child, appends it to sections, then recurses into
+        it for subsections - so the list is in document order, each section
+        before its own subsections.
         """
         # If parent itself is a sec, process it first
         if parent.tag == "sec":
@@ -825,6 +883,19 @@ class JATSNormalizer:
         text_parts: list[str] = []
         passages: list[dict[str, str]] = []
 
+        # Appended before its subsections are visited. It used to be appended
+        # after them, and the list reversed at the end, which is not document
+        # order either: PMC5393345 came back as "4. Discussion", "3. Results",
+        # "2. Materials and methods", "2.4. Drugs".
+        section: dict[str, Any] = {
+            "type": sec_type,
+            "title": title,
+            "level": depth,
+            "text": "",
+            "passages": passages,
+        }
+        sections.append(section)
+
         for sub_elem in sec_elem:
             if sub_elem.tag == "title":
                 continue
@@ -842,15 +913,7 @@ class JATSNormalizer:
                     text_parts.append(list_text.strip())
                     passages.append({"type": "list", "text": list_text.strip()})
 
-        sections.append(
-            {
-                "type": sec_type,
-                "title": title,
-                "level": depth,
-                "text": "\n".join(text_parts),
-                "passages": passages,
-            }
-        )
+        section["text"] = "\n".join(text_parts)
 
     @staticmethod
     def _classify_section_type(title: str) -> str:
@@ -949,41 +1012,57 @@ class JATSNormalizer:
         """Extract metadata without normalization."""
         meta: dict[str, Any] = {}
 
+        # Everything but the article type comes from the article's own front
+        # matter. A peer-review <sub-article> has a DOI and contributors of
+        # its own, and the whole-document search let them win: PMC10775981
+        # reported the DOI of its last review report,
+        # 10.1371/journal.pcbi.1011761.r004, and PMC11687933 listed 45
+        # authors for 22.
+        front = self._own_front(root)
+
         # Title
-        title_elem = root.find(".//article-title")
+        title_elem = front.find(".//article-title")
         if title_elem is not None:
             meta["title"] = self._get_all_text(title_elem)
 
         # Identifiers
-        self._extract_identifiers(root, meta)
+        self._extract_identifiers(front, meta)
 
         # Article type
         self._extract_article_type(root, meta)
 
         # Authors
-        self._extract_authors(root, meta)
+        self._extract_authors(front, meta)
 
         # Journal
-        journal_elem = root.find(".//journal-title")
+        journal_elem = front.find(".//journal-title")
         if journal_elem is not None:
             meta["journal"] = (journal_elem.text or "").strip()
 
         # License
-        self._extract_license(root, meta)
+        self._extract_license(front, meta)
 
         return meta
 
+    @staticmethod
+    def _own_front(root: ET.Element) -> ET.Element:
+        """The article's own <front>, or the article itself when it has none."""
+        article = root if root.tag == "article" else root.find(".//article")
+        if article is None:
+            article = root
+        front = article.find("./front")
+        return front if front is not None else article
+
     def _extract_identifiers(self, root: ET.Element, meta: dict[str, Any]) -> None:
-        """Extract article identifiers (DOI, PMCID, PMID) into meta."""
+        """Extract article identifiers (DOI, PMCID, PMID) into meta.
+
+        The first of each type wins; the last used to.
+        """
         for id_elem in root.iter("article-id"):
             id_type = id_elem.get("pub-id-type", "")
             id_val = (id_elem.text or "").strip()
-            if id_type == "doi":
-                meta["doi"] = id_val
-            elif id_type == "pmcid":
-                meta["pmcid"] = id_val
-            elif id_type == "pmid":
-                meta["pmid"] = id_val
+            if id_type in ("doi", "pmcid", "pmid") and id_val:
+                meta.setdefault(id_type, id_val)
 
     def _extract_article_type(self, root: ET.Element, meta: dict[str, Any]) -> None:
         """Extract article type into meta."""
@@ -996,10 +1075,25 @@ class JATSNormalizer:
             )
 
     def _extract_authors(self, root: ET.Element, meta: dict[str, Any]) -> None:
-        """Extract author names and ORCIDs into meta."""
+        """Extract author names and ORCIDs into meta.
+
+        An author is a ``<contrib contrib-type="author">``, or an untyped
+        <contrib> in a ``<contrib-group content-type="author">``. Europe PMC
+        uses both, and the group-level form - PMC1764484, PMC12738713 -
+        produced no authors at all.
+        """
         authors: list[dict[str, str]] = []
+        author_groups = [
+            group for group in root.iter("contrib-group") if group.get("content-type") == "author"
+        ]
+        group_authors = {
+            id(contrib)
+            for group in author_groups
+            for contrib in group.findall("contrib")
+            if not contrib.get("contrib-type")
+        }
         for contrib in root.iter("contrib"):
-            if contrib.get("contrib-type") != "author":
+            if contrib.get("contrib-type") != "author" and id(contrib) not in group_authors:
                 continue
             name = contrib.find("name")
             if name is None:
@@ -1178,15 +1272,6 @@ class JATSNormalizer:
             if child.tail:
                 parts.append(child.tail)
         return "".join(parts)
-
-    @staticmethod
-    def _find_parent(root: ET.Element, target: ET.Element) -> ET.Element | None:
-        """Find the parent of a target element in the tree."""
-        for parent in root.iter():
-            for child in parent:
-                if child is target:
-                    return parent
-        return None
 
 
 # ---------------------------------------------------------------------------
