@@ -6,6 +6,7 @@ from unittest.mock import patch
 
 import pytest
 
+from pyeuropepmc.core.exceptions import APIClientError
 from pyeuropepmc.features.enrich.sources.ror import RorClient
 from pyeuropepmc.utils.dependencies import is_dependency_available
 
@@ -153,12 +154,15 @@ class TestRorClient:
             result = client.enrich(identifier="https://ror.org/0000000000")
         assert result is None
 
-    def test_enrich_exception_handling(self):
-        """Test enrich handles exceptions."""
+    def test_enrich_request_error_propagates(self):
+        """A failed request raises APIClientError, as in the other enrichment clients."""
         client = RorClient()
-        with patch.object(client, "_make_request", side_effect=ConnectionError("Network error")):
-            result = client.enrich(identifier="https://ror.org/0123456789")
-        assert result is None
+        error = APIClientError(message="Failed to connect to API.")
+        with (
+            patch.object(client, "_make_request", side_effect=error),
+            pytest.raises(APIClientError),
+        ):
+            client.enrich(identifier="https://ror.org/0123456789")
 
     def test_enrich_with_client_id_header(self):
         """Test enrich with client ID header."""

@@ -9,6 +9,7 @@ import logging
 from typing import Any
 
 from pyeuropepmc.cache.cache import CacheConfig
+from pyeuropepmc.core.exceptions import APIClientError
 from pyeuropepmc.features.common.base import get_user_agent
 from pyeuropepmc.features.enrich.base import BaseEnrichmentClient
 from pyeuropepmc.features.enrich.sources.ror import RorClient
@@ -320,7 +321,12 @@ class OpenAlexClient(BaseEnrichmentClient):
                     continue
 
                 logger.debug(f"Enriching institution with ROR: {ror_id}")
-                ror_data = self.ror_client.enrich(ror_id)
+                try:
+                    ror_data = self.ror_client.enrich(ror_id)
+                except APIClientError as e:
+                    # One unreachable ROR record must not cost the whole OpenAlex result.
+                    logger.warning(f"ROR lookup failed for {ror_id}: {e}")
+                    ror_data = None
                 if ror_data:
                     # Merge ROR data with OpenAlex institution data
                     enriched_inst = {**inst, **ror_data}
