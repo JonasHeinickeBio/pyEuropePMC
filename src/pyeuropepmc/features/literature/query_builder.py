@@ -457,6 +457,12 @@ class QueryBuilder:
         end_date : str, optional
             End date in YYYY-MM-DD format (more precise than year)
 
+        Notes
+        -----
+        Years produce a ``PUB_YEAR`` range; full dates produce a
+        ``FIRST_PDATE`` range, because ``PUB_YEAR`` holds years only.  When a
+        date is given the years are ignored.
+
         Returns
         -------
         QueryBuilder
@@ -465,8 +471,10 @@ class QueryBuilder:
         Examples
         --------
         >>> qb = QueryBuilder()
-        >>> query = qb.date_range(start_year=2020, end_year=2023).build()
-        >>> query = qb.date_range(start_date="2020-01-01", end_date="2023-12-31").build()
+        >>> QueryBuilder().date_range(start_year=2020, end_year=2023).build()
+        '(PUB_YEAR:[2020 TO 2023])'
+        >>> QueryBuilder().date_range(start_date="2020-01-01", end_date="2023-12-31").build()
+        '(FIRST_PDATE:[2020-01-01 TO 2023-12-31])'
 
         Raises
         ------
@@ -483,16 +491,20 @@ class QueryBuilder:
         return self
 
     def _add_date_range(self, start_date: str | None, end_date: str | None) -> None:
-        """Add date range using date strings."""
+        """Add a day-precision date range.
+
+        ``PUB_YEAR`` holds years, so full dates go to ``FIRST_PDATE``, the
+        Europe PMC field that stores the first publication date.
+        """
         start = self._validate_date(start_date) if start_date else None
         end = self._validate_date(end_date) if end_date else None
 
         if start and end:
-            self._parts.append(f"(PUB_YEAR:[{start} TO {end}])")
+            self._parts.append(f"(FIRST_PDATE:[{start} TO {end}])")
         elif start:
-            self._parts.append(f"(PUB_YEAR:[{start} TO *])")
+            self._parts.append(f"(FIRST_PDATE:[{start} TO *])")
         elif end:
-            self._parts.append(f"(PUB_YEAR:[* TO {end}])")
+            self._parts.append(f"(FIRST_PDATE:[* TO {end}])")
 
     def _add_year_range(self, start_year: int | None, end_year: int | None) -> None:
         """Add date range using year integers."""
@@ -1035,9 +1047,9 @@ class QueryBuilder:
             context = {"query_string": query_string}
             raise QueryBuilderError(ErrorCodes.QUERY001, context)
 
-        from search_query.parser import parse
-
         try:
+            from search_query.parser import parse
+
             # Parse the query using search-query
             parsed_query = parse(query_string, platform=platform)
 
@@ -1103,10 +1115,10 @@ class QueryBuilder:
         QueryBuilderError
             If the file format is invalid
         """
-        from search_query.parser import parse
-        from search_query.search_file import load_search_file
-
         try:
+            from search_query.parser import parse
+            from search_query.search_file import load_search_file
+
             # Load the search file
             search_file = load_search_file(file_path)
 
@@ -1184,10 +1196,10 @@ class QueryBuilder:
         # Build the query string
         query_string = self.build(validate=False)
 
-        from search_query import SearchFile
-        from search_query.parser import parse
-
         try:
+            from search_query import SearchFile
+            from search_query.parser import parse
+
             # Get or create parsed query
             if self._parsed_query is not None:
                 parsed_query = self._parsed_query
@@ -1267,9 +1279,9 @@ class QueryBuilder:
         QueryBuilderError
             If translation fails
         """
-        from search_query.parser import parse
-
         try:
+            from search_query.parser import parse
+
             # Build current query
             query_string = self.build(validate=False)
 
@@ -1337,9 +1349,9 @@ class QueryBuilder:
         if self._parsed_query is not None:
             return self._parsed_query
 
-        from search_query.parser import parse
-
         try:
+            from search_query.parser import parse
+
             # Parse and cache
             query_string = self.build(validate=False)
             self._parsed_query = parse(query_string, platform=platform)
@@ -1401,9 +1413,9 @@ class QueryBuilder:
         effectiveness but no consensus on appropriate use. Journal of Clinical
         Epidemiology 99: 53–63. DOI: 10.1016/J.JCLINEPI.2018.02.025.
         """
-        from search_query.parser import parse
-
         try:
+            from search_query.parser import parse
+
             # For evaluation, we need to ensure queries have explicit field specifications
             # since search-query package only supports [title] and [abstract] for evaluation
             query_string = self.build(validate=False)

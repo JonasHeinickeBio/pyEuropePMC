@@ -109,6 +109,7 @@ class ErrorCodes(Enum):
     PARSE002 = "PARSE002"
     PARSE003 = "PARSE003"
     PARSE004 = "PARSE004"
+    PARSE005 = "PARSE005"
 
     # Validation Error Codes (VALID)
     VALID001 = "VALID001"
@@ -217,6 +218,7 @@ ERROR_MESSAGES: dict[str, str] = {
     ErrorCodes.PARSE002.value: "XML parsing failed. The data is not valid XML structure. Check the data source and ensure it contains valid XML syntax.",
     ErrorCodes.PARSE003.value: "Content cannot be None or empty. Please provide valid content to parse. Check your input data.",
     ErrorCodes.PARSE004.value: "Unsupported data format for parsing. The system cannot parse this data format. Check the data format and use a supported format.",
+    ErrorCodes.PARSE005.value: "XML entity declaration refused. The document declares an XML entity, and pyeuropepmc parses with defusedxml, which does not expand entity declarations. Remove the <!ENTITY> declaration or obtain the document from a source that does not use one.",
     # Validation Error Codes (VALID)
     ErrorCodes.VALID001.value: "Both arguments must be dictionaries. Field validation requires dictionary inputs. Check your input parameters and ensure they are dictionaries.",
     ErrorCodes.VALID002.value: "Parameter value out of range or invalid. Please check the allowed values for this parameter. Review the documentation for valid options.",
@@ -1038,6 +1040,12 @@ def get_error_recovery_options(error_code: ErrorCodes | str) -> list[str]:
             "Check format options",
             "Convert to supported format",
             "Review API docs",
+        ],
+        "PARSE005": [
+            "Remove the <!ENTITY> declaration",
+            "Fetch the document from a source that does not declare entities",
+            "Inline the entity text",
+            "See the error codes reference",
         ],
         # Validation errors
         "VALID001": [

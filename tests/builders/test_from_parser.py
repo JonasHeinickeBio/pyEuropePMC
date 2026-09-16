@@ -206,6 +206,73 @@ class TestBuildPaperEntities:
         assert isinstance(references, list)
 
 
+FIGURE_XML = SAMPLE_XML.replace(
+    """<p>This is the introduction section with some text.</p>""",
+    """<p>This is the introduction section with some text.</p>
+<fig id="F1">
+<label>Figure 1.</label>
+<caption><p>Workflow overview.</p></caption>
+<graphic xlink:href="pone.0012345.g001"/>
+</fig>
+<fig id="F2">
+<label>Figure 2.</label>
+<caption><p>Results.</p></caption>
+<graphic xlink:href="https://example.org/figures/f2.png"/>
+</fig>""",
+)
+
+
+class TestBuildFigureEntities:
+    """build_paper_entities() used to return an always-empty figure list."""
+
+    def test_figures_are_built(self):
+        parser = FullTextXMLParser(FIGURE_XML)
+        _, _, _, _, figures, _ = build_paper_entities(parser)
+
+        assert [f.figure_label for f in figures] == ["Figure 1.", "Figure 2."]
+        assert [f.caption for f in figures] == ["Workflow overview.", "Results."]
+        assert [f.graphic_uri for f in figures] == [
+            "pone.0012345.g001",
+            "https://example.org/figures/f2.png",
+        ]
+        assert all("bibo:Image" in f.types for f in figures)
+
+    def test_relative_graphic_reference_survives_normalize_and_validate(self):
+        parser = FullTextXMLParser(FIGURE_XML)
+        _, _, _, _, figures, _ = build_paper_entities(parser)
+        for figure in figures:
+            figure.normalize()
+            figure.validate()
+        assert figures[0].graphic_uri == "pone.0012345.g001"
+
+    def test_figures_reach_the_rdf_graph(self):
+        from rdflib import Graph, URIRef
+        from rdflib.namespace import RDF
+
+        from pyeuropepmc.mappers.rdf_mapper import RDFMapper
+
+        parser = FullTextXMLParser(FIGURE_XML)
+        paper, authors, sections, tables, figures, references = build_paper_entities(parser)
+        g = Graph()
+        paper.to_rdf(
+            g,
+            mapper=RDFMapper(),
+            related_entities={
+                "authors": authors,
+                "sections": sections,
+                "tables": tables,
+                "figures": figures,
+                "references": references,
+            },
+        )
+        images = set(g.subjects(RDF.type, URIRef("http://purl.org/ontology/bibo/Image")))
+        assert len(images) == 2
+
+    def test_article_without_figures(self):
+        _, _, _, _, figures, _ = build_paper_entities(FullTextXMLParser(SAMPLE_XML))
+        assert figures == []
+
+
 class TestCreateGrantEntities:
     """Tests for _create_grant_entities helper."""
 

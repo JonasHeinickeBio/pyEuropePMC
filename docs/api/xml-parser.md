@@ -118,10 +118,15 @@ Present only when the article has the information:
 | `id` | `str \| None` | `id` attribute of `<table-wrap>` |
 | `label` | `str \| None` | For example `"Table 1"` |
 | `caption` | `str \| None` | Caption text |
-| `footer` | `str \| None` | Text of `<table-wrap-foot>` |
-| `headers` | `list[str]` | `<th>` cells of the first `<thead>` row; `[]` when there is no `<thead>` or its cells are `<td>` |
-| `rows` | `list[list[str]]` | `<td>` cells of each `<tbody>` row |
+| `footer` | `str \| None` | Text of every `<table-wrap-foot>` |
+| `headers` | `list[str]` | One label per column, combined from all header rows top to bottom with `" / "`; a header cell spanning several columns labels each. `[]` when the table has no header row |
+| `header_rows` | `list[list[str]]` | The header rows: the rows of `<thead>`, or leading rows made only of `<th>` when there is no `<thead>`. Cells may be `<td>` or `<th>` |
+| `rows` | `list[list[str]]` | The body rows, `<td>` and `<th>` cells alike |
+| `spans` | `list[dict]` | `{"row", "column", "rowspan", "colspan"}` for each cell covering more than one position; `row` counts `header_rows` first |
+| `cell_graphics` | `list[dict]` | `{"row", "column", "uri"}` for each `<graphic>` or `<inline-graphic>` inside a cell, `row` counted as in `spans` |
 | `column_groups` | `list[dict]` | Only when the table has `<colgroup>`: `{"columns": [{"span": ..., "width": ...}], "span": ...}` |
+
+Every row in `header_rows` and `rows` is as wide as the table. A cell spanning several positions holds its text at the top-left one; the positions it also covers hold `""`, so a row spanned into from above starts with `""` rather than being a cell short. A cell whose only content is an image reads `"[graphic: <file>]"`.
 
 ## Figures
 
@@ -147,7 +152,7 @@ Present only when the article has the information:
 
 ## Flat sections
 
-`get_full_text_sections()` returns `{"title": str, "content": str}` dicts: one per `<sec>` in the article's own body (not sub-articles), in document order, with `content` holding that section's own paragraphs joined by blank lines. Then an untitled entry for paragraphs directly in `<body>`, if there are any. Then back matter with an extra `type` key: `author_notes` (title `"Author Notes"`), `acknowledgments`, `appendix` (the appendix title) and `glossary`.
+`get_full_text_sections()` returns `{"title": str, "content": str}` dicts: one per `<sec>` in the article's own body (not sub-articles), in document order, with `content` holding that section's own blocks - paragraphs, lists, tables, figures, formulas and code listings - as plain text in document order, joined by blank lines (see [Sections](../features/parsing/README.md#sections)). Then an untitled entry for content directly in `<body>`, if there is any, and an entry titled `"Figures and Tables"` for the figures and tables of `<floats-group>`, if the article has one. Then back matter with an extra `type` key: `author_notes` (title `"Author Notes"`), `acknowledgments`, `appendix` (the appendix title) and `glossary`.
 
 ## Structured sections
 

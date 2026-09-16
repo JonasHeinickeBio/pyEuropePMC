@@ -17,7 +17,13 @@ from unittest.mock import patch
 import pytest
 
 from pyeuropepmc.mappers.rml_rdfizer import RDFIZER_AVAILABLE, RMLRDFizer
-from pyeuropepmc.models import AuthorEntity, PaperEntity
+from pyeuropepmc.models import (
+    AuthorEntity,
+    FigureEntity,
+    PaperEntity,
+    ReferenceEntity,
+    SectionEntity,
+)
 
 pytestmark = pytest.mark.skipif(not RDFIZER_AVAILABLE, reason="rdfizer package not installed")
 
@@ -85,6 +91,15 @@ class TestCreateEmptyJsonFiles:
             assert path.exists()
             assert json.loads(path.read_text()) == []
 
+    def test_covers_every_source_the_mapping_reads(self, tmp_path):
+        """Figures and annotations are in the generated mapping too."""
+        rdfizer = RMLRDFizer()
+        rdfizer._create_empty_json_files(str(tmp_path))
+        for name in rdfizer._mapping_sources():
+            assert (tmp_path / name).exists(), name
+        assert (tmp_path / "figures.json").exists()
+        assert (tmp_path / "annotation.json").exists()
+
     def test_does_not_overwrite_existing_file(self, tmp_path):
         (tmp_path / "paper.json").write_text('[{"id": "already-here"}]')
         rdfizer = RMLRDFizer()
@@ -119,7 +134,54 @@ class TestEntitiesToJson:
         paper = PaperEntity(title="No identifiers at all")
         path = rdfizer._entities_to_json([paper], "paper", str(tmp_path))
         data = json.loads(Path(path).read_text(encoding="utf-8"))
-        assert data[0]["id"].startswith("entity_")
+        assert data[0]["id"].startswith("paper-")
+
+    @pytest.mark.parametrize(
+        ("entity_type", "entities", "filename"),
+        [
+            (
+                "author",
+                [AuthorEntity(full_name="Jane Doe"), AuthorEntity(full_name="John Roe")],
+                "authors.json",
+            ),
+            (
+                "section",
+                [
+                    SectionEntity(title="Intro", content="A"),
+                    SectionEntity(title="Methods", content="B"),
+                ],
+                "sections.json",
+            ),
+            (
+                "reference",
+                [ReferenceEntity(title="R1"), ReferenceEntity(title="R2", doi="10.1/r2")],
+                "references.json",
+            ),
+            (
+                "figure",
+                [FigureEntity(figure_label="Figure 1"), FigureEntity(figure_label="Figure 2")],
+                "figures.json",
+            ),
+        ],
+    )
+    def test_non_paper_entities_get_ids(self, tmp_path, entity_type, entities, filename):
+        """The subject templates need {id}; without one these types produced no triples."""
+        rdfizer = RMLRDFizer()
+        rdfizer._entities_to_json(entities, entity_type, str(tmp_path))
+        data = json.loads((tmp_path / filename).read_text(encoding="utf-8"))
+        ids = [record["id"] for record in data]
+        assert all(ids) and len(set(ids)) == len(ids)
+
+    def test_ids_do_not_depend_on_the_run(self, tmp_path):
+        rdfizer = RMLRDFizer()
+        first = tmp_path / "a"
+        second = tmp_path / "b"
+        first.mkdir()
+        second.mkdir()
+        sections = [SectionEntity(title=f"S{i}", content="text") for i in range(50)]
+        rdfizer._entities_to_json(sections, "section", str(first))
+        rdfizer._entities_to_json(sections, "section", str(second))
+        assert (first / "sections.json").read_text() == (second / "sections.json").read_text()
 
     def test_none_values_filtered_and_stringified(self, tmp_path):
         rdfizer = RMLRDFizer()
@@ -157,6 +219,17 @@ class TestCreateTempConfig:
         rdfizer._create_temp_config(str(tmp_path), entity_type="paper")
         mapping_content = (tmp_path / "rml_mappings.ttl").read_text(encoding="utf-8")
         assert '"paper.json"' not in mapping_content or str(tmp_path) in mapping_content
+
+    def test_every_relative_source_is_rewritten(self, tmp_path):
+        import re
+
+        rdfizer = RMLRDFizer()
+        rdfizer._create_temp_config(str(tmp_path), entity_type="figure")
+        mapping_content = (tmp_path / "rml_mappings.ttl").read_text(encoding="utf-8")
+        sources = re.findall(r'rml:source\s+"([^"]+)"', mapping_content)
+        assert sources, "the mapping names no sources"
+        assert all(src.startswith(str(tmp_path)) for src in sources), sources
+        assert os.path.join(str(tmp_path), "figures.json") in sources
 
 
 class TestBindNamespaces:

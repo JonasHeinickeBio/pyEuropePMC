@@ -16,6 +16,19 @@ All notable changes to PyEuropePMC are documented here.
 
 ### 🔒 Security
 
+- **One contract for a refused document.** defusedxml refuses XML that declares
+  entities, and that refusal now reaches callers the same way everywhere: the
+  JATS normalizer, the bioRxiv manifest, the benchmark metrics and the parse
+  profiler raise `ParsingError` instead of a raw `defusedxml.EntitiesForbidden`,
+  which `except ParseError` never caught. A refusal has its own code,
+  `PARSE005`, so it is no longer reported as "Content cannot be None or empty".
+  The arXiv, PubMed and figure paths still return their empty value and now log
+  the reason; the MCP tool `paper_figures` reports an error instead of zero
+  figures. Hostile XML is now tested against every entry point that parses, and
+  ruff bans nine more parser entry points (`xml.etree.ElementTree.XML`,
+  `XMLPullParser`, `fromstringlist`, `ElementInclude`, `expat`, `pyexpat`,
+  `xmltodict`, `pandas.read_xml`, `defusedxml.lxml`).
+
 - **All XML is parsed with defusedxml.** The arXiv and PubMed sources, figure
   extraction, the JATS normalizer, local-file and bioRxiv-manifest parsing and
   the benchmark metrics called the standard-library parser directly. They now
@@ -25,6 +38,180 @@ All notable changes to PyEuropePMC are documented here.
   reports any other XML parser (rules S313-S319, and a ban on importing lxml).
 
 ### 🐛 Bug Fixes
+
+- **A display formula inside a paragraph gets a block of its own.** JATS allows
+  a `<disp-formula>` inside a `<p>`, and PLOS always writes one that way.
+  `get_full_text_sections_structured()` flattened it into the sentence that
+  introduced it: PMC10775981 has eleven display formulas and produced no formula
+  block at all, only paragraphs reading "models of the form y˙=F(y(t),θ,t,…), (1)
+  with N-dimensional state-vector y". The paragraph is now split around the
+  formula, as it already was around a table or figure. `to_plaintext()`,
+  `to_markdown()` and `get_full_text_sections()` render the formula on a line of
+  its own, after the section's paragraphs.
+
+- **A formula block carries LaTeX in `tex`, not the flattened text.** `tex` held
+  whatever `get_text_content()` made of the MathML - "y˙=F(y(t),θ,t,…)" - which
+  compiles as nothing. It now holds LaTeX converted from the MathML, or the
+  document's own `<tex-math>` where it ships one. The plain text moved to `text`,
+  so a consumer that only reads text still gets the equation, and the equation
+  number stays in `label` instead of being run into the expression. The
+  publisher's rendered image, where there is one, is kept in `uri`.
+
+- **`MathMLConverter` reads namespaced MathML.** `_handle_mtable` looked for rows
+  with `findall("mtr")`, which matches nothing once the document declares the
+  MathML namespace - which every Europe PMC document does. Every `<mtable>`
+  converted to the empty string, and with it every PLOS display formula, since
+  they all wrap their content in a one-row table. Rows are found by local name
+  now, and a one-cell table unwraps instead of becoming a 1x1 `array`. Array rows
+  are separated by `\\`, not by a newline, which is not a row separator in LaTeX.
+
+- **`MathMLConverter` writes accents, scripts and symbols correctly.** An
+  `<mover>` over a combining mark is an accent, so `η̄` is `\bar{\eta}` rather than
+  `{\eta}^{¯}`, and `ẋ` is `\dot{x}`; `<munder>`/`<mover>` on anything else are
+  `\underset`/`\overset`, not subscripts; limits on a big operator stay
+  `\sum_{j=1}^{N}`. Greek letters and mathematical symbols become LaTeX commands
+  instead of Unicode characters, `mathvariant` is kept (`\mathbf{y}`, not
+  `\text{y}`), an author's `<annotation encoding="application/x-tex">` wins over
+  anything derived, `<mfenced>` and `<mspace>` are handled, and a base is braced
+  only where the script would otherwise mis-bind. Spacing follows the operator:
+  `x + y`, but `(x)` and `\theta,`. Fences go through a delimiter table, so
+  `<mfenced open="{">` is `\left\{`, not the error `\left{`; styled letters
+  such as `ℝ` or a mathematical bold `x` become `\mathbb{R}` and `\mathbf{x}`;
+  LaTeX's special characters are escaped; and an explicit space at the end of a
+  group no longer turns into a backslash that escapes the closing brace.
+  Measured with pdflatex on 1,654 formulas from 32 open-access papers, 711
+  compiled and 275 were empty before; 1,650 compile now. The other four use a
+  character outside mathematics, such as a Latin "ꝏ" for infinity.
+
+- **`extract_tables()` finds header rows whose cells are `<td>`.** Header
+  labels were read from `<th>` cells only, so a `<thead>` tagged with `<td>` -
+  as many journals do - gave `headers == []`: all five tables of PMC1764484,
+  both of PMC3359999. Every header row is read now, not only the first, and
+  `headers` has one label per column, combined top to bottom
+  ("Inputparameter 1 / A: Composition / wt.%"). The rows themselves are in the
+  new `header_rows`. A `<th>` in a body row, which was dropped, is kept.
+
+- **Tables are laid out with their `colspan` and `rowspan`.** Cells were read
+  in document order with both attributes ignored, so every cell after a
+  spanning one moved into the wrong column. In PMC12311175's Table 4 a drug's
+  name and mechanism span every row of its trials, and 110 of the 120 body rows
+  came back two cells short, their values under the wrong headers. Every row of
+  `extract_tables()` and of the structured `table` block is now as wide as the
+  table, with a spanning cell's text at its top-left position and `""` at the
+  others; `spans` records which cells span.
+
+- **The structured `table` block records its footer and its header rows.**
+  `metadata["footer"]` holds the `<table-wrap-foot>` text and
+  `metadata["header_rows"]` how many of `rows` are header rows; neither was
+  recorded. A cell holding only an image - PMC5393345 draws six compound
+  structures that way - reads `[graphic: <file>]` instead of `""`, in both
+  outputs, and `cell_graphics` lists every image in a cell.
+
+- **A table block's inline positions index its `text`.** They were positions
+  within each cell, stored against the text of the whole table: 207 of 207 in
+  PMC1764484 pointed at the wrong characters. `metadata["cell_inlines"]` now
+  names the cell each entry belongs to (`{row, column, inlines}`); it was a
+  list of lists that skipped cells without inlines, so no entry could be traced
+  back to its cell.
+
+- **`to_markdown()` escapes the text it takes from the document.** Nothing was
+  escaped, so `DRB1*0402 ... DQB1*0503` opened an emphasis running to the next
+  asterisk and a literal `<node>` was passed through as an HTML tag: rendered
+  with a CommonMark implementation, 49 of PMC1764484's 127 body sentences came
+  out as something other than the article's text. Every character that changes
+  how Markdown renders text is now backslash-escaped; code listings are not.
+
+- **The flat renderings carry every block of a section, in document order.**
+  `to_plaintext()`, `to_markdown()` and `get_full_text_sections()` collected a
+  section's `<p>` elements and little else, so anything that is not a
+  paragraph reached them only through a `<p>` nested inside it. A figure placed
+  directly in a section lost its label and caption title; a table lost its
+  label, and in `to_markdown()` and `get_full_text_sections()` every cell not
+  wrapped in a `<p>` - 225 of PMC1764484's 247 distinct cells; all 14 of
+  PMC10775981's code listings and every definition list were missing from all
+  three; and `to_plaintext()` rendered an appendix that is a table as its title
+  alone - 228 of the 248 cells in PMC11687933's appendix table. `to_plaintext()`
+  also emitted a section's paragraphs, then its lists, then its tables. All
+  three now walk a section once, in order, and render each element exactly
+  once: tables with their label and laid out with their spans (a pipe table in
+  Markdown), figures and supplementary items with label and caption, code
+  listings with their line breaks (fenced in Markdown), lists with markers.
+
+- **A structured `code` block keeps its line breaks.** The listing was
+  collapsed to single spaces like prose, running each of PMC10775981's listings
+  onto one line.
+
+- **Figures and tables in `<floats-group>` reach every output.** NIH author
+  manuscripts keep every figure and table in `<floats-group>`, a sibling of
+  `<body>`, and every output but `extract_figures()` and `extract_tables()`
+  walked only the body: PMC5393345's figure and table were missing from the
+  structured sections, `to_plaintext()`, `to_markdown()` and
+  `get_full_text_sections()`. They are now gathered in a section titled
+  `Figures and Tables`, after the body and before the back matter. In the
+  structured output its `section_type` is `"body"`, since a figure is body
+  content wherever the XML keeps it; in `get_full_text_sections()` the entry has
+  no `type`. A `<sub-article>`'s floats are not the article's and are left out.
+
+- **References are given once, with their label once and correct offsets.**
+  PMC1764484 keeps its reference list inside a `<sec>` of the body, and the
+  structured sections gave it twice: flattened into one unknown block in that
+  section, and again as References. A labelled reference repeated its label
+  ("1. 1.Rowlett"), a `<citation-alternatives>` gave the element citation and
+  the mixed citation one after the other, the fields of an element citation ran
+  together ("RowlettVWImpact"), and the prefixed label moved the text without
+  its inlines: all 134 reference inlines of PMC11671585 pointed at the wrong
+  characters, and all 1,278 of PMC12311175. PMC12738713 also keeps its
+  reference list in the body and got it twice. Each reference
+  is now one block - label, then the mixed citation where there is one - with
+  `target_id` set to the `<ref>`'s `id`, and the reference list is left out of
+  the body section that holds it. A sub-article's references are no longer the
+  article's. A footnote no longer repeats its label either.
+
+- **An inline element that ends or starts with a space keeps it.** The text of
+  `<sup>`, `<italic>`, `<xref>` and the rest was taken stripped in the
+  structured blocks, so `R<sup>2 </sup>= 0.90` read "R2= 0.90" - 51 words ran
+  together that way in PMC1764484 - while `get_full_text_sections()` read it
+  correctly.
+
+- **List and definition-list inlines say which item they index.** Their
+  positions were relative to an item with nothing to say which, and a
+  cross-reference in a list lost its `ref_type` and `target_id`. Each inline now
+  carries `metadata["item"]` (or `"term"`/`"definition"`), and
+  `metadata["item_inlines"]` names its item.
+
+- **`extract_peer_reviews()` keeps the whole review.** It skipped PLOS's
+  `aggregated-review-documents`, which hold each round's decision letter and
+  reviews; read titles only from an `<article-meta>` that `<front-stub>` lacks,
+  so every PLOS and eLife review was untitled; took top-level sections without
+  their subsections; and, for a review without sections - every review of those
+  publishers - kept the bare paragraphs and nothing else, losing the reviewer
+  comments an eLife author response quotes. Measured by sentence, PMC10775981
+  kept 10 of 160, PMC11687933 100 of 148 and PMC13567752 312 of 368; all are
+  kept now. Review sections have `section_type` `"peer_review"`.
+
+- **Content outside any section keeps its document order.** The structured
+  sections put every bare `<p>` of a body first and every other block after
+  them, and dropped a `<supplementary-material>` placed there.
+
+- **`StructuredSection.to_chunks()` gives chunks their section path, type and
+  order.** A chunk's `section_path` held the section title; the pieces of a
+  block split for length had an empty `section_type` and were emitted before
+  the text gathered ahead of them; and the overlap was compared, in tokens,
+  with a limit in characters, so it repeated four times as much as asked. A
+  sentence longer than a chunk is now split at spaces rather than left whole.
+
+- **A formula block's `mathml` is serialized in the MathML namespace.**
+  `ET.tostring` invents a prefix for a namespace it was not told about, so the
+  MathML came back as `<ns0:math xmlns:ns0="...">`. It now reads
+  `<math xmlns="http://www.w3.org/1998/Math/MathML">`, the form a renderer
+  expects.
+
+- **Parse errors say what went wrong.** `PARSE003` no longer stands in for a
+  refused document, a recursion error or `bytes` input; each message names the
+  cause, and extraction failures carry the underlying error.
+
+- **`compute_all_metrics()` parses the document once**, not five times, which
+  takes about a third off its runtime.
 
 - **A table or figure inside a paragraph gets a block of its own.** JATS
   allows a `<table-wrap>` or `<fig>` inside a `<p>`, and
@@ -77,7 +264,109 @@ All notable changes to PyEuropePMC are documented here.
   alongside the metadata. `front` is added to `SectionType` in the LinkML
   schema. Code that relied on the old label needs to accept `front`.
 
+- **The disk cache keeps its entries.** Opening a `CacheBackend` with
+  `enable_l2=True` on a directory that already held a `cache.db` deleted it
+  first, with its `-wal`, `-shm` and `-journal` files. Nothing survived a
+  restart, two clients open on one `cache_dir` could not see each other's
+  entries, two `SearchClient(enable_l2=True)` instances sent two HTTP requests
+  for the same query, and the `.val` files diskcache writes for large values
+  were left behind unreferenced. An existing database is now reused, and
+  `_validate_diskcache_schema()` — written for this and never called — migrates
+  an older one in place. A database that genuinely cannot be opened or migrated
+  is still discarded, now together with its sidecar and orphaned `.val` files,
+  and the reason is logged.
+
+- **The in-memory layer honours per-entry expiry.** L1 was a
+  `TTLCache(ttl=config.ttl)`, one lifetime for every entry, so
+  `set(expire=...)`, `data_type` and `ttl_by_type` only reached the disk layer
+  and a value could be served from memory long after it had expired on disk. L1
+  is now a `TLRUCache` that asks for each entry's own expiry, and an L2 hit
+  copied into L1 keeps the lifetime it has left instead of getting a fresh
+  full TTL.
+
+- **`invalidate_search_cache()` and `invalidate_annotations_cache()` remove
+  something.** Their defaults were `"search:*"` and `"annotations:*"`, while the
+  keys these clients write start with the data type
+  (`general:v1:search:6950a79a94574e15`), so calling either without a pattern
+  removed nothing and reported `0`. The defaults are now `"*:search*"` and
+  `"*:annotations_*"`.
+
+- **`invalidate_fulltext_cache(pmcid)` no longer removes other articles.** The
+  pattern `*:{digits}*` also matched every longer ID with the same prefix, so
+  clearing `PMC123` cleared `PMC1234` too. It is anchored at the end of the key.
+
+- **`invalidate_older_than()` works.** It returned `0` without looking at
+  anything. It now deletes entries this backend stored before the given age
+  from both layers and returns how many; entries another process wrote are
+  left to their TTL, which the docstring says.
+
+- **`get_keys()` and `compact()` cover the disk layer**, not just memory:
+  `get_keys()` lists L2-only keys too, and `compact()` runs `expire()` and
+  `cull()` on L2.
+
+- **One lookup counts as one hit or miss.** With L2 enabled, a lookup that
+  missed both layers was counted twice in `get_stats()["misses"]`, halving the
+  reported hit rate. The per-layer counters still record what each layer was
+  asked.
+
+- **`CacheConfig` reports a bad value as a configuration error.**
+  `CacheConfig(ttl=None)` raised `TypeError` from a comparison; a non-integer
+  `ttl`, `size_limit_mb`, `l2_size_limit_mb` or `namespace_version` now raises
+  `ConfigurationError`, as a negative value already did. `l2_size_limit_mb` is
+  validated too.
+
+- **`CacheConfig(eviction_policy=...)` is used.** It was stored and ignored,
+  and the disk layer always evicted least-recently-used entries. It is passed
+  to diskcache, and a value outside `CacheConfig.EVICTION_POLICIES` raises
+  `ConfigurationError` instead of being silently dropped.
+
+- **`from pyeuropepmc.cache import CacheConfig` works.** `src/pyeuropepmc/cache/`
+  had no `__init__.py`, so only `pyeuropepmc.cache.cache` could be imported.
+
+- **Artifact IDs that sanitize to the same filename keep separate entries.**
+  `ArtifactStore` mapped `:` and `/` to `_`, so `"a:b"` and `"a_b"` shared one
+  index file and the second store overwrote the first. Index filenames now carry
+  a digest of the ID, and each file records the ID it was written for, which is
+  what garbage collection reads instead of guessing it back from the filename.
+
+- **`ArtifactStore(min_free_space_mb=...)` is enforced.** It was stored and
+  never checked: a store under its size limit would fill the disk. Storing
+  content that would leave less free space than the floor now collects first.
+
+- **`prisma_summary()` adds up repeated searches.** `records_by_database` kept
+  only the last `results_returned` per database name, so a review that logged
+  1234 and 200 records for Europe PMC and 50 for PubMed reported 250 identified
+  records instead of 1484 — the number that goes into a PRISMA flow diagram.
+
+- **`sign_file()` signatures verify.** It hashed the file and passed the digest
+  to `sign(..., hashes.SHA256())`, which hashes again, so the signature was over
+  the digest of a digest and `openssl dgst -sha256 -verify` reported
+  `Verification failure` on the file it was meant to authenticate. It signs the
+  file contents.
+
+- **`generate_private_key(publish_public=True)` writes a loadable public key.**
+  The metadata comment went *inside* the `BEGIN PUBLIC KEY` block, so the base64
+  body would not decode and `load_pem_public_key()` raised `ValueError`. The
+  comment now precedes the block, as it already did for the private key.
+
+- **`record_platform()`, `record_export()` and a CSV export handle an empty
+  log.** All three raised `IndexError` from indexing an empty list. The two
+  record functions raise `ValueError` naming `record_query()`, and exporting a
+  log with no entries writes a header-only CSV.
+
+- **Schema coverage counts every pattern group.** `validate_schema_coverage()`
+  consulted eleven of the seventeen groups in `ElementPatterns`, so elements the
+  parser does handle — `award-id`, `subject`, `permissions`, `tex-math`, MathML
+  and more — were reported as unrecognized. Coverage of
+  `tests/fixtures/fulltext_downloads/PMC3258128.xml` goes from 77.8% to 86.1%.
+  A pattern written with a namespace prefix (`.//mml:math`) now contributes the
+  local name, which is what the document tags are compared as.
+
 ### 📚 Documentation
+
+- **The caching, search logging, systematic review tracking and schema coverage
+  pages drop the limitations above** and describe the fixed behaviour, with the
+  documented element counts and coverage percentages recomputed.
 
 - **The documentation matches the code again.** Audits of README.md and every
   page in docs/ found that most examples raised or used classes, methods,

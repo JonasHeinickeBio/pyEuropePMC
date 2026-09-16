@@ -13,7 +13,9 @@ Features:
 - LRU-based eviction when disk limit reached
 """
 
+from collections.abc import Iterator
 import hashlib
+import json
 import logging
 from pathlib import Path
 import shutil
@@ -108,7 +110,7 @@ class ArtifactStore:
             cd/
                 cde456...ghi
         index/
-            {source}:{doc_id}:{format} → metadata.json
+            pmc_PMC123456_pdf.<id digest>.json (metadata for one artifact ID)
     ```
     """
 
@@ -128,7 +130,9 @@ class ArtifactStore:
         size_limit_mb : int, optional
             Maximum storage size in MB (default: 10GB)
         min_free_space_mb : int, optional
-            Minimum free disk space to maintain in MB (default: 1GB)
+            Minimum free disk space to keep on the filesystem in MB
+            (default: 1GB). Storing an artifact that would leave less than
+            this free triggers garbage collection first.
         """
         self.base_dir = Path(base_dir)
         self.artifacts_dir = self.base_dir / "artifacts"
@@ -178,10 +182,18 @@ class ArtifactStore:
         -------
         Path
             Path to index metadata file
+
+        Notes
+        -----
+        Sanitizing the ID for the filesystem maps different IDs onto the same
+        name ("a:b" and "a_b" both become "a_b"), so a digest of the original
+        ID is appended to keep entries apart. The sanitized part is kept for
+        readability when looking through the index directory.
         """
         # Sanitize ID for filesystem
         safe_id = artifact_id.replace("/", "_").replace(":", "_")
-        return self.index_dir / f"{safe_id}.json"
+        digest = hashlib.sha256(artifact_id.encode("utf-8")).hexdigest()[:12]
+        return self.index_dir / f"{safe_id}.{digest}.json"
 
     def _compute_hash(self, content: bytes) -> str:
         """
@@ -363,26 +375,49 @@ class ArtifactStore:
         return False
 
     def _save_index(self, artifact_id: str, metadata: ArtifactMetadata) -> None:
-        """Save index entry."""
-        import json
-
+        """Save index entry, recording the ID the entry belongs to."""
+        payload = metadata.to_dict()
+        payload["artifact_id"] = artifact_id
         index_path = self._get_index_path(artifact_id)
-        index_path.write_text(json.dumps(metadata.to_dict(), indent=2))
+        index_path.write_text(json.dumps(payload, indent=2))
 
     def _load_index(self, artifact_id: str) -> ArtifactMetadata | None:
         """Load index entry."""
-        import json
-
         index_path = self._get_index_path(artifact_id)
         if not index_path.exists():
             return None
 
+        entry = self._read_index_file(index_path)
+        if entry is None:
+            logger.warning(f"Failed to load index for {artifact_id}")
+            return None
+        return entry[1]
+
+    @staticmethod
+    def _read_index_file(index_path: Path) -> tuple[str | None, ArtifactMetadata] | None:
+        """
+        Read one index file.
+
+        Returns
+        -------
+        tuple[str | None, ArtifactMetadata] or None
+            The artifact ID the file was written for and its metadata, or
+            None if the file cannot be read. The ID is None for files written
+            before it was recorded.
+        """
         try:
             data = json.loads(index_path.read_text())
-            return ArtifactMetadata.from_dict(data)
-        except Exception as e:
-            logger.warning(f"Failed to load index for {artifact_id}: {e}")
+            return data.get("artifact_id"), ArtifactMetadata.from_dict(data)
+        except (OSError, ValueError, KeyError) as e:
+            logger.warning(f"Skipping unreadable index file {index_path}: {e}")
             return None
+
+    def _iter_index_entries(self) -> Iterator[tuple[Path, str | None, ArtifactMetadata]]:
+        """Yield (path, artifact_id, metadata) for every readable index file."""
+        for index_file in self.index_dir.glob("*.json"):
+            entry = self._read_index_file(index_file)
+            if entry is not None:
+                yield index_file, entry[0], entry[1]
 
     def _ensure_space(self, required_bytes: int) -> None:
         """
@@ -394,16 +429,30 @@ class ArtifactStore:
             Bytes needed for new artifact
         """
         current_usage = self.get_disk_usage()
+        used_after = current_usage["used_bytes"] + required_bytes
 
-        # Check if we need to free space
-        if current_usage["used_bytes"] + required_bytes > self.size_limit_bytes:
-            # Calculate how much to free (target 80% of limit)
-            target_bytes = int(self.size_limit_bytes * 0.8)
-            bytes_to_free = (current_usage["used_bytes"] + required_bytes) - target_bytes
-
+        # How much the store itself has to give back to stay under its limit
+        # (target 80% of it), and to leave min_free_space_mb free on the
+        # filesystem once the new artifact is written.
+        bytes_to_free = 0
+        if used_after > self.size_limit_bytes:
+            bytes_to_free = used_after - int(self.size_limit_bytes * 0.8)
             logger.info(
                 f"Disk usage exceeds limit. Freeing {bytes_to_free / (1024 * 1024):.1f}MB..."
             )
+
+        free_after = current_usage["fs_available_bytes"] - required_bytes
+        if free_after < self.min_free_space_bytes:
+            shortfall = self.min_free_space_bytes - free_after
+            if shortfall > bytes_to_free:
+                bytes_to_free = shortfall
+                logger.info(
+                    f"Free disk space would drop below "
+                    f"{self.min_free_space_bytes / (1024 * 1024):.1f}MB. "
+                    f"Freeing {bytes_to_free / (1024 * 1024):.1f}MB..."
+                )
+
+        if bytes_to_free > 0:
             self._garbage_collect(bytes_to_free)
 
     def _garbage_collect(self, bytes_to_free: int) -> int:
@@ -421,30 +470,30 @@ class ArtifactStore:
             Bytes actually freed
         """
         # Build list of all artifacts with their access times
-        artifacts = []
-        for index_file in self.index_dir.glob("*.json"):
-            try:
-                metadata = self._load_index(index_file.stem.replace("_", ":"))
-                if metadata:
-                    artifacts.append((index_file.stem, metadata.last_accessed, metadata.size))
-            except Exception as e:
-                logger.debug(f"Error loading {index_file}: {e}")
-                continue
+        artifacts = [
+            (index_file, artifact_id, metadata.last_accessed, metadata.size)
+            for index_file, artifact_id, metadata in self._iter_index_entries()
+        ]
 
         # Sort by access time (oldest first)
-        artifacts.sort(key=lambda x: x[1])
+        artifacts.sort(key=lambda x: x[2])
 
         # Delete oldest artifacts until we've freed enough space
         bytes_freed = 0
-        for artifact_id, _, size in artifacts:
+        for index_file, artifact_id, _, size in artifacts:
             if bytes_freed >= bytes_to_free:
                 break
 
-            # Delete index entry
-            real_id = artifact_id.replace("_", ":")
-            if self.delete(real_id):
-                bytes_freed += size
-                logger.debug(f"GC removed: {real_id} ({size} bytes)")
+            # Delete index entry by path: the filename cannot be turned back
+            # into the ID it was written for.
+            try:
+                index_file.unlink()
+            except OSError as e:
+                logger.debug(f"Could not remove index file {index_file}: {e}")
+                continue
+
+            bytes_freed += size
+            logger.debug(f"GC removed: {artifact_id or index_file.name} ({size} bytes)")
 
         # Clean up unreferenced content files
         self._clean_orphaned_artifacts()
@@ -462,15 +511,7 @@ class ArtifactStore:
             Number of files removed
         """
         # Build set of referenced hashes
-        referenced_hashes = set()
-        for index_file in self.index_dir.glob("*.json"):
-            try:
-                metadata = self._load_index(index_file.stem.replace("_", ":"))
-                if metadata:
-                    referenced_hashes.add(metadata.hash_value)
-            except (OSError, ValueError, KeyError) as e:
-                logger.warning(f"Skipping corrupted index file {index_file}: {e}")
-                continue
+        referenced_hashes = {metadata.hash_value for _, _, metadata in self._iter_index_entries()}
 
         # Find and remove unreferenced artifacts
         removed_count = 0

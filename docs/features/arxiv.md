@@ -21,6 +21,7 @@ for paper in papers:
 | `query` | `str` | required | arXiv query, sent unchanged as `search_query` |
 | `limit` | `int` | `25` | Maximum records; capped at 2000 |
 | `sort` | `str` or `None` | `None` | `"relevance"`, `"date"` (submission date) or `"title"`; `None` leaves the order to arXiv |
+| `categories` | `str` or `list[str]` | not sent | arXiv subject categories to restrict the search to, as a list or a comma-separated string |
 | `id_list` | `str` | not sent | Comma-separated arXiv IDs to look up |
 
 Other keyword arguments are ignored without a warning.
@@ -42,7 +43,19 @@ with ArxivClient() as client:
 print(len(papers))
 ```
 
-There is no `categories` argument: `search("quantum computing", categories="cs.AI")` searches all categories. The syntax is described in the [arXiv API user manual](https://info.arxiv.org/help/api/user-manual.html). Through `UnifiedSearch`, a query without arXiv prefixes is sent as `all:"<query>"`.
+`categories` builds those `cat:` clauses for you. The categories are OR-ed together and AND-ed onto the query, so
+
+```python
+client.search("quantum computing", categories=["cs.AI", "cs.LG"])
+```
+
+sends `(quantum computing) AND (cat:cs.AI OR cat:cs.LG)`. A comma-separated string works too: `categories="cs.AI, cs.LG"`.
+
+The query syntax is described in the [arXiv API user manual](https://info.arxiv.org/help/api/user-manual.html). Through `UnifiedSearch`, a query without arXiv prefixes is sent as `all:"<query>"`.
+
+## Malformed requests
+
+arXiv reports a rejected request as an ordinary Atom feed holding one entry titled `Error`. The client recognises those entries, logs the message at warning level and returns an empty list, so an error never arrives as a search result.
 
 ## Get a paper
 
