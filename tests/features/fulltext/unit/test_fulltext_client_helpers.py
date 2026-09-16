@@ -198,7 +198,8 @@ class TestApiCachePassthroughs:
         with patch.object(client._cache, "invalidate_pattern", return_value=3) as mock_invalidate:
             count = client.invalidate_fulltext_cache("PMC123")
         assert count == 3
-        mock_invalidate.assert_called_once_with("*:123*")
+        # Anchored at the end of the key, so PMC1234 is not swept up too.
+        mock_invalidate.assert_called_once_with("*:123")
 
     def test_invalidate_fulltext_cache_without_pmcid(self, client):
         with patch.object(client._cache, "invalidate_pattern", return_value=5) as mock_invalidate:
