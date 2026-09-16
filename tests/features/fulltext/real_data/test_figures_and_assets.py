@@ -27,10 +27,9 @@ from pyeuropepmc.features.fulltext.fulltext_parser import FullTextXMLParser
 pytestmark = pytest.mark.unit
 
 DOWNLOADS = pathlib.Path(__file__).resolve().parents[3] / "fixtures" / "fulltext_downloads"
-ASSETS = pathlib.Path(__file__).resolve().parents[3] / "fixtures" / "fulltext_assets"
 
-#: Every real document available, from both fixture directories.
-DOCUMENTS = sorted(DOWNLOADS.glob("PMC*.xml")) + sorted(ASSETS.glob("PMC*.xml"))
+#: Every real document in the fixture corpus.
+DOCUMENTS = sorted(DOWNLOADS.glob("PMC*.xml"))
 DOCUMENT_IDS = [p.stem for p in DOCUMENTS]
 
 
@@ -169,7 +168,7 @@ class TestCaptionFormulasAreNotTheFigure:
 class TestFigureSupplementsBelongToTheirParent:
     """PMC11687933: five eLife supplements nested in their parent's <p>."""
 
-    PATH = ASSETS / "PMC11687933.xml"
+    PATH = DOWNLOADS / "PMC11687933.xml"
     SUPPLEMENTS = {
         "fig1s1": "fig1",
         "fig2s1": "fig2",

@@ -22,7 +22,7 @@ by hand.
 | `PMC1764484.xml`  | Five tables whose `<thead>` cells are `<td>`, one with a three-row header grouped by `colspan="3"` cells; a `<ref-list>` inside `<body>`; section titles with `*` in them ("DRB1*0402") |
 | `PMC5393345.xml`  | NIH author manuscript: its figure and table sit in `<floats-group>`, outside `<body>`, and the table draws six compound structures as images inside cells |
 | `PMC11671585.xml` | 49 references, each a `<citation-alternatives>` holding an element and a mixed citation: the structured blocks gave each citation twice, repeated its label, and all 134 reference inline offsets were wrong |
-| `PMC11687933.xml` | eLife reviewed preprint: 23 `<aff>` and the assessment keywords live in `<sub-article>`, the editors have affiliations of their own, `<self-uri>` lists the bioRxiv preprint first, and the references include `<data-title>` software citations and `<collab>` authors (#251) |
+| `PMC11687933.xml` | eLife reviewed preprint: 23 `<aff>` and the assessment keywords live in `<sub-article>`, the editors have affiliations of their own, `<self-uri>` lists the bioRxiv preprint first, and the references include `<data-title>` software citations and `<collab>` authors (#251). Five figure supplements are `<fig>` nested inside their parent figure's `<p>`, and were reported under the parent's label |
 
 Keep them as the service returned them, apart from the trailing newline the
 repository's `end-of-file-fixer` hook adds — every file here has one, and it
