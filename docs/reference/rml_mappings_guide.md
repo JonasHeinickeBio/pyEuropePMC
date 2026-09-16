@@ -224,7 +224,7 @@ Known limitation: the script does not set `id` on the entities, so its output co
 
 The intended workflow is to edit `src/pyeuropepmc/conf/rdf_map.yml` and regenerate the RML file from the repository root with `python examples/scripts/sync_rdf_mappings.py`. The `--yaml` option (default `src/pyeuropepmc/conf/rdf_map.yml`) sets the input and `--rml` (default `src/pyeuropepmc/conf/rml_mappings.ttl`) the output; `--check` is not implemented and exits with status 1.
 
-Known limitation: the script stops with `TypeError: string indices must be integers` on the current `rdf_map.yml`, because the annotation classes map fields to plain predicate strings instead of `{predicate, datatype}` entries. `make sync-rdf` also calls `scripts/sync_rdf_mappings.py`, a path that no longer exists. Until this is fixed, copy `rml_mappings.ttl`, edit the copy, and pass it to `RMLRDFizer` as `mapping_path`.
+Known limitation: the script stops with `TypeError: string indices must be integers` on the current `rdf_map.yml`, because the annotation classes map fields to plain predicate strings instead of `{predicate, datatype}` entries. `make sync-rdf` runs the same script and fails the same way. Until this is fixed, copy `rml_mappings.ttl`, edit the copy, and pass it to `RMLRDFizer` as `mapping_path`.
 
 ## Troubleshooting
 
