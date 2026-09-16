@@ -59,6 +59,11 @@ SKIPPED: frozenset[str] = frozenset(
 )
 
 
+#: The title under which every rendering places the content of
+#: ``<floats-group>``: the figures and tables an article keeps outside its body.
+FLOATS_TITLE = "Figures and Tables"
+
+
 @dataclass
 class FlatBlock:
     """One block of a section.

@@ -131,3 +131,56 @@ class TestStructuredCode:
             if block["type"] == "code"
         ]
         assert blocks[0]["text"] == "def f(x):\n    return x"
+
+
+class TestFloatsGroup:
+    """Figures and tables an NIH author manuscript keeps outside <body>."""
+
+    ARTICLE = (
+        '<article xmlns:xlink="http://www.w3.org/1999/xlink"><front><article-meta>'
+        "<title-group><article-title>A study</article-title></title-group></article-meta></front>"
+        '<body><sec><title>Results</title><p>See <xref ref-type="fig" rid="F1">Figure 1</xref>.</p>'
+        "</sec></body><back><ack><p>Thanks.</p></ack></back>"
+        '<floats-group><fig id="F1"><label>Figure 1</label><caption><p>Dose response.</p></caption>'
+        '</fig><table-wrap id="T1"><label>Table 1</label><caption><p>Doses.</p></caption><table>'
+        "<tr><td>cocaine</td><td>3.0 mg/kg</td></tr></table></table-wrap></floats-group>"
+        "<sub-article><floats-group><fig><label>Review figure</label></fig></floats-group>"
+        "</sub-article></article>"
+    )
+
+    def _parser(self) -> FullTextXMLParser:
+        return FullTextXMLParser(self.ARTICLE)
+
+    def test_plaintext(self):
+        text = self._parser().to_plaintext()
+        floats = text.index(
+            "Figures and Tables\nFigure 1 Dose response.\nTable 1 Doses.\ncocaine | 3.0 mg/kg"
+        )
+        assert text.index("See Figure 1.") < floats < text.index("Acknowledgments")
+
+    def test_markdown(self):
+        markdown = self._parser().to_markdown()
+        assert (
+            "## Figures and Tables\n\n**Figure 1** Dose response.\n\n**Table 1** Doses."
+            in markdown
+        )
+        assert "| cocaine | 3.0 mg/kg |" in markdown
+
+    def test_sections(self):
+        sections = self._parser().get_full_text_sections()
+        assert {
+            "title": "Figures and Tables",
+            "content": ("Figure 1 Dose response.\n\nTable 1 Doses.\ncocaine | 3.0 mg/kg"),
+        } in sections
+
+    def test_structured(self):
+        sections = self._parser().get_full_text_sections_structured()
+        floats = [s for s in sections if s["title"] == "Figures and Tables"]
+        assert len(floats) == 1
+        assert floats[0]["section_type"] == "body"
+        assert [b["label"] for b in floats[0]["content"]] == ["Figure 1", "Table 1"]
+
+    def test_a_sub_articles_floats_are_not_the_articles(self):
+        parser = self._parser()
+        assert "Review figure" not in parser.to_plaintext()
+        assert "Review figure" not in str(parser.get_full_text_sections_structured())

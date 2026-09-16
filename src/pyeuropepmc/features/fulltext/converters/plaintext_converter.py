@@ -11,6 +11,7 @@ from pyeuropepmc.features.fulltext.config.element_patterns import ElementPattern
 from pyeuropepmc.features.fulltext.parsers.author_parser import AuthorParser
 from pyeuropepmc.features.fulltext.parsers.base_parser import BaseParser
 from pyeuropepmc.features.fulltext.utils.flat_blocks import (
+    FLOATS_TITLE,
     FlatBlock,
     iter_flat_blocks,
     plain_text,
@@ -115,6 +116,16 @@ class PlaintextConverter(BaseParser):
             bare_texts = self._blocks_plaintext(body_elem)
             if bare_texts:
                 text_parts.append("\n".join(bare_texts) + "\n\n")
+
+        # Figures and tables kept outside <body>, in <floats-group>: every one
+        # of an NIH author manuscript's. They reached no rendering at all.
+        floats = [
+            text
+            for group in (self._own_floats_groups(self.root) if self.root is not None else [])
+            for text in self._blocks_plaintext(group)
+        ]
+        if floats:
+            text_parts.append(f"{FLOATS_TITLE}\n" + "\n".join(floats) + "\n\n")
 
     def _add_acknowledgments_to_text(self, text_parts: list[str]) -> None:
         """Add acknowledgments to text parts."""
