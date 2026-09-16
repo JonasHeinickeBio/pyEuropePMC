@@ -43,7 +43,7 @@ print(f"Saved to: {result['output_file']}")
 | `output_dir` | `str` | `"output"` | Output directory, created when the pipeline is constructed |
 
 Key tips:
-- `rdf_config_path`: the installed package does not include the mapping file `conf/rdf_map.yml`. Download it from the [repository](https://github.com/JonasHeinickeBio/pyEuropePMC/blob/main/conf/rdf_map.yml) and pass its path. Without it, the constructor raises `FileNotFoundError` outside a source checkout.
+- `rdf_config_path`: `None` uses the `rdf_map.yml` that ships with the package; pass a path to use your own mapping.
 - `process_paper(pmcid="PMC3258128")` without `xml_content` downloads the XML itself.
 - The RDF file is named `<filename_prefix><identifier>.<ext>`, with `/`, `.` and `:` in the identifier replaced by `_`. The extension is `.ttl` for `turtle` and the format name otherwise (`.nt`, `.xml`, `.json-ld`).
 - The result has `entities` (a dict with `paper`, `authors`, `sections`, `tables`, `figures`, `references`), `enrichment_data` (the `PaperEnricher.enrich_paper()` result, or `None`), `rdf_graph` (`rdflib.Graph`), `triple_count` and `output_file` (`Path`, or `None` when `save_rdf=False`).

@@ -15,12 +15,13 @@ import sys
 import pytest
 import yaml
 
+from pyeuropepmc.conf import config_file
 from pyeuropepmc.mappers.rml_rdfizer import _assign_missing_ids, _content_digest
 import pyeuropepmc.models as models
 
 ROOT = Path(__file__).resolve().parents[3]
-RDF_MAP = ROOT / "conf" / "rdf_map.yml"
-RML_MAPPINGS = ROOT / "conf" / "rml_mappings.ttl"
+RDF_MAP = config_file("rdf_map.yml")
+RML_MAPPINGS = config_file("rml_mappings.ttl")
 
 
 def _load_sync_script():
@@ -142,7 +143,7 @@ class TestSyncRdfMappingsScript:
         assert 'rr:objectMap [ rml:reference "entity_id" ; rr:datatype xsd:anyURI ]' in text
 
     def test_committed_rml_file_is_up_to_date(self, tmp_path, capsys):
-        """conf/rml_mappings.ttl is generated; regenerate it after editing rdf_map.yml."""
+        """The packaged rml_mappings.ttl is generated; regenerate it after editing rdf_map.yml."""
         script = _load_sync_script()
         generated = tmp_path / "rml_mappings.ttl"
         script.sync_mappings(RDF_MAP, generated)
