@@ -78,7 +78,7 @@ class MetadataParser(BaseParser):
         Everything here is read from the article's own <article-meta>. A
         `.//volume` over the whole document also matches every <volume> in
         the reference list, so an article that has no volume of its own took
-        a reference's - and so did `issue` (#248).
+        a reference's - and so did `issue` (#251).
         """
         scope = self._own_article_meta(self.root)
         return {
@@ -242,7 +242,7 @@ class MetadataParser(BaseParser):
         the first <fpage>/<lpage> anywhere, and an article paginated with
         <elocation-id> - which has neither - was given the page range of its
         first reference: PMC11671585 reported "1-22" for an article whose
-        elocation-id is 354 (#248).
+        elocation-id is 354 (#251).
         """
         scope = self._own_article_meta(self.root)
         fpage = self._extract_with_fallbacks(scope, [".//fpage", ".//first-page"])
@@ -469,7 +469,7 @@ class MetadataParser(BaseParser):
         that points at an earlier version of the work is skipped. eLife
         lists the preprint and every reviewed preprint before the version of
         record, so the first one in PMC11687933 is the bioRxiv DOI of the
-        preprint rather than anything belonging to this article (#248).
+        preprint rather than anything belonging to this article (#251).
         """
         scope = self._own_front(self.root)
         fallback: str | None = None
@@ -577,7 +577,7 @@ class MetadataParser(BaseParser):
         Scoped to the article's front matter: a peer-review <sub-article>
         has keywords of its own, and eLife tags its assessment vocabulary
         that way, so PMC11687933's author keywords came back with
-        "Compelling" and "Important" appended (#248).
+        "Compelling" and "Important" appended (#251).
         """
         self._require_root()
         keywords = self._extract_flat_texts(self._own_front(self.root), ".//kwd")
@@ -664,7 +664,7 @@ class MetadataParser(BaseParser):
                 break
 
         # One award-group routinely names several grants - PMC11671585 has a
-        # group with four <award-id> - and only the first was kept (#248).
+        # group with four <award-id> - and only the first was kept (#251).
         # `award_id` stays a string so existing consumers are unaffected;
         # `award_ids` carries the whole list.
         award_ids = self._extract_flat_texts(award_group, ".//award-id", filter_empty=True)
@@ -835,7 +835,7 @@ class MetadataParser(BaseParser):
 
         # `.//article` never matches: the root element *is* <article>, and
         # ElementTree's descendant search does not include the element it is
-        # called on, so article_type was never set on any document (#248).
+        # called on, so article_type was never set on any document (#251).
         article_elem = self.root if self.root is not None and self.root.tag == "article" else None
         if article_elem is None and self.root is not None:
             article_elem = self.root.find(".//article")

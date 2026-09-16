@@ -28,7 +28,7 @@ class AffiliationParser(BaseParser):
     #: ``itertext`` ran them into the institution name: 18 of the 19
     #: affiliations across the corpus read "3https://ror.org/00a2xv884grid.
     #: 13402.340000 0004 1759 700XCenter of Cryo Electron Microscopy, ..."
-    #: (#248).
+    #: (#251).
     _TEXT_EXCLUDED = frozenset({"label", "institution-id"})
 
     def __init__(self, root: ET.Element | None = None, config: ElementPatterns | None = None):
@@ -43,7 +43,7 @@ class AffiliationParser(BaseParser):
         that belong to the editors rather than the authors are left out.
         A `.//aff` over the whole document returned an eLife article's 8
         author affiliations plus the 2 editor ones and the 23 belonging to
-        the peer-review <sub-article> elements - 33 in all (#248).
+        the peer-review <sub-article> elements - 33 in all (#251).
 
         Returns
         -------

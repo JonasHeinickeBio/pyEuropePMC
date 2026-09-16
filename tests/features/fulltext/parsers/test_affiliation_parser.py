@@ -277,7 +277,7 @@ class TestAffiliationScope:
     <sub-article>'s: PMC11687933 has 8 author affiliations and returned 33.
     The text ran the <label> marker and each <institution-id> - a ROR URL, a
     GRID code, an ISNI - straight into the institution name, because the
-    markup puts no whitespace between them (#248).
+    markup puts no whitespace between them (#251).
     """
 
     @pytest.fixture
