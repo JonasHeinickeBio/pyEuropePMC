@@ -118,22 +118,36 @@ class TestReferences:
                 assert not rest.startswith(label), f"{doc.pmcid}: {text[:40]!r}"
 
     def test_a_citation_is_not_given_twice(self, doc: _Parsed) -> None:
-        """A <citation-alternatives> gave its element and mixed citation one after the other."""
+        """A <citation-alternatives> gave its element and mixed citation one after the other.
+
+        The two start differently ("RowlettVW..." and "Rowlett, V. W."), so the
+        cited work's title - in both - is what shows the repetition.
+        """
+        checked = 0
+        by_id = {
+            b["target_id"]: b
+            for _, b in doc.blocks
+            if b["type"] == "paragraph" and b.get("target_id")
+        }
+        texts = [(b, squash(b.get("text"))) for _, b in doc.blocks]
         for ref in (r for rl in _own(doc.root, "ref-list") for r in rl if _local(r.tag) == "ref"):
-            block = next((b for _, b in doc.blocks if b.get("target_id") == ref.get("id")), None)
+            titles = [el for el in ref.iter() if _local(el.tag) == "article-title"]
+            title = squash("".join(titles[0].itertext())) if titles else ""
+            if len(title) < 20:
+                continue
+            # Found by its title as well as by target_id, so the check does not
+            # depend on the target_id this fix added.
+            block = by_id.get(ref.get("id"))
+            if block is None:
+                block = next((b for b, text in texts if title in text), None)
             if block is None:
                 continue
-            label = (
-                normalise(
-                    "".join(next((c for c in ref if _local(c.tag) == "label"), ref).itertext())
-                )
-                if any(_local(c.tag) == "label" for c in ref)
-                else ""
+            assert squash(block["text"]).count(title) == 1, (
+                f"{doc.pmcid}: {ref.get('id')} gives its citation more than once"
             )
-            body = squash(block["text"])[len(squash(label)) :]
-            opening = body[:40]
-            if len(opening) == 40:
-                assert body.count(opening) == 1, f"{doc.pmcid}: {block['text'][:60]!r} repeats"
+            checked += 1
+        if not checked:
+            pytest.skip(f"{doc.pmcid} has no reference with an article title")
 
 
 class TestInlineOffsets:
