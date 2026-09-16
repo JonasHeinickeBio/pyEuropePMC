@@ -30,17 +30,19 @@ from pyeuropepmc.features.fulltext.utils.asset_urls import (
     guess_mime_type,
 )
 from pyeuropepmc.features.fulltext.utils.figure_assets import (
+    FILE_TAGS,
     local_tag,
     own_graphics,
     parent_figure_map,
+    supplementary_href,
 )
 from pyeuropepmc.features.fulltext.utils.xml_helpers import XMLHelper
 
 logger = logging.getLogger(__name__)
 
 #: Elements that name a file. ``<supplementary-material>`` usually delegates to
-#: a ``<media>`` child, but JATS also allows the href on the block itself.
-_ASSET_TAGS = frozenset({"graphic", "inline-graphic", "media", "supplementary-material"})
+#: a ``<media>`` child, but can name the file itself (see ``supplementary_href``).
+_ASSET_TAGS = FILE_TAGS | {"supplementary-material"}
 
 #: Tags whose file name may be written without an extension.
 _EXTENSIONLESS_TAGS = frozenset({"graphic", "inline-graphic"})
@@ -293,16 +295,19 @@ class ImageFetcher(BaseParser):
             caption=self._supplementary_caption(elem),
             id=elem.get("id", ""),
         )
-        # The block itself, for the JATS form that puts the href on it; it
-        # yields no asset when it has none.
+        # The block itself, for when it names the file without a file child;
+        # it yields no asset otherwise.
         owners.setdefault(elem, owner)
         for child in elem:
-            if local_tag(child.tag) in ("media", "graphic", "inline-graphic"):
+            if local_tag(child.tag) in FILE_TAGS:
                 owners.setdefault(child, owner)
 
     def _build_asset(self, elem: ET.Element, tag: str, owner: _Owner | None) -> AssetRef | None:
         """Turn one file-bearing element into an :class:`AssetRef`."""
-        href = self._get_xlink_href(elem)
+        if tag == "supplementary-material":
+            href = supplementary_href(elem)
+        else:
+            href = self._get_xlink_href(elem)
         if not href:
             return None
 

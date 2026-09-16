@@ -32,6 +32,7 @@ __all__ = [
     "asset_file_name",
     "build_asset_url",
     "guess_mime_type",
+    "has_known_extension",
     "normalise_pmcid",
 ]
 
@@ -108,12 +109,19 @@ def asset_file_name(href: str, default_extension: str | None = None) -> str:
     varied to tell apart from a name such as ``pone.0357759.g001``.
     """
     name = posixpath.basename((href or "").strip())
-    if not name or not default_extension:
-        return name
-    match = _EXTENSION_RE.search(name)
-    if match and match.group(1).lower() in _MIME_TYPES:
+    if not name or not default_extension or has_known_extension(name):
         return name
     return f"{name}.{default_extension}"
+
+
+def has_known_extension(file_name: str) -> bool:
+    """Whether ``file_name`` ends in a file type this module recognises.
+
+    ``pone.0357759.g001`` and ``10.1371/journal.pone.0357759.s001`` end in a
+    dotted suffix too, but not a file type.
+    """
+    match = _EXTENSION_RE.search(file_name or "")
+    return match is not None and match.group(1).lower() in _MIME_TYPES
 
 
 def guess_mime_type(file_name: str) -> str:

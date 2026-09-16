@@ -142,6 +142,26 @@ class TestExtractFromXml:
         assert supp.file_name == "supp1.zip"
         assert supp.mime_type == "application/zip"
 
+    @pytest.mark.parametrize(
+        ("body", "expected"),
+        [
+            ('<supplementary-material xlink:href="supp.pdf"/>', "supp.pdf"),
+            (
+                "<supplementary-material><object-id>supp.pdf</object-id></supplementary-material>",
+                "supp.pdf",
+            ),
+            (
+                '<supplementary-material><object-id pub-id-type="doi">10.1/x.pdf</object-id>'
+                "</supplementary-material>",
+                None,
+            ),
+        ],
+    )
+    def test_a_supplement_without_a_media_child(self, extractor, body, expected):
+        doc = f'<article xmlns:xlink="http://www.w3.org/1999/xlink"><body>{body}</body></article>'
+        (supplement,) = extractor.extract_from_xml(doc, pmcid="PMC1")
+        assert supplement.file_name == expected
+
     def test_without_a_pmcid_there_is_no_url(self, extractor, xml):
         """A URL that cannot resolve is worse than none."""
         figures = extractor.extract_from_xml(xml)

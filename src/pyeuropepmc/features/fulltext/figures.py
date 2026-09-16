@@ -25,9 +25,12 @@ from pyeuropepmc.features.fulltext.utils.asset_urls import (
     normalise_pmcid,
 )
 from pyeuropepmc.features.fulltext.utils.figure_assets import (
+    FILE_TAGS,
+    href_of,
     local_tag,
     own_graphic,
     parent_figure_map,
+    supplementary_href,
 )
 from pyeuropepmc.features.fulltext.utils.xml_helpers import XMLHelper
 
@@ -385,11 +388,16 @@ class FigureExtractor:
         source: ET.Element | None,
         pmcid: str | None,
         default_extension: str | None = None,
+        href: str = "",
     ) -> tuple[str | None, str | None, str | None]:
-        """``(file_name, mime_type, image_url)`` for a ``<graphic>`` or ``<media>``."""
+        """``(file_name, mime_type, image_url)`` for the file ``source`` names.
+
+        ``href`` overrides the reference read from ``source``, for a file named
+        some other way than by the element's own ``xlink:href``.
+        """
         if source is None:
             return None, None, None
-        href = source.get("{http://www.w3.org/1999/xlink}href") or source.get("href") or ""
+        href = href or href_of(source)
         if not href:
             return None, None, None
 
@@ -427,7 +435,7 @@ class FigureExtractor:
             file_name=file_name,
             mime_type=mime_type,
             parent_id=(parent.get("id") or None) if parent is not None else None,
-            parent_label=self._label_of(parent) or None if parent is not None else None,
+            parent_label=(self._label_of(parent) or None) if parent is not None else None,
         )
 
     def _parse_table_element(
@@ -460,14 +468,18 @@ class FigureExtractor:
         elem: ET.Element,
         pmcid: str | None,
     ) -> FigureInfo | None:
-        """Parse a ``<supplementary-material>`` JATS element."""
-        source = None
-        for child in elem:
-            if local_tag(child.tag) in ("media", "graphic", "inline-graphic"):
-                source = child
-                break
+        """Parse a ``<supplementary-material>`` JATS element.
 
-        file_name, mime_type, image_url = self._file_fields(source, pmcid)
+        The file is normally named by a ``<media>`` inside the block, and
+        otherwise by the block itself (see ``supplementary_href``).
+        """
+        source = next((child for child in elem if local_tag(child.tag) in FILE_TAGS), None)
+        if source is not None:
+            file_name, mime_type, image_url = self._file_fields(source, pmcid)
+        else:
+            file_name, mime_type, image_url = self._file_fields(
+                elem, pmcid, href=supplementary_href(elem)
+            )
 
         description = self._caption_of(elem)
         if not description:

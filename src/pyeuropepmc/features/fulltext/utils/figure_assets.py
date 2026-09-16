@@ -19,13 +19,23 @@ from __future__ import annotations
 
 from xml.etree import ElementTree as ET  # nosec B405
 
+from pyeuropepmc.features.fulltext.utils.asset_urls import has_known_extension
+
 __all__ = [
+    "FILE_TAGS",
     "child_figures",
+    "href_of",
     "local_tag",
     "own_graphic",
     "own_graphics",
     "parent_figure_map",
+    "supplementary_href",
 ]
+
+XLINK_HREF = "{http://www.w3.org/1999/xlink}href"
+
+#: Elements that reference a file through their own ``xlink:href``.
+FILE_TAGS = frozenset({"graphic", "inline-graphic", "media"})
 
 
 def local_tag(tag: object) -> str:
@@ -79,3 +89,34 @@ def parent_figure_map(root: ET.Element) -> dict[ET.Element, ET.Element]:
             # figure first, so only overwrite while descending.
             parents[nested] = elem
     return parents
+
+
+def href_of(elem: ET.Element) -> str:
+    """An element's ``xlink:href``, or a bare ``href``, or ``""``."""
+    return elem.get(XLINK_HREF) or elem.get("href") or ""
+
+
+def supplementary_href(elem: ET.Element) -> str:
+    """The file a ``<supplementary-material>`` names without a file child.
+
+    Usually the block wraps a ``<media>`` that names the file, and then this
+    returns ``""`` - the child is the file's reference, not the block. JATS
+    also allows the ``xlink:href`` on the block itself. Failing both, an
+    ``<object-id>`` holding a file name is accepted, as it always was here; one
+    typed as a DOI, or one that does not end in a file type, is an identifier
+    for the object rather than its file, and is not.
+    """
+    own = href_of(elem)
+    if own:
+        return own
+    if any(local_tag(child.tag) in FILE_TAGS for child in elem):
+        return ""
+    for child in elem:
+        if local_tag(child.tag) != "object-id":
+            continue
+        if child.get("pub-id-type", "").lower() == "doi":
+            continue
+        text = (child.text or "").strip()
+        if has_known_extension(text):
+            return text
+    return ""

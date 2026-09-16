@@ -201,6 +201,35 @@ class TestSupplementaryShapes:
         assert asset.metadata["file_name"] == "supp2.pdf"
         assert asset.label == "Supp 2"
 
+    def test_falls_back_to_an_object_id_holding_a_file_name(self):
+        xml = f"""<article {XLINK}><supplementary-material id="s2">
+            <object-id> supp2.pdf </object-id>
+        </supplementary-material></article>"""
+        asset = _fetcher(xml).extract_asset_refs()[0]
+        assert asset.metadata["file_name"] == "supp2.pdf"
+        assert asset.asset_type == AssetType.SUPPLEMENTARY
+
+    @pytest.mark.parametrize(
+        "object_id",
+        [
+            '<object-id pub-id-type="doi">10.1371/journal.pcbi.1011761.s001.pdf</object-id>',
+            "<object-id>10.1371/journal.pcbi.1011761.s001</object-id>",
+        ],
+    )
+    def test_an_object_id_that_is_an_identifier_is_not_a_file(self, object_id):
+        """A DOI names the object, not its file; a URL built from it cannot resolve."""
+        xml = f"""<article {XLINK}><supplementary-material id="s2">
+            {object_id}
+        </supplementary-material></article>"""
+        assert _fetcher(xml).extract_asset_refs() == []
+
+    def test_a_media_child_wins_over_an_object_id(self):
+        xml = f"""<article {XLINK}><supplementary-material id="s2">
+            <object-id>other.pdf</object-id><media xlink:href="supp2.zip"/>
+        </supplementary-material></article>"""
+        assets = _fetcher(xml).extract_asset_refs()
+        assert [a.metadata["file_name"] for a in assets] == ["supp2.zip"]
+
     def test_caption_falls_back_to_p_when_no_caption_element(self):
         xml = f"""<article {XLINK}><supplementary-material id="s3" xlink:href="supp3.pdf">
             <p>Just a paragraph.</p>

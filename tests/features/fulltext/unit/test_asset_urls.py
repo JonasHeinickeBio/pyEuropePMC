@@ -16,6 +16,7 @@ from pyeuropepmc.features.fulltext.utils.asset_urls import (
     asset_file_name,
     build_asset_url,
     guess_mime_type,
+    has_known_extension,
     normalise_pmcid,
 )
 
@@ -63,6 +64,18 @@ class TestAssetFileName:
     @pytest.mark.parametrize("value", ["", "   "])
     def test_empty_stays_empty(self, value):
         assert asset_file_name(value, "jpg") == ""
+
+
+class TestHasKnownExtension:
+    @pytest.mark.parametrize("name", ["fig1.jpg", "supp1.XLSX", "model.yaml"])
+    def test_file_types(self, name):
+        assert has_known_extension(name)
+
+    @pytest.mark.parametrize(
+        "name", ["pone.0357759.g001", "10.1371/journal.pone.0357759.s001", "gkr715f1", ""]
+    )
+    def test_dotted_identifiers_are_not_file_types(self, name):
+        assert not has_known_extension(name)
 
 
 class TestGuessMimeType:
