@@ -95,10 +95,13 @@ class MarkdownConverter(BaseParser):
                 bare_texts = [
                     text
                     for para in body_elem.findall("./p")
-                    for text in self._extract_flat_texts(
-                        para, ".", filter_empty=True, use_full_text=True
-                    )
+                    if (text := self._text_excluding(para, "disp-formula"))
                 ]
+                bare_texts.extend(
+                    text
+                    for formula in self._section_own_elements(body_elem, "disp-formula")
+                    if (text := self._display_formula_text(formula))
+                )
                 for text in bare_texts:
                     md_parts.append(f"{text}\n\n")
 
@@ -161,10 +164,16 @@ class MarkdownConverter(BaseParser):
         # has no separate list rendering, so a <p> inside a <list-item> reaches
         # the output only through this walk. Excluding it would lose the text.
         for para in self._section_own_elements(section, "p"):
-            for para_text in self._extract_flat_texts(
-                para, ".", filter_empty=True, use_full_text=True
-            ):
+            para_text = self._text_excluding(para, "disp-formula")
+            if para_text:
                 md_parts.append(f"{para_text}\n\n")
+
+        # Display formulas, as paragraphs of their own: see the same note in
+        # the plaintext converter.
+        for formula in self._section_own_elements(section, "disp-formula"):
+            formula_text = self._display_formula_text(formula)
+            if formula_text:
+                md_parts.append(f"{formula_text}\n\n")
 
         # Process subsections. Direct children only: `iter()` reached every
         # descendant, so a grandchild was rendered once at level+1 under its
