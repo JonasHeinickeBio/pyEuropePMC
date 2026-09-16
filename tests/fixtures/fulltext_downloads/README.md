@@ -18,6 +18,7 @@ by hand.
 | `PMC12738713.xml` | XML declaration, `xml:lang`, modern tagging |
 | `PMC12018715.xml` | 23 structured `<mixed-citation>` references — the fields were being filled by regex from flattened text (#226) |
 | `PMC13567752.xml` | 9 peer-review `<sub-article>` elements, each with its own `<body>` and `<contrib>` — these were returned as article sections (#222) and article authors (#227) |
+| `PMC11687933.xml` | eLife reviewed preprint: 23 `<aff>` and the assessment keywords live in `<sub-article>`, the editors have affiliations of their own, `<self-uri>` lists the bioRxiv preprint first, and the references include `<data-title>` software citations and `<collab>` authors (#248) |
 
 Keep them as the service returned them, apart from the trailing newline the
 repository's `end-of-file-fixer` hook adds — every file here has one, and it

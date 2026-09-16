@@ -21,13 +21,29 @@ logger = logging.getLogger(__name__)
 class AffiliationParser(BaseParser):
     """Specialized parser for affiliation extraction."""
 
+    #: Left out of an affiliation's ``text``. <label> is the superscript
+    #: marker that links the affiliation to its authors, and <institution-id>
+    #: holds machine identifiers - a ROR URL, a GRID code, an ISNI. Neither is
+    #: part of the address, and neither is separated from it by whitespace, so
+    #: ``itertext`` ran them into the institution name: 18 of the 19
+    #: affiliations across the corpus read "3https://ror.org/00a2xv884grid.
+    #: 13402.340000 0004 1759 700XCenter of Cryo Electron Microscopy, ..."
+    #: (#248).
+    _TEXT_EXCLUDED = frozenset({"label", "institution-id"})
+
     def __init__(self, root: ET.Element | None = None, config: ElementPatterns | None = None):
         """Initialize the affiliation parser."""
         super().__init__(root, config)
 
     def extract_affiliations(self) -> list[dict[str, Any]]:
         """
-        Extract author affiliations from the full text XML.
+        Extract the authors' affiliations from the full text XML.
+
+        Only the article's own front matter is searched, and affiliations
+        that belong to the editors rather than the authors are left out.
+        A `.//aff` over the whole document returned an eLife article's 8
+        author affiliations plus the 2 editor ones and the 23 belonging to
+        the peer-review <sub-article> elements - 33 in all (#248).
 
         Returns
         -------
@@ -36,16 +52,79 @@ class AffiliationParser(BaseParser):
         """
         self._require_root()
 
-        aff_results = self.extract_elements_by_patterns(
-            {"affiliations": ".//aff"}, return_type="element"
-        )
-
-        affiliations = []
-        for aff_elem in aff_results.get("affiliations", []):
-            aff_data = self._extract_single_affiliation(aff_elem)
-            affiliations.append(aff_data)
+        front = self._own_front(self.root)
+        affiliations = [
+            self._extract_single_affiliation(aff_elem)
+            for aff_elem in self._author_affiliations(front)
+        ]
 
         logger.debug(f"Extracted {len(affiliations)} affiliations")
+        return affiliations
+
+    @staticmethod
+    def _is_author_contrib(contrib: ET.Element, group: ET.Element | None) -> bool:
+        """Whether a <contrib> is an author rather than an editor or reviewer.
+
+        Both JATS dialects count: ``contrib-type="author"`` on the
+        contribution itself, and an untyped <contrib> whose <contrib-group>
+        declares the role instead.
+        """
+        contrib_type = contrib.get("contrib-type")
+        if contrib_type:
+            return contrib_type == "author"
+        group_type = group.get("content-type") if group is not None else None
+        return group_type in (None, "author")
+
+    def _author_affiliations(self, front: ET.Element) -> list[ET.Element]:
+        """The <aff> elements in ``front`` that belong to the authors.
+
+        An <aff> inside a <contrib-group> belongs to whoever that group
+        describes. One at <article-meta> level is linked by ``rid``, so it
+        is an editor's only when an editor cites it and no author does. An
+        affiliation nobody cites is kept: single-affiliation articles often
+        carry no <xref> at all.
+        """
+        author_rids: set[str] = set()
+        other_rids: set[str] = set()
+        group_of: dict[int, ET.Element] = {
+            id(contrib): group
+            for group in front.iter("contrib-group")
+            for contrib in group.iter("contrib")
+        }
+
+        for contrib in front.iter("contrib"):
+            target = (
+                author_rids
+                if self._is_author_contrib(contrib, group_of.get(id(contrib)))
+                else other_rids
+            )
+            for xref in contrib.findall(".//xref[@ref-type='aff']"):
+                rid = xref.get("rid")
+                if rid:
+                    target.add(rid)
+
+        group_has_author = {
+            id(group): any(
+                self._is_author_contrib(contrib, group) for contrib in group.iter("contrib")
+            )
+            for group in front.iter("contrib-group")
+        }
+        owning_group = {
+            id(aff): group for group in front.iter("contrib-group") for aff in group.iter("aff")
+        }
+
+        affiliations: list[ET.Element] = []
+        for aff in front.iter("aff"):  # document order
+            group = owning_group.get(id(aff))
+            if group is not None:
+                if group_has_author[id(group)]:
+                    affiliations.append(aff)
+                continue
+            aff_id = aff.get("id")
+            if aff_id and aff_id in other_rids and aff_id not in author_rids:
+                continue
+            affiliations.append(aff)
+
         return affiliations
 
     def _extract_single_affiliation(self, aff_elem: ET.Element) -> dict[str, Any]:
@@ -56,8 +135,7 @@ class AffiliationParser(BaseParser):
         aff_data["id"] = aff_elem.get("id")
 
         # Get full text for reference
-        full_text = "".join(aff_elem.itertext()).strip()
-        aff_data["text"] = full_text
+        aff_data["text"] = XMLHelper.get_text_content(aff_elem, exclude_tags=self._TEXT_EXCLUDED)
 
         # Extract institution IDs
         institution_ids = self._extract_institution_ids(aff_elem)
@@ -126,7 +204,12 @@ class AffiliationParser(BaseParser):
         markers = XMLHelper.extract_inline_elements(aff_elem, [".//sup"])
         if markers:
             aff_data["markers"] = ", ".join(markers)
-            clean_text = XMLHelper.get_text_without_inline_elements(aff_elem, [".//sup"])
+            # Drop the <sup> subtrees rather than deleting every occurrence
+            # of their text from the flattened string, which took the "1" out
+            # of a street number as readily as out of the marker.
+            clean_text = XMLHelper.get_text_content(
+                aff_elem, exclude_tags=self._TEXT_EXCLUDED | {"sup"}
+            )
             aff_data["institution_text"] = clean_text
 
             if clean_text:

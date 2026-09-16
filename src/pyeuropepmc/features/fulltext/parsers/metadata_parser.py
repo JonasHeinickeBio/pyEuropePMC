@@ -58,6 +58,7 @@ class MetadataParser(BaseParser):
             self._add_article_identifiers(metadata)
             metadata["journal"] = self._extract_journal_metadata()
             metadata["pages"] = self._extract_page_range()
+            metadata["elocation_id"] = self._extract_elocation_id()
             metadata["authors"] = self.author_parser.extract_authors()
             metadata["pub_date"] = self.extract_pub_date()
             metadata["keywords"] = self.extract_keywords()
@@ -72,19 +73,25 @@ class MetadataParser(BaseParser):
             raise
 
     def _extract_basic_metadata(self) -> dict[str, Any]:
-        """Extract basic article metadata (pmcid, doi, title, abstract, volume, issue)."""
-        root = self.root if self.root is not None else ET.Element("empty")
+        """Extract basic article metadata (pmcid, doi, title, abstract, volume, issue).
+
+        Everything here is read from the article's own <article-meta>. A
+        `.//volume` over the whole document also matches every <volume> in
+        the reference list, so an article that has no volume of its own took
+        a reference's - and so did `issue` (#248).
+        """
+        scope = self._own_article_meta(self.root)
         return {
-            "pmcid": self._extract_with_fallbacks(root, self.config.article_patterns["pmcid"]),
-            "doi": self._extract_with_fallbacks(root, self.config.article_patterns["doi"]),
+            "pmcid": self._extract_with_fallbacks(scope, self.config.article_patterns["pmcid"]),
+            "doi": self._extract_with_fallbacks(scope, self.config.article_patterns["doi"]),
             "title": self._extract_with_fallbacks(
-                root, self.config.article_patterns["title"], use_full_text=True
+                scope, self.config.article_patterns["title"], use_full_text=True
             ),
             "abstract": self._extract_with_fallbacks(
-                root, self.config.article_patterns["abstract"], use_full_text=True
+                scope, self.config.article_patterns["abstract"], use_full_text=True
             ),
-            "volume": self._extract_with_fallbacks(root, self.config.article_patterns["volume"]),
-            "issue": self._extract_with_fallbacks(root, self.config.article_patterns["issue"]),
+            "volume": self._extract_with_fallbacks(scope, self.config.article_patterns["volume"]),
+            "issue": self._extract_with_fallbacks(scope, self.config.article_patterns["issue"]),
         }
 
     def _add_article_identifiers(self, metadata: dict[str, Any]) -> None:
@@ -156,19 +163,23 @@ class MetadataParser(BaseParser):
             self._extract_journal_ids(journal_meta, journal_info)
             break
 
-        # If journal title not found in journal-meta, look in article-meta using journal patterns
+        article_meta = self._own_article_meta(self.root)
+
+        # If journal title not found in journal-meta, look in article-meta
+        # using journal patterns - and only there, for the reason given in
+        # _extract_basic_metadata. Over the whole document the `.//source`
+        # fallback matches the journal name of the first *reference*.
         if not journal_info.get("title"):
             journal_info["title"] = self._extract_with_fallbacks(
-                self.root, self.config.journal_patterns["title"]
+                article_meta, self.config.journal_patterns["title"]
             )
 
-        # If volume/issue not found in journal-meta, look in article-meta
         if not journal_info.get("volume"):
             journal_info["volume"] = self._extract_with_fallbacks(
-                self.root, [".//volume", ".//vol"]
+                article_meta, [".//volume", ".//vol"]
             )
         if not journal_info.get("issue"):
-            journal_info["issue"] = self._extract_with_fallbacks(self.root, [".//issue"])
+            journal_info["issue"] = self._extract_with_fallbacks(article_meta, [".//issue"])
 
         return journal_info
 
@@ -225,11 +236,27 @@ class MetadataParser(BaseParser):
                 journal_info["publisher_location"] = publisher_loc
 
     def _extract_page_range(self) -> str | None:
-        """Extract page range from first and last page."""
-        root = self.root if self.root is not None else ET.Element("empty")
-        fpage = self._extract_with_fallbacks(root, [".//fpage", ".//first-page"])
-        lpage = self._extract_with_fallbacks(root, [".//lpage", ".//last-page"])
+        """Extract page range from the article's own first and last page.
+
+        Read from <article-meta>. Searched over the whole document this took
+        the first <fpage>/<lpage> anywhere, and an article paginated with
+        <elocation-id> - which has neither - was given the page range of its
+        first reference: PMC11671585 reported "1-22" for an article whose
+        elocation-id is 354 (#248).
+        """
+        scope = self._own_article_meta(self.root)
+        fpage = self._extract_with_fallbacks(scope, [".//fpage", ".//first-page"])
+        lpage = self._extract_with_fallbacks(scope, [".//lpage", ".//last-page"])
         return XMLHelper.combine_page_range(fpage, lpage)
+
+    def _extract_elocation_id(self) -> str | None:
+        """Extract the article's <elocation-id>.
+
+        The electronic location identifier that replaces page numbers in
+        online-only journals ("e1011761", "RP99323", "354").
+        """
+        scope = self._own_article_meta(self.root)
+        return self._extract_with_fallbacks(scope, [".//elocation-id"])
 
     def _add_optional_metadata(self, metadata: dict[str, Any]) -> None:
         """Add optional metadata fields."""
@@ -436,16 +463,30 @@ class MetadataParser(BaseParser):
         return corresp_entries if corresp_entries else None
 
     def _extract_self_uri(self) -> str | None:
-        """Extract the article's self-uri (landing page URL)."""
-        assert self.root is not None  # nosec
-        for self_uri in self.root.findall(".//self-uri"):
+        """Extract the article's self-uri (landing page URL).
+
+        Only the article's own front matter is searched, and a <self-uri>
+        that points at an earlier version of the work is skipped. eLife
+        lists the preprint and every reviewed preprint before the version of
+        record, so the first one in PMC11687933 is the bioRxiv DOI of the
+        preprint rather than anything belonging to this article (#248).
+        """
+        scope = self._own_front(self.root)
+        fallback: str | None = None
+
+        for self_uri in scope.findall(".//self-uri"):
             href = self_uri.get(
                 "{http://www.w3.org/1999/xlink}href",
                 self_uri.get("href", ""),
             )
-            if href:
-                return href
-        return None
+            if not href:
+                continue
+            if "preprint" in (self_uri.get("content-type") or "").lower():
+                fallback = fallback or href
+                continue
+            return href
+
+        return fallback
 
     def _extract_counts(self) -> dict[str, int] | None:
         """Extract document structure counts (pages, figures, tables, equations, words)."""
@@ -531,10 +572,15 @@ class MetadataParser(BaseParser):
         return None
 
     def extract_keywords(self) -> list[str]:
-        """Extract keywords from XML (flat list of keyword strings)."""
+        """Extract the article's own keywords (flat list of keyword strings).
+
+        Scoped to the article's front matter: a peer-review <sub-article>
+        has keywords of its own, and eLife tags its assessment vocabulary
+        that way, so PMC11687933's author keywords came back with
+        "Compelling" and "Important" appended (#248).
+        """
         self._require_root()
-        root = self.root if self.root is not None else ET.Element("empty")
-        keywords = self._extract_flat_texts(root, ".//kwd")
+        keywords = self._extract_flat_texts(self._own_front(self.root), ".//kwd")
         logger.debug(f"Extracted keywords: {keywords}")
         return keywords
 
@@ -546,7 +592,7 @@ class MetadataParser(BaseParser):
         - ``keywords``: List of keyword strings in that group
         """
         self._require_root()
-        root = self.root if self.root is not None else ET.Element("empty")
+        root = self._own_front(self.root)
         kwd_groups: list[dict[str, Any]] = []
 
         for kwd_group in root.findall(".//kwd-group"):
@@ -617,9 +663,14 @@ class MetadataParser(BaseParser):
                 funding_data["fundref_doi"] = inst_id.text.strip()
                 break
 
-        award_id = self._extract_with_fallbacks(award_group, [".//award-id"])
-        if award_id:
-            funding_data["award_id"] = award_id
+        # One award-group routinely names several grants - PMC11671585 has a
+        # group with four <award-id> - and only the first was kept (#248).
+        # `award_id` stays a string so existing consumers are unaffected;
+        # `award_ids` carries the whole list.
+        award_ids = self._extract_flat_texts(award_group, ".//award-id", filter_empty=True)
+        if award_ids:
+            funding_data["award_id"] = award_ids[0]
+            funding_data["award_ids"] = award_ids
 
         recipient_info = self._extract_recipient(award_group)
         if recipient_info:
@@ -782,15 +833,16 @@ class MetadataParser(BaseParser):
 
         categories: dict[str, Any] = {}
 
-        article_result = self.extract_elements_by_patterns(
-            {"articles": ".//article"}, return_type="element"
-        )
-
-        for article_elem in article_result.get("articles", []):
+        # `.//article` never matches: the root element *is* <article>, and
+        # ElementTree's descendant search does not include the element it is
+        # called on, so article_type was never set on any document (#248).
+        article_elem = self.root if self.root is not None and self.root.tag == "article" else None
+        if article_elem is None and self.root is not None:
+            article_elem = self.root.find(".//article")
+        if article_elem is not None:
             article_type = article_elem.get("article-type")
             if article_type:
                 categories["article_type"] = article_type
-            break
 
         subject_groups = []
         subj_groups_result = self.extract_elements_by_patterns(

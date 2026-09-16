@@ -670,7 +670,7 @@ class TestFullTextXMLParserFundingSources:
             "<award-group><funding-source>US CDC</funding-source></award-group>"
         )
         assert FullTextXMLParser(self._article(fragment)).extract_funding() == [
-            {"source": "NIH", "award_id": "R01"},
+            {"source": "NIH", "award_id": "R01", "award_ids": ["R01"]},
             {"source": "US CDC"},
         ]
 
