@@ -532,7 +532,7 @@ class SemanticScholarClient(BaseEnrichmentClient):
                 fields_of_study=kwargs.get("fieldsOfStudy"),
                 min_citation_count=kwargs.get("minCitationCount"),
                 publication_date_or_year=kwargs.get("publicationDateOrYear"),
-                limit=min(limit, 100),
+                limit=min(limit, 1000),
                 fields=[
                     "title",
                     "abstract",

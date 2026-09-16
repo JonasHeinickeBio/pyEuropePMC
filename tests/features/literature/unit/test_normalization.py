@@ -173,6 +173,32 @@ class TestNormalizeAuthorName:
         result = normalize_author_name("Sean O'Brien")
         assert result == "O'Brien, Sean"
 
+    # PubMed ESummary and Europe PMC authorString write "Surname Initials".
+    @pytest.mark.parametrize(
+        ("raw", "expected"),
+        [
+            ("Smith J", "Smith, J"),
+            ("Smith JA", "Smith, JA"),
+            ("Doe J.A.", "Doe, J.A."),
+            ("Kim J.-P.", "Kim, J.-P."),
+            ("Smith J A", "Smith, J A"),
+            ("Taylor-Smith AB", "Taylor-Smith, AB"),
+            ("O'Brien K", "O'Brien, K"),
+            ("van der Berg JA", "van der Berg, JA"),
+            ("de la Cruz M", "de la Cruz, M"),
+        ],
+    )
+    def test_surname_then_initials_is_not_reversed(self, raw, expected):
+        assert normalize_author_name(raw) == expected
+
+    def test_initials_first_still_reordered(self):
+        assert normalize_author_name("J Smith") == "Smith, J"
+        assert normalize_author_name("J. R. R. Tolkien") == "Tolkien, J. R. R."
+
+    def test_all_caps_name_is_left_to_the_general_rule(self):
+        """Without lower-case letters nothing says which part is the surname."""
+        assert normalize_author_name("WANG LI") == "LI, WANG"
+
 
 # ===========================================================================
 # Author list
@@ -378,3 +404,22 @@ class TestNormalizeAffiliation:
     def test_whitespace_collapse(self):
         result = normalize_affiliation("Max  Planck   Institute")
         assert result == "Max Planck Institute"
+
+
+class TestPackageExports:
+    """Everything in ``normalization.__all__`` is reachable from the package."""
+
+    def test_pmid_helpers_are_exported(self):
+        from pyeuropepmc.features.literature import is_valid_pmid, normalize_pmid
+
+        assert normalize_pmid("PMID:12345678") == "12345678"
+        assert is_valid_pmid("12345678") is True
+
+    def test_package_reexports_all_normalization_helpers(self):
+        import pyeuropepmc.features.literature as literature
+        from pyeuropepmc.features.literature import normalization
+
+        missing = [n for n in normalization.__all__ if n not in literature.__all__]
+        assert missing == []
+        for name in normalization.__all__:
+            assert getattr(literature, name) is getattr(normalization, name)

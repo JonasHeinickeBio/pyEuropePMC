@@ -64,9 +64,45 @@ class TestLiteratureResultValidators:
         r = LiteratureResult(abstract="  text  ", source="pubmed", source_id="1")
         assert r.abstract == "text"
 
-    def test_invalid_source_raises(self):
+    @pytest.mark.parametrize("bad", ["", "   ", "two words", "slash/name", "-leading"])
+    def test_malformed_source_raises(self, bad):
+        with pytest.raises(ValidationError, match="Invalid source"):
+            LiteratureResult(source=bad, source_id="1")
+
+    def test_non_string_source_raises(self):
         with pytest.raises(ValidationError):
-            LiteratureResult(source="not_a_real_source", source_id="1")
+            LiteratureResult(source=123, source_id="1")
+
+    def test_registered_third_party_source_accepted(self):
+        """The search registry is pluggable, so a new source uses its own name."""
+        r = LiteratureResult(source="my_repo", source_id="1")
+        assert r.source == "my_repo"
+
+    def test_source_is_stripped_and_lower_cased(self):
+        assert LiteratureResult(source=" PubMed ", source_id="1").source == "pubmed"
+
+    def test_record_from_registered_source_survives_unified_search(self):
+        """End to end: a registered client's records merge like built-in ones."""
+        from unittest.mock import MagicMock, patch
+
+        from pyeuropepmc.features.search import registry
+        from pyeuropepmc.features.search.unified_search import UnifiedSearch
+
+        spec = registry.SourceSpec("unit_test_repo", "unit.tests:Client")
+        registry.register_source(spec)
+        try:
+            client = MagicMock()
+            client.search.return_value = [
+                LiteratureResult(source="unit_test_repo", source_id="r1", title="From my repo")
+            ]
+            with patch.object(
+                UnifiedSearch, "_get_or_init_clients", return_value={"unit_test_repo": client}
+            ):
+                merged, _ = UnifiedSearch(sources=["unit_test_repo"]).search("q")
+        finally:
+            registry._REGISTRY.pop("unit_test_repo", None)
+
+        assert [r.source for r in merged] == ["unit_test_repo"]
 
     def test_valid_sources_accepted(self):
         for src in [

@@ -178,6 +178,7 @@ class MatchLevel(Enum):
     FUZZY_TITLE = auto()
     NON_PAPER = auto()  # filtered as a non-paper entry (TOC, index, etc.)
     NO_MATCH = auto()
+    RETRACTED = auto()  # removed as a retracted paper (appended: keeps other values)
 
 
 class DedupMode(Enum):
@@ -653,17 +654,54 @@ def _identifiers_conflict(
     return any(ids_a[idtype] != ids_b[idtype] for idtype in set(ids_a) & set(ids_b))
 
 
-# Ordered license tiers from most permissive to least.  The CORD-19
-# canonical selection prefers the most permissive license available.
+# License permissiveness scores.  The CORD-19 canonical selection prefers the
+# most permissive license available, so a paper scores its best license.
 _LICENSE_TIERS: list[tuple[tuple[str, ...], int]] = [
     (("cc0", "public domain"), 100),
-    (("cc-by", "creative commons attribution"), 90),
-    (("cc-by-sa",), 80),
-    (("cc-by-nc", "cc-by-nc-sa", "cc-by-nc-nd"), 70),
-    (("cc-by-nd",), 60),
     (("open access", "oa"), 50),
     (("license", "licence"), 10),
 ]
+_CC_BY_SCORE = 90
+_CC_BY_SA_SCORE = 80
+_CC_BY_NC_SCORE = 70  # any NC variant, with or without SA / ND
+_CC_BY_ND_SCORE = 60
+
+# Spellings of the Creative Commons attribution licenses, reduced to
+# "cc-by[-nc|-sa|-nd]..." before matching: "CC BY-NC 4.0", "cc_by_nc_nd",
+# "https://creativecommons.org/licenses/by-sa/4.0/",
+# "Creative Commons Attribution-NonCommercial-NoDerivatives".
+_CC_SPELLINGS: list[tuple[re.Pattern[str], str]] = [
+    (re.compile(r"creativecommons\.org/licenses/"), "cc-"),
+    (re.compile(r"creative\s+commons\s+attribution"), "cc-by"),
+    (re.compile(r"non-?commercial"), "nc"),
+    (re.compile(r"share-?\s?alike"), "sa"),
+    (re.compile(r"no-?\s?deriv(?:ative)?s"), "nd"),
+]
+_CC_BY_LICENSE = re.compile(r"\bcc[\s_-]*by(?![a-z])((?:[\s_-]*(?:nc|sa|nd)(?![a-z]))*)")
+_CC_MODIFIER = re.compile(r"nc|sa|nd")
+
+
+def _cc_by_score(text: str) -> int:
+    """Best score of the CC BY licenses named in lower-case *text* (0 if none).
+
+    The variants have to be told apart before "cc-by" is matched on its own:
+    as a plain substring test, "cc-by" also matches "cc-by-nc-nd".
+    """
+    for pattern, replacement in _CC_SPELLINGS:
+        text = pattern.sub(replacement, text)
+    best = 0
+    for match in _CC_BY_LICENSE.finditer(text):
+        modifiers = set(_CC_MODIFIER.findall(match.group(1)))
+        if "nc" in modifiers:
+            score = _CC_BY_NC_SCORE
+        elif "nd" in modifiers:
+            score = _CC_BY_ND_SCORE
+        elif "sa" in modifiers:
+            score = _CC_BY_SA_SCORE
+        else:
+            score = _CC_BY_SCORE
+        best = max(best, score)
+    return best
 
 
 def _license_score(paper: dict[str, Any]) -> int:  # noqa: C901
@@ -703,10 +741,11 @@ def _license_score(paper: dict[str, Any]) -> int:  # noqa: C901
         text += " " + oa_status
 
     t = text.lower()
+    best = _cc_by_score(t)
     for keywords, score in _LICENSE_TIERS:
-        if any(kw in t for kw in keywords):
-            return score
-    return 0
+        if score > best and any(kw in t for kw in keywords):
+            best = score
+    return best
 
 
 def _document_availability_score(paper: dict[str, Any]) -> int:
@@ -1279,7 +1318,7 @@ class LiteratureMerger:
                         MergeRecord(
                             kept_index=None,
                             removed_index=len(report.records),
-                            match_level=MatchLevel.PMID_EXACT,
+                            match_level=MatchLevel.RETRACTED,
                             reason="Retracted paper",
                             kept_title=paper.get("title"),
                             removed_title=paper.get("title"),

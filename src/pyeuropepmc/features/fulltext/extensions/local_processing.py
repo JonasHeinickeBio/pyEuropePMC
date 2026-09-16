@@ -412,7 +412,9 @@ def process_biorxiv_manifest(manifest_path: str, **kwargs: Any) -> list[FullText
 
     bioRxiv provides a ``manifest.xml`` that lists preprints with their DOIs.
     This function reads the manifest, resolves each DOI to a PMC ID where possible,
-    and downloads the full-text XML for each one.
+    and downloads the full-text XML for each one. Articles whose DOI does not
+    resolve to a PMC ID are skipped (logged at info level), since the full text
+    is fetched by PMC ID.
 
     Parameters
     ----------
@@ -464,9 +466,13 @@ def process_biorxiv_manifest(manifest_path: str, **kwargs: Any) -> list[FullText
 
                 resolver = ReferenceResolver()
                 resolved = resolver._lookup_by_doi(doi)
-                if resolved and resolved.resolved_pmid:
-                    parser = process_single_pmc(resolved.resolved_pmid, **kwargs)
+                # process_single_pmc() fetches by PMC ID; a PMID would be read
+                # as one ("PMC" + PMID) and fetch the wrong article or none.
+                if resolved and resolved.resolved_pmcid:
+                    parser = process_single_pmc(resolved.resolved_pmcid, **kwargs)
                     parsers.append(parser)
+                else:
+                    logger.info(f"No PMC full text found for DOI {doi}; skipping")
             except Exception as e:
                 logger.warning(f"Failed to download article with DOI {doi}: {e}")
 
@@ -474,7 +480,7 @@ def process_biorxiv_manifest(manifest_path: str, **kwargs: Any) -> list[FullText
     return parsers
 
 
-def parse_bits_book(filepath_or_xml: str, **kwargs: Any) -> FullTextXMLParser:
+def parse_bits_book(filepath_or_xml: str | Path, **kwargs: Any) -> FullTextXMLParser:
     """
     Parse a BITS (Book Interchange Tag Suite) book article XML.
 
@@ -483,8 +489,9 @@ def parse_bits_book(filepath_or_xml: str, **kwargs: Any) -> FullTextXMLParser:
 
     Parameters
     ----------
-    filepath_or_xml : str
-        Path to the BITS XML file, or XML content string.
+    filepath_or_xml : str or Path
+        Path to the BITS XML file, or XML content string. A string that
+        starts with ``<`` (after whitespace) is read as XML content.
     **kwargs
         Additional arguments passed to ``FullTextXMLParser``.
 
@@ -499,11 +506,13 @@ def parse_bits_book(filepath_or_xml: str, **kwargs: Any) -> FullTextXMLParser:
     >>> metadata = parser.extract_metadata()
     """
     xml_content: str
-    if Path(filepath_or_xml).is_file():
+    if _is_xml_text(filepath_or_xml):
+        xml_content = str(filepath_or_xml)
+    elif _is_existing_file(filepath_or_xml):
         with open(filepath_or_xml, encoding="utf-8") as f:
             xml_content = f.read()
     else:
-        xml_content = filepath_or_xml
+        xml_content = str(filepath_or_xml)
 
     # Auto-detect BITS root element
     root_check = _safe_parse(xml_content)
@@ -533,6 +542,24 @@ def parse_bits_book(filepath_or_xml: str, **kwargs: Any) -> FullTextXMLParser:
 
     parser = FullTextXMLParser(xml_content, **kwargs)
     return parser
+
+
+def _is_xml_text(value: str | Path) -> bool:
+    """True for XML content, as opposed to a file path."""
+    return isinstance(value, str) and value.lstrip().startswith("<")
+
+
+def _is_existing_file(value: str | Path) -> bool:
+    """``Path(value).is_file()``, but False where the OS rejects the name.
+
+    ``is_file()`` raises ``OSError`` (``ENAMETOOLONG``) for a string longer
+    than the file-name limit, which any real article's XML is, and
+    ``ValueError`` for one containing a NUL byte.
+    """
+    try:
+        return Path(value).is_file()
+    except (OSError, ValueError):
+        return False
 
 
 def _safe_parse(xml_content: str) -> ET.Element | None:
