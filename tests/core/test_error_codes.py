@@ -257,6 +257,17 @@ class TestErrorDocsLinks:
         assert anchor in sections, f"{url} names no section of {self.DOCS_PAGE.name}"
         assert code.value in self._listed_codes(sections[anchor])
 
-    def test_no_message_links_to_the_dead_site(self) -> None:
-        assert not [code for code, message in ERROR_MESSAGES.items() if "rtfd.io" in message]
-        assert "rtfd.io" not in get_error_message(ErrorCodes.NET001, include_help_link=True)
+    def test_every_docs_line_links_to_the_published_page(self) -> None:
+        messages = [
+            *ERROR_MESSAGES.values(),
+            get_error_message(ErrorCodes.NET001, include_help_link=True),
+        ]
+        links = [
+            line.removeprefix("Docs: ")
+            for message in messages
+            for line in message.splitlines()
+            if line.startswith("Docs: ")
+        ]
+
+        assert len(links) == 20  # the 19 HTTP messages and the help link
+        assert {link.partition("#")[0] for link in links} == {ERROR_DOCS_URL}
