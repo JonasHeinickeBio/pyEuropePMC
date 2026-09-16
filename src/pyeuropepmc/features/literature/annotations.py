@@ -565,20 +565,26 @@ class AnnotationsClient(BaseAPIClient):
         """
         return self._cache.get_health()
 
-    def invalidate_annotations_cache(self, pattern: str = "annotations:*") -> int:
+    def invalidate_annotations_cache(self, pattern: str = "*:annotations_*") -> int:
         """
         Invalidate cached annotations matching a pattern.
 
+        Cache keys are ``{data_type}:v{version}:{prefix}:{hash}``, for example
+        ``general:v1:annotations_by_ids:6950a79a94574e15``, so a pattern
+        selects entries by their prefix. Request parameters such as the entity
+        name are hashed into the key and cannot be matched.
+
         Args:
-            pattern: Glob pattern to match cache keys (default: "annotations:*")
+            pattern: Glob pattern to match cache keys. The default
+                ``"*:annotations_*"`` matches every annotations entry.
 
         Returns:
             Number of cache entries invalidated.
 
         Examples:
-            >>> # Clear all annotation caches
-            >>> client.invalidate_annotations_cache("annotations:*")
-            >>> # Clear specific entity caches
-            >>> client.invalidate_annotations_cache("annotations:*CHEBI*")
+            >>> # Clear every cached annotation response
+            >>> client.invalidate_annotations_cache()
+            >>> # Clear only the by-entity entries
+            >>> client.invalidate_annotations_cache("*:annotations_by_entity:*")
         """
         return self._cache.invalidate_pattern(pattern)
