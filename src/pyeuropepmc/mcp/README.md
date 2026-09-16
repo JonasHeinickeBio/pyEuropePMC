@@ -75,7 +75,7 @@ itself does not implement auth) and point any MCP HTTP client at
 | `citation_snowball` | Forward/backward/both citation-graph walk | `all` |
 | `clinical_trial_search` | ClinicalTrials.gov search by condition/intervention/keyword | `all` |
 | `fulltext_index_query` | Search a local SQLite FTS5 full-text index | `all` |
-| `paper_figures` | Extract figures from PMC Open Access articles | `all` |
+| `paper_figures` | Figures, tables and supplementary files of a PMC Open Access article, with Europe PMC download URLs | `all` |
 | `analyze_citations`, `compare_citations`, `summarize_citations` | LLM-powered citation analysis | `agentic` + an LLM provider |
 | `paper_screening` | PRISMA-style automated screening | `agentic` + an LLM provider |
 | `research_question_analysis`, `preprint_analysis`, `literature_review`, `knowledge_graph` | LLM-powered research tooling | `agentic` + an LLM provider |

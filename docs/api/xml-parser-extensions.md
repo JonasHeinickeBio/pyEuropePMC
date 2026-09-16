@@ -248,29 +248,31 @@ parser = FullTextXMLParser(Path("PMC3258128.xml").read_text(encoding="utf-8"))
 fetcher = ImageFetcher(parser.root, article_id="PMC3258128", download_dir="assets",
                        policy=AssetFetchPolicy.METADATA_ONLY)
 refs = fetcher.extract_asset_refs()
-print(len(refs), refs[0].to_dict()["asset_type"], refs[0].uri)
+print(len(refs), refs[0].to_dict()["asset_type"], refs[0].label)
+print(refs[0].uri)
 print(ImageFetcher.resolve_figure_uris(parser.extract_figures()[:1], "PMC3258128")[0]["graphic_uri"])
 ```
 
 Output:
 
 ```text
-15 figure https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3258128/gkr715f1
-https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3258128/gkr715f1
+9 figure Figure 1.
+https://europepmc.org/api/fulltextRepo?pmcId=PMC3258128&type=FILE&fileName=gkr715f1.jpg&mimeType=image%2Fjpeg&version=1
+https://europepmc.org/api/fulltextRepo?pmcId=PMC3258128&type=FILE&fileName=gkr715f1.jpg&mimeType=image%2Fjpeg&version=1
 ```
 
 `ImageFetcher(root=None, article_id="", download_dir="", policy=AssetFetchPolicy.METADATA_ONLY)`:
 
 | Method | Returns | Description |
 |---|---|---|
-| `extract_asset_refs()` | `list[AssetRef]` | The `<graphic>` elements of each `<fig>` (with the figure's label, caption and ID), other `<graphic>` elements, each `<supplementary-material>` and each `<media>`. With `article_id`, relative file names become `https://www.ncbi.nlm.nih.gov/pmc/articles/{article_id}/{file}` |
+| `extract_asset_refs()` | `list[AssetRef]` | One reference per file, in document order: every `<graphic>`, `<inline-graphic>` and `<media>`, typed and labelled by the block that owns it. A file declared twice is returned once. With a PMCID as `article_id`, `uri` is the Europe PMC download URL; otherwise it stays the file name from the XML |
 | `download_assets(asset_refs)` | `list[AssetRef]` | Only with policy `DOWNLOAD` or `DOWNLOAD_MISSING` and a `download_dir`: downloads each `http` or `https` URI into `download_dir` under its file name and sets `local_path`. `DOWNLOAD_MISSING` skips assets whose `local_path` exists. Failures are logged. Returns the same list |
-| `resolve_figure_uris(figures, article_id)` | `list[dict]` | Class method: rewrites relative `graphic_uri` values of `extract_figures()` results in place |
+| `resolve_figure_uris(figures, article_id)` | `list[dict]` | Class method: rewrites relative `graphic_uri` values of `extract_figures()` results in place, to Europe PMC download URLs. Needs a PMCID; anything else leaves the file names alone |
 
 | Class | Values or fields |
 |---|---|
-| `AssetRef` | `asset_type`, `uri`, `local_path`, `label`, `caption`, `id`, `mime_type`, `metadata`; `to_dict()` |
-| `AssetType` | `FIGURE`, `TABLE`, `SUPPLEMENTARY`, `VIDEO`, `AUDIO`, `UNKNOWN` (a `<media>` element is `VIDEO` or `AUDIO` by MIME type, otherwise `UNKNOWN`) |
+| `AssetRef` | `asset_type`, `uri`, `local_path`, `label`, `caption`, `id`, `mime_type`, `metadata`; `to_dict()`. `metadata` holds `file_name` and `jats_tag`, plus `alternative` for the second and later representations of one figure and `parent_id`/`parent_label` for a figure supplement |
+| `AssetType` | `FIGURE`, `TABLE`, `SUPPLEMENTARY`, `FORMULA`, `VIDEO`, `AUDIO`, `UNKNOWN`. The block that owns the file decides: a `<fig>` gives `FIGURE`, a `<table-wrap>` `TABLE`, a `<supplementary-material>` `SUPPLEMENTARY`, an inline or display formula `FORMULA`. A `<graphic>` no block owns is a `FIGURE`, an `<inline-graphic>` is `UNKNOWN`, and a `<media>` is `VIDEO` or `AUDIO` by MIME type |
 | `AssetFetchPolicy` | `SKIP`, `METADATA_ONLY`, `DOWNLOAD`, `DOWNLOAD_MISSING` |
 
 ## Reference resolution
@@ -378,7 +380,7 @@ Pydantic is a dependency of pyeuropepmc, so these helpers are always available.
 ## Known limitations
 
 - **MathML.** `MathMLConverter` returns an empty string (`$$$$` from `convert()`) for formulas wrapped in `<mtable>`, writes accents such as a bar as superscripts, flattens nested subscripts and fractions (`\frac{a i j}{b i j}`), and leaves Greek letters as Unicode characters.
-- **Assets.** `extract_asset_refs()` reports many files more than once: graphics inside figures are added a second time without a label, graphics in `<alternatives>` again, and each `<media>` inside supplementary material twice. Formula images count as figures, figure supplements get their parent's label, and supplementary assets have no MIME type. The URLs lack the `/bin/` path segment that PMC file URLs use elsewhere in the package, and were not checked against the PMC site.
+- **Assets.** `extract_asset_refs()` reports a file's MIME type from the `mimetype`/`mime-subtype` the XML states, or from the file extension; an extension the package does not know becomes `application/octet-stream`. A `<graphic>` reference written without a file type is assumed to be a JPEG, which is what every such file in the corpus is.
 - **Peer review.** Sub-articles of type `aggregated-review-documents` are skipped, review titles are empty when they sit in `<front-stub>`, and text in a review body without `<sec>` elements, such as quoted reviewer comments, can be lost.
 - **Reference resolution.** `is_open_access` is `True` whenever Europe PMC returns any value, including `"N"`.
 - **Local processing.** `parse_bits_book()` raises `OSError` when given XML text instead of a path for real articles, because it first treats the text as a file name. `process_biorxiv_manifest()` passes the resolved PMID to `process_single_pmc()`, which treats it as a PMC ID.

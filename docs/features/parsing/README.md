@@ -174,26 +174,47 @@ Output:
 Affinity purification with biotin-tagged miR-122 from human
 ```
 
-Each figure is a dict with `id`, `label`, `caption` and, when the figure has a `<graphic>`, `graphic_uri`: the file name from the XML, not a URL.
+Each figure is a dict with `id`, `label`, `caption` and, when the figure has a `<graphic>`, `graphic_uri`: the file name from the XML, not a URL. `graphic_uri` is the figure's own graphic - the one it carries directly, or in an `<alternatives>` of its own - not the first image anywhere beneath it, which can be an inline formula inside the caption. A figure supplement, a `<fig>` nested in another, also carries `parent_id` and `parent_label`.
 
-`ImageFetcher` from the extensions turns the file references of figures, supplementary material and media into URLs, and can download them:
+`ImageFetcher` from the extensions turns those file references into Europe PMC download URLs, and can download them:
 
 ```python
+from collections import Counter
+
 from pyeuropepmc.features.fulltext.extensions import ImageFetcher
 
 assets = ImageFetcher(parser.root, article_id="PMC3258128").extract_asset_refs()
-print(len(assets), assets[0].asset_type.value, assets[0].label, assets[0].uri)
+print(len(assets), Counter(a.asset_type.value for a in assets))
+print(assets[0].label, assets[0].uri)
 ```
 
 Output:
 
 ```text
-15 figure Figure 1. https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3258128/gkr715f1
+9 Counter({'figure': 5, 'supplementary': 4})
+Figure 1. https://europepmc.org/api/fulltextRepo?pmcId=PMC3258128&type=FILE&fileName=gkr715f1.jpg&mimeType=image%2Fjpeg&version=1
 ```
 
-The URLs are built by appending the file name to the article's PMC page address; they have not been checked against the PMC site, and the list contains duplicates (see [Known limitations](#known-limitations)).
+There is one `AssetRef` per file, in document order, typed by the block that owns it (`figure`, `table`, `supplementary`, `formula`, `video`, `audio`, `unknown`) and carrying that block's label and caption. `metadata["file_name"]` is the file as Europe PMC stores it, `metadata["alternative"]` marks the second and later representations of one figure, and a figure supplement's asset carries `metadata["parent_id"]` and `metadata["parent_label"]`. The URL is the one Europe PMC's own article pages load; `article_id` must be a PMCID, and with anything else `uri` stays the file name from the XML.
 
-`FigureExtractor` in `pyeuropepmc.features.fulltext` does not work on Europe PMC XML: it only looks for elements in the JATS1 XML namespace, which Europe PMC documents do not use, so it returns no figures. Use `extract_figures()` instead.
+`FigureExtractor` in `pyeuropepmc.features.fulltext` reads the same blocks straight from an XML string or from Europe PMC:
+
+```python
+from pyeuropepmc.features.fulltext import FigureExtractor
+
+items = FigureExtractor().extract_from_xml(xml_content, pmcid="PMC3258128")
+print(len(items), Counter(i.figure_type for i in items))
+print(items[0].label, items[0].file_name, items[0].mime_type)
+```
+
+Output:
+
+```text
+6 Counter({'figure': 5, 'supplement': 1})
+Figure 1. gkr715f1.jpg image/jpeg
+```
+
+Each `FigureInfo` has `id`, `label`, `caption`, `alt_text`, `figure_type` (`figure`, `table` or `supplement`), `file_name`, `mime_type`, `image_url`, and `parent_id`/`parent_label` for a figure supplement. `extract(pmcid=...)`, `extract(pmid=...)` or `extract(doi=...)` fetches the XML first. Without a PMCID there is no `image_url`, since the download endpoint is addressed by PMCID.
 
 ## References
 
@@ -427,7 +448,7 @@ These were found by checking the parser's output against the source XML of real 
 - **Floats outside the body.** Tables and figures in `<floats-group>`, where NIH author manuscripts put them, are returned by `extract_tables()` and `extract_figures()` but are missing from the structured sections, `to_plaintext()`, `to_markdown()` and `get_full_text_sections()`.
 - **Display formulas.** A `<disp-formula>` inside a `<p>` becomes part of the paragraph's text: there is no formula block, the MathML is dropped, and subscripts and superscripts become plain characters (x² reads "x2").
 - **Tables.** `extract_tables()` drops header rows whose cells are `<td>` (`headers` is `[]`) and reads only the first `<th>` header row; `colspan` and `rowspan` are ignored in every output.
-- **Figures.** `graphic_uri` and the figure block's `uri` are taken from the first `<graphic>` anywhere in the figure, which can be a formula image inside the caption. Figure supplements are listed as separate figures, not linked to their parent.
+- **Figures.** A figure whose graphic sits neither directly under the `<fig>` nor in an `<alternatives>` of its own - inside a `<disp-formula>`, say - has no `graphic_uri`, rather than the wrong one.
 - **Metadata.**
   - `pages` is read from the first `<fpage>` and `<lpage>` in the document. For articles that use `<elocation-id>` instead, which is not extracted, it is the page range of a reference.
   - Only the first `<abstract>` is used, so author summaries and digests are missing.

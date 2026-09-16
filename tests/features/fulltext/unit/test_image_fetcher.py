@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from unittest.mock import patch
+from urllib.parse import parse_qs, urlparse
 
 import defusedxml.ElementTree as DefusedET
 import pytest
@@ -20,12 +21,26 @@ XML_WITH_ASSETS = f"""<article {XLINK}>
   <body>
     <fig id="f1">
       <label>Fig. 1</label>
-      <caption><p>First figure.</p></caption>
-      <graphic xlink:href="fig1.jpg" mimetype="image"/>
+      <caption>
+        <p>First figure, with
+          <inline-formula><alternatives><graphic xlink:href="e001.jpg"/></alternatives></inline-formula>
+          in the caption.</p>
+      </caption>
       <alternatives>
+        <graphic xlink:href="fig1.jpg" mimetype="image" mime-subtype="jpeg"/>
         <graphic xlink:href="fig1-hires.tif"/>
       </alternatives>
+      <p><fig id="f1s1">
+        <label>Fig. 1—figure supplement 1.</label>
+        <caption><p>A supplement.</p></caption>
+        <graphic xlink:href="fig1-figsupp1.jpg"/>
+      </fig></p>
     </fig>
+    <table-wrap id="t1">
+      <label>Table 1</label>
+      <caption><p>A table deposited as an image.</p></caption>
+      <graphic xlink:href="table1.jpg"/>
+    </table-wrap>
     <graphic xlink:href="standalone.png"/>
     <supplementary-material id="s1">
       <label>Supp 1</label>
@@ -43,6 +58,15 @@ XML_WITH_ASSETS = f"""<article {XLINK}>
 def _fetcher(xml: str = XML_WITH_ASSETS, **kwargs) -> ImageFetcher:
     root = DefusedET.fromstring(xml)
     return ImageFetcher(root=root, **kwargs)
+
+
+def _by_file(assets: list[AssetRef]) -> dict[str, AssetRef]:
+    """Assets keyed by the file they point at - one per file, by construction."""
+    return {a.metadata["file_name"]: a for a in assets}
+
+
+def _query(url: str) -> dict[str, str]:
+    return {k: v[0] for k, v in parse_qs(urlparse(url).query).items()}
 
 
 class TestAssetRef:
@@ -63,92 +87,167 @@ class TestExtractAssetRefs:
         fetcher = _fetcher()
         assets = fetcher.extract_asset_refs()
         types = {a.asset_type for a in assets}
-        assert AssetType.FIGURE in types
-        assert AssetType.SUPPLEMENTARY in types
-        assert AssetType.VIDEO in types
+        assert types == {
+            AssetType.FIGURE,
+            AssetType.TABLE,
+            AssetType.SUPPLEMENTARY,
+            AssetType.FORMULA,
+            AssetType.VIDEO,
+        }
 
     def test_figure_includes_alternatives(self):
         fetcher = _fetcher()
-        assets = fetcher.extract_asset_refs()
-        uris = {a.uri for a in assets if a.asset_type == AssetType.FIGURE}
-        assert "fig1.jpg" in uris
-        assert "fig1-hires.tif" in uris
+        assets = _by_file(fetcher.extract_asset_refs())
+        assert assets["fig1.jpg"].asset_type == AssetType.FIGURE
+        assert assets["fig1-hires.tif"].asset_type == AssetType.FIGURE
+        # The first representation is the figure's; the rest are alternatives.
+        assert assets["fig1.jpg"].metadata.get("alternative") is None
+        assert assets["fig1-hires.tif"].metadata["alternative"] is True
 
     def test_standalone_graphic_included_once(self):
         fetcher = _fetcher()
         assets = fetcher.extract_asset_refs()
-        standalone = [a for a in assets if a.uri == "standalone.png"]
+        standalone = [a for a in assets if a.metadata["file_name"] == "standalone.png"]
         assert len(standalone) == 1
+        assert standalone[0].asset_type == AssetType.FIGURE
+        assert standalone[0].label == ""
+
+    def test_every_file_appears_once(self):
+        """A figure's graphics were added again by the pass over graphics."""
+        names = [a.metadata["file_name"] for a in _fetcher().extract_asset_refs()]
+        assert sorted(names) == [
+            "e001.jpg",
+            "fig1-figsupp1.jpg",
+            "fig1-hires.tif",
+            "fig1.jpg",
+            "standalone.png",
+            "supp1.zip",
+            "table1.jpg",
+            "video1.mp4",
+        ]
+
+    def test_a_caption_formula_is_not_the_figure(self):
+        assets = _by_file(_fetcher().extract_asset_refs())
+        assert assets["e001.jpg"].asset_type == AssetType.FORMULA
+        assert assets["e001.jpg"].label == ""
+
+    def test_a_figure_supplement_keeps_its_own_label(self):
+        assets = _by_file(_fetcher().extract_asset_refs())
+        supplement = assets["fig1-figsupp1.jpg"]
+        assert supplement.label == "Fig. 1—figure supplement 1."
+        assert supplement.id == "f1s1"
+        assert supplement.metadata["parent_id"] == "f1"
+        assert supplement.metadata["parent_label"] == "Fig. 1"
+
+    def test_a_parent_figures_caption_excludes_its_supplement(self):
+        assets = _by_file(_fetcher().extract_asset_refs())
+        assert "A supplement" not in assets["fig1.jpg"].caption
+
+    def test_a_table_image_is_typed_as_a_table(self):
+        table = _by_file(_fetcher().extract_asset_refs())["table1.jpg"]
+        assert table.asset_type == AssetType.TABLE
+        assert table.label == "Table 1"
+
+    def test_supplementary_material_keeps_its_mime_type(self):
+        supp = _by_file(_fetcher().extract_asset_refs())["supp1.zip"]
+        assert supp.asset_type == AssetType.SUPPLEMENTARY
+        assert supp.mime_type == "application/zip"
+        assert supp.label == "Supp 1"
+        assert "Extra data" in supp.caption
+
+    def test_media_inside_supplementary_material_is_not_reported_twice(self):
+        assets = [a for a in _fetcher().extract_asset_refs() if a.metadata["jats_tag"] == "media"]
+        assert sorted(a.metadata["file_name"] for a in assets) == ["supp1.zip", "video1.mp4"]
+
+    def test_a_standalone_media_is_typed_from_its_mime_type(self):
+        video = _by_file(_fetcher().extract_asset_refs())["video1.mp4"]
+        assert video.asset_type == AssetType.VIDEO
+        assert video.mime_type == "video/mp4"
+        assert video.label == ""
 
     def test_uris_resolved_when_article_id_set(self):
         fetcher = _fetcher(article_id="PMC1234567")
-        assets = fetcher.extract_asset_refs()
-        fig = next(a for a in assets if a.uri.endswith("fig1.jpg"))
-        assert fig.uri.startswith("http")
+        fig = _by_file(fetcher.extract_asset_refs())["fig1.jpg"]
+        assert fig.uri.startswith("https://europepmc.org/api/fulltextRepo?")
+        assert _query(fig.uri) == {
+            "pmcId": "PMC1234567",
+            "type": "FILE",
+            "fileName": "fig1.jpg",
+            "mimeType": "image/jpeg",
+            "version": "1",
+        }
+
+    def test_uris_stay_relative_without_a_pmcid(self):
+        """A PMID cannot address a file in the PMC repository."""
+        fetcher = _fetcher(article_id="28104805")
+        assert _by_file(fetcher.extract_asset_refs())["fig1.jpg"].uri == "fig1.jpg"
 
     def test_no_assets_returns_empty(self):
         fetcher = _fetcher(f"<article {XLINK}><body/></article>")
         assert fetcher.extract_asset_refs() == []
 
+    def test_an_element_with_no_href_is_skipped(self):
+        fetcher = _fetcher(f"<article {XLINK}><body><graphic/></body></article>")
+        assert fetcher.extract_asset_refs() == []
 
-class TestExtractSupplementaryAsset:
-    def test_uses_media_child_uri(self):
-        fetcher = _fetcher()
-        root = fetcher.root
-        supp = root.find(".//supplementary-material")
-        asset = fetcher._extract_supplementary_asset(supp)
-        assert asset.uri == "supp1.zip"
-        assert asset.label == "Supp 1"
-        assert "Extra data" in asset.caption
 
-    def test_falls_back_to_object_id(self):
-        xml = f"""<article {XLINK}><supplementary-material id="s2">
-            <object-id> supp2.pdf </object-id>
+class TestSupplementaryShapes:
+    def test_href_on_the_block_itself(self):
+        xml = f"""<article {XLINK}><supplementary-material id="s2" xlink:href="supp2.pdf">
+            <label>Supp 2</label>
         </supplementary-material></article>"""
-        fetcher = _fetcher(xml)
-        supp = fetcher.root.find(".//supplementary-material")
-        asset = fetcher._extract_supplementary_asset(supp)
-        assert asset.uri == "supp2.pdf"
+        asset = _fetcher(xml).extract_asset_refs()[0]
+        assert asset.asset_type == AssetType.SUPPLEMENTARY
+        assert asset.metadata["file_name"] == "supp2.pdf"
+        assert asset.label == "Supp 2"
 
     def test_caption_falls_back_to_p_when_no_caption_element(self):
-        xml = f"""<article {XLINK}><supplementary-material id="s3">
+        xml = f"""<article {XLINK}><supplementary-material id="s3" xlink:href="supp3.pdf">
             <p>Just a paragraph.</p>
         </supplementary-material></article>"""
-        fetcher = _fetcher(xml)
-        supp = fetcher.root.find(".//supplementary-material")
-        asset = fetcher._extract_supplementary_asset(supp)
+        asset = _fetcher(xml).extract_asset_refs()[0]
         assert "Just a paragraph" in asset.caption
 
+    def test_caption_falls_back_to_the_media_element(self):
+        """Nature describes the file on the <media>, not on the block."""
+        xml = f"""<article {XLINK}><supplementary-material id="s4">
+            <media xlink:href="supp4.pdf"><caption><p>Supplementary Information</p></caption></media>
+        </supplementary-material></article>"""
+        asset = _fetcher(xml).extract_asset_refs()[0]
+        assert asset.caption == "Supplementary Information"
 
-class TestExtractMediaAsset:
-    def test_video_type_detected(self):
-        xml = f'<article {XLINK}><media xlink:href="v.mp4" mimetype="video" mime-subtype="mp4"/></article>'
-        fetcher = _fetcher(xml)
-        media = fetcher.root.find(".//media")
-        asset = fetcher._extract_media_asset(media)
-        assert asset.asset_type == AssetType.VIDEO
-        assert asset.mime_type == "video/mp4"
+    def test_the_same_file_declared_twice_is_reported_once(self):
+        xml = f"""<article {XLINK}><body>
+            <supplementary-material id="a"><media xlink:href="supp.pdf"/></supplementary-material>
+            <supplementary-material id="b">
+                <label>Supp 1</label><media xlink:href="supp.pdf"/>
+            </supplementary-material>
+        </body></article>"""
+        assets = _fetcher(xml).extract_asset_refs()
+        assert len(assets) == 1
+        # The second declaration fills in what the first left empty.
+        assert assets[0].label == "Supp 1"
 
-    def test_audio_type_detected(self):
-        xml = f'<article {XLINK}><media xlink:href="a.mp3" mimetype="audio" mime-subtype="mpeg"/></article>'
-        fetcher = _fetcher(xml)
-        media = fetcher.root.find(".//media")
-        asset = fetcher._extract_media_asset(media)
-        assert asset.asset_type == AssetType.AUDIO
 
-    def test_unknown_type_when_no_mime(self):
-        xml = f'<article {XLINK}><media xlink:href="a.bin"/></article>'
-        fetcher = _fetcher(xml)
-        media = fetcher.root.find(".//media")
-        asset = fetcher._extract_media_asset(media)
-        assert asset.asset_type == AssetType.UNKNOWN
+class TestMediaTypes:
+    @pytest.mark.parametrize(
+        ("attrs", "expected"),
+        [
+            ('mimetype="video" mime-subtype="mp4"', AssetType.VIDEO),
+            ('mimetype="audio" mime-subtype="mpeg"', AssetType.AUDIO),
+            ("", AssetType.UNKNOWN),
+        ],
+    )
+    def test_type_comes_from_the_declared_mime_type(self, attrs, expected):
+        xml = f'<article {XLINK}><media xlink:href="a.bin" {attrs}/></article>'
+        assert _fetcher(xml).extract_asset_refs()[0].asset_type == expected
 
 
 class TestHelpers:
     def test_get_xlink_href(self):
         fetcher = _fetcher()
-        graphic = fetcher.root.find(".//graphic")
-        assert fetcher._get_xlink_href(graphic) == "fig1.jpg"
+        graphic = fetcher.root.find(".//table-wrap/graphic")
+        assert fetcher._get_xlink_href(graphic) == "table1.jpg"
 
     def test_get_xlink_href_plain_href_fallback(self):
         fetcher = _fetcher()
@@ -166,11 +265,20 @@ class TestHelpers:
 
     def test_resolve_uri_relative_with_article_id(self):
         fetcher = _fetcher(article_id="PMC1")
-        result = fetcher._resolve_uri("y.png")
-        assert "PMC1" in result
+        assert _query(fetcher._resolve_uri("y.png")) == {
+            "pmcId": "PMC1",
+            "type": "FILE",
+            "fileName": "y.png",
+            "mimeType": "image/png",
+            "version": "1",
+        }
 
     def test_resolve_uri_relative_without_article_id(self):
         fetcher = _fetcher()
+        assert fetcher._resolve_uri("y.png") == "y.png"
+
+    def test_resolve_uri_leaves_a_non_pmcid_alone(self):
+        fetcher = _fetcher(article_id="28104805")
         assert fetcher._resolve_uri("y.png") == "y.png"
 
     def test_resolve_uri_empty(self):
