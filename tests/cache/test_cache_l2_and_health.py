@@ -243,6 +243,8 @@ class TestCacheBackendL2Lifecycle:
         backend2 = self._backend(tmp_path)
         try:
             assert backend2.l2_cache is not None
+            # Reopening must not discard what the first backend wrote.
+            assert backend2.get("persisted") == "value"
         finally:
             backend2.close()
 

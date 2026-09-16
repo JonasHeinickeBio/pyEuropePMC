@@ -22,8 +22,8 @@ print(coverage["unrecognized_elements"])
 Output:
 
 ```text
-70.0% of 10 element types recognised
-['article-meta', 'named-content', 'title-group']
+80.0% of 10 element types recognised
+['article-meta', 'title-group']
 ```
 
 The parser must hold a document, passed to the constructor or to `parse()`; otherwise the method raises `ParsingError`.
@@ -58,14 +58,12 @@ for name, count in unrecognized[:10]:
 
 ## A real document
 
-For `tests/fixtures/fulltext_downloads/PMC3258128.xml`, the current configuration recognises 56 of 72 element types (77.8%). The unrecognised types are:
+For `tests/fixtures/fulltext_downloads/PMC3258128.xml`, the current configuration recognises 62 of 72 element types (86.1%). The unrecognised types are:
 
 | Element | Occurrences |
 |---|---:|
-| `award-id` | 6 |
 | `funding-source` | 4 |
-| `journal-id` | 3 |
-| `article-categories`, `article-meta`, `fax`, `fn`, `journal-meta`, `journal-title-group`, `license`, `license-p`, `permissions`, `phone`, `subj-group`, `subject`, `title-group` | 1 each |
+| `article-meta`, `fax`, `fn`, `journal-meta`, `journal-title-group`, `license`, `license-p`, `phone`, `title-group` | 1 each |
 
 These numbers change whenever the patterns change.
 
@@ -73,10 +71,10 @@ These numbers change whenever the patterns change.
 
 An element is recognised if its name appears in one of these `ElementPatterns` groups or in a fixed list of structural elements:
 
-- the groups `citation_types`, `author_element_patterns`, `author_field_patterns`, `journal_patterns`, `article_patterns`, `table_patterns`, `reference_patterns`, `inline_element_patterns`, `xref_patterns`, `media_patterns` and `object_id_patterns`;
+- every pattern group of the configuration: `citation_types`, `author_element_patterns`, `author_field_patterns`, `journal_patterns`, `article_patterns`, `table_patterns`, `reference_patterns`, `inline_element_patterns`, `xref_patterns`, `media_patterns`, `object_id_patterns`, `math_patterns`, `formatting_patterns`, `extended_metadata_patterns`, `content_structure_patterns`, `award_patterns` and `appendix_patterns`;
 - the structural elements `article`, `front`, `body`, `back`, `sec`, `p`, `title`, `ref-list`, `ref`, `fig`, `graphic`, `label`, `caption`, `supplementary-material`, `ack`, `funding-group`, `aff`, `name`, `contrib`, `contrib-group`, `author-notes`, `pub-date`, `addr-line`, `xref`, `person-group`, `etal`, `media`, `underline`, `month`, `day`, `object-id`, `disp-quote`, `notes`, `history`, `pub-history`, `copyright-statement`, `copyright-year`, `corresp`, `self-uri`, `kwd-group`, `institution-wrap`, `page-count`, `figure-count`, `table-count`, `equation-count`, `word-count`, `counts` and `email`.
 
-> **Known limitation.** The groups `award_patterns`, `math_patterns`, `formatting_patterns`, `extended_metadata_patterns`, `content_structure_patterns` and `appendix_patterns` are not consulted. Elements defined only there, such as `award-id`, `journal-id`, `subject`, `permissions` and MathML elements, are reported as unrecognised. Six of the sixteen elements in the table above appear for this reason.
+A pattern written with a namespace prefix, such as `.//mml:math` in `math_patterns`, contributes the local name (`math`), because tag names are compared with their namespace removed.
 
 ## Add a pattern
 
@@ -92,7 +90,7 @@ parser = FullTextXMLParser(xml, config=config)
 print(parser.validate_schema_coverage()["unrecognized_elements"])  # ['article-meta', 'title-group']
 ```
 
-A pattern changes the coverage report only if you add it to one of the consulted groups listed above.
+`named-content` is already covered by `extended_metadata_patterns`, so this particular addition changes nothing; adding a pattern for an element no group mentions does move it into `recognized_elements`.
 
 ## Compare several documents
 
