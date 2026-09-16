@@ -103,10 +103,10 @@ Update the branch with `main` if it is behind, regenerate `requirements.txt` wit
 
 `release.yml` runs when a `v*` tag is pushed, or when it is dispatched manually (see [Dry run on TestPyPI](#dry-run-on-testpypi)). Its jobs run in this order:
 
-1. **`verify`** runs `poetry check --lock`, ruff, the format check, mypy and the default test suite on the tagged commit, with all extras on Python 3.12. On a tag it also checks that the tag is `v` followed by the `version` in `pyproject.toml`, and warns when `CHANGELOG.md` has no section for that version.
-2. **`build`** runs `poetry build`, installs the wheel and the sdist into separate fresh virtual environments, checks that each reports the `pyproject.toml` version as `pyeuropepmc.__version__` and runs `pyeuropepmc --help`, and extracts the version's changelog section as release notes.
+1. **`verify`** first refuses a manual run that asks for `pypi` from anything but a tag, then runs `poetry check --lock`, ruff, the format check, mypy and the default test suite on the tagged commit, with all extras on Python 3.12. On a tag it also checks that the tag is `v` followed by the `version` in `pyproject.toml`, and warns when `CHANGELOG.md` has no section for that version.
+2. **`build`** runs `poetry build`, installs the wheel and the sdist into separate fresh virtual environments, checks that each reports the `pyproject.toml` version as `pyeuropepmc.__version__` and runs `pyeuropepmc --help`, runs `twine check --strict` over both (PyPI rejects a long description it cannot render, and `README.md` is that description), and extracts the version's changelog section as release notes.
 3. **`attest`** creates Sigstore build provenance attestations for the distributions.
-4. **`publish`** uploads the distributions with trusted publishing (OIDC, no API token) and `skip-existing: true`.
+4. **`publish`** confirms the target index one last time - pypi.org only from a tag - then uploads the distributions with trusted publishing (OIDC, no API token) and `skip-existing: true`.
 5. **`github-release`** runs for tags only. It creates the GitHub Release with the distributions attached, using the changelog section as the description, with generated notes added from the commit log.
 6. **`publish-mcp-registry`** runs for tags only. It sets both version fields in `server.json` to the tag's version and publishes the file to the [MCP Registry](https://registry.modelcontextprotocol.io/) as `io.github.JonasHeinickeBio/pyeuropepmc`, authenticating with GitHub OIDC. It has `continue-on-error: true`, so a registry failure does not fail a release that is already on PyPI.
 
@@ -151,15 +151,17 @@ Before you tag, the commit on `main` must have:
 
 ### Dry run on TestPyPI
 
-Try any change to `release.yml`, `server.json` or anything else on the release path before a real tag exists. Dispatch the workflow against your branch with the TestPyPI environment:
+Try any change to `release.yml`, `server.json` or anything else on the release path before a real tag exists. Dispatch the workflow against your branch; TestPyPI is the default target:
 
 ```bash
-gh workflow run release.yml --ref <branch> -f environment=testpypi
+gh workflow run release.yml --ref <branch>
 ```
 
 On a branch, `github.ref_type` is `branch`, so everything gated on a tag is skipped: the version and changelog checks in `verify`, `github-release` and `publish-mcp-registry`. `verify`, `build`, `attest` and `publish` run, and `publish` uploads to TestPyPI. This catches problems such as a wrongly cased MCP Registry namespace, or a mypy setting that fails `verify`, while the version bump and changelog entry are still easy to change.
 
-> **Warning:** a manual run publishes to the real PyPI unless you pass `-f environment=testpypi`. The `environment` input defaults to `pypi`, the `publish` job has no tag condition, and the `pypi` environment has no required reviewers or branch restrictions. A dispatch from any branch without that flag uploads the build to pypi.org, where the version number can never be used again.
+A manual run cannot reach pypi.org from a branch. The `environment` input defaults to `testpypi`, and `-f environment=pypi` fails in the first step of `verify` unless the run is on a `v*` tag; `publish` checks the same thing again immediately before the upload. Dispatching a tag with `-f environment=pypi` is the supported way to retry a publish for a version whose upload failed.
+
+> **Note:** the `pypi` GitHub environment has no required reviewers and no branch restriction, so those two checks in `release.yml` are what stands between a dispatch and a permanent version number on pypi.org. Adding `main` as a deployment branch rule and a required reviewer to the environment (Settings → Environments → pypi) would put that gate in GitHub itself.
 
 Because `publish` uses `skip-existing: true`, a dry run for a version that is already on TestPyPI uploads nothing and still succeeds.
 
