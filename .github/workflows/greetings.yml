@@ -41,7 +41,7 @@ jobs:
           A maintainer will review your issue soon. In the meantime, you might find these resources helpful:
 
           📚 **Resources:**
-          - [Contributing Guide](https://github.com/JonasHeinickeBio/pyEuropePMC/blob/main/CONTRIBUTING.md)
+          - [Contributing Guide](https://github.com/JonasHeinickeBio/pyEuropePMC/blob/main/docs/development/README.md#contributing-guidelines)
           - [Documentation](https://jonasheinickebio.github.io/pyEuropePMC/)
           - [Examples](https://github.com/JonasHeinickeBio/pyEuropePMC/tree/main/examples)
 

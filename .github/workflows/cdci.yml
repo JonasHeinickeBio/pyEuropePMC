@@ -60,9 +60,8 @@ jobs:
         if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
         run: poetry run mypy src/
 
-      # requirements.txt is derived from uv.lock, so it cannot drift from the
-      # lock by construction. The pre-commit hook keeps it current locally, but
-      # hooks can be skipped, so CI is the backstop.
+      # requirements.txt is exported from poetry.lock. The pre-commit hook keeps
+      # it current locally, but hooks can be skipped, so CI is the backstop.
       - name: Check requirements.txt is in sync with poetry.lock
         if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
         run: |
@@ -81,13 +80,10 @@ jobs:
 
       - name: Bandit (security)
         if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
-        # NOTE: the skip list is repeated here rather than read from
-        # [tool.bandit] because `-c pyproject.toml` needs `bandit[toml]`, which
-        # is not a declared dev dependency. Keep the two in sync by hand.
-        run: |
-          poetry run bandit -r ./src \
-            --exclude "tests,.venv,.git,.mypy_cache,.pytest_cache" \
-            --skip "B101,B303"
+        # [tool.bandit] in pyproject.toml is the only skip list. Reading it
+        # needs a TOML parser: the standard library's tomllib on 3.11+, and on
+        # this job's 3.10 the tomli that pytest and mypy already install.
+        run: poetry run bandit -c pyproject.toml -r ./src
 
   # ---------------------------------------------------------------------------
   # Test + coverage gate. Installs the full feature surface on purpose: the
