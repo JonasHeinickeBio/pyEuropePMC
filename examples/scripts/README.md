@@ -8,7 +8,7 @@ This directory contains utility scripts for maintaining and working with PyEurop
 
 **Purpose**: Automatically synchronize RML mappings from the YAML configuration file.
 
-The YAML file (`conf/rdf_map.yml`) is the **source of truth** for all RDF mappings. This script reads the YAML configuration and generates the corresponding RML Turtle file (`conf/rml_mappings.ttl`).
+The YAML file (`src/pyeuropepmc/conf/rdf_map.yml`) is the **source of truth** for all RDF mappings. This script reads the YAML configuration and generates the corresponding RML Turtle file (`src/pyeuropepmc/conf/rml_mappings.ttl`).
 
 **Usage**:
 
@@ -17,40 +17,40 @@ The YAML file (`conf/rdf_map.yml`) is the **source of truth** for all RDF mappin
 python scripts/sync_rdf_mappings.py
 
 # Specify custom paths
-python scripts/sync_rdf_mappings.py --yaml conf/rdf_map.yml --rml conf/rml_mappings.ttl
+python examples/scripts/sync_rdf_mappings.py --yaml src/pyeuropepmc/conf/rdf_map.yml --rml src/pyeuropepmc/conf/rml_mappings.ttl
 
 # Show help
 python scripts/sync_rdf_mappings.py --help
 ```
 
 **When to run**:
-- After modifying `conf/rdf_map.yml`
+- After modifying `src/pyeuropepmc/conf/rdf_map.yml`
 - After adding new entity types
 - After changing field mappings or predicates
 
 **What it does**:
-1. Reads the YAML configuration (`conf/rdf_map.yml`)
+1. Reads the YAML configuration (`src/pyeuropepmc/conf/rdf_map.yml`)
 2. Extracts namespace prefixes
 3. Generates RML mappings for each entity type
-4. Writes the complete RML file (`conf/rml_mappings.ttl`)
+4. Writes the complete RML file (`src/pyeuropepmc/conf/rml_mappings.ttl`)
 
 **Important notes**:
 - The generated RML file includes a header indicating it's auto-generated
-- Do not manually edit `conf/rml_mappings.ttl` - changes will be overwritten
-- Always edit `conf/rdf_map.yml` instead
+- Do not manually edit `src/pyeuropepmc/conf/rml_mappings.ttl` - changes will be overwritten
+- Always edit `src/pyeuropepmc/conf/rdf_map.yml` instead
 - Run this script after making changes to keep files in sync
 
 **Example workflow**:
 
 ```bash
 # 1. Edit the YAML configuration
-vim conf/rdf_map.yml
+vim src/pyeuropepmc/conf/rdf_map.yml
 
 # 2. Sync the RML mappings
 python scripts/sync_rdf_mappings.py
 
 # 3. Verify changes
-git diff conf/rml_mappings.ttl
+git diff src/pyeuropepmc/conf/rml_mappings.ttl
 
 # 4. Test the mappings
 python -m pytest tests/mappers/

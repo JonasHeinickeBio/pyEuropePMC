@@ -17,8 +17,8 @@ import re
 from typing import Any
 from xml.etree import ElementTree as ET  # nosec B405
 
-from defusedxml import DefusedXmlException
-import defusedxml.ElementTree as DefusedET
+from pyeuropepmc.core.exceptions import ParsingError
+from pyeuropepmc.core.xml_parsing import is_refused, parse_xml
 
 # Lazy imports to avoid circular dependency with clients → processing → clients
 # FullTextClient and AnnotationsClient imported only when needed
@@ -274,9 +274,11 @@ class FigureExtractor:
         figures: list[FigureInfo] = []
 
         try:
-            root: ET.Element = DefusedET.fromstring(xml_str)
-        except (DefusedET.ParseError, DefusedXmlException) as e:
-            logger.error("XML parse error: %s", e)
+            root: ET.Element = parse_xml(xml_str, what="The figure XML")
+        except ParsingError as exc:
+            if is_refused(exc):
+                raise
+            logger.warning("Figure XML is not well formed, no figures extracted: %s", exc)
             return figures
 
         # Set up namespace handling for JATS XML

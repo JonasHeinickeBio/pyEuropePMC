@@ -36,7 +36,7 @@ class OpenAlexClient(BaseEnrichmentClient):
     Examples
     --------
     >>> client = OpenAlexClient(email="your@email.com")
-    >>> metadata = client.enrich(doi="10.1371/journal.pone.0123456")
+    >>> metadata = client.enrich("10.1371/journal.pone.0123456")
     >>> if metadata:
     ...     print(f"Citations: {metadata.get('citation_count')}")
     ...     print(f"Topics: {metadata.get('topics')}")
@@ -112,7 +112,8 @@ class OpenAlexClient(BaseEnrichmentClient):
         Parameters
         ----------
         identifier : str, optional
-            Paper DOI (recommended for comprehensive enrichment with ROR)
+            Paper DOI (recommended for comprehensive enrichment with ROR); may
+            also be passed as ``doi=``.
         openalex_id : str, optional
             OpenAlex work ID (alternative to identifier)
         **kwargs
@@ -144,6 +145,7 @@ class OpenAlexClient(BaseEnrichmentClient):
         ValueError
             If neither identifier nor OpenAlex ID is provided
         """
+        identifier = self._identifier_or_alias(identifier, kwargs, "doi")
         if not identifier and not openalex_id:
             raise ValueError("Either identifier or OpenAlex ID is required")
 

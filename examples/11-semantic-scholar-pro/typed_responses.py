@@ -1,78 +1,73 @@
 """
-Typed Response Example with Professional Semantic Scholar Library
+Paper and Author Responses with the Semantic Scholar Library Wrapper
 
-This example demonstrates how to use the professional library's typed response
-objects for type-safe development with IDE autocomplete.
+This example shows what ProfessionalSemanticScholarClient returns. The client
+wraps the danielnsilva/semanticscholar library but converts its typed Paper
+and Author objects to plain dicts, so read the values with ``[]`` / ``.get()``.
+Keys whose value is missing are left out of the dicts.
 """
 
-from pyeuropepmc.features.enrich import ProfessionalSemanticScholarClient
+from pyeuropepmc.features.enrich.sources.semanticscholar_pro import (
+    ProfessionalSemanticScholarClient,
+)
 
 
 def main():
-    # Initialize client
+    # Initialize client (an API key is optional but raises the rate limit)
     client = ProfessionalSemanticScholarClient(
-        api_key="your-api-key-here",
-        rate_limit_delay=1.0
+        api_key=None,  # or "your-api-key-here"
+        rate_limit_delay=1.0,
     )
 
     print("=" * 60)
-    print("Typed Response Example")
+    print("Paper Information")
     print("=" * 60)
 
-    # Get a paper with typed response
-    paper = client.get_paper("10.1038/nature12373")
+    paper = client.get_paper("DOI:10.1038/nature12373")
+    if paper is None:
+        print("Paper not found")
+        return
 
-    print("\nPaper Information (Typed Response)")
-    print("-" * 40)
-    print(f"Title: {paper.title}")
-    print(f"DOI: {paper.doi}")
-    print(f"Year: {paper.year}")
-    print(f"Citation count: {paper.citation_count}")
-    print(f"Influential citation count: {paper.influential_citation_count}")
-    print(f"Open access: {paper.is_open_access}")
-    print(f"Fields of study: {paper.fields_of_study}")
+    external_ids = paper.get("external_ids", {})
+    print(f"Title: {paper.get('title')}")
+    print(f"DOI: {external_ids.get('DOI')}")
+    print(f"Semantic Scholar ID: {paper.get('s2_paper_id')}")
+    print(f"Year: {paper.get('year')}")
+    print(f"Citation count: {paper.get('citation_count')}")
+    print(f"Influential citation count: {paper.get('influential_citation_count')}")
+    print(f"Open access PDF: {paper.get('open_access_pdf_url', 'none')}")
+    print(f"Fields of study: {paper.get('fields_of_study')}")
 
-    # Access author objects
-    print(f"\nAuthors ({len(paper.authors)} total):")
-    for i, author in enumerate(paper.authors, 1):
-        print(f"\n  {i}. {author.name}")
-        print(f"     Author ID: {author.author_id}")
-        print(f"     Position: {author.position}")
-        print(f"     Affiliation: {author.affiliation}")
+    # Authors are dicts with author_id, name and, when known, affiliations
+    authors = paper.get("authors", [])
+    print(f"\nAuthors ({len(authors)} total):")
+    for i, author in enumerate(authors, 1):
+        print(f"\n  {i}. {author.get('name')}")
+        print(f"     Author ID: {author.get('author_id')}")
+        print(f"     Affiliations: {author.get('affiliations', [])}")
 
-    # Access venue information
-    if paper.venue:
-        print(f"\nVenue:")
-        print(f"  Name: {paper.venue.name}")
-        print(f"  Type: {paper.venue.venue_type}")
-        print(f"  Pages: {paper.venue.pages}")
+    # Venue: a name string, plus journal details when available
+    journal = paper.get("journal", {})
+    print("\nVenue:")
+    print(f"  Name: {paper.get('venue') or journal.get('name')}")
+    print(f"  Volume: {journal.get('volume')}")
+    print(f"  Pages: {journal.get('pages')}")
 
-    # Example 2: Get author with typed response
     print("\n\n" + "=" * 60)
-    print("Author Information (Typed Response)")
+    print("Author Information")
     print("=" * 60)
 
     author = client.get_author("1724609")
+    if author is None:
+        print("Author not found")
+        return
 
-    print(f"\nAuthor: {author.name}")
-    print(f"Author ID: {author.author_id}")
-    print(f"Paper count: {author.paper_count}")
-    print(f"H-index: {author.h_index}")
-    print(f"i10-index: {author.i10_index}")
-
-    # Example 3: Get venue with typed response
-    print("\n\n" + "=" * 60)
-    print("Venue Information (Typed Response)")
-    print("=" * 60)
-
-    # Get a venue (using a known venue ID)
-    try:
-        venue = client.get_venue("12345")
-        print(f"\nVenue: {venue.name}")
-        print(f"Venue ID: {venue.venue_id}")
-        print(f"Paper count: {venue.paper_count}")
-    except Exception as e:
-        print(f"\nVenue lookup failed (venue ID may not exist): {e}")
+    print(f"\nAuthor: {author.get('name')}")
+    print(f"Author ID: {author.get('author_id')}")
+    print(f"Paper count: {author.get('paper_count')}")
+    print(f"Citation count: {author.get('citation_count')}")
+    print(f"H-index: {author.get('h_index')}")
+    print(f"Homepage: {author.get('homepage')}")
 
 
 if __name__ == "__main__":

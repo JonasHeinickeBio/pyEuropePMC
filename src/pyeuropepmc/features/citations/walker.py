@@ -39,6 +39,9 @@ _S2_PAPER_FIELDS = (
 )
 # Max page size for S2 API
 _S2_PAGE_SIZE = 100
+# The Graph API returns each citation or reference as an edge object under
+# "data"; the paper itself sits under this key of the edge.
+_S2_EDGE_PAPER_KEY = {"citations": "citingPaper", "references": "citedPaper"}
 
 
 class SnowballingStrategy:
@@ -153,20 +156,25 @@ class CitationWalker:
             logger.warning("Could not resolve seed paper: %s", identifier)
             return [], MergeReport()
 
-        s2_id = seed.get("paperId")
+        # SemanticScholarClient.enrich() names the ID "s2_paper_id"; the raw
+        # search fallback in _resolve_seed() returns the API's own "paperId".
+        s2_id = seed.get("s2_paper_id") or seed.get("paperId")
         if not s2_id:
+            logger.warning("Seed paper %s has no Semantic Scholar paper ID", identifier)
             return [], MergeReport()
 
         all_papers: dict[str, LiteratureResult] = {}
-        # Track visited S2 IDs to prevent cycles
-        visited: set[str] = set()
+        # Track visited S2 IDs to prevent cycles, per direction: the forward
+        # walk visiting the seed must not stop the backward walk from starting.
+        visited_forward: set[str] = set()
+        visited_backward: set[str] = set()
 
         if strategy in (SnowballingStrategy.FORWARD, SnowballingStrategy.BOTH):
             self._walk(
                 s2_id=s2_id,
                 direction="citations",
                 all_papers=all_papers,
-                visited=visited,
+                visited=visited_forward,
                 max_papers=max_papers,
                 depth=0,
                 max_depth=max_depth,
@@ -178,7 +186,7 @@ class CitationWalker:
                 s2_id=s2_id,
                 direction="references",
                 all_papers=all_papers,
-                visited=visited,
+                visited=visited_backward,
                 max_papers=max_papers,
                 depth=0,
                 max_depth=max_depth,
@@ -294,9 +302,13 @@ class CitationWalker:
             if min_citations > 0 and citation_count < min_citations:
                 continue
 
-            # Use S2 paperId as dedup key within the walk
-            paper_id = paper_data.get("paperId", "")
-            if paper_id and paper_id not in all_papers:
+            # Use S2 paperId as dedup key within the walk. A reference outside
+            # the S2 corpus has "paperId": null — it can be neither keyed nor
+            # followed.
+            paper_id = paper_data.get("paperId")
+            if not paper_id:
+                continue
+            if paper_id not in all_papers:
                 all_papers[paper_id] = paper
 
             # Recurse to next depth
@@ -338,11 +350,18 @@ class CitationWalker:
             resp.raise_for_status()
             data = resp.json()
             time.sleep(self.rate_limit_delay)
-            result = data.get(direction, [])
-            return list(result) if isinstance(result, list) else []
         except Exception as e:
             logger.warning("Failed to fetch %s for %s: %s", direction, s2_id, e)
             return []
+
+        # {"offset": 0, "data": [{"citingPaper": {...}}, ...]} for citations,
+        # {"data": [{"citedPaper": {...}}, ...]} for references.
+        edges = data.get("data") if isinstance(data, dict) else None
+        if not isinstance(edges, list):
+            return []
+        paper_key = _S2_EDGE_PAPER_KEY[direction]
+        papers = [edge.get(paper_key) for edge in edges if isinstance(edge, dict)]
+        return [paper for paper in papers if isinstance(paper, dict)]
 
     # ------------------------------------------------------------------
     # Helpers
@@ -415,5 +434,5 @@ class CitationWalker:
             abstract=data.get("abstract"),
             citation_count=data.get("citationCount"),
             source="semanticscholar",
-            source_id=data.get("paperId", ""),
+            source_id=data.get("paperId") or "",
         )
