@@ -39,6 +39,7 @@ _LAZY = {
     "filter_pmc_papers_or": "pyeuropepmc.features.literature.filters:filter_pmc_papers_or",
     "FTPDownloader": "pyeuropepmc.features.literature.ftp_downloader:FTPDownloader",
     "is_valid_doi": "pyeuropepmc.features.literature.normalization:is_valid_doi",
+    "is_valid_pmid": "pyeuropepmc.features.literature.normalization:is_valid_pmid",
     "normalize_abstract": "pyeuropepmc.features.literature.normalization:normalize_abstract",
     "normalize_affiliation": "pyeuropepmc.features.literature.normalization:normalize_affiliation",
     "normalize_author_list": "pyeuropepmc.features.literature.normalization:normalize_author_list",
@@ -49,6 +50,7 @@ _LAZY = {
     ),
     "normalize_mesh_terms": "pyeuropepmc.features.literature.normalization:normalize_mesh_terms",
     "normalize_paper_title": "pyeuropepmc.features.literature.normalization:normalize_paper_title",
+    "normalize_pmid": "pyeuropepmc.features.literature.normalization:normalize_pmid",
     "normalize_to_nfkc": "pyeuropepmc.features.literature.normalization:normalize_to_nfkc",
     "CursorPaginator": "pyeuropepmc.features.literature.pagination:CursorPaginator",
     "PaginationCheckpoint": "pyeuropepmc.features.literature.pagination:PaginationCheckpoint",
@@ -93,6 +95,7 @@ if TYPE_CHECKING:
     from pyeuropepmc.features.literature.ftp_downloader import FTPDownloader as FTPDownloader
     from pyeuropepmc.features.literature.normalization import (
         is_valid_doi as is_valid_doi,
+        is_valid_pmid as is_valid_pmid,
         normalize_abstract as normalize_abstract,
         normalize_affiliation as normalize_affiliation,
         normalize_author_list as normalize_author_list,
@@ -101,6 +104,7 @@ if TYPE_CHECKING:
         normalize_journal_title as normalize_journal_title,
         normalize_mesh_terms as normalize_mesh_terms,
         normalize_paper_title as normalize_paper_title,
+        normalize_pmid as normalize_pmid,
         normalize_to_nfkc as normalize_to_nfkc,
     )
     from pyeuropepmc.features.literature.pagination import (

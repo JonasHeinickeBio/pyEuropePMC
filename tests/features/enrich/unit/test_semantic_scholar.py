@@ -46,6 +46,18 @@ class TestSemanticScholarRecommendations:
         assert recommendations == [{"paperId": "p3"}]
         client._pro_client.get_recommendations_from_lists.assert_called_once()
 
+    def test_search_papers_passes_limits_up_to_1000(self) -> None:
+        """search_papers() documents max 1000; it used to cut every limit to 100."""
+        client = SemanticScholarClient(rate_limit_delay=0)
+        client._pro_client = MagicMock()
+        client._pro_client.search_paper.return_value = []
+
+        client.search_papers("CRISPR", limit=500)
+        assert client._pro_client.search_paper.call_args.kwargs["limit"] == 500
+
+        client.search_papers("CRISPR", limit=5000)
+        assert client._pro_client.search_paper.call_args.kwargs["limit"] == 1000
+
     def test_get_recommendations_for_paper_invalid_id_raises(self) -> None:
         """Invalid paper IDs are rejected."""
         client = SemanticScholarClient(rate_limit_delay=0)

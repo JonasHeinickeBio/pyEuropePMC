@@ -2,7 +2,8 @@
 Image and Asset Fetching for Full-Text Articles.
 
 Fetches figures and supplementary assets referenced in JATS XML.
-Supports downloading from PMC OA tar.gz packages or per-file URLs.
+Each file-bearing element is reported once, labelled by the block that owns
+it, with the Europe PMC URL the file can be downloaded from.
 
 Based on patterns from pmcgrab's AssetFetchPolicy.
 
@@ -14,20 +15,37 @@ Reference
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from enum import Enum
 import logging
 import os
 from typing import Any
-from urllib.parse import urljoin
 from xml.etree import ElementTree as ET  # nosec B405
 
 from pyeuropepmc.features.fulltext.parsers.base_parser import BaseParser
+from pyeuropepmc.features.fulltext.utils.asset_urls import (
+    DEFAULT_IMAGE_EXTENSION,
+    asset_file_name,
+    build_asset_url,
+    guess_mime_type,
+)
+from pyeuropepmc.features.fulltext.utils.figure_assets import (
+    FILE_TAGS,
+    local_tag,
+    own_graphics,
+    parent_figure_map,
+    supplementary_href,
+)
+from pyeuropepmc.features.fulltext.utils.xml_helpers import XMLHelper
 
 logger = logging.getLogger(__name__)
 
-# Base URL for PMC article binaries
-PMC_BINARY_BASE = "https://www.ncbi.nlm.nih.gov/pmc/articles/"
+#: Elements that name a file. ``<supplementary-material>`` usually delegates to
+#: a ``<media>`` child, but can name the file itself (see ``supplementary_href``).
+_ASSET_TAGS = FILE_TAGS | {"supplementary-material"}
+
+#: Tags whose file name may be written without an extension.
+_EXTENSIONLESS_TAGS = frozenset({"graphic", "inline-graphic"})
 
 
 class AssetType(str, Enum):
@@ -36,9 +54,28 @@ class AssetType(str, Enum):
     FIGURE = "figure"
     TABLE = "table"
     SUPPLEMENTARY = "supplementary"
+    FORMULA = "formula"
     VIDEO = "video"
     AUDIO = "audio"
     UNKNOWN = "unknown"
+
+
+#: What such an element is when no block claims it. A <media> is absent: its
+#: type comes from its own MIME type.
+_UNCLAIMED_TYPES = {"graphic": AssetType.FIGURE, "inline-graphic": AssetType.UNKNOWN}
+
+
+@dataclass(frozen=True)
+class _Owner:
+    """What a file-bearing element inherits from the block that contains it."""
+
+    asset_type: AssetType
+    label: str = ""
+    caption: str = ""
+    id: str = ""
+    parent_id: str = ""
+    parent_label: str = ""
+    alternative: bool = False
 
 
 class AssetFetchPolicy(str, Enum):
@@ -110,7 +147,9 @@ class ImageFetcher(BaseParser):
     root : ET.Element, optional
         Root element of the parsed XML.
     article_id : str, optional
-        PMCID or PMID of the article (for URL resolution).
+        PMCID of the article, used to build Europe PMC download URLs. Without
+        one - or with an identifier that is not a PMCID - each ``uri`` stays
+        the file name written in the XML.
     download_dir : str, optional
         Directory to download assets into.
     policy : AssetFetchPolicy, optional
@@ -142,10 +181,15 @@ class ImageFetcher(BaseParser):
         """
         Extract all asset references from the XML.
 
-        Scans for:
-        - ``<graphic>`` elements (figures, inline graphics)
-        - ``<media>`` elements (video, audio, supplementary)
-        - ``<supplementary-material>`` elements
+        One reference per file-bearing element - ``<graphic>``, ``<inline-graphic>``
+        and ``<media>`` - in document order, labelled by whatever contains it:
+        a figure, a table, a supplementary-material block or a formula.
+
+        This used to search for each kind separately, so most files were
+        reported several times: every graphic inside a figure was added again by
+        the pass over "standalone" graphics (``_is_inside_fig`` could never say
+        otherwise, since ElementTree has no parent axis), and every ``<media>``
+        inside supplementary material was added again by the pass over media.
 
         Returns
         -------
@@ -154,170 +198,200 @@ class ImageFetcher(BaseParser):
         """
         self._require_root()
 
-        assets: list[AssetRef] = []
-
         if self.root is None:
-            return assets
+            return []
 
-        # Extract from <fig> elements
-        for fig in self.root.findall(".//fig"):
-            assets.extend(self._extract_figure_assets(fig))
+        owners = self._asset_owners(self.root)
 
-        # Extract from standalone <graphic> elements (not inside fig)
-        for graphic in self.root.findall(".//graphic"):
-            if self._is_inside_fig(graphic):
+        assets: list[AssetRef] = []
+        seen: dict[tuple[str, str], AssetRef] = {}
+        for elem in self.root.iter():
+            tag = local_tag(elem.tag)
+            if tag not in _ASSET_TAGS:
                 continue
-            uri = self._get_xlink_href(graphic)
-            if uri:
-                assets.append(
-                    AssetRef(
-                        asset_type=AssetType.FIGURE,
-                        uri=uri,
-                        label="",
-                        caption="",
-                        id=graphic.get("id", ""),
-                    )
-                )
-
-        # Extract supplementary materials
-        for supp in self.root.findall(".//supplementary-material"):
-            assets.append(self._extract_supplementary_asset(supp))
-
-        # Extract media elements (video, audio)
-        for media in self.root.findall(".//media"):
-            assets.append(self._extract_media_asset(media))
-
-        # Resolve relative URIs if we have an article ID
-        if self.article_id:
-            for asset in assets:
-                asset.uri = self._resolve_uri(asset.uri)
+            asset = self._build_asset(elem, tag, owners.get(elem))
+            if asset is None:
+                continue
+            # Publishers do repeat a declaration: Nature articles list each
+            # supplementary file twice, once in the body and once in the back
+            # matter, with identical <media>. One file, one reference.
+            key = (asset.asset_type.value, asset.metadata["file_name"])
+            kept = seen.get(key)
+            if kept is None:
+                seen[key] = asset
+                assets.append(asset)
+            else:
+                self._merge_duplicate(kept, asset)
 
         logger.info(f"Extracted {len(assets)} asset references from XML")
         return assets
 
-    def _extract_figure_assets(self, fig_elem: ET.Element) -> list[AssetRef]:
-        """Extract asset references from a <fig> element."""
-        assets: list[AssetRef] = []
+    @staticmethod
+    def _merge_duplicate(kept: AssetRef, other: AssetRef) -> None:
+        """Fill in what the first declaration of a file left empty."""
+        kept.label = kept.label or other.label
+        kept.caption = kept.caption or other.caption
+        kept.id = kept.id or other.id
 
-        fig_id = fig_elem.get("id", "")
+    def _asset_owners(self, root: ET.Element) -> dict[ET.Element, _Owner]:
+        """Maps each file-bearing element to the block that describes it.
 
-        # Label
-        label = ""
-        label_elem = fig_elem.find("label")
-        if label_elem is not None:
-            label = self._get_text_content(label_elem)
+        Only the elements a block owns directly are claimed, so a caption's
+        formula images stay with the formula and a nested figure supplement's
+        image stays with the supplement rather than being labelled as its
+        parent figure.
+        """
+        owners: dict[ET.Element, _Owner] = {}
+        parents = parent_figure_map(root)
 
-        # Caption
-        caption = ""
-        caption_elem = fig_elem.find("caption")
-        if caption_elem is not None:
-            caption = self._get_text_content(caption_elem)
-
-        # Graphics
-        for graphic in fig_elem.findall(".//graphic"):
-            uri = self._get_xlink_href(graphic)
-            mime = graphic.get("mimetype", "")
-            if uri:
-                assets.append(
-                    AssetRef(
-                        asset_type=AssetType.FIGURE,
-                        uri=uri,
-                        label=label,
-                        caption=caption,
-                        id=fig_id,
-                        mime_type=mime,
-                    )
+        for elem in root.iter():
+            tag = local_tag(elem.tag)
+            if tag == "fig":
+                parent = parents.get(elem)
+                owner = _Owner(
+                    asset_type=AssetType.FIGURE,
+                    label=self._label_of(elem),
+                    caption=self._caption_of(elem),
+                    id=elem.get("id", ""),
+                    parent_id=parent.get("id", "") if parent is not None else "",
+                    parent_label=self._label_of(parent) if parent is not None else "",
                 )
+                self._claim_graphics(owners, elem, owner)
+            elif tag == "table-wrap":
+                owner = _Owner(
+                    asset_type=AssetType.TABLE,
+                    label=self._label_of(elem),
+                    caption=self._caption_of(elem),
+                    id=elem.get("id", ""),
+                )
+                self._claim_graphics(owners, elem, owner)
+            elif tag == "supplementary-material":
+                self._claim_supplementary(owners, elem)
+            elif tag in ("inline-formula", "disp-formula"):
+                owner = _Owner(
+                    asset_type=AssetType.FORMULA,
+                    label=self._label_of(elem),
+                    id=elem.get("id", ""),
+                )
+                for descendant in elem.iter():
+                    if local_tag(descendant.tag) in ("graphic", "inline-graphic"):
+                        owners.setdefault(descendant, owner)
 
-        # Alternative representations
-        for alt in fig_elem.findall(".//alternatives"):
-            for graphic in alt.findall(".//graphic"):
-                uri = self._get_xlink_href(graphic)
-                if uri:
-                    mime = graphic.get("mimetype", "")
-                    assets.append(
-                        AssetRef(
-                            asset_type=AssetType.FIGURE,
-                            uri=uri,
-                            label=label,
-                            caption=caption,
-                            id=fig_id,
-                            mime_type=mime,
-                        )
-                    )
+        return owners
 
-        return assets
+    @staticmethod
+    def _claim_graphics(owners: dict[ET.Element, _Owner], elem: ET.Element, owner: _Owner) -> None:
+        """Claim the graphics ``elem`` carries itself, first one primary."""
+        for position, graphic in enumerate(own_graphics(elem)):
+            owners.setdefault(
+                graphic, owner if position == 0 else replace(owner, alternative=True)
+            )
 
-    def _extract_supplementary_asset(self, supp_elem: ET.Element) -> AssetRef:
-        """Extract asset reference from a <supplementary-material> element."""
-        supp_id = supp_elem.get("id", "")
+    def _claim_supplementary(self, owners: dict[ET.Element, _Owner], elem: ET.Element) -> None:
+        """Claim the file a ``<supplementary-material>`` block points at."""
+        owner = _Owner(
+            asset_type=AssetType.SUPPLEMENTARY,
+            label=self._label_of(elem),
+            caption=self._supplementary_caption(elem),
+            id=elem.get("id", ""),
+        )
+        # The block itself, for when it names the file without a file child;
+        # it yields no asset otherwise.
+        owners.setdefault(elem, owner)
+        for child in elem:
+            if local_tag(child.tag) in FILE_TAGS:
+                owners.setdefault(child, owner)
 
-        # Label
-        label = ""
-        label_elem = supp_elem.find("label")
-        if label_elem is not None:
-            label = self._get_text_content(label_elem)
+    def _build_asset(self, elem: ET.Element, tag: str, owner: _Owner | None) -> AssetRef | None:
+        """Turn one file-bearing element into an :class:`AssetRef`."""
+        if tag == "supplementary-material":
+            href = supplementary_href(elem)
+        else:
+            href = self._get_xlink_href(elem)
+        if not href:
+            return None
 
-        # Caption / description
-        caption = ""
+        if owner is None:
+            # Nothing claims this file. A <graphic> standing on its own is still
+            # a figure - a graphical abstract, an image dropped into a section.
+            # An <inline-graphic> is not: it is an image inside a line of text,
+            # such as the ORCID icon beside an author's name. A <media> is typed
+            # from its own MIME type.
+            owner = _Owner(
+                asset_type=_UNCLAIMED_TYPES.get(tag) or self._media_asset_type(elem),
+                id=elem.get("id", ""),
+            )
+
+        # A graphic's file name may be written without an extension; a media
+        # file's may not (see asset_urls).
+        default_extension = DEFAULT_IMAGE_EXTENSION if tag in _EXTENSIONLESS_TAGS else None
+        file_name = asset_file_name(href, default_extension)
+        mime_type = self._declared_mime(elem) or guess_mime_type(file_name)
+
+        # Nature puts the description on the <media> rather than on the
+        # <supplementary-material> around it, so the block's caption is empty
+        # while "Supplementary Information" sits one level down.
+        caption = owner.caption or self._caption_of(elem)
+
+        metadata: dict[str, Any] = {"file_name": file_name, "jats_tag": tag}
+        if owner.alternative:
+            metadata["alternative"] = True
+        if owner.parent_id or owner.parent_label:
+            metadata["parent_id"] = owner.parent_id
+            metadata["parent_label"] = owner.parent_label
+
+        url = build_asset_url(self.article_id, href, self._declared_mime(elem), default_extension)
+
+        return AssetRef(
+            asset_type=owner.asset_type,
+            uri=url or href,
+            label=owner.label,
+            caption=caption,
+            id=owner.id or elem.get("id", ""),
+            mime_type=mime_type,
+            metadata=metadata,
+        )
+
+    @staticmethod
+    def _media_asset_type(elem: ET.Element) -> AssetType:
+        """VIDEO, AUDIO or UNKNOWN, from a ``<media>`` element's MIME type."""
+        mime = ImageFetcher._declared_mime(elem)
+        if "video" in mime:
+            return AssetType.VIDEO
+        if "audio" in mime:
+            return AssetType.AUDIO
+        return AssetType.UNKNOWN
+
+    @staticmethod
+    def _declared_mime(elem: ET.Element) -> str:
+        """The MIME type the element states, as ``type/subtype``."""
+        mimetype = elem.get("mimetype", "")
+        subtype = elem.get("mime-subtype", "")
+        if mimetype and subtype:
+            return f"{mimetype}/{subtype}"
+        return mimetype or ""
+
+    def _label_of(self, elem: ET.Element | None) -> str:
+        if elem is None:
+            return ""
+        label = elem.find("label")
+        return self._get_text_content(label) if label is not None else ""
+
+    def _caption_of(self, elem: ET.Element) -> str:
+        """The block's caption, without the text of any figure nested in it."""
+        caption = elem.find("caption")
+        if caption is None:
+            return ""
+        return XMLHelper.get_text_content(caption, exclude_tags=frozenset({"fig"}))
+
+    def _supplementary_caption(self, elem: ET.Element) -> str:
         # `or`-chaining Element.find() is unsafe: a childless <caption>text</caption>
         # is falsy, so `or` would skip a real match and fall through to <p>.
-        found_caption = supp_elem.find("caption")
-        caption_elem = found_caption if found_caption is not None else supp_elem.find("p")
-        if caption_elem is not None:
-            caption = self._get_text_content(caption_elem)
-
-        # Get the actual file reference
-        uri = ""
-        for child in supp_elem:
-            tag = self._get_local_tag(child.tag)
-            if tag in ("graphic", "media", "inline-graphic"):
-                uri = self._get_xlink_href(child)
-                if uri:
-                    break
-
-        # Try object-id for the filename
-        if not uri:
-            obj_id = supp_elem.find("object-id")
-            if obj_id is not None and obj_id.text:
-                uri = obj_id.text.strip()
-
-        return AssetRef(
-            asset_type=AssetType.SUPPLEMENTARY,
-            uri=uri,
-            label=label,
-            caption=caption,
-            id=supp_id,
-        )
-
-    def _extract_media_asset(self, media_elem: ET.Element) -> AssetRef:
-        """Extract asset reference from a <media> element."""
-        media_id = media_elem.get("id", "")
-        uri = self._get_xlink_href(media_elem)
-        mime = media_elem.get("mimetype", "")
-        mime_subtype = media_elem.get("mime-subtype", "")
-        full_mime = f"{mime}/{mime_subtype}" if mime else ""
-
-        # Determine asset type from MIME
-        asset_type = AssetType.UNKNOWN
-        if "video" in full_mime:
-            asset_type = AssetType.VIDEO
-        elif "audio" in full_mime:
-            asset_type = AssetType.AUDIO
-
-        # Label
-        label = ""
-        label_elem = media_elem.find("label")
-        if label_elem is not None:
-            label = self._get_text_content(label_elem)
-
-        return AssetRef(
-            asset_type=asset_type,
-            uri=uri,
-            label=label,
-            id=media_id,
-            mime_type=full_mime,
-        )
+        caption = self._caption_of(elem)
+        if caption:
+            return caption
+        paragraph = elem.find("p")
+        return self._get_text_content(paragraph) if paragraph is not None else ""
 
     def download_assets(self, asset_refs: list[AssetRef]) -> list[AssetRef]:
         """
@@ -408,37 +482,27 @@ class ImageFetcher(BaseParser):
         """Get the xlink:href attribute from an element."""
         return elem.get(f"{{{self.NS_XLINK}}}href") or elem.get("href") or ""
 
-    def _resolve_uri(self, uri: str) -> str:
-        """Resolve a possibly-relative URI to an absolute URL."""
+    def _resolve_uri(self, uri: str, default_extension: str | None = None) -> str:
+        """Resolve a JATS file reference to a Europe PMC download URL.
+
+        Returns ``uri`` unchanged when it is already absolute, and when
+        ``article_id`` is not a PMC ID: the download endpoint is addressed by
+        PMCID, so a PMID or a DOI cannot name a file there, and the URL the
+        previous implementation built from one - the article page address with
+        the file name appended - answered 404.
+        """
         if not uri:
             return ""
 
         if uri.startswith(("http://", "https://", "ftp://")):
             return uri  # Already absolute
 
-        # Resolve relative to the PMC article page
-        if self.article_id:
-            base = f"{PMC_BINARY_BASE}{self.article_id}/"
-            return urljoin(base, uri)
-
-        return uri
-
-    @staticmethod
-    def _is_inside_fig(elem: ET.Element) -> bool:
-        """Check if an element is inside a <fig> element."""
-        parent: ET.Element | None = elem
-        while parent is not None:
-            if parent.tag == "fig" or parent.tag.endswith("}fig"):
-                return True
-            parent = parent.find("..")
-        return False
+        return build_asset_url(self.article_id, uri, default_extension=default_extension) or uri
 
     @staticmethod
     def _get_local_tag(tag: str) -> str:
         """Strip namespace from a tag name."""
-        if tag.startswith("{"):
-            return tag.split("}", 1)[1]
-        return tag
+        return local_tag(tag)
 
     @classmethod
     def resolve_figure_uris(
@@ -457,7 +521,9 @@ class ImageFetcher(BaseParser):
         figures : list[dict]
             Figure dicts from ``FigureParser.extract_figures()``.
         article_id : str
-            PMCID or PMID for URL resolution.
+            PMCID for URL resolution. A value that is not a PMC ID leaves the
+            file names as they are, rather than building a URL that cannot
+            resolve.
 
         Returns
         -------
@@ -467,6 +533,9 @@ class ImageFetcher(BaseParser):
         for fig in figures:
             uri = fig.get("graphic_uri", "")
             if uri and not uri.startswith(("http://", "https://")):
-                base = f"{PMC_BINARY_BASE}{article_id}/"
-                fig["graphic_uri"] = urljoin(base, uri)
+                resolved = build_asset_url(
+                    article_id, uri, default_extension=DEFAULT_IMAGE_EXTENSION
+                )
+                if resolved:
+                    fig["graphic_uri"] = resolved
         return figures

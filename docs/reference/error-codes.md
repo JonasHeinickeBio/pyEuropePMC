@@ -27,15 +27,15 @@ except PyEuropePMCError as err:
 | `err.get_recovery_options()` | Short suggestions for this code |
 | `err.__cause__` | The original exception, when pyEuropePMC wrapped another error |
 
-Error messages currently end with a `Docs:` link to `pyeuropepmc.rtfd.io`. That site does not exist; use this page instead.
+The messages of the `HTTP` codes, and any message built with `get_error_message(code, include_help_link=True)`, end with a `Docs:` link to the section of this page that lists the code.
 
 ## Exception classes
 
-All exceptions are defined in `pyeuropepmc.core.exceptions` and derive from `PyEuropePMCError`.
+All exceptions are defined in `pyeuropepmc.core.exceptions` and derive from `PyEuropePMCError`, which is also exported as `pyeuropepmc.EuropePMCError`. Catching either name catches everything in the table below.
 
 | Exception | Raised by | Codes |
 |---|---|---|
-| `SearchError`, exported as `pyeuropepmc.EuropePMCError` | `SearchClient` | `SEARCH001`–`SEARCH005`, `NET001` |
+| `SearchError` | `SearchClient` | `SEARCH001`–`SEARCH005`, `NET001` |
 | `APIClientError` | Requests made by `ArticleClient`, `AnnotationsClient`, `FullTextClient`, the multi-source search clients and the enrichment clients | `NET001`, `NET002`, `HTTP…`, `AUTH401`, `RATE429`, `RETRY001`, `API001`, `FULL007`, `GENERIC002` |
 | `FullTextError` | `FullTextClient`, `FTPDownloader` | `FULL001`–`FULL011` |
 | `ParsingError` | `FullTextXMLParser`, `EuropePMCParser`, `SearchClient.search_and_parse()` | `PARSE001`–`PARSE004` |
@@ -49,14 +49,14 @@ All exceptions are defined in `pyeuropepmc.core.exceptions` and derive from `PyE
 ## How SearchClient reports failed requests
 
 - `search()` checks the query, the page size and the format before sending anything, and raises `SEARCH001`, `SEARCH002` or `SEARCH004`.
-- A failed request, whether a network error, a timeout or an HTTP error status, is raised as `SearchError` with code `NET001`. The `APIClientError` it wraps is in `err.__cause__`. Its code is `HTTP403`, `HTTP404`, `HTTP500` or `RATE429` for those statuses, `FULL007` for a closed client, and `NET001` for anything else.
+- A failed request, whether a network error, a timeout or an HTTP error status, is raised as `SearchError` with code `NET001`. The `APIClientError` it wraps is in `err.__cause__`. Its code names the HTTP status: `AUTH401` for 401, `RATE429` for 429, and the `HTTP…` code for the other statuses in the [HTTP table](#http-status-http), such as `HTTP404` or `HTTP503`. It is `FULL007` for a closed client, and `NET001` for a network error, a timeout or a status without a code of its own.
 - `search_all()`, `fetch_all_pages()` and `search_ids_only()` raise these errors too; they do not return partial or empty results for a failed request.
 
 ## Network: NET
 
 | Code | Meaning | Raised by | Typical fix |
 |---|---|---|---|
-| `NET001` | A request failed: no connection, a timeout, or an HTTP status without a more specific code | Every client's requests. `SearchClient` also uses it to wrap a failed request, and `UnpaywallClient` uses it for network errors | Read `err.__cause__` for the HTTP status; check the connection and proxy; retry later |
+| `NET001` | A request failed: no connection, a timeout, or an HTTP status without a more specific code | Every client's requests. `SearchClient` and `ArticleClient` also use it to wrap a failed request, and `UnpaywallClient` uses it for network errors and HTTP errors other than 404 (a 404 returns `None`) | Read `err.__cause__` for the HTTP status; check the connection and proxy; retry later |
 | `NET002` | A request timed out | Multi-source search clients | Retry, or pass a larger `timeout` to `UnifiedSearch` |
 | `NET003` | DNS lookup failed | Not raised by the current code | Check DNS settings |
 | `NET004` | The server refused the connection | Not raised | Check the service status and firewall |
@@ -66,12 +66,14 @@ All exceptions are defined in `pyeuropepmc.core.exceptions` and derive from `PyE
 
 ## HTTP status: HTTP
 
+The Europe PMC clients raise the code of every status in this table except `HTTP401` and `HTTP429`: `ArticleClient`, `AnnotationsClient` and `FullTextClient` directly, `SearchClient` in `err.__cause__` of its `NET001` error. A status that is not in the table raises `NET001`, with the status in `err.context["status_code"]`. The Raised by column lists where else a code comes from.
+
 | Code | Meaning | Raised by | Typical fix |
 |---|---|---|---|
 | `HTTP400` | Bad request | Multi-source search clients | Simplify the query for that source |
 | `HTTP401` | Unauthorised | Not raised; a 401 response uses `AUTH401` | See `AUTH401` |
 | `HTTP403` | Access forbidden | Requests by `ArticleClient` and `FullTextClient`; multi-source search clients | Check the identifier; not all content is open |
-| `HTTP404` | Not found | Requests by `ArticleClient` and `FullTextClient`, for example `get_fulltext_content()` for an article without full-text XML | Check the ID; call `check_fulltext_availability()` first |
+| `HTTP404` | Not found | Requests by `ArticleClient` and `FullTextClient`; `get_fulltext_content()` raises `FULL003` with this error as its cause | Check the ID; call `check_fulltext_availability()` first |
 | `HTTP405`, `HTTP406`, `HTTP410`, `HTTP415`, `HTTP416` | The HTTP status with that number | Multi-source search clients | Report a bug: the library builds these requests |
 | `HTTP407` | Proxy authentication required | Multi-source search clients | Put the proxy credentials in `HTTPS_PROXY` |
 | `HTTP408` | Request timeout | Multi-source search clients | Retry |
@@ -84,9 +86,9 @@ All exceptions are defined in `pyeuropepmc.core.exceptions` and derive from `PyE
 
 | Code | Meaning | Raised by | Typical fix |
 |---|---|---|---|
-| `AUTH401` | The service rejected the credentials | Multi-source search clients | Europe PMC needs no key. For a source that needs one, pass `UnifiedSearch(credentials={"api_key": ...})` or set its variable, such as `CORE_API_KEY` |
+| `AUTH401` | The service rejected the credentials | Requests by `ArticleClient`, `AnnotationsClient` and `FullTextClient`, and by `SearchClient` in `err.__cause__` (a 401 response); multi-source search clients | Europe PMC needs no key. For a source that needs one, pass `UnifiedSearch(credentials={"api_key": ...})` or set its variable, such as `CORE_API_KEY` |
 | `AUTH403` | The credentials lack permission | Not raised | Check the key's permissions |
-| `RATE429` | Rate limit exceeded | Requests by `ArticleClient`, `FullTextClient` and `SearchClient` (in `err.__cause__`); multi-source search clients | Increase `rate_limit_delay`, send fewer requests, retry later |
+| `RATE429` | Rate limit exceeded | Requests by `ArticleClient`, `AnnotationsClient` and `FullTextClient`, and by `SearchClient` in `err.__cause__`; multi-source search clients | Increase `rate_limit_delay`, send fewer requests, retry later |
 | `RETRY001` | Retries exhausted | Multi-source search clients | Retry later; raise `rate_limit_delay` or lower `max_workers` in `UnifiedSearch` |
 | `RETRY002` | Invalid `Retry-After` header | Not raised | Wait and retry |
 
@@ -108,12 +110,12 @@ All exceptions are defined in `pyeuropepmc.core.exceptions` and derive from `PyE
 |---|---|---|---|
 | `FULL001` | Empty PMCID | `FullTextClient` methods; also wraps unexpected errors in parallel batch downloads | Pass a PMCID |
 | `FULL002` | Invalid PMCID | `FullTextClient` methods | Use `PMC` followed by digits, such as `PMC3258128`, or the digits alone |
-| `FULL003` | Content not found | `download_xml_by_pmcid()` when every download route fails; `download_xml_by_pmcid_bulk()`; PDF downloads that get a 404 | Check `check_fulltext_availability()`; not every article has full text |
+| `FULL003` | Content not found | `download_xml_by_pmcid()` when every download route fails; `download_xml_by_pmcid_bulk()`; `get_fulltext_content()` and PDF downloads that get a 404 | Check `check_fulltext_availability()`; not every article has full text |
 | `FULL004` | Invalid format | `get_fulltext_content()` (allowed: `xml`, `html`); `search_and_download_fulltext()` | Use an allowed format |
-| `FULL005` | Download failed | PDF downloads with an HTTP error other than 403 or 404; `FTPDownloader` directory listing, download and ZIP extraction | Retry; check the connection |
+| `FULL005` | Download failed | `get_fulltext_content()` with an HTTP error other than 403 or 404, or a failed request; PDF downloads with an HTTP error other than 403 or 404; `FTPDownloader` directory listing, download and ZIP extraction | Retry; check the connection |
 | `FULL006` | PDF validation failed | Not raised | — |
 | `FULL007` | The client is closed | Any request after `close()` or after the client's `with` block has ended | Create a new client, or keep calls inside the `with` block |
-| `FULL008` | Access denied | PDF downloads that get a 403 | The article is not open access; try the XML or another source |
+| `FULL008` | Access denied | `get_fulltext_content()` and PDF downloads that get a 403 | The article is not open access; try the XML or another source |
 | `FULL009` | A downloaded file could not be written | Saving XML or HTML downloads | Check the output path, permissions and free space |
 | `FULL010` | Unsupported batch format | `download_fulltext_batch()` and `download_fulltext_batch_parallel()` (allowed: `pdf`, `xml`, `html`) | Use an allowed format |
 | `FULL011` | No URL for this format | Building a full-text URL for a format other than `xml` | Use the `download_*` method for that format |
@@ -125,8 +127,9 @@ All exceptions are defined in `pyeuropepmc.core.exceptions` and derive from `PyE
 |---|---|---|---|
 | `PARSE001` | Data is not valid JSON, or has the wrong type | `search_and_parse()` when a JSON response is not a dict; `EuropePMCParser.parse_json()`; the `QueryBuilder` field-list lookup | Check the input |
 | `PARSE002` | XML could not be parsed | `FullTextXMLParser` on malformed XML; `EuropePMCParser.parse_xml()` and `parse_dc()` | Check that the XML is complete |
-| `PARSE003` | No content to parse | `FullTextXMLParser` methods called before XML was loaded; `EuropePMCParser` given empty input; also XML that declares entities, which the parser rejects | Pass the XML to `FullTextXMLParser(xml)`; remove `<!ENTITY>` declarations |
+| `PARSE003` | No content to parse, or the wrong type | `FullTextXMLParser` methods called before XML was loaded; `FullTextXMLParser` given `None`, an empty string or `bytes`; `EuropePMCParser` given empty input | Pass a non-empty string to `FullTextXMLParser(xml)`; decode `bytes` first |
 | `PARSE004` | Unsupported format or structure | `search_and_parse()` when the response does not match `format`; `EuropePMCParser.parse_xml()` without result elements | Use a matching `format` |
+| `PARSE005` | The document declares an XML entity and was refused | Every entry point that parses XML: full text, search responses, the JATS normalizer, figure extraction, the bioRxiv manifest, benchmark metrics | Remove the `<!ENTITY>` declaration, or fetch the document from a source that does not use one |
 
 ## Validation: VALID
 
@@ -147,6 +150,8 @@ All exceptions are defined in `pyeuropepmc.core.exceptions` and derive from `PyE
 | `CONFIG001` | Invalid configuration | `CacheConfig` with `ttl` below 0, `size_limit_mb` below 1 or `namespace_version` below 1; a disk cache whose schema cannot be migrated | Fix the value; see [Caching](../features/caching/README.md) |
 | `CONFIG002` | Invalid configuration value | Not raised | — |
 | `CONFIG003` | A required package is missing | `QueryBuilder.save()`, `from_file()`, `from_string()`, `translate()`, `to_query_object()` and `evaluate()` when `search-query` cannot be imported | `search-query` is a base dependency: reinstall pyeuropepmc |
+
+`QueryBuilder(validate=True)` is the exception: it checks for `search-query` in the constructor, warns and continues with validation off rather than raising `CONFIG003` later.
 
 ## Query builder: QUERY
 

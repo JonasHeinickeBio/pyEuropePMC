@@ -40,6 +40,14 @@ class TestMeSHExpander:
         tokens = expander._tokenize("cancer AND brain")
         assert tokens == ["cancer", "brain"]
 
+    def test_tokenize_splits_after_a_parenthesis(self):
+        expander = MeSHExpander()
+        assert expander._tokenize("(cancer OR diabetes) AND pain") == [
+            "cancer",
+            "diabetes",
+            "pain",
+        ]
+
     def test_tokenize_filters_short_tokens(self):
         expander = MeSHExpander()
         tokens = expander._tokenize("cancer AND x")
@@ -93,6 +101,54 @@ class TestMeSHExpander:
         text = repr(result)
         assert "q expanded" in text
         assert "A" in text
+
+
+class TestExpandedQuery:
+    """``expanded_query`` must be a usable Europe PMC query."""
+
+    def test_operators_are_kept(self):
+        expanded = expand_with_mesh("cancer OR obesity").expanded_query
+        assert expanded == (
+            "(cancer OR Neoplasms OR Neoplasm OR Tumor OR Malignancy)"
+            ' OR (obesity OR Overweight OR "Body Mass Index")'
+        )
+
+    def test_not_is_not_turned_into_and(self):
+        expanded = expand_with_mesh("cancer NOT surgery").expanded_query
+        assert ") NOT (surgery OR " in expanded
+
+    def test_multi_word_headings_are_quoted(self):
+        expanded = expand_with_mesh("heart attack AND diabetes").expanded_query
+        assert expanded == (
+            '("heart attack" OR "Myocardial Infarction" OR "Myocardial Ischemia")'
+            ' AND (diabetes OR "Diabetes Mellitus" OR "Diabetes Mellitus, Type 1"'
+            ' OR "Diabetes Mellitus, Type 2")'
+        )
+
+    def test_parentheses_are_kept(self):
+        expanded = expand_with_mesh("(cancer OR diabetes) AND pain").expanded_query
+        assert expanded.startswith("((cancer OR ")
+        assert expanded.endswith(') AND (pain OR "Chronic Pain" OR "Pain Management")')
+
+    def test_operator_after_parenthesis_is_not_a_term(self):
+        result = MeSHExpander().expand("(cancer OR diabetes) AND pain")
+        assert set(result.term_suggestions) == {"cancer", "diabetes", "pain"}
+        assert "and pain" not in result.expanded_query
+
+    def test_unexpanded_text_is_kept_as_written(self):
+        assert expand_with_mesh("cancer gene therapy").expanded_query == "cancer gene therapy"
+        assert expand_with_mesh('"ME/CFS" AND Fatigue').expanded_query == '"ME/CFS" AND Fatigue'
+
+    def test_field_syntax_passes_through(self):
+        expanded = expand_with_mesh(
+            'TITLE:"gene therapy" AND diabetes AND PUB_YEAR:[2020 TO 2024]'
+        ).expanded_query
+        assert expanded.startswith('TITLE:"gene therapy" AND (diabetes OR ')
+        assert expanded.endswith(" AND PUB_YEAR:[2020 TO 2024]")
+
+    def test_the_original_term_is_not_repeated_in_another_case(self):
+        expanded = expand_with_mesh("obesity").expanded_query
+        assert expanded == '(obesity OR Overweight OR "Body Mass Index")'
 
 
 class TestModuleFunctions:

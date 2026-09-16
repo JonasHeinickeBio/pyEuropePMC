@@ -124,7 +124,12 @@ class ClinicalTrial(BaseModel):
 
     @classmethod
     def from_literature_result(cls, result: LiteratureResult) -> ClinicalTrial:
-        """Construct a ClinicalTrial from a LiteratureResult (round-trip)."""
+        """Construct a ClinicalTrial from a LiteratureResult.
+
+        Reads the ``extra_metadata`` written by :meth:`to_literature_result`
+        (``status``) as well as that of ``ClinicalTrialsClient``
+        (``overall_status``).
+        """
         meta = result.extra_metadata or {}
         nct_id = meta.get("nct_id") or (
             result.source_id if result.source == "clinicaltrials" else ""
@@ -133,9 +138,9 @@ class ClinicalTrial(BaseModel):
         return cls(
             nct_id=nct_id,
             title=title,
-            status=meta.get("status", TrialStatus.UNKNOWN),
-            phase=meta.get("phase", TrialPhase.NA),
-            conditions=meta.get("conditions", []) if meta else [],
+            status=meta.get("status") or meta.get("overall_status") or TrialStatus.UNKNOWN,
+            phase=meta.get("phase") or TrialPhase.NA,
+            conditions=meta.get("conditions") or [],
         )
 
     def to_literature_result(self) -> LiteratureResult:

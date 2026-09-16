@@ -1,24 +1,39 @@
 """
 Figure extraction from PubMed Central (PMC) Open Access articles.
 
-Extracts figures, tables, and supplementary materials from PMC full-text
-XML using the Europe PMC annotations API and the PMC Open Access subset.
-Supports extracting figure captions, image URLs, and PDF links.
+Extracts figures, tables, and supplementary materials from the full-text XML
+Europe PMC serves, with the Europe PMC download URL of each file.
 
 References:
-    - Europe PMC Annotations API: https://europepmc.org/AnnotationsApi
+    - Europe PMC REST API: https://europepmc.org/RestfulWebService
     - PMC Open Access Subset: https://www.ncbi.nlm.nih.gov/pmc/tools/oa-service/
 """
 
 from __future__ import annotations
 
 import logging
-import re
 from typing import Any
 from xml.etree import ElementTree as ET  # nosec B405
 
-from defusedxml import DefusedXmlException
-import defusedxml.ElementTree as DefusedET
+from pyeuropepmc.core.exceptions import ParsingError
+from pyeuropepmc.core.xml_parsing import is_refused, parse_xml
+from pyeuropepmc.features.fulltext.fulltext_parser import FullTextXMLParser
+from pyeuropepmc.features.fulltext.utils.asset_urls import (
+    DEFAULT_IMAGE_EXTENSION,
+    asset_file_name,
+    build_asset_url,
+    guess_mime_type,
+    normalise_pmcid,
+)
+from pyeuropepmc.features.fulltext.utils.figure_assets import (
+    FILE_TAGS,
+    href_of,
+    local_tag,
+    own_graphic,
+    parent_figure_map,
+    supplementary_href,
+)
+from pyeuropepmc.features.fulltext.utils.xml_helpers import XMLHelper
 
 # Lazy imports to avoid circular dependency with clients → processing → clients
 # FullTextClient and AnnotationsClient imported only when needed
@@ -32,8 +47,6 @@ __all__ = [
     "extract_tables_from_pmc",
     "FigureFormat",
 ]
-
-_GRAPHIC_EXT_RE = re.compile(r"\.(png|jpg|jpeg|gif|tiff?|svg|eps)$", re.IGNORECASE)
 
 
 class FigureFormat:
@@ -59,7 +72,8 @@ class FigureInfo:
     alt_text : str, optional
         Alternative text description.
     image_url : str, optional
-        URL to the figure image.
+        Europe PMC download URL for the file, or ``None`` when the element
+        references no file or the PMCID is unknown.
     pdf_url : str, optional
         URL to the PDF version containing the figure.
     figure_type : str
@@ -72,6 +86,17 @@ class FigureInfo:
         Image width in pixels.
     height : int, optional
         Image height in pixels.
+    id : str, optional
+        The element's ``id`` attribute, as referenced by ``<xref>``.
+    file_name : str, optional
+        The file the element references, as Europe PMC stores it.
+    mime_type : str, optional
+        MIME type of that file.
+    parent_id : str, optional
+        For a figure supplement, the ``id`` of the figure it belongs to;
+        ``None`` for a figure that stands on its own.
+    parent_label : str, optional
+        That figure's label.
     """
 
     def __init__(
@@ -86,6 +111,11 @@ class FigureInfo:
         pmcid: str | None = None,
         width: int | None = None,
         height: int | None = None,
+        id: str | None = None,  # noqa: A002 - matches the JATS attribute name
+        file_name: str | None = None,
+        mime_type: str | None = None,
+        parent_id: str | None = None,
+        parent_label: str | None = None,
     ) -> None:
         self.label = label
         self.caption = caption
@@ -97,16 +127,26 @@ class FigureInfo:
         self.pmcid = pmcid
         self.width = width
         self.height = height
+        self.id = id
+        self.file_name = file_name
+        self.mime_type = mime_type
+        self.parent_id = parent_id
+        self.parent_label = parent_label
 
     def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary."""
         return {
+            "id": self.id,
             "label": self.label,
             "caption": self.caption,
             "alt_text": self.alt_text,
             "image_url": self.image_url,
+            "file_name": self.file_name,
+            "mime_type": self.mime_type,
             "pdf_url": self.pdf_url,
             "figure_type": self.figure_type,
+            "parent_id": self.parent_id,
+            "parent_label": self.parent_label,
             "doi": self.doi,
             "pmcid": self.pmcid,
         }
@@ -119,18 +159,17 @@ class FigureExtractor:
     """
     Extracts figures, tables, and graphics from PMC XML articles.
 
-    Uses Europe PMC annotations and full-text APIs to retrieve figure
-    metadata and image URLs.
+    Reads the full-text XML from Europe PMC and reports every ``<fig>``,
+    ``<table-wrap>`` and ``<supplementary-material>`` in it, each with the
+    Europe PMC download URL of the file it references.
 
     Examples
     --------
     >>> extractor = FigureExtractor()
     >>> figures = extractor.extract(pmcid="PMC1234567")
     >>> for f in figures:
-    ...     print(f.label, f.caption[:80])
+    ...     print(f.label, f.image_url, f.caption[:80])
     """
-
-    PMC_IMAGE_BASE = "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC{pmcid}/bin/{filename}"
 
     def __init__(
         self,
@@ -270,136 +309,197 @@ class FigureExtractor:
         include_supplements: bool = True,
         format: str = FigureFormat.ALL,
     ) -> list[FigureInfo]:
-        """Parse XML and extract figure elements."""
+        """Parse XML and extract figure elements.
+
+        A document defusedxml refuses raises ``ParsingError``; one that is not
+        well-formed yields no figures. The document's own default namespace is
+        then stripped the way ``FullTextXMLParser`` strips it, so a schema-based
+        JATS document is matched by the same unprefixed searches as the
+        DTD-based JATS Europe PMC serves. Searching for namespaced tags directly
+        - as this did for the JATS1 namespace, which Europe PMC documents do not
+        use - found nothing in either form.
+        """
         figures: list[FigureInfo] = []
 
         try:
-            root: ET.Element = DefusedET.fromstring(xml_str)
-        except (DefusedET.ParseError, DefusedXmlException) as e:
-            logger.error("XML parse error: %s", e)
+            root: ET.Element = parse_xml(xml_str, what="The figure XML")
+        except ParsingError as exc:
+            if is_refused(exc):
+                raise
+            logger.warning("Figure XML is not well formed, no figures extracted: %s", exc)
             return figures
+        root = FullTextXMLParser._strip_default_namespace(root)
 
-        # Set up namespace handling for JATS XML
-        ns = {"": "http://www.ncbi.nlm.nih.gov/JATS1"}
+        parents = parent_figure_map(root)
 
-        # Extract figures (<fig> elements)
-        for fig_elem in root.iter("{http://www.ncbi.nlm.nih.gov/JATS1}fig"):
-            figure = self._parse_figure_element(fig_elem, pmcid, ns)
-            if figure:  # noqa: SIM102
-                if (
-                    format == FigureFormat.ALL
-                    or figure.image_url is None
-                    or format in figure.image_url
-                ):
-                    figures.append(figure)
-
-        # Extract tables (<table-wrap> elements)
-        if include_tables:
-            for table_elem in root.iter("{http://www.ncbi.nlm.nih.gov/JATS1}table-wrap"):
-                table = self._parse_table_element(table_elem, pmcid, ns)
-                if table:
-                    figures.append(table)
-
-        # Extract supplementary materials
-        if include_supplements:
-            for supp_elem in root.iter(
-                "{http://www.ncbi.nlm.nih.gov/JATS1}supplementary-material"
-            ):
-                supplement = self._parse_supplement_element(supp_elem, pmcid, ns)
-                if supplement:
-                    figures.append(supplement)
+        for elem in root.iter():
+            tag = local_tag(elem.tag)
+            if tag == "fig":
+                item = self._parse_figure_element(elem, pmcid, parents.get(elem))
+            elif tag == "table-wrap" and include_tables:
+                item = self._parse_table_element(elem, pmcid)
+            elif tag == "supplementary-material" and include_supplements:
+                item = self._parse_supplement_element(elem, pmcid)
+            else:
+                continue
+            if item is not None and self._matches_format(item, format):
+                figures.append(item)
 
         return figures
+
+    @staticmethod
+    def _matches_format(figure: FigureInfo, format: str) -> bool:
+        """Whether ``figure`` passes the ``format`` filter.
+
+        Items with no file pass any filter: a table rendered as markup, or a
+        figure whose graphic the publisher did not deposit, is not the wrong
+        image format - it has no image to judge. Formats are compared by MIME
+        type, so ``FigureFormat.TIFF`` matches a ``.tif`` file and ``jpg`` a
+        ``.jpeg`` one.
+        """
+        if format == FigureFormat.ALL or not figure.file_name:
+            return True
+        wanted = format.lower().lstrip(".")
+        if figure.file_name.lower().endswith(f".{wanted}"):
+            return True
+        wanted_mime = guess_mime_type(f"x.{wanted}")
+        # An unrecognised format guesses the same fallback type as any
+        # unrecognised file, which would match everything.
+        if wanted_mime == guess_mime_type("x.unknown"):
+            return False
+        return guess_mime_type(figure.file_name) == wanted_mime
+
+    @staticmethod
+    def _label_of(elem: ET.Element) -> str:
+        label = elem.find("label")
+        return XMLHelper.get_text_content(label).strip() if label is not None else ""
+
+    @staticmethod
+    def _caption_of(elem: ET.Element) -> str:
+        """The element's caption, with any nested figure's text left out.
+
+        An eLife figure carries its supplements inside its own ``<p>``; those
+        sit outside ``<caption>``, but a publisher that puts one inside would
+        otherwise have the supplement's caption appended to its parent's.
+        """
+        caption = elem.find("caption")
+        if caption is None:
+            return ""
+        return XMLHelper.get_text_content(caption, exclude_tags=frozenset({"fig"})).strip()
+
+    def _file_fields(
+        self,
+        source: ET.Element | None,
+        pmcid: str | None,
+        default_extension: str | None = None,
+        href: str = "",
+    ) -> tuple[str | None, str | None, str | None]:
+        """``(file_name, mime_type, image_url)`` for the file ``source`` names.
+
+        ``href`` overrides the reference read from ``source``, for a file named
+        some other way than by the element's own ``xlink:href``.
+        """
+        if source is None:
+            return None, None, None
+        href = href or href_of(source)
+        if not href:
+            return None, None, None
+
+        mimetype = source.get("mimetype", "")
+        subtype = source.get("mime-subtype", "")
+        declared = f"{mimetype}/{subtype}" if mimetype and subtype else ""
+
+        file_name = asset_file_name(href, default_extension)
+        mime_type = declared or guess_mime_type(file_name)
+        url = build_asset_url(pmcid, href, declared, default_extension)
+        return file_name, mime_type, url
 
     def _parse_figure_element(
         self,
         elem: ET.Element,
         pmcid: str | None,
-        ns: dict[str, str],
+        parent: ET.Element | None = None,
     ) -> FigureInfo | None:
-        """Parse a single <fig> JATS element."""
-        label = ""
-        caption = ""
-        alt_text = None
-        image_url = None
+        """Parse a single ``<fig>`` JATS element."""
+        alt_elem = elem.find("alt-text")
+        alt_text = XMLHelper.get_text_content(alt_elem).strip() if alt_elem is not None else None
 
-        label_elem = elem.find("{http://www.ncbi.nlm.nih.gov/JATS1}label")
-        if label_elem is not None and label_elem.text:
-            label = label_elem.text.strip()
-
-        caption_elem = elem.find("{http://www.ncbi.nlm.nih.gov/JATS1}caption")
-        if caption_elem is not None:
-            caption = ET.tostring(caption_elem, encoding="unicode", method="text").strip()
-
-        alt_elem = elem.find("{http://www.ncbi.nlm.nih.gov/JATS1}alt-text")
-        if alt_elem is not None and alt_elem.text:
-            alt_text = alt_elem.text.strip()
-
-        # Extract graphic reference
-        graphic = elem.find("{http://www.ncbi.nlm.nih.gov/JATS1}graphic")
-        if graphic is not None:
-            href = graphic.get("{http://www.w3.org/1999/xlink}href", "") or graphic.get("href", "")
-            if href and pmcid:
-                image_url = self.PMC_IMAGE_BASE.format(pmcid=pmcid, filename=href)
+        file_name, mime_type, image_url = self._file_fields(
+            own_graphic(elem), pmcid, DEFAULT_IMAGE_EXTENSION
+        )
 
         return FigureInfo(
-            label=label or "Figure",
-            caption=caption,
-            alt_text=alt_text,
+            label=self._label_of(elem) or "Figure",
+            caption=self._caption_of(elem),
+            alt_text=alt_text or None,
             image_url=image_url,
             figure_type="figure",
-            pmcid=pmcid,
+            pmcid=normalise_pmcid(pmcid) or pmcid,
+            id=elem.get("id") or None,
+            file_name=file_name,
+            mime_type=mime_type,
+            parent_id=(parent.get("id") or None) if parent is not None else None,
+            parent_label=(self._label_of(parent) or None) if parent is not None else None,
         )
 
     def _parse_table_element(
         self,
         elem: ET.Element,
         pmcid: str | None,
-        ns: dict[str, str],
     ) -> FigureInfo | None:
-        """Parse a <table-wrap> JATS element."""
-        label = ""
-        caption = ""
+        """Parse a ``<table-wrap>`` JATS element.
 
-        label_elem = elem.find("{http://www.ncbi.nlm.nih.gov/JATS1}label")
-        if label_elem is not None and label_elem.text:
-            label = label_elem.text.strip()
-
-        caption_elem = elem.find("{http://www.ncbi.nlm.nih.gov/JATS1}caption")
-        if caption_elem is not None:
-            caption = ET.tostring(caption_elem, encoding="unicode", method="text").strip()
+        A table can also be deposited as an image, in an ``<alternatives>``
+        beside the markup; that image is the table's file.
+        """
+        file_name, mime_type, image_url = self._file_fields(
+            own_graphic(elem), pmcid, DEFAULT_IMAGE_EXTENSION
+        )
 
         return FigureInfo(
-            label=label or "Table",
-            caption=caption,
+            label=self._label_of(elem) or "Table",
+            caption=self._caption_of(elem),
+            image_url=image_url,
             figure_type="table",
-            pmcid=pmcid,
+            pmcid=normalise_pmcid(pmcid) or pmcid,
+            id=elem.get("id") or None,
+            file_name=file_name,
+            mime_type=mime_type,
         )
 
     def _parse_supplement_element(
         self,
         elem: ET.Element,
         pmcid: str | None,
-        ns: dict[str, str],
     ) -> FigureInfo | None:
-        """Parse a <supplementary-material> JATS element."""
-        label = ""
-        description = ""
+        """Parse a ``<supplementary-material>`` JATS element.
 
-        label_elem = elem.find("{http://www.ncbi.nlm.nih.gov/JATS1}label")
-        if label_elem is not None and label_elem.text:
-            label = label_elem.text.strip()
+        The file is normally named by a ``<media>`` inside the block, and
+        otherwise by the block itself (see ``supplementary_href``).
+        """
+        source = next((child for child in elem if local_tag(child.tag) in FILE_TAGS), None)
+        if source is not None:
+            file_name, mime_type, image_url = self._file_fields(source, pmcid)
+        else:
+            file_name, mime_type, image_url = self._file_fields(
+                elem, pmcid, href=supplementary_href(elem)
+            )
 
-        # Description is often in the caption or as text content
-        caption_elem = elem.find("{http://www.ncbi.nlm.nih.gov/JATS1}caption")
-        if caption_elem is not None:
-            description = ET.tostring(caption_elem, encoding="unicode", method="text").strip()
+        description = self._caption_of(elem)
+        if not description:
+            paragraph = elem.find("p")
+            if paragraph is not None:
+                description = XMLHelper.get_text_content(paragraph).strip()
 
         return FigureInfo(
-            label=label or "Supplementary Material",
+            label=self._label_of(elem) or "Supplementary Material",
             caption=description,
+            image_url=image_url,
             figure_type="supplement",
-            pmcid=pmcid,
+            pmcid=normalise_pmcid(pmcid) or pmcid,
+            id=elem.get("id") or None,
+            file_name=file_name,
+            mime_type=mime_type,
         )
 
 

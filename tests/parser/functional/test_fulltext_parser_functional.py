@@ -170,7 +170,9 @@ class TestFullTextXMLParserFunctional:
             logger.info(f"  First table fields: {list(first_table.keys())}")
             if "label" in first_table:
                 logger.info(f"    Label: {first_table['label']}")
-            if "caption" in first_table:
+            # A table need not have a caption (`caption` is then None):
+            # PMC11687933's appendix key-resources table has only a label.
+            if first_table.get("caption"):
                 logger.info(f"    Caption: {first_table['caption'][:50]}...")
             if "rows" in first_table and first_table["rows"]:
                 logger.info(f"    Rows: {len(first_table['rows'])}")
@@ -312,7 +314,7 @@ class TestFullTextXMLParserFunctional:
         logger.info("\nStep 3: Extract metadata")
         metadata = parser.extract_metadata()
         logger.info(f"  Fields: {list(metadata.keys())}")
-        if "title" in metadata:
+        if metadata.get("title"):
             logger.info(f"  Title: {metadata['title'][:80]}...")
         logger.info("  ✅ Metadata extracted")
 

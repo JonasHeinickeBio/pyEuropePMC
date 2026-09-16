@@ -43,7 +43,7 @@ def generate_rml_header(prefixes: dict[str, str]) -> str:
             "",
             "# RML Mappings for PyEuropePMC Data Models",
             "# Auto-generated from rdf_map.yml - DO NOT EDIT MANUALLY",
-            "# Run 'python scripts/sync_rdf_mappings.py' to regenerate",
+            "# Run 'python examples/scripts/sync_rdf_mappings.py' to regenerate",
             "",
         ]
     )
@@ -94,12 +94,19 @@ def generate_subject_map(entity_name: str, entity_config: dict[str, Any]) -> lis
     return lines
 
 
-def generate_fields_mapping(fields: dict[str, dict]) -> list[str]:
-    """Generate fields mapping lines."""
+def generate_fields_mapping(fields: dict[str, dict[str, str] | str]) -> list[str]:
+    """Generate fields mapping lines.
+
+    A field maps either to ``{predicate, datatype}`` or, as the annotation
+    classes in rdf_map.yml do, to a bare predicate string.
+    """
     lines = []
     for field_name, field_config in fields.items():
-        predicate = field_config["predicate"]
-        datatype = field_config.get("datatype")
+        if isinstance(field_config, str):
+            predicate, datatype = field_config, None
+        else:
+            predicate = field_config["predicate"]
+            datatype = field_config.get("datatype")
         rml_predicate = get_rml_prefix(predicate)
         lines.append("    rr:predicateObjectMap [")
         lines.append(f"        rr:predicate {rml_predicate} ;")
@@ -226,14 +233,14 @@ def main() -> int:
     parser.add_argument(
         "--yaml",
         type=Path,
-        default=Path("conf/rdf_map.yml"),
-        help="Path to YAML configuration file (default: conf/rdf_map.yml)",
+        default=Path("src/pyeuropepmc/conf/rdf_map.yml"),
+        help="Path to YAML configuration file (default: src/pyeuropepmc/conf/rdf_map.yml)",
     )
     parser.add_argument(
         "--rml",
         type=Path,
-        default=Path("conf/rml_mappings.ttl"),
-        help="Path to RML output file (default: conf/rml_mappings.ttl)",
+        default=Path("src/pyeuropepmc/conf/rml_mappings.ttl"),
+        help="Path to RML output file (default: src/pyeuropepmc/conf/rml_mappings.ttl)",
     )
     parser.add_argument(
         "--check",

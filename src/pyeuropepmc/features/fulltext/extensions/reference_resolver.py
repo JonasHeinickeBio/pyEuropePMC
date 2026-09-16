@@ -48,6 +48,9 @@ class ResolvedReference:
         Citation count from Europe PMC.
     is_open_access : bool, optional
         Whether the article is Open Access.
+    resolved_pmcid : str, optional
+        Resolved PubMed Central ID (e.g. ``"PMC1234567"``), when the article
+        is in PMC.
     """
 
     source_ref: dict[str, Any] = field(default_factory=dict)
@@ -59,6 +62,7 @@ class ResolvedReference:
     journal: str = ""
     citations: int = 0
     is_open_access: bool = False
+    resolved_pmcid: str = ""
 
     def to_dict(self) -> dict[str, Any]:
         """Serialize to a plain dictionary."""
@@ -72,6 +76,7 @@ class ResolvedReference:
             "journal": self.journal,
             "citations": self.citations,
             "is_open_access": self.is_open_access,
+            "resolved_pmcid": self.resolved_pmcid,
         }
 
 
@@ -270,13 +275,15 @@ class ReferenceResolver:
         """Parse a single API result entry."""
         return ResolvedReference(
             resolved_pmid=entry.get("pmid", "") or "",
+            resolved_pmcid=entry.get("pmcid", "") or "",
             resolved_doi=entry.get("doi", "") or "",
             title=entry.get("title", "") or "",
             authors=entry.get("authorString", "") or "",
             year=entry.get("firstPublicationDate", "")[:4] or "",
             journal=entry.get("journalTitle", "") or "",
             citations=int(entry.get("citedByCount", 0) or 0),
-            is_open_access=bool(entry.get("isOpenAccess", False)),
+            # Europe PMC sends "Y" or "N"; bool("N") would be True.
+            is_open_access=entry.get("isOpenAccess") == "Y",
         )
 
     def _throttle(self) -> None:

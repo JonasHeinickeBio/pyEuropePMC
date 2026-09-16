@@ -278,6 +278,18 @@ class TestDatasetDownloadBackends:
         result = _try_huggingface_load_dataset("default", tmp_dir / "hf_test", force=False)
         assert isinstance(result, bool)
 
+    def test_failed_download_names_the_benchmark_extra(self, tmp_dir, monkeypatch):
+        """Without huggingface_hub the error says which extra provides it."""
+        from pyeuropepmc.benchmark import dataset as dataset_module
+
+        monkeypatch.setattr(dataset_module, "_try_huggingface_download", lambda *a, **k: False)
+        monkeypatch.setattr(dataset_module, "_try_http_download", lambda *a, **k: False)
+        monkeypatch.setattr(dataset_module, "is_package_available", lambda name: False)
+        dataset = BenchmarkDataset("PLOS_1000", data_dir=tmp_dir)
+
+        with pytest.raises(ConnectionError, match=r"pyeuropepmc\[benchmark\]"):
+            dataset.download(force=True)
+
     def test_http_download_requests_not_available(self, tmp_dir, monkeypatch):
         """Test HTTP download when requests library is not available."""
         # Mock requests import to fail
@@ -1351,17 +1363,17 @@ class TestBenchmarkRunnerWithoutProfiling:
         assert runner.stats["failed"] == 1
 
     def test_runner_abort_on_error(self, tmp_dir):
-        """Runner should handle errors gracefully even with skip_errors=False."""
+        """With skip_errors=False the first parse error stops the run."""
         xml_dir = tmp_dir / "xml"
         xml_dir.mkdir()
         (xml_dir / "bad.xml").write_text("<invalid xml")
 
         ds = BenchmarkDataset("local", local_path=xml_dir)
         runner = BenchmarkRunner(ds, skip_errors=False)
-        runner.run_all()
+        with pytest.raises(Exception, match="PARSE002"):
+            runner.run_all()
 
-        # Should still complete but with failed count
-        # The runner handles parse errors internally
+        # The failure is still recorded before the error propagates
         assert runner.stats["successful"] == 0
         assert runner.stats["failed"] == 1
 

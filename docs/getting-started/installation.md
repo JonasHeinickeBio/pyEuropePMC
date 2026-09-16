@@ -29,14 +29,15 @@ pip install "pyeuropepmc[analytics,visualization]"
 | `analytics` | numpy, pandas | DataFrames and publication statistics |
 | `visualization` | matplotlib, numpy, pandas, seaborn | Plots |
 | `export` | pandas, tabulate, xlsxwriter | Excel and Markdown-table export |
-| `rdf` | rdflib-jsonld | JSON-LD output; rdflib itself is in the base install |
+| `rdf` | nothing | Kept for existing installs; rdflib, in the base install, writes JSON-LD itself |
 | `ui` | flask, tornado | The claim-review web interface |
 | `signing` | cryptography | Signed search logs |
 | `bibliography` | bibtexparser | Reading and writing BibTeX |
 | `zotero` | pyzotero | Zotero library sync |
 | `agentic` | jinja2, langchain, langchain-openai, langgraph, openai | LLM agents and claim verification |
 | `semanticscholar` | semanticscholar | The library-backed Semantic Scholar client |
-| `enrichment` | cryptography, semanticscholar | Enrichment clients |
+| `enrichment` | semanticscholar | Enrichment clients |
+| `benchmark` | huggingface-hub | Downloading the published parser benchmark datasets |
 | `standard` | the `analytics`, `visualization` and `export` packages, plus ipykernel, ipython, ipywidgets, jupyterlab, notebook, requests-cache and rich | Everyday notebook work |
 | `all` | every package in the rows above | All optional features |
 

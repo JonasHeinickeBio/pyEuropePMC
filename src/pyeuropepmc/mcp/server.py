@@ -39,7 +39,7 @@ Tools:
 
     Full-text & figures:
         fulltext_index_query  — Search local SQLite FTS5 full-text index
-        paper_figures         — Extract figures from PMC Open Access articles
+        paper_figures         — Figures, tables and supplementary files of a PMC article
 
     Screening & review:
         paper_screening       — PRISMA-compliant automated screening
@@ -57,6 +57,7 @@ Tools:
 from __future__ import annotations
 
 import argparse
+from collections import Counter
 from collections.abc import Callable
 from functools import partial
 from importlib.metadata import PackageNotFoundError, version as _pkg_version
@@ -74,8 +75,14 @@ from pydantic import Field
 
 from pyeuropepmc import SearchClient
 from pyeuropepmc.cache.cache import CacheConfig
+from pyeuropepmc.core.exceptions import ParsingError
 
-# Optional: new literature modules
+# The pyeuropepmc modules below import without any extra: each one loads its
+# optional libraries lazily. A flag that only records whether the module
+# imported is therefore True in a bare install, and it is no evidence that a
+# tool will work. Flags for tools that need an extra check that extra itself.
+
+# Part of the core install
 try:
     from pyeuropepmc.features.search import UnifiedSearch
 
@@ -97,7 +104,6 @@ try:
 except ImportError:
     CLINICAL_TRIALS_AVAILABLE = False
 
-# Optional: processing modules
 try:
     from pyeuropepmc.features.fulltext.index import FullTextIndex
 
@@ -112,19 +118,22 @@ try:
 except ImportError:
     FIGURE_EXTRACTOR_AVAILABLE = False
 
-# Optional: LLM tools
+# LLM tools: need the `agentic` extra. Without LangChain the client imports,
+# disables itself and the tools returned empty analyses instead of an error.
 try:
     from pyeuropepmc.agentic.agents import SmartCitationAnalysis
-    from pyeuropepmc.agentic.llm_client import create_llm_client
+    from pyeuropepmc.agentic.llm_client import LANGCHAIN_AVAILABLE, create_llm_client
 
-    LLM_AVAILABLE = True
+    LLM_AVAILABLE = LANGCHAIN_AVAILABLE
 except ImportError:
     LLM_AVAILABLE = False
 
-# Optional: bibliography tools
+# Bibliography tools: the bib_* tools parse BibTeX and need the `bibliography`
+# extra (bibtexparser); the ref_* tools resolve identifiers over HTTP and need
+# nothing beyond the core install.
 try:
     from pyeuropepmc.features.bibliography import (
-        BIBTEXPARSER_AVAILABLE,  # noqa: F401  (availability flag)
+        BIBTEXPARSER_AVAILABLE,
         BibtexManager,
         CitationConverter,
         ReferenceResolver,
@@ -133,6 +142,7 @@ try:
     BIBLIOGRAPHY_AVAILABLE = True
 except ImportError:
     BIBLIOGRAPHY_AVAILABLE = False
+    BIBTEXPARSER_AVAILABLE = False
 
 
 logger = logging.getLogger("pyeuropepmc.mcp")
@@ -286,9 +296,16 @@ async def _run_blocking(fn: Callable[..., _R], *args: Any, **kwargs: Any) -> _R:
     return await anyio.to_thread.run_sync(partial(fn, *args, **kwargs))
 
 
-def _require_available(flag: bool, feature: str, extra: str) -> None:
-    if not flag:
-        raise ToolError(f"{feature} not available. Install with: pip install pyeuropepmc[{extra}]")
+def _require_available(flag: bool, feature: str, extra: str | None = None) -> None:
+    if flag:
+        return
+    if extra is None:
+        # No extra would help: the module is part of the core install.
+        raise ToolError(
+            f"{feature} not available: it is part of the core install but failed to "
+            "import. Reinstall pyeuropepmc."
+        )
+    raise ToolError(f"{feature} not available. Install with: pip install pyeuropepmc[{extra}]")
 
 
 def _dedup_report(report: Any) -> dict[str, Any]:
@@ -351,7 +368,7 @@ async def unified_search(
 ) -> dict[str, Any]:
     """Search across multiple literature sources (PubMed, arXiv, Semantic Scholar, OpenAlex,
     ClinicalTrials.gov) in parallel, with automatic cross-source deduplication."""
-    _require_available(UNIFIED_AVAILABLE, "UnifiedSearch", "all")
+    _require_available(UNIFIED_AVAILABLE, "UnifiedSearch")
     unified = _get_unified()
     assert unified is not None  # guaranteed by _require_available above
 
@@ -456,7 +473,7 @@ async def citation_snowball(
 ) -> dict[str, Any]:
     """Walk the citation graph forward (cited-by), backward (references), or both, with
     configurable depth and a minimum-citation-count filter."""
-    _require_available(CITATION_WALKER_AVAILABLE, "CitationWalker", "all")
+    _require_available(CITATION_WALKER_AVAILABLE, "CitationWalker")
     walker = _citation_walker_cache.get()
 
     strategy_map = {
@@ -499,7 +516,7 @@ async def clinical_trial_search(
     ] = None,
 ) -> dict[str, Any]:
     """Search ClinicalTrials.gov for studies by condition, intervention, or free-text query."""
-    _require_available(CLINICAL_TRIALS_AVAILABLE, "ClinicalTrialsClient", "all")
+    _require_available(CLINICAL_TRIALS_AVAILABLE, "ClinicalTrialsClient")
     client_ = _clinical_trials_cache.get()
 
     if condition and intervention:
@@ -550,7 +567,7 @@ async def fulltext_index_query(
     only safe to use from the thread that created them, and each call may run on a
     different worker thread.
     """
-    _require_available(FTS_AVAILABLE, "FullTextIndex", "all")
+    _require_available(FTS_AVAILABLE, "FullTextIndex")
 
     def _query() -> dict[str, Any]:
         idx = FullTextIndex(db_path=index_path) if index_path else FullTextIndex()
@@ -566,21 +583,39 @@ async def paper_figures(
     pmcid: Annotated[str, Field(description="PMC ID of the article, e.g. PMC1234567")] = "",
     pmid: Annotated[str, Field(description="PubMed ID (alternative to pmcid)")] = "",
     doi: Annotated[str, Field(description="DOI (alternative to pmcid)")] = "",
+    include_tables: Annotated[bool, Field(description="Include <table-wrap> elements")] = True,
+    include_supplements: Annotated[
+        bool, Field(description="Include supplementary material")
+    ] = True,
 ) -> dict[str, Any]:
-    """Extract figures from PMC Open Access articles (labels, captions, and image URLs)."""
-    _require_available(FIGURE_EXTRACTOR_AVAILABLE, "FigureExtractor", "all")
+    """Extract figures, tables and supplementary files from a PMC Open Access article.
+
+    Each item carries its label, caption and the Europe PMC URL its file can be
+    downloaded from. A figure supplement also names the figure it belongs to.
+    """
+    _require_available(FIGURE_EXTRACTOR_AVAILABLE, "FigureExtractor")
     if not any([pmcid, pmid, doi]):
         raise ToolError("One of pmcid, pmid, or doi is required")
 
     extractor = _figure_extractor_cache.get()
-    if pmcid:
-        figures = await _run_blocking(extractor.extract, pmcid=pmcid)
-    elif pmid:
-        figures = await _run_blocking(extractor.extract, pmid=pmid)
-    else:
-        figures = await _run_blocking(extractor.extract, doi=doi)
+    identifier = {"pmcid": pmcid} if pmcid else {"pmid": pmid} if pmid else {"doi": doi}
+    try:
+        figures = await _run_blocking(
+            extractor.extract,
+            include_tables=include_tables,
+            include_supplements=include_supplements,
+            **identifier,
+        )
+    except ParsingError as exc:
+        # A refused document is not "no figures": say so instead of reporting 0.
+        raise ToolError(str(exc)) from exc
 
-    return {"figure_count": len(figures), "figures": [_to_serializable(f) for f in figures]}
+    items = [_as_dict(f) for f in figures]
+    return {
+        "figure_count": len(items),
+        "counts_by_type": dict(Counter(item.get("figure_type", "") for item in items)),
+        "figures": items,
+    }
 
 
 # ---------------------------------------------------------------------------
@@ -788,11 +823,17 @@ async def knowledge_graph(
 
 
 def _require_bibliography() -> tuple[Any, Any, Any]:
-    if not BIBLIOGRAPHY_AVAILABLE:
-        raise ToolError(
-            "Bibliography tools not available. Install with: pip install pyeuropepmc[bibliography]"
-        )
+    """The BibTeX tools' dependencies; bibtexparser comes with the `bibliography` extra."""
+    _require_available(
+        BIBLIOGRAPHY_AVAILABLE and BIBTEXPARSER_AVAILABLE, "BibTeX tools", "bibliography"
+    )
     return _bib_manager_cache.get(), _bib_converter_cache.get(), _bib_resolver_cache.get()
+
+
+def _require_resolver() -> Any:
+    """The identifier resolver, which needs no extra."""
+    _require_available(BIBLIOGRAPHY_AVAILABLE, "ReferenceResolver")
+    return _bib_resolver_cache.get()
 
 
 @mcp.tool(annotations=_ro("Parse BibTeX", local=True))
@@ -847,7 +888,7 @@ async def ref_resolve_doi(
     doi: Annotated[str, Field(description="DOI to resolve")],
 ) -> dict[str, Any]:
     """Resolve a DOI to bibliographic metadata."""
-    _, _, resolver = _require_bibliography()
+    resolver = _require_resolver()
     ref = await _run_blocking(resolver.resolve_doi, doi)
     if ref is None:
         raise ToolError(f"No metadata found for DOI: {doi}")
@@ -859,7 +900,7 @@ async def ref_resolve_pmid(
     pmid: Annotated[str, Field(description="PubMed ID")],
 ) -> dict[str, Any]:
     """Resolve a PubMed ID to bibliographic metadata."""
-    _, _, resolver = _require_bibliography()
+    resolver = _require_resolver()
     ref = await _run_blocking(resolver.resolve_pmid, pmid)
     if ref is None:
         raise ToolError(f"No metadata found for PMID: {pmid}")

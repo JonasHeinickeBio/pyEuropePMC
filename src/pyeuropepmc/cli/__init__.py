@@ -6,6 +6,8 @@ Provides a ``typer``-based CLI with subcommand groups:
 - ``benchmark`` — Run benchmarks, profile articles, manage datasets
 - ``claim`` — Multi-agent claim verification with LangGraph
 - ``normalize`` — Normalize JATS XML for text mining pipelines
+- ``unified_search`` — Unified multi-source search with deduplication
+- ``mcp`` — Run the MCP server (``pyeuropepmc-mcp`` by another name)
 
 Environment
 -----------
@@ -54,6 +56,30 @@ app.add_typer(
     name="unified_search",
     help="Unified multi-source search with deduplication",
 )
+
+
+@app.command(
+    name="mcp",
+    help="Run the MCP server (the same server as the pyeuropepmc-mcp command)",
+    context_settings={
+        "allow_extra_args": True,
+        "ignore_unknown_options": True,
+        # The server's own argument parser owns --transport, --host, --port,
+        # --log-level and --help; click must not intercept them.
+        "help_option_names": [],
+    },
+)
+def mcp_command(ctx: typer.Context) -> None:
+    """Run the MCP server.
+
+    ``pyeuropepmc-mcp`` is the same server. This subcommand exists because a
+    client that launches the package with ``uvx pyeuropepmc`` gets the console
+    script named after the distribution - this CLI - and has no way to ask for
+    the other one; ``uvx pyeuropepmc mcp`` reaches the server with no install.
+    """
+    from pyeuropepmc.mcp.server import _main_entry
+
+    _main_entry(ctx.args)
 
 
 if __name__ == "__main__":

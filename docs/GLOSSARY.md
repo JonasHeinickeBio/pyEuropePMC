@@ -58,7 +58,7 @@ Extracts metadata, sections, tables, figures and references from JATS XML, and c
 Turns search responses in JSON, XML or Dublin Core into lists of record dicts.
 
 **JATSNormalizer**
-Prepares JATS XML for text mining (`normalize_xml()`, `normalize_text()`, `normalize_sections()`) and labels sections with canonical types such as `intro`, `methods`, `results` and `discussion`. Known limitation: it raises a parse error on documents that contain numeric character references such as `&#x0003c;`.
+Prepares JATS XML for text mining (`normalize_xml()`, `normalize_text()`, `normalize_sections()`) and labels sections with canonical types such as `intro`, `methods`, `results` and `discussion`. See [JATS normalization](features/parsing/jats-normalization.md).
 
 **UnifiedSearch**
 Searches several services at once, translating the query for each, and merges duplicate records. See [Multi-source search](features/multi-source-search.md).

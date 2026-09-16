@@ -135,28 +135,31 @@ def build_paper_entities(
     Build entity models from a FullTextXMLParser instance.
 
     This function extracts data from the parser and constructs typed entity models
-    for the paper, authors, sections, tables, and references.
+    for the paper, authors, sections, tables, figures, and references.
 
     Parameters
     ----------
     parser : FullTextXMLParser
         Parser instance with loaded XML content
+    search_data : dict, optional
+        One Europe PMC search result record, merged into the paper.
 
     Returns
     -------
     tuple
-        A tuple containing:
+        A tuple of six values:
         - PaperEntity: The main paper entity
         - list[AuthorEntity]: List of author entities
         - list[SectionEntity]: List of section entities
         - list[TableEntity]: List of table entities
+        - list[FigureEntity]: List of figure entities
         - list[ReferenceEntity]: List of reference entities
 
     Examples
     --------
     >>> from pyeuropepmc.features.fulltext.fulltext_parser import FullTextXMLParser
     >>> parser = FullTextXMLParser(xml_content)
-    >>> paper, authors, sections, tables, refs = build_paper_entities(parser)
+    >>> paper, authors, sections, tables, figures, refs = build_paper_entities(parser)
     >>> print(paper.title)
     Sample Article Title
     """
@@ -275,17 +278,18 @@ def build_paper_entities(
         )
         tables.append(table)
 
-    # Build FigureEntity list (placeholder - figure extraction not yet implemented)
+    # Build FigureEntity list
     figures: list[FigureEntity] = []
-    # TODO: Implement figure extraction in parser and add here
-    # for figure_data in parser.extract_figures():
-    #     figure = FigureEntity(
-    #         label=figure_data.get("label"),
-    #         caption=figure_data.get("caption"),
-    #         figure_label=figure_data.get("label"),
-    #         graphic_uri=figure_data.get("graphic_uri"),
-    #     )
-    #     figures.append(figure)
+    for figure_data in parser.extract_figures():
+        figure = FigureEntity(
+            label=figure_data.get("label"),
+            caption=figure_data.get("caption"),
+            figure_label=figure_data.get("label"),
+            # The xlink:href of <graphic>: a file name within the article
+            # package, e.g. "pone.0012345.g001", not a full URL.
+            graphic_uri=figure_data.get("graphic_uri"),
+        )
+        figures.append(figure)
 
     # Build ReferenceEntity list
     references = []

@@ -963,14 +963,19 @@ class SearchClient(BaseAPIClient):
         """
         return self._cache.get_health()
 
-    def invalidate_search_cache(self, pattern: str = "search:*") -> int:
+    def invalidate_search_cache(self, pattern: str = "*:search*") -> int:
         """
         Invalidate cached search results matching a pattern.
+
+        Cache keys are ``{data_type}:v{version}:{prefix}:{hash}``, for example
+        ``general:v1:search:6950a79a94574e15``, so a pattern selects entries by
+        their prefix, never by query text: the query is hashed into the key.
 
         Parameters
         ----------
         pattern : str, optional
-            Glob pattern to match cache keys (default: "search:*" for all searches).
+            Glob pattern to match cache keys. The default ``"*:search*"``
+            matches every ``search()`` and ``search_post()`` entry.
 
         Returns
         -------
@@ -979,9 +984,11 @@ class SearchClient(BaseAPIClient):
 
         Examples
         --------
-        >>> # Clear all search caches
-        >>> client.invalidate_search_cache("search:*")
-        >>> # Clear specific query caches
-        >>> client.invalidate_search_cache("search:*cancer*")
+        >>> # Clear every cached search
+        >>> client.invalidate_search_cache()
+        >>> # Clear only the GET search entries
+        >>> client.invalidate_search_cache("*:search:*")
+        >>> # Clear only the POST search entries
+        >>> client.invalidate_search_cache("*:search_post:*")
         """
         return self._cache.invalidate_pattern(pattern)

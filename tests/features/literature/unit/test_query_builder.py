@@ -127,10 +127,30 @@ class TestDateRangeFilters:
         assert "PUB_YEAR:[1000 TO 2023]" in query
 
     def test_date_range_with_dates(self) -> None:
-        """Test date range with specific dates."""
+        """Day-precision ranges use FIRST_PDATE; PUB_YEAR only holds years."""
         qb = QueryBuilder(validate=False)
         query = qb.date_range(start_date="2020-01-01", end_date="2023-12-31").build()
-        assert "PUB_YEAR:[2020-01-01 TO 2023-12-31]" in query
+        assert "FIRST_PDATE:[2020-01-01 TO 2023-12-31]" in query
+        assert "PUB_YEAR" not in query
+
+    def test_date_range_start_date_only(self) -> None:
+        """An open-ended date range keeps the wildcard end."""
+        query = QueryBuilder(validate=False).date_range(start_date="2020-01-01").build()
+        assert "FIRST_PDATE:[2020-01-01 TO *]" in query
+
+    def test_date_range_end_date_only(self) -> None:
+        """An open-ended date range keeps the wildcard start."""
+        query = QueryBuilder(validate=False).date_range(end_date="2023-12-31").build()
+        assert "FIRST_PDATE:[* TO 2023-12-31]" in query
+
+    def test_date_range_dates_win_over_years(self) -> None:
+        """Dates take precedence over years, as documented."""
+        query = (
+            QueryBuilder(validate=False)
+            .date_range(start_year=1999, end_year=2001, start_date="2020-01-01")
+            .build()
+        )
+        assert query == "(FIRST_PDATE:[2020-01-01 TO *])"
 
     def test_invalid_start_year_raises_error(self) -> None:
         """Test that invalid start year raises an error."""

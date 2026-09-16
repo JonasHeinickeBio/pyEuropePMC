@@ -23,6 +23,8 @@ of docling, pubmed_parser, and ncbijs/jats.
 from __future__ import annotations
 
 import contextlib
+import copy
+import dataclasses
 from dataclasses import dataclass, field
 from enum import Enum
 import logging
@@ -31,7 +33,11 @@ from typing import Any, ClassVar
 from xml.etree import ElementTree as ET  # nosec B405
 
 from pyeuropepmc.features.fulltext.config.element_patterns import ElementPatterns
+from pyeuropepmc.features.fulltext.extensions.mathml import MathMLConverter, serialize_mathml
 from pyeuropepmc.features.fulltext.parsers.base_parser import BaseParser
+from pyeuropepmc.features.fulltext.utils.figure_assets import own_graphic
+from pyeuropepmc.features.fulltext.utils.flat_blocks import FLOATS_TITLE, code_text
+from pyeuropepmc.features.fulltext.utils.table_grid import TableGrid, build_table_grid, find_table
 from pyeuropepmc.features.fulltext.utils.xml_helpers import BLOCK_LEVEL_TAGS, XMLHelper
 
 logger = logging.getLogger(__name__)
@@ -431,73 +437,83 @@ class StructuredSection:
         max_tokens : int, optional
             Maximum tokens per chunk (default 512).
         overlap : int, optional
-            Token overlap between consecutive chunks (default 50).
+            Token overlap between consecutive chunks (default 50): trailing
+            blocks of one chunk, up to this many tokens, begin the next.
         approx_chars_per_token : int, optional
             Approximation for token estimation (default 4 for English text).
 
         Returns
         -------
         list[dict[str, Any]]
-            List of chunk dicts with keys: ``text``, ``section_path``,
-            ``block_type``, ``section_type``, ``chunk_index``, ``estimated_tokens``.
+            Chunks in document order, with keys ``text``, ``section_path``
+            (the section's path, or its title when it has none),
+            ``section_type``, ``chunk_index`` and ``estimated_tokens``.
+
+        Notes
+        -----
+        A block longer than ``max_tokens`` is split at sentence ends, and a
+        sentence longer than that at spaces. Four things were wrong here: the
+        chunks carried the section *title* as ``section_path``; the pieces of a
+        split block had an empty ``section_type``; they were emitted before
+        the text gathered ahead of them, out of document order; and the overlap
+        was measured in tokens against a limit in characters, so it kept four
+        times as much as asked.
         """
+        path = self.section_path or self.title
         chunks: list[dict[str, Any]] = []
-        current_chunk: list[str] = []
-        current_tokens = 0
-        max_chars = max_tokens * approx_chars_per_token
+        max_chars = max(1, max_tokens * approx_chars_per_token)
 
-        for block in self.content:
-            block_text = self._block_text(block)
-            block_chars = len(block_text)
-            block_tokens = block_chars // approx_chars_per_token
+        def estimate(text: str) -> int:
+            return len(text) // approx_chars_per_token
 
-            # If a single block exceeds max_tokens, split it
-            if block_tokens > max_tokens:
-                self._split_block_into_chunks(block_text, max_chars, chunks, self.title)
-                continue
-
-            # If adding this block would exceed max_tokens, flush current chunk
-            if current_tokens + block_tokens > max_tokens and current_chunk:
-                chunk_text = "\n\n".join(current_chunk)
-                chunks.append(
-                    {
-                        "text": chunk_text,
-                        "section_path": self.title,
-                        "section_type": self.section_type,
-                        "chunk_index": len(chunks),
-                        "estimated_tokens": current_tokens,
-                    }
-                )
-                # Keep overlap blocks
-                overlap_chars = overlap * approx_chars_per_token
-                retained: list[str] = []
-                retained_tokens = 0
-                for cb in reversed(current_chunk):
-                    cb_chars = len(cb)
-                    cb_tokens = cb_chars // approx_chars_per_token
-                    if retained_tokens + cb_tokens > overlap_chars:
-                        break
-                    retained.insert(0, cb)
-                    retained_tokens += cb_tokens
-                current_chunk = retained
-                current_tokens = retained_tokens
-
-            current_chunk.append(block_text)
-            current_tokens += block_tokens
-
-        # Flush final chunk
-        if current_chunk:
-            chunk_text = "\n\n".join(current_chunk)
+        def emit(text: str) -> None:
             chunks.append(
                 {
-                    "text": chunk_text,
-                    "section_path": self.title,
+                    "text": text,
+                    "section_path": path,
                     "section_type": self.section_type,
                     "chunk_index": len(chunks),
-                    "estimated_tokens": current_tokens,
+                    "estimated_tokens": estimate(text),
                 }
             )
 
+        current: list[str] = []
+        current_tokens = 0
+        for block in self.content:
+            block_text = self._block_text(block)
+            if not block_text:
+                continue
+            block_tokens = estimate(block_text)
+
+            if block_tokens > max_tokens:
+                # What was gathered before this block comes first.
+                if current:
+                    emit("\n\n".join(current))
+                    current, current_tokens = [], 0
+                for piece in self._split_text(block_text, max_chars):
+                    emit(piece)
+                continue
+
+            if current and current_tokens + block_tokens > max_tokens:
+                emit("\n\n".join(current))
+                retained: list[str] = []
+                retained_tokens = 0
+                for previous in reversed(current):
+                    previous_tokens = estimate(previous)
+                    if (
+                        retained_tokens + previous_tokens > overlap
+                        or retained_tokens + previous_tokens + block_tokens > max_tokens
+                    ):
+                        break
+                    retained.insert(0, previous)
+                    retained_tokens += previous_tokens
+                current, current_tokens = retained, retained_tokens
+
+            current.append(block_text)
+            current_tokens += block_tokens
+
+        if current:
+            emit("\n\n".join(current))
         return chunks
 
     @staticmethod
@@ -518,39 +534,34 @@ class StructuredSection:
         return ""
 
     @staticmethod
-    def _split_block_into_chunks(
-        text: str,
-        max_chars: int,
-        chunks: list[dict[str, Any]],
-        section_title: str,
-    ) -> None:
-        """Split an oversized block into smaller chunks by sentence boundaries."""
-        sentences = re.split(r"(?<=[.!?])\s+", text)
+    def _split_text(text: str, max_chars: int) -> list[str]:
+        """Pieces of ``text`` no longer than ``max_chars``.
+
+        Split at sentence ends; a sentence that is itself too long at spaces;
+        a word that is too long, where it has to be.
+        """
+        pieces: list[str] = []
         current = ""
-        for sentence in sentences:
-            if len(current) + len(sentence) > max_chars and current:
-                chunks.append(
-                    {
-                        "text": current.strip(),
-                        "section_path": section_title,
-                        "section_type": "",
-                        "chunk_index": len(chunks),
-                        "estimated_tokens": len(current) // 4,
-                    }
-                )
-                current = sentence
-            else:
-                current += " " + sentence if current else sentence
+        for sentence in re.split(r"(?<=[.!?])\s+", text.strip()):
+            units = [sentence] if len(sentence) <= max_chars else sentence.split()
+            for unit in units:
+                while len(unit) > max_chars:
+                    if current:
+                        pieces.append(current)
+                        current = ""
+                    pieces.append(unit[:max_chars])
+                    unit = unit[max_chars:]
+                if not unit:
+                    continue
+                candidate = f"{current} {unit}" if current else unit
+                if len(candidate) > max_chars and current:
+                    pieces.append(current)
+                    current = unit
+                else:
+                    current = candidate
         if current:
-            chunks.append(
-                {
-                    "text": current.strip(),
-                    "section_path": section_title,
-                    "section_type": "",
-                    "chunk_index": len(chunks),
-                    "estimated_tokens": len(current) // 4,
-                }
-            )
+            pieces.append(current)
+        return pieces
 
     def to_langchain_documents(
         self,
@@ -635,10 +646,17 @@ class ContentBlockExtractor(BaseParser):
         "media": "media",
     }
 
-    # A <table-wrap>, <table> or <fig> inside a <p> is not part of the paragraph's
-    # prose. Folding it into the paragraph block lost its rows and caption and ran
-    # its cells together, so _handle_paragraph splits the paragraph around it.
-    PARAGRAPH_SPLIT_TAGS: ClassVar[frozenset[str]] = frozenset({"table-wrap", "table", "fig"})
+    # A <table-wrap>, <table>, <fig> or <disp-formula> inside a <p> is not part
+    # of the paragraph's prose. Folding it into the paragraph block lost its
+    # rows, caption or MathML and ran its text into the sentence around it, so
+    # _handle_paragraph splits the paragraph around it.
+    #
+    # A display formula is set on its own line by every renderer of the source
+    # document; leaving it inline produced sentences like "models of the form
+    # y˙=F(y(t),θ,t,…), (1) with N-dimensional state vector".
+    PARAGRAPH_SPLIT_TAGS: ClassVar[frozenset[str]] = frozenset(
+        {"table-wrap", "table", "fig", "disp-formula"}
+    )
 
     def __init__(
         self,
@@ -724,6 +742,7 @@ class ContentBlockExtractor(BaseParser):
             body_elem = self.root.find(".//body")
             if body_elem is not None:
                 self._collect_sections(body_elem, sections)
+            sections.extend(self._extract_floats_sections())
 
         # Extract article title section (appears first in output)
         article_title_section = self._extract_article_title()
@@ -745,6 +764,37 @@ class ContentBlockExtractor(BaseParser):
         logger.debug(f"Extracted {len(sections)} structured sections")
         return sections
 
+    def _extract_floats_sections(self) -> list[StructuredSection]:
+        """The figures and tables an article keeps in ``<floats-group>``.
+
+        NIH author manuscripts place every figure and table there, outside
+        ``<body>``, and ``extract_sections`` walked only the body: PMC5393345's
+        figure and table reached ``extract_figures()`` and ``extract_tables()``
+        and nothing else. They are body content wherever the XML stores them,
+        so the section is typed ``body``, placed after the body's sections.
+        """
+        if self.root is None:
+            return []
+        blocks: list[ContentBlock] = []
+        for group in self._own_floats_groups(self.root):
+            for child in group:
+                tag = self._get_local_tag(child.tag)
+                handler_name = self.JATS_BLOCK_TAGS.get(tag)
+                if handler_name and handler_name in self._handler_map:
+                    blocks.extend(self._handler_map[handler_name](child))
+                else:
+                    blocks.extend(self._handle_special_section_child(child, tag))
+        if not blocks:
+            return []
+        return [
+            StructuredSection(
+                title=FLOATS_TITLE,
+                content=blocks,
+                section_type="body",
+                section_path=FLOATS_TITLE,
+            )
+        ]
+
     def _collect_sections(
         self,
         parent: ET.Element,
@@ -762,10 +812,14 @@ class ContentBlockExtractor(BaseParser):
         Also handles bare ``<p>`` elements directly under ``<body>`` (no ``<sec>`` wrapper),
         which some publishers like PLOS use.
         """
-        # Collect bare <p> elements directly under this parent
-        # (not wrapped in <sec>), which some publishers like PLOS use
-        bare_ps: list[ET.Element] = []
-        other_children: list[tuple[ET.Element, str]] = []
+        # Content directly under <body>, outside any <sec>: the whole body for
+        # publishers like PLOS, and every peer-review report. Kept in document
+        # order - bare <p> used to come first and every other block after them,
+        # which pulled apart the quoted reviewer comments of an eLife author
+        # response from the replies written beneath each one - and a child with
+        # no dedicated handler, such as <supplementary-material>, goes through
+        # the same fallback as inside a section instead of being dropped.
+        bare: list[ET.Element] = []
         for child in parent:
             tag = self._get_local_tag(child.tag)
             if tag == "sec":
@@ -780,28 +834,21 @@ class ContentBlockExtractor(BaseParser):
             elif tag == "body":
                 # Descend into body elements
                 self._collect_sections(child, sections, parent_path)
-            elif tag == "p":
-                # Collect bare <p> elements for processing after the loop
-                bare_ps.append(child)
-            else:
-                # Handle other block-level elements directly under <body>
-                # (fig, disp-quote, table-wrap, etc.) — dispatch via handler map
+            elif tag:
+                bare.append(child)
+
+        # Only for <body> parents: a <sec> parent already captured its content
+        # in _extract_structured_section, and repeating it here would duplicate
+        # it.
+        if bare and self._get_local_tag(parent.tag) == "body":
+            content_blocks: list[ContentBlock] = []
+            for child in bare:
+                tag = self._get_local_tag(child.tag)
                 handler_name = self.JATS_BLOCK_TAGS.get(tag)
                 if handler_name and handler_name in self._handler_map:
-                    other_children.append((child, handler_name))
-
-        # Process bare <p> elements as a synthetic section.
-        # ONLY for <body> parents — <sec> parents already capture their
-        # content via _extract_structured_section, and duplicating bare <p>
-        # inside <sec> would inflate section counts.
-        if (bare_ps or other_children) and self._get_local_tag(parent.tag) == "body":
-            content_blocks: list[ContentBlock] = []
-            for p_elem in bare_ps:
-                blocks = self._handle_paragraph(p_elem)
-                content_blocks.extend(blocks)
-            for child_elem, handler_name in other_children:
-                blocks = self._handler_map[handler_name](child_elem)
-                content_blocks.extend(blocks)
+                    content_blocks.extend(self._handler_map[handler_name](child))
+                else:
+                    content_blocks.extend(self._handle_special_section_child(child, tag))
             if content_blocks:
                 section_path = parent_path or "body"
                 section = StructuredSection(
@@ -911,6 +958,12 @@ class ContentBlockExtractor(BaseParser):
             )
         if tag == "fn-group":
             return self._extract_fn_group_blocks(child)
+        if tag == "ref-list":
+            # Rendered once, as the References section with the rest of the back
+            # matter. PMC1764484 keeps its reference list inside a <sec> of the
+            # body, and got it twice: flattened into one unknown block there,
+            # and again as References.
+            return []
         # Preserve unknown blocks as fallback
         text = XMLHelper.get_text_content(child)
         if text.strip():
@@ -919,24 +972,121 @@ class ContentBlockExtractor(BaseParser):
 
     def _extract_fn_group_blocks(self, fn_group: ET.Element) -> list[ContentBlock]:
         """Extract footnotes from a ``<fn-group>`` with inline tracking."""
-        blocks: list[ContentBlock] = []
-        for fn in fn_group.findall("fn"):
-            fn_text, fn_inlines, _ = self._extract_inlines_recursive(fn, 0)
-            joined = "".join(fn_text).strip()
-            if not joined:
-                continue
-            label_elem = fn.find("label")
-            prefix = ""
-            if label_elem is not None:
-                prefix = XMLHelper.get_text_content(label_elem) + " "
-            full_text = f"{prefix}{joined}"
-            if fn_inlines:
-                blocks.append(
-                    ContentBlock.paragraph_with_inlines(text=full_text, inlines=fn_inlines)
-                )
-            else:
-                blocks.append(ContentBlock.paragraph(full_text))
-        return blocks
+        return [block for fn in fn_group.findall("fn") if (block := self._footnote_block(fn))]
+
+    def _labelled_paragraph(
+        self, label: str, pieces: list[tuple[str, list[InlineElement]]]
+    ) -> ContentBlock | None:
+        """A paragraph of ``label`` then ``pieces``, each inline re-based onto it."""
+        text, inlines = self._join_pieces([(label, []), *pieces])
+        if not text:
+            return None
+        return ContentBlock.paragraph_with_inlines(text=text, inlines=inlines)
+
+    def _without_label(self, element: ET.Element) -> ET.Element:
+        """A copy of ``element`` without its direct ``<label>``, which is taken apart."""
+        copied = copy.deepcopy(element)
+        for child in list(copied):
+            if self._get_local_tag(child.tag) == "label":
+                if child.tail:
+                    # the text after the label still belongs to the element
+                    previous = copied.text or ""
+                    copied.text = previous + child.tail
+                copied.remove(child)
+        return copied
+
+    def _footnote_block(self, fn: ET.Element) -> ContentBlock | None:
+        """A footnote: its label, then its text, the label once.
+
+        The label was walked as part of the footnote and then prefixed again,
+        and the prefix moved the text without moving its inlines.
+        """
+        label = XMLHelper.get_text_content(fn.find("label"))
+        body = self._text_with_inlines(self._without_label(fn))
+        if not body[0]:
+            return None
+        return self._labelled_paragraph(label, [body])
+
+    #: Punctuation a citation field is written against, with no space between.
+    _NO_SPACE_BEFORE: ClassVar[frozenset[str]] = frozenset(".,;:)]}")
+    _NO_SPACE_AFTER: ClassVar[frozenset[str]] = frozenset("([{")
+
+    def _separate_citation_fields(self, citation: ET.Element) -> ET.Element:
+        """A copy of ``citation`` with a space between fields written against each other.
+
+        An ``<element-citation>`` holds its fields - ``<surname>``,
+        ``<given-names>``, ``<source>``, ``<year>`` - with no text between them,
+        so a reference read "RowlettVWImpact of membrane ...J. Bacteriol.2017".
+        No space is added against punctuation, nor inside an inline element.
+        """
+        copied = copy.deepcopy(citation)
+        for parent in copied.iter():
+            children = [c for c in parent if isinstance(c.tag, str)]
+            for index, child in enumerate(children):
+                if self._get_local_tag(child.tag) in self.INLINE_TAG_MAP:
+                    continue
+                text = "".join(child.itertext())
+                first = "" if not text.strip() or text[:1].isspace() else text[0]
+                if first and first not in self._NO_SPACE_BEFORE:
+                    if index == 0:
+                        before = parent.text or ""
+                        if (
+                            before
+                            and not before[-1].isspace()
+                            and before[-1] not in self._NO_SPACE_AFTER
+                        ):
+                            parent.text = before + " "
+                    else:
+                        previous = children[index - 1]
+                        before = previous.tail or ""
+                        last = before[-1:] if before else "".join(previous.itertext())[-1:]
+                        if last and not last.isspace() and last not in self._NO_SPACE_AFTER:
+                            previous.tail = before + " "
+                tail = child.tail or ""
+                last_own = text[-1:]
+                if (
+                    tail
+                    and not tail[0].isspace()
+                    and tail[0] not in self._NO_SPACE_BEFORE
+                    and last_own
+                    and not last_own.isspace()
+                    and last_own not in self._NO_SPACE_AFTER
+                ):
+                    child.tail = " " + tail
+        return copied
+
+    _CITATION_TAGS: ClassVar[tuple[str, ...]] = (
+        "mixed-citation",
+        "element-citation",
+        "nlm-citation",
+    )
+
+    def _reference_block(self, ref: ET.Element) -> ContentBlock | None:
+        """One ``<ref>``: its label, then its citation, each once.
+
+        Three things were wrong with the text before: the label was walked as
+        part of the reference and prefixed again ("1. 1.Rowlett"); a
+        ``<citation-alternatives>`` gave its ``<element-citation>`` and its
+        ``<mixed-citation>`` one after the other, so the reference was there
+        twice; and the fields of an element citation ran together. The prefix
+        also shifted the text without its inlines, so in PMC11671585 134 of
+        the reference inlines pointed at the wrong characters.
+
+        A ``<mixed-citation>``, which carries the publisher's own punctuation,
+        is preferred to an ``<element-citation>`` of the same reference.
+        """
+        label = XMLHelper.get_text_content(ref.find("label"))
+        citations: list[ET.Element] = []
+        for tag in self._CITATION_TAGS:
+            citations = [el for el in ref.iter() if self._get_local_tag(el.tag) == tag]
+            if citations:
+                break
+        sources = citations or [self._without_label(ref)]
+        pieces = [self._text_with_inlines(self._separate_citation_fields(c)) for c in sources]
+        block = self._labelled_paragraph(label, [piece for piece in pieces if piece[0]])
+        if block is not None and ref.get("id"):
+            block.target_id = ref.get("id", "")
+        return block
 
     @staticmethod
     def _needs_separator(parts: list[str]) -> bool:
@@ -945,6 +1095,37 @@ class ContentBlockExtractor(BaseParser):
             if part:
                 return not part[-1].isspace()
         return False
+
+    @classmethod
+    def _open_inline(cls, child: ET.Element, parts: list[str], inline: str | None) -> int:
+        """Keep the whitespace an inline element starts with, outside its span.
+
+        An inline element's text is taken stripped, so ``<italic> coli</italic>``
+        after "E." lost the space between them. Returns how many characters were
+        added, for the caller's position.
+        """
+        raw = "".join(child.itertext()) if inline else ""
+        if raw[:1].isspace() and cls._needs_separator(parts):
+            parts.append(" ")
+            return 1
+        return 0
+
+    @classmethod
+    def _close_inline(cls, child: ET.Element, parts: list[str], inline: str | None) -> int:
+        """Keep the whitespace an inline element ends with, outside its span.
+
+        ``R<sup>2 </sup>= 0.90`` read "R2= 0.90", and ``<bold>'*' </bold>indicate``
+        read "'*'indicate": 51 run-together words in PMC1764484 alone.
+        """
+        raw = "".join(child.itertext()) if inline else ""
+        if (
+            raw[-1:].isspace()
+            and not (child.tail or "")[:1].isspace()
+            and cls._needs_separator(parts)
+        ):
+            parts.append(" ")
+            return 1
+        return 0
 
     @staticmethod
     def _paragraph_from_parts(
@@ -1012,6 +1193,8 @@ class ContentBlockExtractor(BaseParser):
             if block_child and self._needs_separator(parts):
                 parts.append(" ")
                 pos += 1
+
+            pos += self._open_inline(child, parts, inline_handler)
 
             if inline_handler == "xref":
                 # Cross-reference
@@ -1111,6 +1294,8 @@ class ContentBlockExtractor(BaseParser):
                 )
                 parts.extend(child_parts)
                 inlines.extend(child_inlines)
+
+            pos += self._close_inline(child, parts, inline_handler)
 
             # Tail text after this child
             if child.tail:
@@ -1303,6 +1488,8 @@ class ContentBlockExtractor(BaseParser):
                 parts.append(" ")
                 pos += 1
 
+            pos += self._open_inline(child, parts, inline_handler)
+
             if inline_handler == "xref":
                 child_text = self._resolve_entities(XMLHelper.get_text_content(child))
                 ref_type = child.get("ref-type", "")
@@ -1408,6 +1595,8 @@ class ContentBlockExtractor(BaseParser):
                 parts.extend(nested_parts)
                 inlines.extend(nested_inlines)
 
+            pos += self._close_inline(child, parts, inline_handler)
+
             # Tail text after this child
             if child.tail:
                 tail = self._resolve_entities(child.tail)
@@ -1420,94 +1609,161 @@ class ContentBlockExtractor(BaseParser):
         return parts, inlines, pos
 
     def _handle_list(self, elem: ET.Element) -> list[ContentBlock]:
-        """Handle <list> elements with inline-aware item extraction."""
+        """Handle ``<list>`` elements with inline-aware item extraction.
+
+        An inline's ``position`` indexes the item named by its
+        ``metadata["item"]``. The block's ``inlines`` used to hold item-relative
+        positions with nothing to say which item, and lost the ``ref_type`` and
+        ``target_id`` of every cross-reference on the way;
+        ``metadata["item_inlines"]`` skipped items without inlines, so its
+        entries could not be traced to an item either.
+        """
         list_type = elem.get("list-type", "unordered")
         items: list[str] = []
-        item_inlines: list[list[dict[str, Any]]] = []
+        records: list[dict[str, Any]] = []
+        all_inlines: list[InlineElement] = []
         for item in elem.findall("list-item"):
-            parts, inlines, _ = self._extract_inlines_recursive(item, 0)
-            text = "".join(parts).strip()
-            if text:
-                items.append(text)
-                if inlines:
-                    item_inlines.append([i.to_dict() for i in inlines])
-        if items:
-            block = ContentBlock.list_block(items=items, list_type=list_type)
-            if item_inlines:
-                block.metadata = block.metadata or {}
-                block.metadata["item_inlines"] = item_inlines
-                # Also aggregate all inlines into block.inlines so the
-                # benchmark's inline recall metric can find them.
-                all_inlines: list[InlineElement] = []
-                for row in item_inlines:
-                    for inline_dict in row:
-                        all_inlines.append(
-                            InlineElement(
-                                type=InlineElementType(inline_dict.get("type", "unknown_inline")),
-                                text=inline_dict.get("text", ""),
-                                position=inline_dict.get("position", 0),
-                                length=inline_dict.get("length", 0),
-                            )
-                        )
-                block.inlines = all_inlines
-            return [block]
-        return []
+            text, inlines = self._text_with_inlines(item)
+            if not text:
+                continue
+            index = len(items)
+            items.append(text)
+            if inlines:
+                records.append({"item": index, "inlines": [i.to_dict() for i in inlines]})
+                all_inlines.extend(
+                    dataclasses.replace(i, metadata={**i.metadata, "item": index}) for i in inlines
+                )
+        if not items:
+            return []
+        block = ContentBlock.list_block(items=items, list_type=list_type)
+        if records:
+            block.metadata = {"item_inlines": records}
+            block.inlines = all_inlines
+        return [block]
 
     def _handle_def_list(self, elem: ET.Element) -> list[ContentBlock]:
-        """Handle <def-list> elements with inline-aware term/def extraction."""
+        """Handle ``<def-list>`` elements with inline-aware term/def extraction.
+
+        An inline's ``position`` indexes the term or definition named by its
+        ``metadata``: ``{"term": i}`` or ``{"definition": i}``.
+        """
         terms: list[dict[str, str]] = []
         all_inlines: list[InlineElement] = []
         for def_item in elem.findall("def-item"):
-            term_elems = def_item.findall("term")
-            def_elems = def_item.findall("def")
-            term_text = ""
-            if term_elems:
-                term_parts, term_inlines, _ = self._extract_inlines_recursive(term_elems[0], 0)
-                term_text = "".join(term_parts).strip()
-                all_inlines.extend(term_inlines)
-            def_text = ""
-            if def_elems:
-                def_parts, def_inlines, _ = self._extract_inlines_recursive(def_elems[0], 0)
-                def_text = "".join(def_parts).strip()
-                all_inlines.extend(def_inlines)
-            if term_text or def_text:
-                terms.append({"term": term_text, "def": def_text})
-        if terms:
-            block = ContentBlock.definition_list(terms=terms)
-            if all_inlines:
-                block.inlines = all_inlines
-            return [block]
-        return []
+            term_elem, def_elem = def_item.find("term"), def_item.find("def")
+            term, term_inlines = (
+                self._text_with_inlines(term_elem) if term_elem is not None else ("", [])
+            )
+            definition, def_inlines = (
+                self._text_with_inlines(def_elem) if def_elem is not None else ("", [])
+            )
+            if not term and not definition:
+                continue
+            index = len(terms)
+            terms.append({"term": term, "def": definition})
+            all_inlines.extend(
+                dataclasses.replace(i, metadata={**i.metadata, "term": index})
+                for i in term_inlines
+            )
+            all_inlines.extend(
+                dataclasses.replace(i, metadata={**i.metadata, "definition": index})
+                for i in def_inlines
+            )
+        if not terms:
+            return []
+        block = ContentBlock.definition_list(terms=terms)
+        if all_inlines:
+            block.inlines = all_inlines
+        return [block]
 
     def _handle_formula(self, elem: ET.Element) -> list[ContentBlock]:
-        """Handle <disp-formula> and <inline-formula> elements."""
+        """Handle ``<disp-formula>`` and ``<inline-formula>`` elements.
+
+        Three renderings of the same expression, because no one of them serves
+        every consumer:
+
+        ``text``
+            the formula as a reader sees it, so a rendering that only knows
+            about plain text still carries the equation;
+        ``tex``
+            LaTeX, from the MathML by way of :class:`MathMLConverter`, or from
+            an author-supplied ``<tex-math>`` when the document ships one;
+        ``mathml``
+            the MathML itself, in the default MathML namespace.
+
+        ``tex`` used to hold the flattened plain text - "y˙=F(y(t),θ,t,…)" -
+        which is not LaTeX and compiles as nothing.
+        """
         label = ""
         label_elem = elem.find("label")
         if label_elem is not None:
             label = XMLHelper.get_text_content(label_elem)
 
-        # Try to extract MathML first
         mathml_elem = elem.find(".//mml:math", self._get_namespace_map())
+        if mathml_elem is None:
+            mathml_elem = next(
+                (e for e in elem.iter() if self._get_local_tag(e.tag) == "math"), None
+            )
+
         tex = ""
         mathml_str = ""
-
         if mathml_elem is not None:
-            mathml_str = ET.tostring(mathml_elem, encoding="unicode")
-            # Basic MathML -> plain text fallback
-            tex = XMLHelper.get_text_content(mathml_elem)
+            mathml_str = serialize_mathml(mathml_elem)
+            with contextlib.suppress(Exception):
+                tex = MathMLConverter().convert_to_latex(mathml_elem).strip()
 
-        # Fallback to alt-text or plain text
-        if not tex.strip():
-            alt_text = elem.find("alt-text")
-            if alt_text is not None:
-                tex = XMLHelper.get_text_content(alt_text)
-            else:
-                tex = XMLHelper.get_text_content(elem)
+        # A <tex-math> is the author's own LaTeX and beats anything derived.
+        tex_math = next((e for e in elem.iter() if self._get_local_tag(e.tag) == "tex-math"), None)
+        if tex_math is not None and (tex_math.text or "").strip():
+            tex = (tex_math.text or "").strip()
 
-        block = ContentBlock.formula(tex=tex.strip(), label=label)
+        text = self._formula_text(elem)
+        if not tex:
+            tex = text
+
+        block = ContentBlock.formula(tex=tex, label=label)
+        block.text = text
         if mathml_str:
             block.mathml = mathml_str
+        uri = self._formula_graphic_uri(elem)
+        if uri:
+            block.uri = uri
+        if not text and not tex:
+            block.parse_status = "partial"
+            block.quality_score = 0.5
+            block.parser_notes = ["formula carries neither text nor MathML"]
         return [block]
+
+    def _formula_text(self, elem: ET.Element) -> str:
+        """The formula as plain text, without its label or any alt text.
+
+        The label is carried separately, and repeating it here would put "(1)"
+        into the middle of the equation.
+        """
+        parts: list[str] = []
+        for child in elem:
+            tag = self._get_local_tag(child.tag)
+            if tag in ("label", "alt-text", "object-id", "permissions"):
+                continue
+            parts.append(XMLHelper.get_text_content(child))
+            if child.tail:
+                parts.append(child.tail)
+        text = " ".join(" ".join(p.split()) for p in parts if p and p.strip())
+        if text.strip():
+            return text.strip()
+        alt_text = elem.find("alt-text")
+        if alt_text is not None:
+            return XMLHelper.get_text_content(alt_text)
+        return XMLHelper.get_text_content(elem)
+
+    def _formula_graphic_uri(self, elem: ET.Element) -> str:
+        """The rendered image a publisher ships alongside the MathML, if any."""
+        for child in elem.iter():
+            if self._get_local_tag(child.tag) == "graphic":
+                href = self._get_xlink_href(child)
+                if href:
+                    return str(href)
+        return ""
 
     def _handle_figure(self, elem: ET.Element) -> list[ContentBlock]:
         """Handle <fig> elements with inline-aware caption extraction."""
@@ -1531,8 +1787,12 @@ class ContentBlockExtractor(BaseParser):
             else:
                 caption = XMLHelper.get_text_content(caption_elem)
 
+        # The figure's own graphic. A `.//graphic` search took the first one
+        # anywhere beneath the figure, which is an inline formula's image when
+        # the caption contains mathematics (PMC10775981 Fig 3 -> e012.jpg), and
+        # a figure supplement's image when the supplement is nested inside.
         uri = ""
-        graphic = elem.find(".//graphic")
+        graphic = own_graphic(elem)
         if graphic is not None:
             uri = str(
                 graphic.get("{http://www.w3.org/1999/xlink}href", "") or graphic.get("href", "")
@@ -1568,37 +1828,97 @@ class ContentBlockExtractor(BaseParser):
                     blocks.append(ContentBlock.unknown_block(jats_tag=tag, text=text.strip()))
         return blocks
 
-    def _extract_table_rows(
-        self, elem: ET.Element
-    ) -> tuple[list[list[str]], list[list[list[dict[str, Any]]]]]:
-        """Extract cell rows and inlines from a table element."""
-        rows: list[list[str]] = []
-        cell_inlines: list[list[list[dict[str, Any]]]] = []
-        for tbody in elem.iter():
-            if self._get_local_tag(tbody.tag) in ("tbody", "thead"):
-                for tr in tbody:
-                    if self._get_local_tag(tr.tag) != "tr":
-                        continue
-                    row_cells: list[str] = []
-                    row_inlines: list[list[dict[str, Any]]] = []
-                    for cell in tr:
-                        tag = self._get_local_tag(cell.tag)
-                        if tag in ("td", "th"):
-                            cell_parts, cell_ils, _ = self._extract_inlines_recursive(cell, 0)
-                            cell_text = "".join(cell_parts).strip()
-                            if not cell_text:
-                                cell_text = XMLHelper.get_text_content(cell).strip()
-                            row_cells.append(cell_text)
-                            if cell_ils:
-                                row_inlines.append([i.to_dict() for i in cell_ils])
-                    if row_cells:
-                        rows.append(row_cells)
-                        if row_inlines:
-                            cell_inlines.append(row_inlines)
-        return rows, cell_inlines
+    #: Parts of a <table-wrap> the table block represents in its own fields.
+    #: Text anywhere else in the wrapper is appended to the block's ``text``.
+    _TABLE_OWN_PARTS: ClassVar[frozenset[str]] = frozenset(
+        {
+            "label",
+            "caption",
+            "table",
+            "alternatives",
+            "table-wrap-foot",
+            "object-id",
+            "graphic",
+            # the rows of a bare <table>, which the grid already holds
+            "thead",
+            "tbody",
+            "tfoot",
+            "tr",
+            "colgroup",
+            "col",
+        }
+    )
+
+    def _text_with_inlines(self, elem: ET.Element) -> tuple[str, list[InlineElement]]:
+        """An element's text, whitespace collapsed, with inlines indexing into it."""
+        parts, inlines, _ = self._extract_inlines_recursive(elem, 0)
+        return self._collapse_whitespace("".join(parts), inlines)
+
+    @staticmethod
+    def _collapse_whitespace(
+        raw: str, inlines: list[InlineElement]
+    ) -> tuple[str, list[InlineElement]]:
+        """Collapse runs of whitespace in ``raw`` and move ``inlines`` with the text.
+
+        Positions were counted in ``raw``. Collapsing without remapping them is
+        how the offsets of a table's inlines came to point at the wrong
+        characters, or past the end of the text altogether.
+        """
+        out: list[str] = []
+        new_index: list[int] = [-1] * len(raw)
+        pending_space = False
+        for index, char in enumerate(raw):
+            if char.isspace():
+                pending_space = bool(out)
+                continue
+            if pending_space:
+                out.append(" ")
+                pending_space = False
+            new_index[index] = len(out)
+            out.append(char)
+        text = "".join(out)
+
+        moved: list[InlineElement] = []
+        for inline in inlines:
+            span = range(max(0, inline.position), min(len(raw), inline.position + inline.length))
+            placed = [new_index[i] for i in span if new_index[i] >= 0]
+            if not placed:
+                continue
+            inline.position = placed[0]
+            inline.length = placed[-1] + 1 - placed[0]
+            inline.text = text[inline.position : inline.position + inline.length]
+            moved.append(inline)
+        return text, moved
 
     def _handle_table(self, elem: ET.Element) -> list[ContentBlock]:
-        """Handle <table-wrap> and <table> elements with cell structure."""
+        """Handle ``<table-wrap>`` and ``<table>`` elements.
+
+        The block carries:
+
+        ``rows``
+            header rows first, then body rows, each as wide as the table. A
+            spanning cell's text stands at its top-left position; the other
+            positions it covers hold ``""``.
+        ``metadata["header_rows"]``
+            how many of ``rows`` are header rows.
+        ``metadata["spans"]``, ``metadata["cell_graphics"]``
+            ``{row, column, rowspan, colspan}`` per spanning cell, and
+            ``{row, column, uri}`` per image in a cell.
+        ``metadata["footer"]``
+            the text of ``<table-wrap-foot>``.
+        ``metadata["cell_inlines"]``
+            ``{row, column, inlines}`` per cell with inline elements; positions
+            there index the cell's own text.
+        ``text``, ``inlines``
+            label, caption, cells and footer in one string, and every inline
+            element of the table with its position in that string.
+
+        Rows used to be read cell by cell with ``colspan`` and ``rowspan``
+        ignored, so every cell after a spanning one sat in the wrong column;
+        the footer and the boundary between header and body were not recorded
+        at all; and ``inlines`` held cell-relative positions against a ``text``
+        they did not index.
+        """
         label = ""
         label_elem = elem.find("label")
         if label_elem is not None:
@@ -1608,56 +1928,122 @@ class ContentBlockExtractor(BaseParser):
         caption_inlines: list[InlineElement] = []
         caption_elem = elem.find("caption")
         if caption_elem is not None:
-            caption_parts, caption_il_dicts, _ = self._extract_inlines_recursive(caption_elem, 0)
-            caption = "".join(caption_parts).strip()
-            caption_inlines = caption_il_dicts
-            if not caption:
-                caption = XMLHelper.get_text_content(caption_elem)
+            caption, caption_inlines = self._text_with_inlines(caption_elem)
 
-        text = XMLHelper.get_text_content(elem).strip()
+        # Cell text and inlines are computed once per cell, and the grid is laid
+        # out from the same text so the two cannot disagree.
+        per_cell: dict[int, tuple[str, list[InlineElement]]] = {}
 
-        rows, cell_inlines = self._extract_table_rows(elem)
+        def cell_text(cell: ET.Element) -> str:
+            text, inlines = self._text_with_inlines(cell)
+            per_cell[id(cell)] = (text, inlines)
+            return text
 
-        # Extract inlines from table-wrap-foot (fn elements with inline formatting)
-        foot_inlines: list[InlineElement] = []
-        for twf in elem.iter():
-            if self._get_local_tag(twf.tag) == "table-wrap-foot":
-                for fn in twf:
-                    if self._get_local_tag(fn.tag) == "fn":
-                        fn_parts, fn_ils, _ = self._extract_inlines_recursive(fn, 0)
-                        foot_inlines.extend(fn_ils)
+        table = find_table(elem)
+        grid = build_table_grid(table, cell_text) if table is not None else None
 
-        block = ContentBlock.table_block(label=label, caption=caption, text=text, rows=rows)
-        # Aggregate all inlines: cell inlines + caption inlines + foot inlines
-        all_inlines: list[InlineElement] = list(caption_inlines) + list(foot_inlines)
-        if cell_inlines:
-            block.metadata = block.metadata or {}
-            block.metadata["cell_inlines"] = cell_inlines
-            for row in cell_inlines:
-                for cell_inline_list in row:
-                    if isinstance(cell_inline_list, list):
-                        for cell_inline_dict in cell_inline_list:
-                            if isinstance(cell_inline_dict, dict):
-                                all_inlines.append(
-                                    InlineElement(
-                                        type=InlineElementType(
-                                            cell_inline_dict.get("type", "unknown_inline")
-                                        ),
-                                        text=cell_inline_dict.get("text", ""),
-                                        position=cell_inline_dict.get("position", 0),
-                                        length=cell_inline_dict.get("length", 0),
-                                    )
-                                )
+        footer_parts = [
+            self._text_with_inlines(foot)
+            for foot in elem
+            if self._get_local_tag(foot.tag) == "table-wrap-foot"
+        ]
+
+        # The block's text is assembled from the same parts the fields hold, so
+        # every inline can be given its offset in it.
+        cell_pieces, cell_inline_rows = self._table_cell_pieces(grid, per_cell)
+        others = [
+            self._text_with_inlines(child)
+            for child in elem
+            if self._get_local_tag(child.tag) not in self._TABLE_OWN_PARTS
+        ]
+        text, all_inlines = self._join_pieces(
+            [(label, []), (caption, caption_inlines), *cell_pieces, *footer_parts, *others]
+        )
+
+        block = ContentBlock.table_block(
+            label=label,
+            caption=caption,
+            text=text,
+            rows=grid.rows if grid is not None else [],
+        )
+        footer = " ".join(part for part, _ in footer_parts if part)
+        block.metadata = self._table_metadata(grid, footer, cell_inline_rows)
         if all_inlines:
             block.inlines = all_inlines
         return [block]
 
+    @staticmethod
+    def _table_cell_pieces(
+        grid: TableGrid | None,
+        per_cell: dict[int, tuple[str, list[InlineElement]]],
+    ) -> tuple[list[tuple[str, list[InlineElement]]], list[dict[str, Any]]]:
+        """Each placed cell's text and inlines in reading order, and its inline record."""
+        pieces: list[tuple[str, list[InlineElement]]] = []
+        records: list[dict[str, Any]] = []
+        if grid is None:
+            return pieces, records
+        for cell in sorted(grid.cells, key=lambda c: (c.row, c.column)):
+            text, inlines = per_cell.get(id(cell.element), (cell.text, []))
+            # An image-only cell has no text of its own, only its reference.
+            pieces.append((text or cell.text, inlines))
+            if inlines:
+                records.append(
+                    {
+                        "row": cell.row,
+                        "column": cell.column,
+                        "inlines": [inline.to_dict() for inline in inlines],
+                    }
+                )
+        return pieces, records
+
+    @staticmethod
+    def _join_pieces(
+        pieces: list[tuple[str, list[InlineElement]]],
+    ) -> tuple[str, list[InlineElement]]:
+        """Join texts with single spaces, re-basing each inline onto the joined text."""
+        texts: list[str] = []
+        inlines: list[InlineElement] = []
+        offset = 0
+        for text, own in pieces:
+            if not text:
+                continue
+            if texts:
+                offset += 1  # the separating space
+            inlines.extend(
+                dataclasses.replace(inline, position=offset + inline.position) for inline in own
+            )
+            texts.append(text)
+            offset += len(text)
+        return " ".join(texts), inlines
+
+    @staticmethod
+    def _table_metadata(
+        grid: TableGrid | None, footer: str, cell_inline_rows: list[dict[str, Any]]
+    ) -> dict[str, Any]:
+        metadata: dict[str, Any] = {}
+        if grid is not None:
+            metadata["header_rows"] = grid.header_row_count
+            if spans := grid.spans():
+                metadata["spans"] = spans
+            if graphics := grid.cell_graphics():
+                metadata["cell_graphics"] = graphics
+        if footer:
+            metadata["footer"] = footer
+        if cell_inline_rows:
+            metadata["cell_inlines"] = cell_inline_rows
+        return metadata
+
     def _handle_code(self, elem: ET.Element) -> list[ContentBlock]:
-        """Handle <code> and <preformat> elements."""
+        """Handle <code> and <preformat> elements.
+
+        The text keeps its line breaks and indentation. It was collapsed to
+        single spaces like prose, which ran PMC10775981's fourteen listings
+        together into one line each.
+        """
         language = elem.get("language", elem.get("lang", ""))
-        text = XMLHelper.get_text_content(elem)
-        if text.strip():
-            return [ContentBlock.code(text=text.strip(), language=language)]
+        text = code_text(elem)
+        if text:
+            return [ContentBlock.code(text=text, language=language)]
         return []
 
     def _handle_media(self, elem: ET.Element) -> list[ContentBlock]:
@@ -1908,25 +2294,7 @@ class ContentBlockExtractor(BaseParser):
             # by the section extraction (avoid double-counting).
             if self._is_inside_body(fn_group):
                 continue
-            fn_blocks: list[ContentBlock] = []
-            for fn in fn_group.findall("fn"):
-                _fn_id = fn.get("id", "")
-                fn_label = ""
-                label_elem = fn.find("label")
-                if label_elem is not None:
-                    fn_label = XMLHelper.get_text_content(label_elem)
-
-                text, inlines, _ = self._extract_inlines_recursive(fn, 0)
-                joined = "".join(text).strip()
-                if joined:
-                    prefix = f"{fn_label} " if fn_label else ""
-                    full_text = f"{prefix}{joined}"
-                    if inlines:
-                        fn_blocks.append(
-                            ContentBlock.paragraph_with_inlines(text=full_text, inlines=inlines)
-                        )
-                    else:
-                        fn_blocks.append(ContentBlock.paragraph(full_text))
+            fn_blocks = self._extract_fn_group_blocks(fn_group)
 
             if fn_blocks:
                 fn_sections.append(
@@ -1945,32 +2313,15 @@ class ContentBlockExtractor(BaseParser):
         if self.root is None:
             return structures
 
-        for ref_list in self.root.findall(".//ref-list"):
+        for ref_list in self._own_elements(self.root, "ref-list"):
             title = ""
             title_elem = ref_list.find("title")
             if title_elem is not None:
                 title = XMLHelper.get_text_content(title_elem)
 
-            ref_blocks: list[ContentBlock] = []
-            for ref in ref_list.findall("ref"):
-                _ref_id = ref.get("id", "")
-                ref_label = ""
-                label_elem = ref.find("label")
-                if label_elem is not None:
-                    ref_label = XMLHelper.get_text_content(label_elem)
-
-                ref_parts, ref_inlines, _ = self._extract_inlines_recursive(ref, 0)
-                ref_text = "".join(ref_parts).strip()
-
-                if ref_label:
-                    ref_text = f"{ref_label} {ref_text}"
-                if ref_text:
-                    if ref_inlines:
-                        ref_blocks.append(
-                            ContentBlock.paragraph_with_inlines(text=ref_text, inlines=ref_inlines)
-                        )
-                    else:
-                        ref_blocks.append(ContentBlock.paragraph(ref_text))
+            ref_blocks = [
+                block for ref in ref_list.findall("ref") if (block := self._reference_block(ref))
+            ]
 
             if ref_blocks:
                 structures.append(
@@ -2091,7 +2442,7 @@ class ContentBlockExtractor(BaseParser):
             handler_name = self.JATS_BLOCK_TAGS.get(tag)
             if handler_name and handler_name in self._handler_map:
                 blocks.extend(self._handler_map[handler_name](child))
-            elif tag not in ("title",):
+            elif tag not in ("title", "ref-list"):
                 text = XMLHelper.get_text_content(child)
                 if text.strip():
                     blocks.append(ContentBlock.paragraph(text.strip()))
@@ -2100,6 +2451,22 @@ class ContentBlockExtractor(BaseParser):
     # ------------------------------------------------------------------
     # Internal helpers
     # ------------------------------------------------------------------
+
+    @staticmethod
+    def _own_elements(root: ET.Element, tag: str) -> list[ET.Element]:
+        """Every ``tag`` element of the article, leaving out its sub-articles'."""
+        found: list[ET.Element] = []
+
+        def walk(node: ET.Element) -> None:
+            for child in node:
+                if not isinstance(child.tag, str) or child.tag in ("sub-article", "response"):
+                    continue
+                if child.tag == tag:
+                    found.append(child)
+                walk(child)
+
+        walk(root)
+        return found
 
     def _is_inside_body(self, elem: ET.Element) -> bool:
         """Check whether *elem* is a descendant of a ``<body>`` element."""
@@ -2151,15 +2518,12 @@ class ContentBlockExtractor(BaseParser):
 
     @staticmethod
     def _convert_inline_formula(elem: ET.Element) -> str:
-        """Attempt to extract LaTeX from an inline formula element."""
-        # Try MathML first
+        """Extract LaTeX from an inline formula element."""
         mathml_elem = elem.find(".//mml:math", {"mml": "http://www.w3.org/1998/Math/MathML"})
-        if mathml_elem is not None:
-            with contextlib.suppress(ImportError, Exception):
-                from pyeuropepmc.features.fulltext.extensions.mathml import MathMLConverter
-
-                converter = MathMLConverter(inline=True)
-                return converter.convert_to_latex(mathml_elem)
-
-        # Fallback: extract plain text
-        return XMLHelper.get_text_content(mathml_elem) if mathml_elem is not None else ""
+        if mathml_elem is None:
+            return ""
+        with contextlib.suppress(Exception):
+            latex = MathMLConverter(inline=True).convert_to_latex(mathml_elem).strip()
+            if latex:
+                return latex
+        return XMLHelper.get_text_content(mathml_elem)

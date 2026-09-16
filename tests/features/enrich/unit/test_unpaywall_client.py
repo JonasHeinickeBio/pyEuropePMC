@@ -2,11 +2,14 @@
 Unit tests for UnpaywallClient.
 """
 
+import json
 from unittest.mock import MagicMock, patch
 
 import pytest
 import requests
 
+from pyeuropepmc.core.error_codes import ErrorCodes
+from pyeuropepmc.core.exceptions import APIClientError, UnpaywallError
 from pyeuropepmc.features.enrich.sources.unpaywall_client import UnpaywallClient
 
 
@@ -107,31 +110,33 @@ class TestUnpaywallClient:
         assert result is None
 
     def test_lookup_by_doi_http_error_404(self, client):
-        """Test DOI lookup with 404 HTTP error."""
-        mock_http_error = requests.HTTPError("404 Not Found")
-        mock_http_error.response = MagicMock()
-        mock_http_error.response.status_code = 404
-        client._get = MagicMock(side_effect=mock_http_error)
+        """Test DOI lookup when _get reports a 404."""
+        # What BaseAPIClient._get raises for an HTTP 404.
+        error = APIClientError(ErrorCodes.HTTP404, {"url": "u", "status_code": 404})
+        client._get = MagicMock(side_effect=error)
 
         result = client.lookup_by_doi("10.1234/notfound")
         assert result is None
 
     def test_lookup_by_doi_http_error_other(self, client):
         """Test DOI lookup with non-404 HTTP error."""
-        mock_http_error = requests.HTTPError("500 Server Error")
-        mock_http_error.response = MagicMock()
-        mock_http_error.response.status_code = 500
-        client._get = MagicMock(side_effect=mock_http_error)
+        error = APIClientError(ErrorCodes.HTTP500, {"url": "u", "status_code": 500})
+        client._get = MagicMock(side_effect=error)
 
-        with pytest.raises(Exception):  # noqa: B017
+        with pytest.raises(UnpaywallError) as exc_info:
             client.lookup_by_doi("10.1234/servererror")
+        assert exc_info.value.error_code == ErrorCodes.NET001
+        assert exc_info.value.__cause__ is error
 
     def test_lookup_by_doi_request_exception(self, client):
         """Test DOI lookup with network error."""
-        client._get = MagicMock(side_effect=requests.RequestException("Connection timeout"))
+        # What BaseAPIClient._get raises when the request itself fails.
+        error = APIClientError(ErrorCodes.NET001, {"url": "u", "error": "Connection timeout"})
+        client._get = MagicMock(side_effect=error)
 
-        with pytest.raises(Exception):  # noqa: B017
+        with pytest.raises(UnpaywallError) as exc_info:
             client.lookup_by_doi("10.1234/timeout")
+        assert "Connection timeout" in exc_info.value.context["message"]
 
     def test_get_oa_status_found(self, client, mock_record):
         """Test get_oa_status with found DOI."""
@@ -275,3 +280,88 @@ class TestUnpaywallClient:
         client.get_best_oa_location = MagicMock(return_value=None)
         result = client.get_repository("10.1234/unknown")
         assert result is None
+
+
+def _response(status_code: int, body: bytes = b"{}") -> requests.Response:
+    """A real ``requests.Response`` with the body already loaded."""
+    response = requests.Response()
+    response.status_code = status_code
+    response.reason = "OK" if status_code < 400 else "Error"
+    response.url = "https://api.unpaywall.org/v2/"
+    response._content = body
+    response._content_consumed = True
+    return response
+
+
+class TestLookupByDoiOverHttp:
+    """lookup_by_doi() with the real BaseAPIClient._get and a mocked session."""
+
+    @pytest.fixture
+    def http_client(self):
+        with patch("time.sleep"):
+            instance = UnpaywallClient(email="test@example.com", rate_limit_delay=0)
+            yield instance
+            instance.close()
+
+    def test_requests_the_doi_under_the_api_base_url(self, http_client, mock_record):
+        body = json.dumps(mock_record).encode()
+        with patch.object(http_client.session, "get", return_value=_response(200, body)) as get:
+            http_client.lookup_by_doi("10.1234/test")
+
+        url = get.call_args.args[0]
+        assert url == "https://api.unpaywall.org/v2/10.1234/test"
+        assert get.call_args.kwargs["params"] == {"email": "test@example.com"}
+
+    def test_characters_a_path_cannot_carry_are_quoted(self, http_client):
+        with patch.object(http_client.session, "get", return_value=_response(200)) as get:
+            http_client.lookup_by_doi("10.1002/(SICI)1097-4636#x?y z")
+
+        assert get.call_args.args[0] == (
+            "https://api.unpaywall.org/v2/10.1002/(SICI)1097-4636%23x%3Fy%20z"
+        )
+
+    def test_200_returns_the_record(self, http_client, mock_record):
+        body = json.dumps(mock_record).encode()
+        with patch.object(http_client.session, "get", return_value=_response(200, body)):
+            assert http_client.lookup_by_doi("10.1234/test") == mock_record
+
+    def test_404_returns_none(self, http_client):
+        with patch.object(http_client.session, "get", return_value=_response(404)):
+            assert http_client.lookup_by_doi("10.1234/unknown") is None
+
+    def test_500_raises_unpaywall_error(self, http_client):
+        with (
+            patch.object(http_client.session, "get", return_value=_response(500)),
+            pytest.raises(UnpaywallError) as exc_info,
+        ):
+            http_client.lookup_by_doi("10.1234/test")
+
+        assert exc_info.value.error_code == ErrorCodes.NET001
+        assert "HTTP error 500" in exc_info.value.context["message"]
+
+    def test_connection_error_raises_unpaywall_error(self, http_client):
+        with (
+            patch.object(
+                http_client.session, "get", side_effect=requests.ConnectionError("refused")
+            ),
+            pytest.raises(UnpaywallError) as exc_info,
+        ):
+            http_client.lookup_by_doi("10.1234/test")
+
+        assert exc_info.value.error_code == ErrorCodes.NET001
+        assert "refused" in exc_info.value.context["message"]
+
+    def test_closed_client_error_is_not_disguised(self, http_client):
+        http_client.close()
+        with pytest.raises(APIClientError) as exc_info:
+            http_client.lookup_by_doi("10.1234/test")
+
+        assert exc_info.value.error_code == ErrorCodes.FULL007
+
+    def test_best_oa_location_is_found(self, http_client, mock_record):
+        """The FullTextClient fallbacks call this; it could never succeed before."""
+        body = json.dumps(mock_record).encode()
+        with patch.object(http_client.session, "get", return_value=_response(200, body)):
+            location = http_client.get_best_oa_location("10.1234/test")
+
+        assert location == mock_record["best_oa_location"]

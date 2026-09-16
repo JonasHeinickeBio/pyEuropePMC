@@ -21,8 +21,9 @@ installed:
 pip install pyeuropepmc
 ```
 
-Individual tools depend on the package's optional feature extras (see
-"Tool availability" below) — install `pyeuropepmc[all]` to unlock every tool.
+Most tools need nothing beyond that. The `bib_*` tools need the `bibliography`
+extra and the LLM tools the `agentic` extra plus a provider (see "Tool
+availability" below); `pyeuropepmc[all]` unlocks every tool.
 
 ## Running the server
 
@@ -67,20 +68,20 @@ itself does not implement auth) and point any MCP HTTP client at
 
 | Tool | Description | Needs |
 |---|---|---|
-| `unified_search` | Multi-source search (PubMed, arXiv, Semantic Scholar, OpenAlex, ClinicalTrials.gov) with cross-source dedup | `all` |
+| `unified_search` | Multi-source search (PubMed, arXiv, Semantic Scholar, OpenAlex, ClinicalTrials.gov) with cross-source dedup | — (the Semantic Scholar source needs `semanticscholar`) |
 | `search_papers` | \[Legacy\] single-source Europe PMC search | — |
 | `get_paper_details` | Resolve a paper by PMID / PMCID / DOI | — |
 | `search_authors` | Author search | — |
 | `get_paper_citations` | Papers citing a given paper | — |
-| `citation_snowball` | Forward/backward/both citation-graph walk | `all` |
-| `clinical_trial_search` | ClinicalTrials.gov search by condition/intervention/keyword | `all` |
-| `fulltext_index_query` | Search a local SQLite FTS5 full-text index | `all` |
-| `paper_figures` | Extract figures from PMC Open Access articles | `all` |
+| `citation_snowball` | Forward/backward/both citation-graph walk | — |
+| `clinical_trial_search` | ClinicalTrials.gov search by condition/intervention/keyword | — |
+| `fulltext_index_query` | Search a local SQLite FTS5 full-text index | — |
+| `paper_figures` | Figures, tables and supplementary files of a PMC Open Access article, with Europe PMC download URLs | — |
 | `analyze_citations`, `compare_citations`, `summarize_citations` | LLM-powered citation analysis | `agentic` + an LLM provider |
 | `paper_screening` | PRISMA-style automated screening | `agentic` + an LLM provider |
 | `research_question_analysis`, `preprint_analysis`, `literature_review`, `knowledge_graph` | LLM-powered research tooling | `agentic` + an LLM provider |
 | `bib_parse_string`, `bib_validate`, `bib_to_ris`, `bib_to_csl`, `bib_merge` | BibTeX parsing/validation/conversion/merging | `bibliography` |
-| `ref_resolve_doi`, `ref_resolve_pmid` | Resolve a DOI/PMID to bibliographic metadata | `bibliography` |
+| `ref_resolve_doi`, `ref_resolve_pmid` | Resolve a DOI/PMID to bibliographic metadata | — |
 
 Run `pyeuropepmc-mcp` and call `tools/list` (or open it in any MCP client) for
 the full, current input schema of each tool — schemas are generated directly

@@ -6,7 +6,7 @@
 
 | | `RDFMapper` | `RMLRDFizer` |
 |---|---|---|
-| Mapping | `conf/rdf_map.yml` | `conf/rml_mappings.ttl`, generated from `rdf_map.yml`, plus `conf/rdfizer_config.ini` |
+| Mapping | `rdf_map.yml` | `rml_mappings.ttl`, generated from `rdf_map.yml`, plus `rdfizer_config.ini` |
 | Extra package | None | `rdfizer` |
 | Output | Entities with their relationships, provenance and `owl:sameAs` links; used by `PaperProcessingPipeline` | Flat properties of one entity type per call |
 | Subject URIs | PubMed, DOI, PMC or `https://w3id.org/pyeuropepmc/...` URIs | `http://example.org/data/<type>/<id>` |
@@ -24,11 +24,11 @@ pip install pyeuropepmc rdfizer
 
 ## Configuration files
 
-Both files are in the repository's `conf/` directory and are not included in the installed package. Use a source checkout, or download [`rml_mappings.ttl`](https://github.com/JonasHeinickeBio/pyEuropePMC/blob/main/conf/rml_mappings.ttl) and [`rdfizer_config.ini`](https://github.com/JonasHeinickeBio/pyEuropePMC/blob/main/conf/rdfizer_config.ini), then pass their paths.
+Both files ship with the package ([`rml_mappings.ttl`](https://github.com/JonasHeinickeBio/pyEuropePMC/blob/main/src/pyeuropepmc/conf/rml_mappings.ttl) and [`rdfizer_config.ini`](https://github.com/JonasHeinickeBio/pyEuropePMC/blob/main/src/pyeuropepmc/conf/rdfizer_config.ini) in `src/pyeuropepmc/conf/`), and `RMLRDFizer()` uses them unless you pass other paths.
 
 ### rml_mappings.ttl
 
-`examples/scripts/sync_rdf_mappings.py` generates this file from `conf/rdf_map.yml` (see [Changing the mapping](#changing-the-mapping)). It has one triples map per entity class, and each map reads a JSON file:
+`examples/scripts/sync_rdf_mappings.py` generates this file from `rdf_map.yml` (see [Changing the mapping](#changing-the-mapping)). It has one triples map per entity class, and each map reads a JSON file:
 
 ```turtle
 <#ScholarlyWorkEntityMap>
@@ -56,6 +56,7 @@ Both files are in the repository's `conf/` directory and are not included in the
 | `section` | `sections.json` | `SectionEntityMap` |
 | `table` | `tables.json` | `TableEntityMap` |
 | `tablerow` | `table_rows.json` | `TableRowEntityMap` |
+| `figure` | `figures.json` | `FigureEntityMap` |
 | `reference` | `references.json` | `ReferenceEntityMap` |
 | `journal` | `journal.json` | `JournalEntityMap` |
 | `grant` | `grant.json` | `GrantEntityMap` |
@@ -116,10 +117,7 @@ from pyeuropepmc.models import PaperEntity
 
 print(RDFIZER_AVAILABLE)
 
-rdfizer = RMLRDFizer(
-    config_path="conf/rdfizer_config.ini",
-    mapping_path="conf/rml_mappings.ttl",
-)
+rdfizer = RMLRDFizer()  # the packaged rdfizer_config.ini and rml_mappings.ttl
 
 paper = PaperEntity(pmcid="PMC1234567", doi="10.1234/example.2024.001", title="Example Paper")
 g = rdfizer.entities_to_rdf([paper], entity_type="paper")
@@ -142,8 +140,8 @@ Output:
 
 | Member | Description |
 |---|---|
-| `RMLRDFizer(config_path=None, mapping_path=None)` | `None` uses `conf/rdfizer_config.ini` and `conf/rml_mappings.ttl` of a source checkout. Raises `ImportError` without `rdfizer`, and `FileNotFoundError` (`Config file not found: <path>` or `Mapping file not found: <path>`) when a file is missing. |
-| `entities_to_rdf(entities, entity_type, output_format="turtle")` | Returns an rdflib `Graph` for a list of entities of one type (see the table above). For `paper` and `scholarlywork`, an entity without `id` gets its DOI, PMCID or `pmid:<PMID>` as `id`. Known limitation: other entity types get no such fallback, and because the subject templates use `{id}`, entities without `id` produce no triples; set `id` first (see [Converting a whole article](#converting-a-whole-article)). `output_format` has no effect. |
+| `RMLRDFizer(config_path=None, mapping_path=None)` | `None` uses the packaged `rdfizer_config.ini` and `rml_mappings.ttl`. Raises `ImportError` without `rdfizer`, and `FileNotFoundError` (`Config file not found: <path>` or `Mapping file not found: <path>`) when a file is missing. |
+| `entities_to_rdf(entities, entity_type, output_format="turtle")` | Returns an rdflib `Graph` for a list of entities of one type (see the table above). The subject templates use `{id}`, so an entity without `id` gets one: its DOI, PMCID, `pmid:<PMID>`, ORCID or ROR ID when it has one, otherwise `<entity_type>-<16 hex digits>`, a digest of its content. The digest is the same in every run, and an entity whose content repeats an earlier one in the same call gets a `-2`, `-3`… suffix, so the output does not change between runs. `output_format` has no effect. |
 | `convert_json_to_rdf(json_data, entity_type, output_format="turtle")` | Returns a `Graph` for a dict, or a list of dicts, shaped like `entity.to_dict()` |
 
 SDM-RDFizer prints progress messages and writes `error.log` to the current working directory.
@@ -153,7 +151,7 @@ SDM-RDFizer prints progress messages and writes `error.log` to the current worki
 ```python
 from pyeuropepmc.mappers import RMLRDFizer
 
-rdfizer = RMLRDFizer(config_path="conf/rdfizer_config.ini", mapping_path="conf/rml_mappings.ttl")
+rdfizer = RMLRDFizer()
 
 json_data = {
     "id": "PMC123",
@@ -184,20 +182,16 @@ with open("PMC3258128.xml", encoding="utf-8") as fh:
     parser = FullTextXMLParser(fh.read())
 
 paper, authors, sections, tables, figures, references = build_paper_entities(parser)
-for entity in [paper, *authors, *sections, *references]:
+for entity in [paper, *authors, *sections, *figures, *references]:
     entity.normalize()
 
-# The subject templates need an id, and build_paper_entities() sets none for these entities.
-for kind, entities in (("author", authors), ("section", sections), ("reference", references)):
-    for number, entity in enumerate(entities, start=1):
-        entity.id = f"PMC3258128-{kind}-{number}"
-
-rdfizer = RMLRDFizer(config_path="conf/rdfizer_config.ini", mapping_path="conf/rml_mappings.ttl")
+rdfizer = RMLRDFizer()
 
 g = Graph()
 g += rdfizer.entities_to_rdf([paper], entity_type="paper")
 g += rdfizer.entities_to_rdf(authors, entity_type="author")
 g += rdfizer.entities_to_rdf(sections, entity_type="section")
+g += rdfizer.entities_to_rdf(figures, entity_type="figure")
 g += rdfizer.entities_to_rdf(references, entity_type="reference")
 
 g.serialize("PMC3258128_rml.ttl", format="turtle")
@@ -217,17 +211,17 @@ python examples/scripts/xml_to_rdf_rml.py PMC3258128.xml --output PMC3258128_rml
 | `INPUT` | PMC XML file |
 | `--output/-o PATH` | Turtle output file (required) |
 | `--json PATH` | Also save the entities as JSON |
-| `--mappings PATH` | RML mappings file (default: the checkout's `conf/rml_mappings.ttl`) |
-| `--config PATH` | RDFizer configuration (default: the checkout's `conf/rdfizer_config.ini`) |
+| `--mappings PATH` | RML mappings file (default: the packaged `rml_mappings.ttl`) |
+| `--config PATH` | RDFizer configuration (default: the packaged `rdfizer_config.ini`) |
 | `-v/--verbose` | Print progress |
 
-Known limitation: the script does not set `id` on the entities, so its output contains only the paper's triples (6 for PMC3258128).
+For PMC3258128 the output has 342 triples, from the paper, its journal, 6 grants, 12 authors, 23 sections, 5 figures and 47 references.
 
 ## Changing the mapping
 
-The intended workflow is to edit `conf/rdf_map.yml` and regenerate the RML file from the repository root with `python examples/scripts/sync_rdf_mappings.py`. The `--yaml` option (default `conf/rdf_map.yml`) sets the input and `--rml` (default `conf/rml_mappings.ttl`) the output; `--check` is not implemented and exits with status 1.
+Edit `src/pyeuropepmc/conf/rdf_map.yml` and regenerate the RML file from the repository root with `make sync-rdf` or `python examples/scripts/sync_rdf_mappings.py`. The `--yaml` option (default `src/pyeuropepmc/conf/rdf_map.yml`) sets the input and `--rml` (default `src/pyeuropepmc/conf/rml_mappings.ttl`) the output; `--check` is not implemented and exits with status 1. A field in the YAML may map to `{predicate, datatype}` or to a bare predicate string. The test suite checks that the committed `rml_mappings.ttl` matches what the script generates.
 
-Known limitation: the script stops with `TypeError: string indices must be integers` on the current `rdf_map.yml`, because the annotation classes map fields to plain predicate strings instead of `{predicate, datatype}` entries. `make sync-rdf` also calls `scripts/sync_rdf_mappings.py`, a path that no longer exists. Until this is fixed, copy `conf/rml_mappings.ttl`, edit the copy, and pass it to `RMLRDFizer` as `mapping_path`.
+`RMLRDFizer` points every relative `rml:source "<name>.json"` of the mapping at its temporary directory and creates an empty file for each source it has no entities for, so triples maps added to the YAML need no change to `RMLRDFizer`.
 
 ## Troubleshooting
 
@@ -235,7 +229,7 @@ Known limitation: the script stops with `TypeError: string indices must be integ
 |---|---|
 | `ImportError: rdfizer package not found. Install it with: pip install rdfizer` | Install `rdfizer`. |
 | `FileNotFoundError: Config file not found: ...` or `Mapping file not found: ...` | The default paths exist only in a source checkout. Pass `config_path` and `mapping_path`. |
-| The graph is empty | The entities have no `id` (needed for every type except `paper` and `scholarlywork`), `entity_type` is not in the table above, the JSON keys do not match the `rml:reference` names in the mapping, or a custom configuration changed one of the three lines `RMLRDFizer` replaces. Check `error.log` in the working directory. |
+| The graph is empty | `entity_type` is not in the table above, the JSON keys do not match the `rml:reference` names in the mapping, or a custom configuration changed one of the three lines `RMLRDFizer` replaces. Check `error.log` in the working directory. |
 | A property is missing | The field is inherited from a parent class, which the generated triples maps do not include (see [rml_mappings.ttl](#rml_mappingsttl)). |
 
 ## Resources
