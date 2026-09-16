@@ -5,6 +5,7 @@ import defusedxml.ElementTree as ET
 
 from pyeuropepmc.core.error_codes import ErrorCodes
 from pyeuropepmc.core.exceptions import ParsingError
+from pyeuropepmc.core.xml_parsing import parse_xml
 from pyeuropepmc.models import (
     AuthorEntity,
     GrantEntity,
@@ -70,9 +71,7 @@ class EuropePMCParser:
             ParsingError: If data format is invalid or parsing fails
         """
         if data is None or (isinstance(data, str) and not data.strip()):
-            raise ParsingError(
-                ErrorCodes.PARSE003, {"message": "Content cannot be None or empty."}
-            )
+            raise ParsingError(ErrorCodes.PARSE003, message="Content cannot be None or empty.")
         return EuropePMCParser._handle_parsing_errors(
             EuropePMCParser._parse_json_data, data, "JSON"
         )
@@ -81,9 +80,7 @@ class EuropePMCParser:
     def _parse_json_data(data: Any) -> list[dict[str, str | list[str]]]:
         """Internal method to parse JSON data without error handling."""
         if data is None:
-            raise ParsingError(
-                ErrorCodes.PARSE003, {"message": "Content cannot be None or empty."}
-            )
+            raise ParsingError(ErrorCodes.PARSE003, message="Content cannot be None or empty.")
         if isinstance(data, dict):
             return EuropePMCParser._extract_results_from_dict(data)
         elif isinstance(data, list):
@@ -180,9 +177,7 @@ class EuropePMCParser:
             ParsingError: If XML parsing fails
         """
         if xml_str is None or not isinstance(xml_str, str) or not xml_str.strip():
-            raise ParsingError(
-                ErrorCodes.PARSE003, {"message": "Content cannot be None or empty."}
-            )
+            raise ParsingError(ErrorCodes.PARSE003, message="Content cannot be None or empty.")
         return EuropePMCParser._handle_parsing_errors(
             EuropePMCParser._parse_xml_data, xml_str, "XML"
         )
@@ -194,15 +189,8 @@ class EuropePMCParser:
         Logs errors for malformed records.
         """
         if xml_str is None or not isinstance(xml_str, str) or not xml_str.strip():
-            raise ParsingError(
-                ErrorCodes.PARSE003, {"message": "Content cannot be None or empty."}
-            )
-        try:
-            root = ET.fromstring(xml_str)
-        except ET.ParseError as e:
-            error_msg = f"XML parsing error: {e}. The response appears malformed."
-            EuropePMCParser.logger.error(error_msg)
-            raise ParsingError(ErrorCodes.PARSE002, {"error": str(e), "message": error_msg}) from e
+            raise ParsingError(ErrorCodes.PARSE003, message="Content cannot be None or empty.")
+        root = parse_xml(xml_str, what="The search response")
         results = []
         result_elems = root.findall(".//resultList/result")
         if not result_elems:
@@ -239,9 +227,7 @@ class EuropePMCParser:
             ParsingError: If DC XML parsing fails
         """
         if dc_str is None or not isinstance(dc_str, str) or not dc_str.strip():
-            raise ParsingError(
-                ErrorCodes.PARSE003, {"message": "Content cannot be None or empty."}
-            )
+            raise ParsingError(ErrorCodes.PARSE003, message="Content cannot be None or empty.")
         return EuropePMCParser._handle_parsing_errors(
             EuropePMCParser._parse_dc_data, dc_str, "Dublin Core XML"
         )
@@ -253,15 +239,8 @@ class EuropePMCParser:
         Logs errors for malformed records.
         """
         if dc_str is None or not isinstance(dc_str, str) or not dc_str.strip():
-            raise ParsingError(
-                ErrorCodes.PARSE003, {"message": "Content cannot be None or empty."}
-            )
-        try:
-            root = ET.fromstring(dc_str)
-        except ET.ParseError as e:
-            error_msg = f"DC XML parsing error: {e}. The response appears malformed."
-            EuropePMCParser.logger.error(error_msg)
-            raise ParsingError(ErrorCodes.PARSE002, {"error": str(e), "message": error_msg}) from e
+            raise ParsingError(ErrorCodes.PARSE003, message="Content cannot be None or empty.")
+        root = parse_xml(dc_str, what="The Dublin Core response")
         results = []
         for idx, desc in enumerate(root.findall(".//rdf:Description", XML_NAMESPACES)):
             try:

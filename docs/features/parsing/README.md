@@ -67,18 +67,18 @@ Output:
 
 ```text
 PARSE002 ParseError
-PARSE003 EntitiesForbidden
+PARSE005 EntitiesForbidden
 PARSE003 None
 ```
 
 | Input | Error code | `__cause__` |
 |---|---|---|
 | Malformed XML, including an undeclared named entity such as `&alpha;` | `PARSE002` | `xml.etree.ElementTree.ParseError` |
-| A DOCTYPE that declares an entity | `PARSE003` | `defusedxml.EntitiesForbidden` |
+| A DOCTYPE that declares an entity | `PARSE005` | `defusedxml.EntitiesForbidden` |
 | `None`, an empty string, `bytes` or another type | `PARSE003` | none |
 | Calling an extraction method before anything was parsed | `PARSE003` | none |
 
-`ParsingError` derives from `PyEuropePMCError`, not from `xml.etree.ElementTree.ParseError`, so `except ParseError` does not catch it. The `PARSE003` message always reads "Content cannot be None or empty", whatever the cause; look at `__cause__` for the real reason. Numeric character references such as `&#x0003c;` parse normally.
+`ParsingError` derives from `PyEuropePMCError`, not from `xml.etree.ElementTree.ParseError`, so `except ParseError` does not catch it; catch `ParsingError` instead. Every entry point that parses XML raises it the same way, and the message names the cause: which entity a refused document declares, or the line and column of a malformed one. Numeric character references such as `&#x0003c;` parse normally.
 
 ## Metadata, authors and affiliations
 
@@ -442,7 +442,7 @@ These were found by checking the parser's output against the source XML of real 
   - Appendix sections have no `section_path`, and a path is ambiguous when a title contains `/`.
   - Paragraph text can run two words together where an inline element's text ends in a space (for example "IC50values"), and code blocks lose their line breaks.
 - **Text renderings.** `to_plaintext()`, `to_markdown()` and `get_full_text_sections()` omit code listings, table labels, and the labels and caption titles of figures placed directly in a section. `to_plaintext()` renders an appendix that consists of a table as its title only, and moves a section's lists and tables after its paragraphs.
-- **Errors and size.** The `PARSE003` error text does not describe the actual cause. There are no size or depth limits; a document nested a few thousand levels deep fails in section extraction with `ParsingError`.
+- **Size and depth.** There are no size or depth limits; a document nested a few thousand levels deep fails in section extraction with `ParsingError`.
 
 ## See also
 

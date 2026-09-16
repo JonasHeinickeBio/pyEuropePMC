@@ -20,10 +20,9 @@ import re
 from typing import Any
 from xml.etree import ElementTree  # nosec B405
 
-from defusedxml import DefusedXmlException
-import defusedxml.ElementTree as DefusedET
-
 from pyeuropepmc.cache.cache import CacheConfig
+from pyeuropepmc.core.exceptions import ParsingError
+from pyeuropepmc.core.xml_parsing import parse_xml
 from pyeuropepmc.features.literature.normalization import (
     normalize_author_list,
     normalize_doi,
@@ -284,8 +283,9 @@ class ArxivClient(BaseLiteratureClient):
             return []
 
         try:
-            root: ElementTree.Element = DefusedET.fromstring(xml_data)
-        except (DefusedET.ParseError, DefusedXmlException):
+            root: ElementTree.Element = parse_xml(xml_data, what="The arXiv feed")
+        except ParsingError as exc:
+            logger.warning("arXiv feed could not be parsed, no results: %s", exc)
             return []
 
         # Check for total results > 0

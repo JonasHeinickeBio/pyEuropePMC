@@ -16,6 +16,19 @@ All notable changes to PyEuropePMC are documented here.
 
 ### 🔒 Security
 
+- **One contract for a refused document.** defusedxml refuses XML that declares
+  entities, and that refusal now reaches callers the same way everywhere: the
+  JATS normalizer, the bioRxiv manifest, the benchmark metrics and the parse
+  profiler raise `ParsingError` instead of a raw `defusedxml.EntitiesForbidden`,
+  which `except ParseError` never caught. A refusal has its own code,
+  `PARSE005`, so it is no longer reported as "Content cannot be None or empty".
+  The arXiv, PubMed and figure paths still return their empty value and now log
+  the reason; the MCP tool `paper_figures` reports an error instead of zero
+  figures. Hostile XML is now tested against every entry point that parses, and
+  ruff bans nine more parser entry points (`xml.etree.ElementTree.XML`,
+  `XMLPullParser`, `fromstringlist`, `ElementInclude`, `expat`, `pyexpat`,
+  `xmltodict`, `pandas.read_xml`, `defusedxml.lxml`).
+
 - **All XML is parsed with defusedxml.** The arXiv and PubMed sources, figure
   extraction, the JATS normalizer, local-file and bioRxiv-manifest parsing and
   the benchmark metrics called the standard-library parser directly. They now
@@ -25,6 +38,13 @@ All notable changes to PyEuropePMC are documented here.
   reports any other XML parser (rules S313-S319, and a ban on importing lxml).
 
 ### 🐛 Bug Fixes
+
+- **Parse errors say what went wrong.** `PARSE003` no longer stands in for a
+  refused document, a recursion error or `bytes` input; each message names the
+  cause, and extraction failures carry the underlying error.
+
+- **`compute_all_metrics()` parses the document once**, not five times, which
+  takes about a third off its runtime.
 
 - **A table or figure inside a paragraph gets a block of its own.** JATS
   allows a `<table-wrap>` or `<fig>` inside a `<p>`, and
