@@ -4,6 +4,15 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
+## [3.0.0] - 2026-09-17
+
+> **Major release.** Full-text parsing, reference extraction, metadata and
+> caching were checked against real documents rather than hand-written
+> fixtures, and most of what surfaced was wrong output rather than a crash;
+> see the Bug Fixes below for the affected methods. The lxml backend is
+> removed and every XML entry point now goes through defusedxml, which is
+> why this is a major bump rather than a patch.
+
 ### 💥 Breaking Changes
 
 - **The lxml backend is removed.** `LXMLParser` and `is_lxml_available` are no
