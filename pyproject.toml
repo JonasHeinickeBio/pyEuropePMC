@@ -63,7 +63,7 @@ cachetools = ">=7.1.8,<8.0"
 click = ">=8.0,<8.2"
 defusedxml = ">=0.7.1,<0.8"
 diskcache = ">=5.6.3,<6.0"
-mcp = ">=1.20.0,<2.0.0"
+mcp = ">=2.2.0,<3.0.0"
 pydantic = ">=2.7.4,<3.0"
 python-dotenv = ">=0.19"
 # Imported at module level by pyeuropepmc.mappers; it only ever arrived
