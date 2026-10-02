@@ -104,7 +104,18 @@ jobs:
               [[ $attempt -lt 3 ]] && sleep 20
             done
 
-            if [[ $final != 2* ]]; then
+            # A 4xx is not an outage: it means the probe itself is wrong or
+            # blocked (403 from bot protection, 429, a moved URL). It must not
+            # file a "5xx" issue, and it must not count as healthy either, or
+            # the recovery step would close an issue that is still open. So the
+            # aggregate becomes `unknown`, which neither step acts on - but an
+            # earlier 5xx in this run (incident=1) is never downgraded.
+            if [[ $final == 4* && $saw5xx == 0 ]]; then
+              verdict="UNKNOWN (4xx: $final)"
+              if [[ $incident == 0 ]]; then
+                incident=unknown
+              fi
+            elif [[ $final != 2* ]]; then
               verdict="DOWN"
               incident=1
             elif [[ $saw5xx == 1 ]]; then
@@ -130,6 +141,9 @@ jobs:
             fi
           } >> "$GITHUB_STEP_SUMMARY"
 
+          if [[ $incident == unknown ]]; then
+            echo "::warning::Health check got a 4xx and no 5xx; the probe may be blocked or an endpoint moved. No issue filed or closed."
+          fi
           echo "incident=$incident" >> "$GITHUB_OUTPUT"
 
       # At most ONE open outage issue. Repeated failing runs stay quiet, so a
