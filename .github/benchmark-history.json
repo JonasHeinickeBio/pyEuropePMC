@@ -18,5 +18,15 @@
     "success_rate": 100.0,
     "measured_methods": 10,
     "failed_methods": 0
+  },
+  {
+    "timestamp": "2026-10-12T09:00:58.785100+00:00",
+    "suite_name": "pyEuropePMC Benchmark Suite",
+    "mean_time": 0.8933613201799977,
+    "p95_time": 2.117380415099992,
+    "total_requests": 224,
+    "success_rate": 100.0,
+    "measured_methods": 10,
+    "failed_methods": 0
   }
 ]
