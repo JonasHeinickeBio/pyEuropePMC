@@ -69,10 +69,12 @@ itself does not implement auth) and point any MCP HTTP client at
 | Tool | Description | Needs |
 |---|---|---|
 | `unified_search` | Multi-source search (PubMed, arXiv, Semantic Scholar, OpenAlex, ClinicalTrials.gov) with cross-source dedup | — (the Semantic Scholar source needs `semanticscholar`) |
-| `search_papers` | \[Legacy\] single-source Europe PMC search | — |
+| `search_papers` | \[Legacy\] single-source Europe PMC search, capped at `limit`; optional filters `date_from`/`date_to`, `open_access`, `has_fulltext`, `source`, `synonym` | — |
+| `count_papers` | Number of Europe PMC hits for a query (same filters), without fetching them | — |
 | `get_paper_details` | Resolve a paper by PMID / PMCID / DOI | — |
 | `search_authors` | Author search | — |
-| `get_paper_citations` | Papers citing a given paper | — |
+| `get_paper_citations` | Papers citing a given paper (any Europe PMC source: MED, PMC, PPR) | — |
+| `get_paper_references` | Reference list of a paper (backward citations) | — |
 | `citation_snowball` | Forward/backward/both citation-graph walk | — |
 | `clinical_trial_search` | ClinicalTrials.gov search by condition/intervention/keyword | — |
 | `fulltext_index_query` | Search a local SQLite FTS5 full-text index | — |

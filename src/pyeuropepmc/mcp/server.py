@@ -24,11 +24,13 @@ Tools:
         unified_search       — Search across PubMed, arXiv, Semantic Scholar, OpenAlex,
                                 ClinicalTrials.gov (auto-deduped)
         search_papers        — [Legacy] single-source Europe PMC search
+        count_papers         — Hit count for a query (with the same filters)
         get_paper_details    — Paper metadata by ID (via Europe PMC)
         search_authors       — Author search (via Europe PMC)
 
     Citation:
         get_paper_citations  — Forward citations (cited-by)
+        get_paper_references — Reference list (backward citations)
         citation_snowball    — Recursive citation graph walking (forward/backward/both)
         analyze_citations    — LLM-powered citation context analysis
         compare_citations    — LLM-powered paper comparison
@@ -63,6 +65,7 @@ from functools import partial
 from importlib.metadata import PackageNotFoundError, version as _pkg_version
 import logging
 import os
+import re
 import sys
 import threading
 from typing import Annotated, Any, Generic, Literal, TypeVar, cast
@@ -75,7 +78,8 @@ from pydantic import Field
 
 from pyeuropepmc import SearchClient
 from pyeuropepmc.cache.cache import CacheConfig
-from pyeuropepmc.core.exceptions import ParsingError
+from pyeuropepmc.core.exceptions import EuropePMCError, ParsingError
+from pyeuropepmc.features.literature.article import ArticleClient
 
 # The pyeuropepmc modules below import without any extra: each one loads its
 # optional libraries lazily. A flag that only records whether the module
@@ -217,6 +221,9 @@ class _Lazy(Generic[_T]):
 _client_cache: _Lazy[SearchClient] = _Lazy(
     lambda: SearchClient(cache_config=CacheConfig(enabled=True))
 )
+_article_client_cache: _Lazy[ArticleClient] = _Lazy(
+    lambda: ArticleClient(cache_config=CacheConfig(enabled=True))
+)
 _unified_cache: _Lazy[Any] = _Lazy(lambda: UnifiedSearch() if UNIFIED_AVAILABLE else None)
 _citation_walker_cache: _Lazy[Any] = _Lazy(
     lambda: CitationWalker() if CITATION_WALKER_AVAILABLE else None
@@ -250,6 +257,11 @@ def _get_client() -> SearchClient:
 def _get_unified() -> Any | None:
     """Get (or create) the process-wide cached UnifiedSearch instance."""
     return _unified_cache.get() if UNIFIED_AVAILABLE else None
+
+
+def _get_article_client() -> ArticleClient:
+    """Get (or create) the process-wide cached ArticleClient instance."""
+    return _article_client_cache.get()
 
 
 # ---------------------------------------------------------------------------
@@ -338,6 +350,58 @@ async def _fetch_paper_summary(pmid: str, client: SearchClient) -> dict[str, Any
     return _paper_summary_from_raw(results[0])
 
 
+_PMID_RE = re.compile(r"^\d{1,9}$")
+_PMCID_RE = re.compile(r"^PMC\d+$", re.IGNORECASE)
+_DATE_RE = re.compile(r"^\d{4}(-\d{2}(-\d{2})?)?$")
+_SOURCE_RE = re.compile(r"^[A-Za-z]{2,5}$")
+
+
+def _with_filters(
+    query: str,
+    *,
+    date_from: str = "",
+    date_to: str = "",
+    open_access: bool = False,
+    has_fulltext: bool = False,
+    source: str = "",
+) -> str:
+    """AND Europe PMC field filters onto ``query``; with no filter it is returned unchanged."""
+    clauses: list[str] = []
+    for label, value in (("date_from", date_from), ("date_to", date_to)):
+        if value and not _DATE_RE.match(value):
+            raise ToolError(f"{label} must be YYYY, YYYY-MM or YYYY-MM-DD, got {value!r}")
+    if date_from or date_to:
+        clauses.append(f"FIRST_PDATE:[{date_from or '*'} TO {date_to or '*'}]")
+    if open_access:
+        clauses.append("OPEN_ACCESS:y")
+    if has_fulltext:
+        clauses.append("HAS_FT:y")
+    if source:
+        if not _SOURCE_RE.match(source):
+            raise ToolError(f"source must be a short code such as MED, PMC or PPR, got {source!r}")
+        clauses.append(f"SRC:{source.upper()}")
+    if not clauses:
+        return query
+    return " AND ".join([f"({query})", *clauses])
+
+
+def _s2_identifier(identifier: str) -> str:
+    """Prefix a bare PMID/PMCID/DOI the way Semantic Scholar expects.
+
+    S2 only recognises an external ID when it carries its type (``PMID:123``); a bare
+    ``123`` is treated as a paper ID and resolves to nothing. Anything already prefixed,
+    and S2's own 40-hex paper IDs, pass through untouched.
+    """
+    ident = identifier.strip()
+    if _PMID_RE.match(ident):
+        return f"PMID:{ident}"
+    if _PMCID_RE.match(ident):
+        return f"PMCID:{ident.upper()}"
+    if ident.startswith("10."):
+        return f"DOI:{ident}"
+    return ident
+
+
 def _ro(title: str, *, local: bool = False, idempotent: bool = True) -> ToolAnnotations:
     """Annotations for a read-only tool (never mutates anything the client owns)."""
     return ToolAnnotations(
@@ -398,15 +462,71 @@ async def search_papers(
     limit: Annotated[int, Field(description="Number of results", ge=1, le=1000)] = 25,
     sort: Annotated[str, Field(description="Sort order, e.g. 'cited' or 'date'")] = "",
     result_type: Annotated[str, Field(description="Europe PMC result type")] = "core",
+    date_from: Annotated[
+        str, Field(description="First publication date, from (YYYY, YYYY-MM or YYYY-MM-DD)")
+    ] = "",
+    date_to: Annotated[
+        str, Field(description="First publication date, to (YYYY, YYYY-MM or YYYY-MM-DD)")
+    ] = "",
+    open_access: Annotated[bool, Field(description="Only open-access articles")] = False,
+    has_fulltext: Annotated[bool, Field(description="Only articles with full text")] = False,
+    source: Annotated[
+        str, Field(description="Restrict to one source, e.g. MED, PMC or PPR (preprints)")
+    ] = "",
+    synonym: Annotated[bool, Field(description="Expand the query with MeSH synonyms")] = False,
 ) -> list[dict[str, Any]]:
     """Search Europe PMC for papers (single source — prefer `unified_search` for
-    multi-source coverage)."""
+    multi-source coverage). At most ``limit`` records are fetched; optional filters
+    narrow the query by date, open access, full text availability and source."""
     client = _get_client()
+    full_query = _with_filters(
+        query,
+        date_from=date_from,
+        date_to=date_to,
+        open_access=open_access,
+        has_fulltext=has_fulltext,
+        source=source,
+    )
     kwargs: dict[str, Any] = {"page_size": limit, "max_results": limit, "resultType": result_type}
     if sort:
         kwargs["sort"] = sort
-    results = await _run_blocking(client.search_all, query, **kwargs)
+    if synonym:
+        kwargs["synonym"] = True
+    results = await _run_blocking(client.search_all, full_query, **kwargs)
     return [_to_serializable(r) for r in results]
+
+
+@mcp.tool(annotations=_ro("Count papers"))
+async def count_papers(
+    query: Annotated[str, Field(description="Search query")],
+    date_from: Annotated[
+        str, Field(description="First publication date, from (YYYY, YYYY-MM or YYYY-MM-DD)")
+    ] = "",
+    date_to: Annotated[
+        str, Field(description="First publication date, to (YYYY, YYYY-MM or YYYY-MM-DD)")
+    ] = "",
+    open_access: Annotated[bool, Field(description="Only open-access articles")] = False,
+    has_fulltext: Annotated[bool, Field(description="Only articles with full text")] = False,
+    source: Annotated[
+        str, Field(description="Restrict to one source, e.g. MED, PMC or PPR (preprints)")
+    ] = "",
+) -> dict[str, Any]:
+    """Number of Europe PMC records matching a query, without fetching them. Use it to
+    size a search before choosing ``limit`` for `search_papers`."""
+    client = _get_client()
+    full_query = _with_filters(
+        query,
+        date_from=date_from,
+        date_to=date_to,
+        open_access=open_access,
+        has_fulltext=has_fulltext,
+        source=source,
+    )
+    try:
+        count = await _run_blocking(client.get_hit_count, full_query)
+    except EuropePMCError as exc:
+        raise ToolError(str(exc)) from exc
+    return {"query": full_query, "hit_count": count}
 
 
 @mcp.tool(annotations=_ro("Get paper details"))
@@ -452,15 +572,45 @@ async def search_authors(
 
 @mcp.tool(annotations=_ro("Get paper citations"))
 async def get_paper_citations(
-    pmid: Annotated[str, Field(description="PubMed ID")],
+    pmid: Annotated[str, Field(description="Article ID, usually a PubMed ID")],
     limit: Annotated[int, Field(description="Max citing papers to return", ge=1, le=1000)] = 100,
+    source: Annotated[
+        str, Field(description="Europe PMC source code of the ID: MED (PMID), PMC or PPR")
+    ] = "MED",
 ) -> list[dict[str, Any]]:
     """Get papers that cite a given paper (Europe PMC)."""
-    client = _get_client()
-    results = await _run_blocking(
-        client.search_all, f"CITED:{pmid}", page_size=limit, max_results=limit
-    )
-    return [_to_serializable(r) for r in results]
+    if not _SOURCE_RE.match(source):
+        raise ToolError(f"source must be a short code such as MED, PMC or PPR, got {source!r}")
+    client = _get_article_client()
+    # The citations endpoint works for every source. A ``CITES:`` search only matches MED
+    # records, and ``CITED:`` filters on the citation count, so it matches nothing here.
+    try:
+        response = await _run_blocking(
+            client.get_citations, source.upper(), pmid, page=1, page_size=limit
+        )
+    except EuropePMCError as exc:
+        raise ToolError(str(exc)) from exc
+    citations = (response.get("citationList") or {}).get("citation") or []
+    return [_to_serializable(c) for c in citations]
+
+
+@mcp.tool(annotations=_ro("Get paper references"))
+async def get_paper_references(
+    article_id: Annotated[str, Field(description="Article ID, e.g. a PMID or PMCID")],
+    source: Annotated[
+        str, Field(description="Europe PMC source code: MED (PMID), PMC (PMCID) or PPR")
+    ] = "MED",
+    limit: Annotated[int, Field(description="Max references to return", ge=1, le=1000)] = 100,
+) -> dict[str, Any]:
+    """Get the reference list of a paper (backward citations, Europe PMC)."""
+    client = _get_article_client()
+    try:
+        response = await _run_blocking(
+            client.get_references, source.upper(), article_id, page=1, page_size=limit
+        )
+    except EuropePMCError as exc:
+        raise ToolError(str(exc)) from exc
+    return _as_dict(response)
 
 
 @mcp.tool(annotations=_ro("Citation snowball walk"))
@@ -490,7 +640,7 @@ async def citation_snowball(
         await ctx.info(f"Snowballing {strategy} from {identifier} (depth={max_depth})")
     results, report = await _run_blocking(
         walker.snowball,
-        identifier=identifier,
+        identifier=_s2_identifier(identifier),
         strategy=strategy_map[strategy],
         max_papers=max_papers,
         max_depth=max_depth,

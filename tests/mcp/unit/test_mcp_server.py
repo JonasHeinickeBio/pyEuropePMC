@@ -20,6 +20,7 @@ from pyeuropepmc.mcp import server as srv
 
 ALL_CACHES = [
     srv._client_cache,
+    srv._article_client_cache,
     srv._unified_cache,
     srv._citation_walker_cache,
     srv._clinical_trials_cache,
@@ -316,9 +317,11 @@ class TestToolRegistry:
     EXPECTED_TOOLS = {
         "unified_search",
         "search_papers",
+        "count_papers",
         "get_paper_details",
         "search_authors",
         "get_paper_citations",
+        "get_paper_references",
         "citation_snowball",
         "clinical_trial_search",
         "fulltext_index_query",

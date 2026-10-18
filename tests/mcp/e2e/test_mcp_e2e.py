@@ -20,6 +20,7 @@ failure entirely.
 from __future__ import annotations
 
 from contextlib import asynccontextmanager
+import os
 import sys
 
 from mcp import ClientSession
@@ -32,7 +33,12 @@ pytestmark = [pytest.mark.slow, pytest.mark.integration, pytest.mark.e2e]
 @asynccontextmanager
 async def _server_session():
     """Spawn the real server subprocess and yield an initialized (session, InitializeResult)."""
-    params = StdioServerParameters(command=sys.executable, args=["-m", "pyeuropepmc.mcp.server"])
+    # stdio_client only forwards a short allow-list of variables by default. Hand over the
+    # whole environment so the subprocess imports the same pyeuropepmc as the test
+    # (PYTHONPATH, a worktree checkout) rather than whichever install is first on its path.
+    params = StdioServerParameters(
+        command=sys.executable, args=["-m", "pyeuropepmc.mcp.server"], env=dict(os.environ)
+    )
     async with stdio_client(params) as (read, write), ClientSession(read, write) as client:
         init_result = await client.initialize()
         yield client, init_result
@@ -72,6 +78,41 @@ class TestMCPToolsAgainstRealEuropePMC:
             result = await session.call_tool("search_papers", {"query": "malaria", "limit": 2})
             assert result.isError is False
             assert isinstance(result.structuredContent["result"], list)
+
+    async def test_search_papers_stops_at_limit_for_a_broad_query(self):
+        async with _server_session() as (session, _init_result):
+            result = await session.call_tool("search_papers", {"query": "CRISPR", "limit": 3})
+            assert result.isError is False
+            assert len(result.structuredContent["result"]) == 3
+
+    async def test_search_papers_filters_and_count_papers(self):
+        async with _server_session() as (session, _init_result):
+            args = {"query": "malaria", "date_from": "2023", "date_to": "2023", "source": "MED"}
+            found = await session.call_tool("search_papers", {**args, "limit": 2})
+            counted = await session.call_tool("count_papers", args)
+            assert found.isError is False
+            assert counted.isError is False
+            assert len(found.structuredContent["result"]) == 2
+            assert counted.structuredContent["hit_count"] > 2
+
+    async def test_get_paper_citations_and_references(self):
+        async with _server_session() as (session, _init_result):
+            cited = await session.call_tool(
+                "get_paper_citations", {"pmid": "22745249", "limit": 3}
+            )
+            refs = await session.call_tool(
+                "get_paper_references", {"article_id": "22745249", "limit": 3}
+            )
+            assert cited.isError is False
+            assert len(cited.structuredContent["result"]) == 3
+            assert refs.isError is False
+            assert refs.structuredContent["hitCount"] > 0
+
+    async def test_invalid_date_filter_is_a_tool_error(self):
+        async with _server_session() as (session, _init_result):
+            result = await session.call_tool("search_papers", {"query": "x", "date_from": "soon"})
+            assert result.isError is True
+            assert "date_from" in result.content[0].text
 
     async def test_get_paper_details_round_trip(self):
         async with _server_session() as (session, _init_result):

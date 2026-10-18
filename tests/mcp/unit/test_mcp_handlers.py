@@ -19,6 +19,7 @@ from pyeuropepmc.mcp import server as srv
 
 ALL_CACHES = [
     srv._client_cache,
+    srv._article_client_cache,
     srv._unified_cache,
     srv._citation_walker_cache,
     srv._clinical_trials_cache,
@@ -176,16 +177,6 @@ class TestSearchAuthors:
         args, kwargs = client.search_all.call_args
         assert args[0] == 'AUTH:"Smith"'
         assert kwargs == {"page_size": 25, "max_results": 25}
-
-
-class TestGetPaperCitations:
-    def test_builds_cited_query(self):
-        client = MagicMock()
-        client.search_all.return_value = [{"pmid": "2"}]
-        srv._client_cache.set(client)
-        result = _run(srv.get_paper_citations(pmid="1", limit=50))
-        client.search_all.assert_called_once_with("CITED:1", page_size=50, max_results=50)
-        assert result == [{"pmid": "2"}]
 
 
 class TestCitationSnowball:
@@ -754,3 +745,175 @@ class TestSearchPapersStopsAtLimit:
 
         assert len(results) == 3
         assert pages == [3]
+
+
+class TestWithFilters:
+    def test_no_filters_returns_query_unchanged(self):
+        assert srv._with_filters("malaria") == "malaria"
+
+    def test_all_filters_are_anded_onto_the_query(self):
+        q = srv._with_filters(
+            "malaria OR dengue",
+            date_from="2020",
+            date_to="2023-06",
+            open_access=True,
+            has_fulltext=True,
+            source="med",
+        )
+        assert q == (
+            "(malaria OR dengue) AND FIRST_PDATE:[2020 TO 2023-06]"
+            " AND OPEN_ACCESS:y AND HAS_FT:y AND SRC:MED"
+        )
+
+    def test_open_ended_date_range(self):
+        assert srv._with_filters("x", date_from="2020") == "(x) AND FIRST_PDATE:[2020 TO *]"
+        assert srv._with_filters("x", date_to="2020") == "(x) AND FIRST_PDATE:[* TO 2020]"
+
+    @pytest.mark.parametrize("bad", ["20", "2020/01", "last year", "2020-1-1", "2020 TO 2021"])
+    def test_rejects_malformed_dates(self, bad):
+        with pytest.raises(ToolError, match="date_from"):
+            srv._with_filters("x", date_from=bad)
+
+    @pytest.mark.parametrize("bad", ["MED OR", "x y", "TOOLONG", "1"])
+    def test_rejects_malformed_source(self, bad):
+        with pytest.raises(ToolError, match="source"):
+            srv._with_filters("x", source=bad)
+
+
+class TestSearchPapersFilters:
+    def test_filters_and_synonym_reach_the_client(self):
+        client = MagicMock()
+        client.search_all.return_value = []
+        srv._client_cache.set(client)
+
+        _run(
+            srv.search_papers(
+                query="malaria", limit=5, date_from="2022", open_access=True, synonym=True
+            )
+        )
+
+        client.search_all.assert_called_once_with(
+            "(malaria) AND FIRST_PDATE:[2022 TO *] AND OPEN_ACCESS:y",
+            page_size=5,
+            max_results=5,
+            resultType="core",
+            synonym=True,
+        )
+
+    def test_invalid_filter_never_hits_the_client(self):
+        client = MagicMock()
+        srv._client_cache.set(client)
+        with pytest.raises(ToolError):
+            _run(srv.search_papers(query="x", date_to="soon"))
+        client.search_all.assert_not_called()
+
+
+class TestCountPapers:
+    def test_returns_hit_count_for_filtered_query(self):
+        client = MagicMock()
+        client.get_hit_count.return_value = 1234
+        srv._client_cache.set(client)
+
+        result = _run(srv.count_papers(query="malaria", has_fulltext=True))
+
+        client.get_hit_count.assert_called_once_with("(malaria) AND HAS_FT:y")
+        assert result == {"query": "(malaria) AND HAS_FT:y", "hit_count": 1234}
+
+    def test_api_error_becomes_tool_error(self):
+        from pyeuropepmc.core.error_codes import ErrorCodes
+        from pyeuropepmc.core.exceptions import SearchError
+
+        client = MagicMock()
+        client.get_hit_count.side_effect = SearchError(ErrorCodes.SEARCH003, {"query": "x"})
+        srv._client_cache.set(client)
+        with pytest.raises(ToolError):
+            _run(srv.count_papers(query="x"))
+
+
+class TestGetPaperReferences:
+    def test_uppercases_source_and_caps_page_size(self):
+        client = MagicMock()
+        client.get_references.return_value = {"hitCount": 1, "referenceList": {"reference": []}}
+        srv._article_client_cache.set(client)
+
+        result = _run(srv.get_paper_references(article_id="123", source="med", limit=10))
+
+        client.get_references.assert_called_once_with("MED", "123", page=1, page_size=10)
+        assert result["hitCount"] == 1
+
+    def test_api_error_becomes_tool_error(self):
+        from pyeuropepmc.core.error_codes import ErrorCodes
+        from pyeuropepmc.core.exceptions import APIClientError
+
+        client = MagicMock()
+        client.get_references.side_effect = APIClientError(ErrorCodes.NET001, {"error": "boom"})
+        srv._article_client_cache.set(client)
+        with pytest.raises(ToolError):
+            _run(srv.get_paper_references(article_id="123"))
+
+
+class TestS2Identifier:
+    @pytest.mark.parametrize(
+        ("raw", "expected"),
+        [
+            ("22745249", "PMID:22745249"),
+            (" 22745249 ", "PMID:22745249"),
+            ("pmc3525259", "PMCID:PMC3525259"),
+            ("10.1126/science.1225829", "DOI:10.1126/science.1225829"),
+            ("PMID:22745249", "PMID:22745249"),
+            ("DOI:10.1/x", "DOI:10.1/x"),
+            (
+                "649def34f8be52c8b66281af98ae884c09aef38b",
+                "649def34f8be52c8b66281af98ae884c09aef38b",
+            ),
+        ],
+    )
+    def test_normalises(self, raw, expected):
+        assert srv._s2_identifier(raw) == expected
+
+    def test_snowball_sends_prefixed_identifier_to_walker(self):
+        walker = MagicMock()
+        report = MagicMock(total_input=0, total_output=0, duplicates_removed=0)
+        walker.snowball.return_value = ([], report)
+        srv._citation_walker_cache.set(walker)
+
+        _run(srv.citation_snowball(identifier="22745249"))
+
+        assert walker.snowball.call_args.kwargs["identifier"] == "PMID:22745249"
+
+
+class TestGetPaperCitations:
+    def test_uses_citations_endpoint_and_unwraps_list(self):
+        client = MagicMock()
+        client.get_citations.return_value = {
+            "hitCount": 2,
+            "citationList": {"citation": [{"id": "2"}, {"id": "3"}]},
+        }
+        srv._article_client_cache.set(client)
+
+        result = _run(srv.get_paper_citations(pmid="1", limit=50))
+
+        client.get_citations.assert_called_once_with("MED", "1", page=1, page_size=50)
+        assert result == [{"id": "2"}, {"id": "3"}]
+
+    def test_source_is_uppercased(self):
+        client = MagicMock()
+        client.get_citations.return_value = {"hitCount": 0}
+        srv._article_client_cache.set(client)
+
+        assert _run(srv.get_paper_citations(pmid="PMC9", source="pmc", limit=5)) == []
+        client.get_citations.assert_called_once_with("PMC", "PMC9", page=1, page_size=5)
+
+    def test_rejects_bad_source(self):
+        with pytest.raises(ToolError, match="source"):
+            _run(srv.get_paper_citations(pmid="1", source="MED OR"))
+
+    def test_api_error_becomes_tool_error(self):
+        from pyeuropepmc.core.error_codes import ErrorCodes
+        from pyeuropepmc.core.exceptions import APIClientError
+
+        client = MagicMock()
+        client.get_citations.side_effect = APIClientError(ErrorCodes.NET001, {"error": "boom"})
+        srv._article_client_cache.set(client)
+        with pytest.raises(ToolError):
+            _run(srv.get_paper_citations(pmid="1"))
