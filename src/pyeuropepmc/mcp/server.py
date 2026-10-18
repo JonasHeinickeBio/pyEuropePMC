@@ -510,6 +510,7 @@ async def count_papers(
     source: Annotated[
         str, Field(description="Restrict to one source, e.g. MED, PMC or PPR (preprints)")
     ] = "",
+    synonym: Annotated[bool, Field(description="Expand the query with MeSH synonyms")] = False,
 ) -> dict[str, Any]:
     """Number of Europe PMC records matching a query, without fetching them. Use it to
     size a search before choosing ``limit`` for `search_papers`."""
@@ -523,7 +524,8 @@ async def count_papers(
         source=source,
     )
     try:
-        count = await _run_blocking(client.get_hit_count, full_query)
+        extra: dict[str, Any] = {"synonym": True} if synonym else {}
+        count = await _run_blocking(client.get_hit_count, full_query, **extra)
     except EuropePMCError as exc:
         raise ToolError(str(exc)) from exc
     return {"query": full_query, "hit_count": count}

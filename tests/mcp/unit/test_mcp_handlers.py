@@ -819,6 +819,18 @@ class TestCountPapers:
         client.get_hit_count.assert_called_once_with("(malaria) AND HAS_FT:y")
         assert result == {"query": "(malaria) AND HAS_FT:y", "hit_count": 1234}
 
+    def test_synonym_is_forwarded_only_when_set(self):
+        client = MagicMock()
+        client.get_hit_count.return_value = 5
+        srv._client_cache.set(client)
+
+        _run(srv.count_papers(query="malaria", synonym=True))
+        client.get_hit_count.assert_called_once_with("malaria", synonym=True)
+
+        client.get_hit_count.reset_mock()
+        _run(srv.count_papers(query="malaria"))
+        client.get_hit_count.assert_called_once_with("malaria")
+
     def test_api_error_becomes_tool_error(self):
         from pyeuropepmc.core.error_codes import ErrorCodes
         from pyeuropepmc.core.exceptions import SearchError
