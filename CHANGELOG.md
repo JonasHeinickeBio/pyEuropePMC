@@ -24,6 +24,16 @@ All notable changes to PyEuropePMC are documented here.
 
 - MCP `search_papers` takes `date_from`, `date_to`, `open_access`,
   `has_fulltext`, `source` and `synonym`.
+- New MCP tool `get_paper_fulltext`: the structured full text of an open-access
+  paper by PMCID, PMID or DOI, as markdown, typed sections or an outline, with
+  a section filter, a `max_chars` cap that cuts at a block boundary, and
+  optional parsed references. It drops the per-block `schema_version` / `inlines`
+  bookkeeping and the triple copy of every table, and `paper_figures` shares its
+  cached XML.
+- MCP full-text and figure tools check `isOpenAccess` first. Europe PMC answers
+  a full-text request for a non-open-access article with HTTP 500 after about
+  20 s of retries, which read like an outage; they now fail in about a second
+  and name the reason.
 - New MCP tools `count_papers` (hit count for a query, with the same filters)
   and `get_paper_references` (reference list of a paper).
 

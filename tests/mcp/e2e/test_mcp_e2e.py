@@ -130,3 +130,55 @@ class TestMCPToolsAgainstRealEuropePMC:
             details = await session.call_tool("get_paper_details", {"pmid": paper_id})
             assert details.isError is False
             assert isinstance(details.structuredContent, dict)
+
+
+@pytest.mark.network
+class TestMCPFullTextAgainstRealEuropePMC:
+    # PMC3525259: a small open-access review whose ids, sections and table are stable.
+    PMCID = "PMC3525259"
+
+    async def test_outline_then_one_section(self):
+        async with _server_session() as (session, _init_result):
+            outline = await session.call_tool(
+                "get_paper_fulltext", {"pmcid": self.PMCID, "format": "outline"}
+            )
+            assert outline.isError is False
+            titles = outline.structuredContent["sections_available"]
+            assert "Conclusions" in titles
+
+            part = await session.call_tool(
+                "get_paper_fulltext",
+                {"pmid": "16004729", "sections": ["conclusion"], "include_references": True},
+            )
+            data = part.structuredContent
+            assert part.isError is False
+            assert data["pmcid"] == self.PMCID
+            assert data["content"].startswith("## Conclusions")
+            assert data["truncated"] is False
+            assert len(data["references"]) == data["reference_count"] > 0
+
+    async def test_sections_format_and_truncation(self):
+        async with _server_session() as (session, _init_result):
+            result = await session.call_tool(
+                "get_paper_fulltext",
+                {"pmcid": self.PMCID, "format": "sections", "max_chars": 3000},
+            )
+            data = result.structuredContent
+            assert result.isError is False
+            assert data["truncated"] is True
+            assert data["returned_chars"] <= 3000 + 2
+            first_block = data["content"][0]["content"][0]
+            assert "schema_version" not in first_block
+
+    async def test_paper_without_open_access_fails_fast_with_the_reason(self):
+        async with _server_session() as (session, _init_result):
+            result = await session.call_tool("get_paper_fulltext", {"pmcid": "PMC6999107"})
+            assert result.isError is True
+            assert "not Open Access" in result.content[0].text
+
+    async def test_paper_figures_reuses_the_fetched_text(self):
+        async with _server_session() as (session, _init_result):
+            await session.call_tool("get_paper_fulltext", {"pmcid": self.PMCID})
+            figures = await session.call_tool("paper_figures", {"pmcid": self.PMCID})
+            assert figures.isError is False
+            assert figures.structuredContent["figure_count"] >= 3

@@ -21,6 +21,8 @@ from pyeuropepmc.mcp import server as srv
 ALL_CACHES = [
     srv._client_cache,
     srv._article_client_cache,
+    srv._fulltext_client_cache,
+    srv._fulltext_xml_cache,
     srv._unified_cache,
     srv._citation_walker_cache,
     srv._clinical_trials_cache,
@@ -325,6 +327,7 @@ class TestToolRegistry:
         "citation_snowball",
         "clinical_trial_search",
         "fulltext_index_query",
+        "get_paper_fulltext",
         "paper_figures",
         "analyze_citations",
         "compare_citations",

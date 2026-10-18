@@ -41,6 +41,7 @@ Tools:
 
     Full-text & figures:
         fulltext_index_query  — Search local SQLite FTS5 full-text index
+        get_paper_fulltext    — Structured full text of an open-access paper
         paper_figures         — Figures, tables and supplementary files of a PMC article
 
     Screening & review:
@@ -63,6 +64,7 @@ from collections import Counter
 from collections.abc import Callable
 from functools import partial
 from importlib.metadata import PackageNotFoundError, version as _pkg_version
+import json
 import logging
 import os
 import re
@@ -78,8 +80,10 @@ from pydantic import Field
 
 from pyeuropepmc import SearchClient
 from pyeuropepmc.cache.cache import CacheConfig
-from pyeuropepmc.core.exceptions import EuropePMCError, ParsingError
+from pyeuropepmc.core.error_codes import ErrorCodes
+from pyeuropepmc.core.exceptions import EuropePMCError, FullTextError, ParsingError
 from pyeuropepmc.features.literature.article import ArticleClient
+from pyeuropepmc.mcp import _fulltext as ft
 
 # The pyeuropepmc modules below import without any extra: each one loads its
 # optional libraries lazily. A flag that only records whether the module
@@ -114,6 +118,14 @@ try:
     FTS_AVAILABLE = True
 except ImportError:
     FTS_AVAILABLE = False
+
+try:
+    from pyeuropepmc import FullTextClient
+    from pyeuropepmc.features.fulltext.fulltext_parser import FullTextXMLParser
+
+    FULLTEXT_AVAILABLE = True
+except ImportError:
+    FULLTEXT_AVAILABLE = False
 
 try:
     from pyeuropepmc.features.fulltext.figures import FigureExtractor
@@ -224,6 +236,10 @@ _client_cache: _Lazy[SearchClient] = _Lazy(
 _article_client_cache: _Lazy[ArticleClient] = _Lazy(
     lambda: ArticleClient(cache_config=CacheConfig(enabled=True))
 )
+_fulltext_client_cache: _Lazy[Any] = _Lazy(
+    lambda: FullTextClient() if FULLTEXT_AVAILABLE else None
+)
+_fulltext_xml_cache = ft.XmlCache()
 _unified_cache: _Lazy[Any] = _Lazy(lambda: UnifiedSearch() if UNIFIED_AVAILABLE else None)
 _citation_walker_cache: _Lazy[Any] = _Lazy(
     lambda: CitationWalker() if CITATION_WALKER_AVAILABLE else None
@@ -354,6 +370,88 @@ _PMID_RE = re.compile(r"^\d{1,9}$")
 _PMCID_RE = re.compile(r"^PMC\d+$", re.IGNORECASE)
 _DATE_RE = re.compile(r"^\d{4}(-\d{2}(-\d{2})?)?$")
 _SOURCE_RE = re.compile(r"^[A-Za-z]{2,5}$")
+
+
+_PMC_ID_RE = re.compile(r"^(?:PMC)?(\d{1,10})$", re.IGNORECASE)
+
+
+def _fulltext_query(pmcid: str, pmid: str, doi: str) -> str:
+    """Europe PMC query that finds the one record behind a PMCID, PMID or DOI."""
+    if pmcid:
+        match = _PMC_ID_RE.match(pmcid.strip())
+        if not match:
+            raise ToolError(f"pmcid must look like PMC1234567, got {pmcid!r}")
+        return f"PMCID:PMC{match.group(1)}"
+    if pmid:
+        if not pmid.strip().isdigit():
+            raise ToolError(f"pmid must be digits only, got {pmid!r}")
+        return f"EXT_ID:{pmid.strip()} AND SRC:MED"
+    if doi:
+        return f'DOI:"{doi.strip()}"'
+    raise ToolError("One of pmcid, pmid, or doi is required")
+
+
+async def _locate_fulltext(
+    pmcid: str = "", pmid: str = "", doi: str = ""
+) -> tuple[str, dict[str, Any]]:
+    """Resolve any identifier to ``(PMCID, search record)`` and check the full text exists.
+
+    Europe PMC answers a full-text request for an article outside its open-access set
+    with HTTP 500 after several retries (about 20 s), which reads like an outage. The
+    search record already says whether the XML is served (``isOpenAccess``), so ask
+    that first and fail fast with a message that names the real reason.
+    """
+    query = _fulltext_query(pmcid, pmid, doi)
+    results = await _run_blocking(
+        _get_client().search_all, query, page_size=1, max_results=1, resultType="lite"
+    )
+    if not results:
+        raise ToolError(f"No Europe PMC record found for {pmcid or pmid or doi!r}")
+    record = _as_dict(results[0])
+    resolved = str(record.get("pmcid") or "")
+    if not resolved:
+        raise ToolError(
+            f"{pmcid or pmid or doi!r} has no PMCID: the article is not in PubMed Central, "
+            "so Europe PMC has no full text for it"
+        )
+    if record.get("isOpenAccess") != "Y":
+        raise ToolError(
+            f"{resolved} is not Open Access: Europe PMC serves full-text XML only for "
+            "open-access articles"
+        )
+    return resolved, record
+
+
+def _fulltext_error(exc: FullTextError, pmcid: str) -> ToolError:
+    code = exc.error_code
+    status = exc.context.get("status_code") if isinstance(exc.context, dict) else None
+    if code == ErrorCodes.FULL003:
+        return ToolError(f"Europe PMC has no full-text XML for {pmcid}")
+    if code == ErrorCodes.FULL008:
+        return ToolError(f"Access to the full text of {pmcid} is restricted")
+    if code == ErrorCodes.FULL005 and isinstance(status, int) and status >= 500:
+        return ToolError(
+            f"Europe PMC could not serve the full text of {pmcid} (HTTP {status}). "
+            "It is marked open access, so this is likely temporary; retry later."
+        )
+    return ToolError(str(exc))
+
+
+async def _fulltext_xml(pmcid: str) -> str:
+    """The article's full-text XML, fetched once and kept for the next tool call."""
+    cached = _fulltext_xml_cache.get(pmcid)
+    if cached is not None:
+        return cached
+    _require_available(FULLTEXT_AVAILABLE, "FullTextClient")
+    client = _fulltext_client_cache.get()
+    try:
+        xml: str = await _run_blocking(client.get_fulltext_content, pmcid, "xml")
+    except FullTextError as exc:
+        raise _fulltext_error(exc, pmcid) from exc
+    if not xml:
+        raise ToolError(f"Europe PMC returned an empty full text for {pmcid}")
+    _fulltext_xml_cache.set(pmcid, xml)
+    return xml
 
 
 def _with_filters(
@@ -734,6 +832,105 @@ async def fulltext_index_query(
     return await _run_blocking(_query)
 
 
+@mcp.tool(annotations=_ro("Get paper full text"))
+async def get_paper_fulltext(
+    pmcid: Annotated[str, Field(description="PMC ID of the article, e.g. PMC1234567")] = "",
+    pmid: Annotated[str, Field(description="PubMed ID (alternative to pmcid)")] = "",
+    doi: Annotated[str, Field(description="DOI (alternative to pmcid)")] = "",
+    format: Annotated[
+        Literal["markdown", "sections", "outline"],
+        Field(
+            description="markdown: readable text with tables (default). sections: typed "
+            "blocks (paragraph, heading, list, figure, table) for programmatic use. "
+            "outline: only section titles, block counts and sizes - use it first on a "
+            "long paper to pick which sections to request."
+        ),
+    ] = "markdown",
+    sections: Annotated[
+        list[str] | None,
+        Field(
+            description="Only these sections: case-insensitive substrings of a section "
+            "title, e.g. ['methods', 'results']. Default: all sections."
+        ),
+    ] = None,
+    include_references: Annotated[
+        bool, Field(description="Also return the parsed reference list (DOI/PMID per entry)")
+    ] = False,
+    max_chars: Annotated[
+        int,
+        Field(
+            description="Cut the content at a block boundary after this many characters",
+            ge=1000,
+            le=500000,
+        ),
+    ] = 30000,
+) -> dict[str, Any]:
+    """Fetch the structured full text of an open-access paper from Europe PMC.
+
+    Returns metadata, the list of available section titles, and the content in the
+    requested format. When the content is longer than ``max_chars`` it is cut at a block
+    boundary and ``truncated`` is true: ask again with ``sections`` for the part you need.
+    Only open-access articles have full text; anything else fails with the reason.
+    """
+    _require_available(FULLTEXT_AVAILABLE, "FullTextXMLParser")
+    resolved, record = await _locate_fulltext(pmcid, pmid, doi)
+    xml = await _fulltext_xml(resolved)
+
+    def _build() -> dict[str, Any]:
+        parser = FullTextXMLParser(xml)
+        all_sections = parser.get_full_text_sections_structured()
+        chosen = ft.select_sections(all_sections, sections)
+        meta = parser.extract_metadata()
+        journal = meta.get("journal")
+        license_info = parser.extract_license()
+        result: dict[str, Any] = {
+            "pmcid": resolved,
+            "pmid": record.get("pmid") or meta.get("pmid") or "",
+            "doi": record.get("doi") or meta.get("doi") or "",
+            "title": meta.get("title") or record.get("title") or "",
+            "journal": journal.get("title") if isinstance(journal, dict) else journal,
+            "pub_date": meta.get("pub_date"),
+            "license": (license_info.get("type") or license_info.get("url") or None)
+            if isinstance(license_info, dict)
+            else None,
+            "sections_available": ft.section_titles(all_sections),
+            "format": format,
+        }
+        if sections and not chosen:
+            raise ToolError(
+                f"No section matches {sections!r}. Available sections: "
+                f"{result['sections_available']}"
+            )
+        if format == "outline":
+            content: Any = ft.outline(chosen)
+            total = returned = len(json.dumps(content, separators=(",", ":")))
+            truncated = False
+        else:
+            units = ft.render_units(chosen, format)
+            kept, total, truncated = ft.take_within(units, max_chars)
+            if format == "markdown":
+                content = ft.units_to_markdown(kept)
+            else:
+                content = ft.units_to_sections(chosen, kept)
+            returned = sum(len(u[2]) + 2 for u in kept)
+        result.update(
+            content=content,
+            total_chars=total,
+            returned_chars=returned,
+            truncated=truncated,
+        )
+        refs = parser.extract_references()
+        result["reference_count"] = len(refs)
+        if include_references:
+            result["references"] = [_to_serializable(r) for r in refs]
+        return result
+
+    try:
+        return await _run_blocking(_build)
+    except ParsingError as exc:
+        raise ToolError(str(exc)) from exc
+
+
 @mcp.tool(annotations=_ro("Extract paper figures"))
 async def paper_figures(
     pmcid: Annotated[str, Field(description="PMC ID of the article, e.g. PMC1234567")] = "",
@@ -754,13 +951,15 @@ async def paper_figures(
         raise ToolError("One of pmcid, pmid, or doi is required")
 
     extractor = _figure_extractor_cache.get()
-    identifier = {"pmcid": pmcid} if pmcid else {"pmid": pmid} if pmid else {"doi": doi}
+    resolved, _record = await _locate_fulltext(pmcid, pmid, doi)
+    xml = await _fulltext_xml(resolved)
     try:
         figures = await _run_blocking(
-            extractor.extract,
+            extractor.extract_from_xml,
+            xml,
+            pmcid=resolved,
             include_tables=include_tables,
             include_supplements=include_supplements,
-            **identifier,
         )
     except ParsingError as exc:
         # A refused document is not "no figures": say so instead of reporting 0.
