@@ -194,6 +194,69 @@ class TestTakeWithin:
         assert ft.take_within([], 10) == ([], 0, False)
 
 
+class TestShrinkBlockJson:
+    def _table(self, rows=200):
+        block = {
+            "type": "table",
+            "label": "T1",
+            "caption": "c",
+            "rows": [[f"gene{i}", "locus"] for i in range(rows)],
+        }
+        return ft.json.dumps(block, separators=(",", ":"))
+
+    def test_fitting_block_is_unchanged(self):
+        text = self._table(2)
+        assert ft.shrink_block_json(text, len(text)) == text
+
+    def test_table_loses_trailing_rows_and_stays_valid_json(self):
+        text = self._table()
+        out = ft.shrink_block_json(text, 500)
+        block = ft.json.loads(out)
+        assert len(out) <= 500
+        assert 0 < len(block["rows"]) < 200
+        assert block["rows"][0] == ["gene0", "locus"]
+        assert block["truncated_rows"] == 200 - len(block["rows"])
+
+    def test_text_block_is_cut_and_marked(self):
+        text = ft.json.dumps(
+            {"type": "paragraph", "text": 'say "hi"\n' * 400}, separators=(",", ":")
+        )
+        out = ft.shrink_block_json(text, 300)
+        block = ft.json.loads(out)
+        assert len(out) <= 300
+        assert block["truncated"] is True
+        assert block["text"].startswith("say")
+
+    def test_list_loses_items(self):
+        text = ft.json.dumps({"type": "list", "items": ["x" * 50] * 20}, separators=(",", ":"))
+        block = ft.json.loads(ft.shrink_block_json(text, 200))
+        assert block["truncated"] is True
+        assert 0 <= len(block["items"]) < 20
+
+    def test_impossible_budget_returns_none(self):
+        assert ft.shrink_block_json(self._table(), 10) is None
+        assert ft.shrink_block_json('{"type":"figure","uri":"a"}' + " " * 0, 5) is None
+
+
+class TestTakeWithinFitFirst:
+    def test_oversized_json_unit_is_shrunk_not_cut(self):
+        text = ft.json.dumps({"type": "table", "rows": [["a", "b"]] * 100}, separators=(",", ":"))
+        kept, total, truncated = ft.take_within(
+            [(0, 0, text)], 200, fit_first=ft.shrink_block_json
+        )
+        assert truncated is True
+        assert total == len(text) + 2
+        assert len(kept[0][2]) + 2 <= 200
+        ft.json.loads(kept[0][2])
+
+    def test_unshrinkable_unit_is_left_out(self):
+        kept, _total, truncated = ft.take_within(
+            [(0, 0, '{"type":"figure","uri":"abc"}')], 5, fit_first=ft.shrink_block_json
+        )
+        assert kept == []
+        assert truncated is True
+
+
 class TestOutline:
     def test_counts_blocks_and_chars(self, sections):
         outline = {o["title"]: o for o in ft.outline(ft.select_sections(sections))}
@@ -261,6 +324,36 @@ class TestGetPaperFulltext:
         assert result["truncated"] is True
         assert result["total_chars"] > 3000
         assert len(result["content"]) <= 1000
+
+    def test_sections_format_respects_max_chars_for_an_oversized_first_block(
+        self, paper, monkeypatch
+    ):
+        rows = "".join(f"<tr><td>gene{i}</td><td>locus</td></tr>" for i in range(400))
+        big = JATS.replace(
+            "<tbody><tr><td>ALDH1</td><td>9q21</td></tr></tbody>", f"<tbody>{rows}</tbody>"
+        )
+
+        async def xml(pmcid):
+            return big
+
+        monkeypatch.setattr(srv, "_fulltext_xml", xml)
+        result = _run(
+            srv.get_paper_fulltext(
+                pmcid="PMC42", format="sections", sections=["results"], max_chars=1000
+            )
+        )
+        import json
+
+        counted = sum(
+            len(json.dumps(b, separators=(",", ":"))) + 2
+            for s in result["content"]
+            for b in s["content"]
+        )
+        assert result["truncated"] is True
+        assert result["returned_chars"] == counted
+        assert counted <= 1000
+        tables = [b for s in result["content"] for b in s["content"] if b["type"] == "table"]
+        assert all("truncated_rows" in t for t in tables)
 
     def test_references_are_opt_in(self, paper):
         result = _run(srv.get_paper_fulltext(pmcid="PMC42", include_references=True))

@@ -11,6 +11,7 @@ bookkeeping, render markdown, and cut the result at a block boundary.
 from __future__ import annotations
 
 from collections import Counter, OrderedDict
+from collections.abc import Callable
 import json
 import threading
 from typing import Any
@@ -160,14 +161,76 @@ def render_units(sections: list[dict[str, Any]], fmt: str) -> list[tuple[int, in
     return units
 
 
+Unit = tuple[int, int | None, str]
+
+
+def _dumps(obj: Any) -> str:
+    return json.dumps(obj, separators=(",", ":"))
+
+
+def shrink_block_json(text: str, budget: int) -> str | None:
+    """Re-serialise one block so it fits ``budget`` characters and is still valid JSON.
+
+    Cutting the JSON string itself would leave something nobody can parse. A table
+    loses trailing rows (``truncated_rows`` says how many), a block with text has its
+    text cut (``truncated`` is set), a list loses trailing items. ``None`` means the
+    block cannot be made to fit, and the caller leaves it out.
+    """
+    block = json.loads(text)
+    if len(text) <= budget:
+        return text
+    kind = block.get("type")
+    if kind == "table" and isinstance(block.get("rows"), list):
+        rows = block["rows"]
+        lo, hi = 0, len(rows)
+        while lo < hi:  # most rows that still fit
+            mid = (lo + hi + 1) // 2
+            if (
+                len(_dumps({**block, "rows": rows[:mid], "truncated_rows": len(rows) - mid}))
+                <= budget
+            ):
+                lo = mid
+            else:
+                hi = mid - 1
+        shrunk = _dumps({**block, "rows": rows[:lo], "truncated_rows": len(rows) - lo})
+        return shrunk if len(shrunk) <= budget else None
+    if kind == "list" and isinstance(block.get("items"), list):
+        items = block["items"]
+        for keep in range(len(items), -1, -1):
+            candidate = _dumps({**block, "items": items[:keep], "truncated": True})
+            if len(candidate) <= budget:
+                return candidate
+        return None
+    for key in ("text", "caption"):
+        if isinstance(block.get(key), str):
+            value = block[key]
+            lo, hi = 0, len(value)
+            while lo < hi:  # longest prefix that still fits once JSON-escaped
+                mid = (lo + hi + 1) // 2
+                if len(_dumps({**block, key: value[:mid], "truncated": True})) <= budget:
+                    lo = mid
+                else:
+                    hi = mid - 1
+            cut = _dumps({**block, key: value[:lo], "truncated": True})
+            return cut if lo > 0 and len(cut) <= budget else None
+    return None
+
+
 def take_within(
-    units: list[tuple[int, int | None, str]], max_chars: int, sep_len: int = 2
-) -> tuple[list[tuple[int, int | None, str]], int, bool]:
+    units: list[Unit],
+    max_chars: int,
+    sep_len: int = 2,
+    fit_first: Callable[[str, int], str | None] | None = None,
+) -> tuple[list[Unit], int, bool]:
     """The longest prefix of ``units`` that fits ``max_chars``, with the total size and
-    whether anything was left out. The first unit is always kept, cut if need be, so a
-    single oversized table never leaves the caller with nothing."""
+    whether anything was left out.
+
+    The first unit is always attempted, so one oversized table does not leave the caller
+    with nothing: plain text is cut at the limit; with ``fit_first`` (JSON units, which
+    must stay parseable) that function shrinks it, and a unit it cannot shrink is left out.
+    """
     total = sum(len(u[2]) + sep_len for u in units)
-    kept: list[tuple[int, int | None, str]] = []
+    kept: list[Unit] = []
     used = 0
     truncated = False
     for si, bi, text in units:
@@ -176,8 +239,11 @@ def take_within(
             truncated = True
             break
         if not kept and cost > max_chars:
-            kept.append((si, bi, text[: max(max_chars - sep_len, 0)]))
             truncated = True
+            budget = max(max_chars - sep_len, 0)
+            fitted = fit_first(text, budget) if fit_first else text[:budget]
+            if fitted:
+                kept.append((si, bi, fitted))
             break
         kept.append((si, bi, text))
         used += cost
@@ -188,12 +254,14 @@ def units_to_markdown(units: list[tuple[int, int | None, str]]) -> str:
     return "\n\n".join(u[2] for u in units)
 
 
-def units_to_sections(
-    sections: list[dict[str, Any]], units: list[tuple[int, int | None, str]]
-) -> list[dict[str, Any]]:
-    """Rebuild the structured sections from the kept block units."""
+def units_to_sections(sections: list[dict[str, Any]], units: list[Unit]) -> list[dict[str, Any]]:
+    """Rebuild the structured sections from the kept block units.
+
+    Each block is parsed back from its unit's text, not copied from ``sections``: the text
+    is what was measured against the size limit, and it may be a shrunken version of the
+    original."""
     out: dict[int, dict[str, Any]] = {}
-    for si, bi, _text in units:
+    for si, bi, text in units:
         if bi is None:
             continue
         section = sections[si]
@@ -206,7 +274,7 @@ def units_to_sections(
                 "content": [],
             },
         )
-        entry["content"].append(slim_block(section["content"][bi]))
+        entry["content"].append(json.loads(text))
     return [out[i] for i in sorted(out)]
 
 

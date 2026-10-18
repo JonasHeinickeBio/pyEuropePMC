@@ -907,7 +907,9 @@ async def get_paper_fulltext(
             truncated = False
         else:
             units = ft.render_units(chosen, format)
-            kept, total, truncated = ft.take_within(units, max_chars)
+            kept, total, truncated = ft.take_within(
+                units, max_chars, fit_first=ft.shrink_block_json if format == "sections" else None
+            )
             if format == "markdown":
                 content = ft.units_to_markdown(kept)
             else:
