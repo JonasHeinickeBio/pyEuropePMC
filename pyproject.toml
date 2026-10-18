@@ -1,7 +1,7 @@
 [project]
 name = "pyeuropepmc"
-version = "3.0.0"
-description = "A Python package for working with the Europe PMC API to search and retrieve scientific literature."
+version = "3.1.0"
+description = "Europe PMC API client and MCP server: search literature, read open-access full text, trace citations, build bibliographies."
 license = "MIT"
 readme = "README.md"
 authors = [
@@ -11,7 +11,7 @@ requires-python = ">=3.10,<4.0"
 # Dependencies are declared in [tool.poetry.dependencies] / [tool.poetry.extras]
 # and filled in by poetry-core at build time; PEP 621 requires saying so here.
 dynamic = ["dependencies", "optional-dependencies"]
-keywords = ["europe-pmc", "pubmed", "literature", "api", "scientific"]
+keywords = ["europe-pmc", "pubmed", "literature", "api", "scientific", "mcp", "model-context-protocol", "ai-agents", "full-text", "citations", "bibliography", "bioinformatics"]
 classifiers = [
   "Development Status :: 5 - Production/Stable",
   "Intended Audience :: Science/Research",
@@ -22,8 +22,10 @@ classifiers = [
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
   "Topic :: Scientific/Engineering :: Bio-Informatics",
+  "Topic :: Scientific/Engineering :: Information Analysis",
+  "Typing :: Typed",
 ]
-urls = { Homepage = "https://github.com/JonasHeinickeBio/pyEuropePMC", Repository = "https://github.com/JonasHeinickeBio/pyEuropePMC" }
+urls = { Homepage = "https://github.com/JonasHeinickeBio/pyEuropePMC", Documentation = "https://jonasheinickebio.github.io/pyEuropePMC/", Repository = "https://github.com/JonasHeinickeBio/pyEuropePMC", Changelog = "https://github.com/JonasHeinickeBio/pyEuropePMC/blob/main/CHANGELOG.md", Issues = "https://github.com/JonasHeinickeBio/pyEuropePMC/issues" }
 
 
 [tool.poetry]

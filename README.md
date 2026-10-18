@@ -108,7 +108,7 @@ pyeuropepmc benchmark list-datasets
 
 ## 🤖 MCP server
 
-`pyeuropepmc-mcp` serves 24 tools over the [Model Context Protocol](https://modelcontextprotocol.io/): multi-source search, paper details and citations, citation-graph walking, ClinicalTrials.gov search, a local full-text index, figure extraction, bibliography conversion and LLM-powered analysis. The server is part of the core install. `pip install "pyeuropepmc[all]"` enables every tool; otherwise the `bib_*` tools need `bibliography`, and the LLM tools need `agentic` plus an OpenAI-compatible API key (see Configuration below).
+`pyeuropepmc-mcp` serves 27 tools over the [Model Context Protocol](https://modelcontextprotocol.io/): multi-source search with date, open-access and source filters, hit counts, paper details, citations and references, open-access full text as markdown or typed sections (with a section filter and a size cap, so a long paper fits in one response), citation-graph walking, ClinicalTrials.gov search, figure extraction, a local full-text index, bibliography conversion and LLM-powered analysis. The server is part of the core install. `pip install "pyeuropepmc[all]"` enables every tool; otherwise the `bib_*` tools need `bibliography`, and the LLM tools need `agentic` plus an OpenAI-compatible API key (see Configuration below).
 
 ```bash
 pyeuropepmc-mcp                                # stdio, for Claude Desktop and similar clients
@@ -128,7 +128,13 @@ For Claude Desktop and other clients that start the server themselves:
 }
 ```
 
-Without an install, `"command": "uvx"` with `"args": ["pyeuropepmc", "mcp"]` does the same; this is what the MCP Registry entry tells clients to run.
+Without an install, `"command": "uvx"` with `"args": ["pyeuropepmc", "mcp"]` does the same; this is what the MCP Registry entry tells clients to run. For Claude Code, one command adds it:
+
+```bash
+claude mcp add pyeuropepmc -- uvx pyeuropepmc mcp
+```
+
+Cursor (`.cursor/mcp.json`) and VS Code (`.vscode/mcp.json`, under `"servers"` instead of `"mcpServers"`) take the same `command` and `args`.
 
 The server has no authentication of its own, so keep the HTTP transport on 127.0.0.1 or put an authenticating proxy in front of it. The [MCP server guide](https://github.com/JonasHeinickeBio/pyEuropePMC/blob/main/src/pyeuropepmc/mcp/README.md) lists every tool. The server is listed in the [MCP Registry](https://registry.modelcontextprotocol.io/) as `io.github.JonasHeinickeBio/pyeuropepmc`.
 

@@ -2,7 +2,7 @@
 
 A [Model Context Protocol](https://modelcontextprotocol.io/) server that exposes
 Europe PMC (and related literature-search) functionality — search, citation graph
-traversal, clinical trials, full-text indexing, figure extraction, bibliography
+traversal, open-access full text, clinical trials, full-text indexing, figure extraction, bibliography
 tooling, and optional LLM-powered analysis — as tools for AI agents.
 
 Built on the official [MCP Python SDK](https://github.com/modelcontextprotocol/python-sdk)
@@ -44,6 +44,18 @@ python -m pyeuropepmc.mcp.server --help      # full CLI reference
 `stdio` is what process-managed clients like Claude Desktop expect. Use
 `streamable-http` (or `sse`) to run the server as a standalone network service
 that any MCP-capable agent — not just Claude — can connect to over HTTP.
+
+### Without an install
+
+`uvx pyeuropepmc mcp` runs the same server with no install, which is what the
+MCP Registry entry tells clients to run. Claude Code:
+
+```bash
+claude mcp add pyeuropepmc -- uvx pyeuropepmc mcp
+```
+
+Cursor (`.cursor/mcp.json`) and VS Code (`.vscode/mcp.json`, under `"servers"`)
+take `"command": "uvx"` and `"args": ["pyeuropepmc", "mcp"]`.
 
 ### Claude Desktop configuration
 
