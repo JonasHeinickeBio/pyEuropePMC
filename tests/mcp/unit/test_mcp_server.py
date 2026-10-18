@@ -20,6 +20,9 @@ from pyeuropepmc.mcp import server as srv
 
 ALL_CACHES = [
     srv._client_cache,
+    srv._article_client_cache,
+    srv._fulltext_client_cache,
+    srv._fulltext_xml_cache,
     srv._unified_cache,
     srv._citation_walker_cache,
     srv._clinical_trials_cache,
@@ -225,7 +228,7 @@ class TestFetchPaperSummary:
         summary = asyncio.run(srv._fetch_paper_summary("1", client))
         assert summary["pmid"] == "1"
         assert summary["title"] == "T"
-        client.search_all.assert_called_once_with("ext_id:1", pageSize=1)
+        client.search_all.assert_called_once_with("ext_id:1", page_size=1, max_results=1)
 
     def test_not_found(self):
         client = MagicMock()
@@ -316,12 +319,15 @@ class TestToolRegistry:
     EXPECTED_TOOLS = {
         "unified_search",
         "search_papers",
+        "count_papers",
         "get_paper_details",
         "search_authors",
         "get_paper_citations",
+        "get_paper_references",
         "citation_snowball",
         "clinical_trial_search",
         "fulltext_index_query",
+        "get_paper_fulltext",
         "paper_figures",
         "analyze_citations",
         "compare_citations",

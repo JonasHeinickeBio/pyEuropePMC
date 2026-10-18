@@ -20,6 +20,7 @@ failure entirely.
 from __future__ import annotations
 
 from contextlib import asynccontextmanager
+import os
 import sys
 
 from mcp import ClientSession
@@ -32,7 +33,12 @@ pytestmark = [pytest.mark.slow, pytest.mark.integration, pytest.mark.e2e]
 @asynccontextmanager
 async def _server_session():
     """Spawn the real server subprocess and yield an initialized (session, InitializeResult)."""
-    params = StdioServerParameters(command=sys.executable, args=["-m", "pyeuropepmc.mcp.server"])
+    # stdio_client only forwards a short allow-list of variables by default. Hand over the
+    # whole environment so the subprocess imports the same pyeuropepmc as the test
+    # (PYTHONPATH, a worktree checkout) rather than whichever install is first on its path.
+    params = StdioServerParameters(
+        command=sys.executable, args=["-m", "pyeuropepmc.mcp.server"], env=dict(os.environ)
+    )
     async with stdio_client(params) as (read, write), ClientSession(read, write) as client:
         init_result = await client.initialize()
         yield client, init_result
@@ -73,6 +79,41 @@ class TestMCPToolsAgainstRealEuropePMC:
             assert result.isError is False
             assert isinstance(result.structuredContent["result"], list)
 
+    async def test_search_papers_stops_at_limit_for_a_broad_query(self):
+        async with _server_session() as (session, _init_result):
+            result = await session.call_tool("search_papers", {"query": "CRISPR", "limit": 3})
+            assert result.isError is False
+            assert len(result.structuredContent["result"]) == 3
+
+    async def test_search_papers_filters_and_count_papers(self):
+        async with _server_session() as (session, _init_result):
+            args = {"query": "malaria", "date_from": "2023", "date_to": "2023", "source": "MED"}
+            found = await session.call_tool("search_papers", {**args, "limit": 2})
+            counted = await session.call_tool("count_papers", args)
+            assert found.isError is False
+            assert counted.isError is False
+            assert len(found.structuredContent["result"]) == 2
+            assert counted.structuredContent["hit_count"] > 2
+
+    async def test_get_paper_citations_and_references(self):
+        async with _server_session() as (session, _init_result):
+            cited = await session.call_tool(
+                "get_paper_citations", {"pmid": "22745249", "limit": 3}
+            )
+            refs = await session.call_tool(
+                "get_paper_references", {"article_id": "22745249", "limit": 3}
+            )
+            assert cited.isError is False
+            assert len(cited.structuredContent["result"]) == 3
+            assert refs.isError is False
+            assert refs.structuredContent["hitCount"] > 0
+
+    async def test_invalid_date_filter_is_a_tool_error(self):
+        async with _server_session() as (session, _init_result):
+            result = await session.call_tool("search_papers", {"query": "x", "date_from": "soon"})
+            assert result.isError is True
+            assert "date_from" in result.content[0].text
+
     async def test_get_paper_details_round_trip(self):
         async with _server_session() as (session, _init_result):
             search_result = await session.call_tool(
@@ -89,3 +130,55 @@ class TestMCPToolsAgainstRealEuropePMC:
             details = await session.call_tool("get_paper_details", {"pmid": paper_id})
             assert details.isError is False
             assert isinstance(details.structuredContent, dict)
+
+
+@pytest.mark.network
+class TestMCPFullTextAgainstRealEuropePMC:
+    # PMC3525259: a small open-access review whose ids, sections and table are stable.
+    PMCID = "PMC3525259"
+
+    async def test_outline_then_one_section(self):
+        async with _server_session() as (session, _init_result):
+            outline = await session.call_tool(
+                "get_paper_fulltext", {"pmcid": self.PMCID, "format": "outline"}
+            )
+            assert outline.isError is False
+            titles = outline.structuredContent["sections_available"]
+            assert "Conclusions" in titles
+
+            part = await session.call_tool(
+                "get_paper_fulltext",
+                {"pmid": "16004729", "sections": ["conclusion"], "include_references": True},
+            )
+            data = part.structuredContent
+            assert part.isError is False
+            assert data["pmcid"] == self.PMCID
+            assert data["content"].startswith("## Conclusions")
+            assert data["truncated"] is False
+            assert len(data["references"]) == data["reference_count"] > 0
+
+    async def test_sections_format_and_truncation(self):
+        async with _server_session() as (session, _init_result):
+            result = await session.call_tool(
+                "get_paper_fulltext",
+                {"pmcid": self.PMCID, "format": "sections", "max_chars": 3000},
+            )
+            data = result.structuredContent
+            assert result.isError is False
+            assert data["truncated"] is True
+            assert data["returned_chars"] <= 3000 + 2
+            first_block = data["content"][0]["content"][0]
+            assert "schema_version" not in first_block
+
+    async def test_paper_without_open_access_fails_fast_with_the_reason(self):
+        async with _server_session() as (session, _init_result):
+            result = await session.call_tool("get_paper_fulltext", {"pmcid": "PMC6999107"})
+            assert result.isError is True
+            assert "not Open Access" in result.content[0].text
+
+    async def test_paper_figures_reuses_the_fetched_text(self):
+        async with _server_session() as (session, _init_result):
+            await session.call_tool("get_paper_fulltext", {"pmcid": self.PMCID})
+            figures = await session.call_tool("paper_figures", {"pmcid": self.PMCID})
+            assert figures.isError is False
+            assert figures.structuredContent["figure_count"] >= 3

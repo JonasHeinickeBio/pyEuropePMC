@@ -4,6 +4,39 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
+### 🐛 Bug Fixes
+
+- **MCP `search_papers`, `search_authors`, `get_paper_details` and the LLM tools
+  fetched every match.** They passed `pageSize` but no `max_results` to
+  `SearchClient.search_all`, so `limit` only sized the pages. A broad query
+  such as `CRISPR` (about 240 000 hits) paged through the whole result set and
+  hung or died on a network error; `search_authors` returned hundreds of
+  records for `limit=3`. The tools now stop at `limit`.
+- **MCP `get_paper_citations` always returned nothing.** It searched
+  `CITED:<pmid>`, a citation-count field, instead of listing the citing
+  papers. It now uses the citations endpoint, which also works for PMC and
+  preprint IDs (new `source` argument).
+- **MCP `citation_snowball` returned 0 papers for a bare PMID or DOI.**
+  Semantic Scholar only resolves an external ID with its type prefix; the tool
+  now adds `PMID:`, `PMCID:` or `DOI:`.
+
+### ✨ Features
+
+- MCP `search_papers` takes `date_from`, `date_to`, `open_access`,
+  `has_fulltext`, `source` and `synonym`.
+- New MCP tool `get_paper_fulltext`: the structured full text of an open-access
+  paper by PMCID, PMID or DOI, as markdown, typed sections or an outline, with
+  a section filter, a `max_chars` cap that cuts at a block boundary, and
+  optional parsed references. It drops the per-block `schema_version` / `inlines`
+  bookkeeping and the triple copy of every table, and `paper_figures` shares its
+  cached XML.
+- MCP full-text and figure tools check `isOpenAccess` first. Europe PMC answers
+  a full-text request for a non-open-access article with HTTP 500 after about
+  20 s of retries, which read like an outage; they now fail in about a second
+  and name the reason.
+- New MCP tools `count_papers` (hit count for a query, with the same filters)
+  and `get_paper_references` (reference list of a paper).
+
 ## [3.0.0] - 2026-09-17
 
 > **Major release.** Full-text parsing, reference extraction, metadata and

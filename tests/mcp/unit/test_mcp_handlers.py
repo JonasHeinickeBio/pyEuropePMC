@@ -19,6 +19,9 @@ from pyeuropepmc.mcp import server as srv
 
 ALL_CACHES = [
     srv._client_cache,
+    srv._article_client_cache,
+    srv._fulltext_client_cache,
+    srv._fulltext_xml_cache,
     srv._unified_cache,
     srv._citation_walker_cache,
     srv._clinical_trials_cache,
@@ -114,7 +117,7 @@ class TestSearchPapers:
         result = _run(srv.search_papers(query="x", limit=10, sort="cited", result_type="lite"))
 
         client.search_all.assert_called_once_with(
-            "x", pageSize=10, resultType="lite", sort="cited"
+            "x", page_size=10, max_results=10, resultType="lite", sort="cited"
         )
         assert result == [{"title": "a"}]
 
@@ -125,7 +128,9 @@ class TestSearchPapers:
 
         _run(srv.search_papers(query="x"))
 
-        client.search_all.assert_called_once_with("x", pageSize=25, resultType="core")
+        client.search_all.assert_called_once_with(
+            "x", page_size=25, max_results=25, resultType="core"
+        )
 
 
 class TestGetPaperDetails:
@@ -136,7 +141,7 @@ class TestGetPaperDetails:
 
         result = _run(srv.get_paper_details(pmid="123"))
 
-        client.search_all.assert_called_once_with("ext_id:123", pageSize=1)
+        client.search_all.assert_called_once_with("ext_id:123", page_size=1, max_results=1)
         assert result == {"title": "a"}
 
     def test_by_pmcid(self):
@@ -144,14 +149,14 @@ class TestGetPaperDetails:
         client.search_all.return_value = [{"title": "a"}]
         srv._client_cache.set(client)
         _run(srv.get_paper_details(pmcid="PMC1"))
-        client.search_all.assert_called_once_with("ext_id:PMC1", pageSize=1)
+        client.search_all.assert_called_once_with("ext_id:PMC1", page_size=1, max_results=1)
 
     def test_by_doi(self):
         client = MagicMock()
         client.search_all.return_value = [{"title": "a"}]
         srv._client_cache.set(client)
         _run(srv.get_paper_details(doi="10.1/x"))
-        client.search_all.assert_called_once_with("doi:10.1/x", pageSize=1)
+        client.search_all.assert_called_once_with("doi:10.1/x", page_size=1, max_results=1)
 
     def test_no_identifier_raises(self):
         with pytest.raises(ToolError, match="At least one ID"):
@@ -173,17 +178,7 @@ class TestSearchAuthors:
         _run(srv.search_authors(query="Smith"))
         args, kwargs = client.search_all.call_args
         assert args[0] == 'AUTH:"Smith"'
-        assert kwargs == {"pageSize": 25}
-
-
-class TestGetPaperCitations:
-    def test_builds_cited_query(self):
-        client = MagicMock()
-        client.search_all.return_value = [{"pmid": "2"}]
-        srv._client_cache.set(client)
-        result = _run(srv.get_paper_citations(pmid="1", limit=50))
-        client.search_all.assert_called_once_with("CITED:1", pageSize=50)
-        assert result == [{"pmid": "2"}]
+        assert kwargs == {"page_size": 25, "max_results": 25}
 
 
 class TestCitationSnowball:
@@ -342,52 +337,81 @@ class TestPaperFigures:
         with pytest.raises(ToolError, match="One of pmcid, pmid, or doi is required"):
             _run(srv.paper_figures())
 
-    def test_by_pmcid(self, monkeypatch):
+    @pytest.fixture
+    def located(self, monkeypatch):
+        """Stand in for the two network steps; record what was asked for."""
+        calls = {}
+
+        async def locate(pmcid="", pmid="", doi=""):
+            calls["ids"] = (pmcid, pmid, doi)
+            return "PMC1", {"pmcid": "PMC1", "isOpenAccess": "Y"}
+
+        async def xml(pmcid):
+            calls["xml_for"] = pmcid
+            return "<article/>"
+
+        monkeypatch.setattr(srv, "FIGURE_EXTRACTOR_AVAILABLE", True)
+        monkeypatch.setattr(srv, "_locate_fulltext", locate)
+        monkeypatch.setattr(srv, "_fulltext_xml", xml)
+        return calls
+
+    def test_by_pmcid(self, located):
         extractor = MagicMock()
-        extractor.extract.return_value = [
+        extractor.extract_from_xml.return_value = [
             {"label": "Fig 1", "figure_type": "figure"},
             {"label": "Table 1", "figure_type": "table"},
         ]
-        monkeypatch.setattr(srv, "FIGURE_EXTRACTOR_AVAILABLE", True)
         srv._figure_extractor_cache.set(extractor)
 
         result = _run(srv.paper_figures(pmcid="PMC1"))
 
-        extractor.extract.assert_called_once_with(
-            pmcid="PMC1", include_tables=True, include_supplements=True
+        extractor.extract_from_xml.assert_called_once_with(
+            "<article/>", pmcid="PMC1", include_tables=True, include_supplements=True
         )
+        assert located["ids"] == ("PMC1", "", "")
+        assert located["xml_for"] == "PMC1"
         assert result["figure_count"] == 2
         assert result["counts_by_type"] == {"figure": 1, "table": 1}
 
-    def test_by_pmid(self, monkeypatch):
+    def test_pmid_and_doi_are_resolved_before_extracting(self, located):
         extractor = MagicMock()
-        extractor.extract.return_value = []
-        monkeypatch.setattr(srv, "FIGURE_EXTRACTOR_AVAILABLE", True)
+        extractor.extract_from_xml.return_value = []
         srv._figure_extractor_cache.set(extractor)
+
         _run(srv.paper_figures(pmid="123"))
-        extractor.extract.assert_called_once_with(
-            pmid="123", include_tables=True, include_supplements=True
-        )
-
-    def test_by_doi(self, monkeypatch):
-        extractor = MagicMock()
-        extractor.extract.return_value = []
-        monkeypatch.setattr(srv, "FIGURE_EXTRACTOR_AVAILABLE", True)
-        srv._figure_extractor_cache.set(extractor)
+        assert located["ids"] == ("", "123", "")
         _run(srv.paper_figures(doi="10.1/x"))
-        extractor.extract.assert_called_once_with(
-            doi="10.1/x", include_tables=True, include_supplements=True
-        )
+        assert located["ids"] == ("", "", "10.1/x")
+        assert extractor.extract_from_xml.call_args.kwargs["pmcid"] == "PMC1"
 
-    def test_tables_and_supplements_can_be_left_out(self, monkeypatch):
+    def test_tables_and_supplements_can_be_left_out(self, located):
         extractor = MagicMock()
-        extractor.extract.return_value = []
-        monkeypatch.setattr(srv, "FIGURE_EXTRACTOR_AVAILABLE", True)
+        extractor.extract_from_xml.return_value = []
         srv._figure_extractor_cache.set(extractor)
         _run(srv.paper_figures(pmcid="PMC1", include_tables=False, include_supplements=False))
-        extractor.extract.assert_called_once_with(
-            pmcid="PMC1", include_tables=False, include_supplements=False
+        extractor.extract_from_xml.assert_called_once_with(
+            "<article/>", pmcid="PMC1", include_tables=False, include_supplements=False
         )
+
+    def test_not_open_access_is_an_error_not_zero_figures(self, monkeypatch):
+        async def locate(pmcid="", pmid="", doi=""):
+            raise ToolError("PMC9 is not Open Access")
+
+        monkeypatch.setattr(srv, "FIGURE_EXTRACTOR_AVAILABLE", True)
+        monkeypatch.setattr(srv, "_locate_fulltext", locate)
+        srv._figure_extractor_cache.set(MagicMock())
+        with pytest.raises(ToolError, match="not Open Access"):
+            _run(srv.paper_figures(pmcid="PMC9"))
+
+    def test_refused_document_is_a_tool_error(self, located):
+        from pyeuropepmc.core.error_codes import ErrorCodes
+        from pyeuropepmc.core.exceptions import ParsingError
+
+        extractor = MagicMock()
+        extractor.extract_from_xml.side_effect = ParsingError(ErrorCodes.PARSE003, {"error": "x"})
+        srv._figure_extractor_cache.set(extractor)
+        with pytest.raises(ToolError):
+            _run(srv.paper_figures(pmcid="PMC1"))
 
 
 class TestLlmTools:
@@ -722,3 +746,217 @@ class TestBibliographyTools:
         assert result["input_libraries"] == 2
         assert result["merged_entries"] == 1
         assert result["deduplicated"] == 4
+
+
+class TestSearchPapersStopsAtLimit:
+    """`limit` must cap the result set, not just size the pages.
+
+    Regression: the tools passed only ``pageSize``, so ``SearchClient.search_all``
+    paginated through every match (millions for a broad query) and the call hung
+    or died on a network error.
+    """
+
+    def test_stops_after_limit_across_real_pagination(self):
+        from pyeuropepmc.features.literature.search import SearchClient
+
+        client = SearchClient.__new__(SearchClient)
+        pages: list[int] = []
+
+        def fake_search(query, page_size=100, cursorMark="*", **kwargs):
+            pages.append(page_size)
+            return {"n": page_size}
+
+        client.search = fake_search  # type: ignore[method-assign]
+        client._extract_page_results = lambda data: (  # type: ignore[method-assign]
+            [{"id": i} for i in range(data["n"])],
+            "next",
+        )
+
+        results = _run(srv._run_blocking(client.search_all, "CRISPR", page_size=3, max_results=3))
+
+        assert len(results) == 3
+        assert pages == [3]
+
+
+class TestWithFilters:
+    def test_no_filters_returns_query_unchanged(self):
+        assert srv._with_filters("malaria") == "malaria"
+
+    def test_all_filters_are_anded_onto_the_query(self):
+        q = srv._with_filters(
+            "malaria OR dengue",
+            date_from="2020",
+            date_to="2023-06",
+            open_access=True,
+            has_fulltext=True,
+            source="med",
+        )
+        assert q == (
+            "(malaria OR dengue) AND FIRST_PDATE:[2020 TO 2023-06]"
+            " AND OPEN_ACCESS:y AND HAS_FT:y AND SRC:MED"
+        )
+
+    def test_open_ended_date_range(self):
+        assert srv._with_filters("x", date_from="2020") == "(x) AND FIRST_PDATE:[2020 TO *]"
+        assert srv._with_filters("x", date_to="2020") == "(x) AND FIRST_PDATE:[* TO 2020]"
+
+    @pytest.mark.parametrize("bad", ["20", "2020/01", "last year", "2020-1-1", "2020 TO 2021"])
+    def test_rejects_malformed_dates(self, bad):
+        with pytest.raises(ToolError, match="date_from"):
+            srv._with_filters("x", date_from=bad)
+
+    @pytest.mark.parametrize("bad", ["MED OR", "x y", "TOOLONG", "1"])
+    def test_rejects_malformed_source(self, bad):
+        with pytest.raises(ToolError, match="source"):
+            srv._with_filters("x", source=bad)
+
+
+class TestSearchPapersFilters:
+    def test_filters_and_synonym_reach_the_client(self):
+        client = MagicMock()
+        client.search_all.return_value = []
+        srv._client_cache.set(client)
+
+        _run(
+            srv.search_papers(
+                query="malaria", limit=5, date_from="2022", open_access=True, synonym=True
+            )
+        )
+
+        client.search_all.assert_called_once_with(
+            "(malaria) AND FIRST_PDATE:[2022 TO *] AND OPEN_ACCESS:y",
+            page_size=5,
+            max_results=5,
+            resultType="core",
+            synonym=True,
+        )
+
+    def test_invalid_filter_never_hits_the_client(self):
+        client = MagicMock()
+        srv._client_cache.set(client)
+        with pytest.raises(ToolError):
+            _run(srv.search_papers(query="x", date_to="soon"))
+        client.search_all.assert_not_called()
+
+
+class TestCountPapers:
+    def test_returns_hit_count_for_filtered_query(self):
+        client = MagicMock()
+        client.get_hit_count.return_value = 1234
+        srv._client_cache.set(client)
+
+        result = _run(srv.count_papers(query="malaria", has_fulltext=True))
+
+        client.get_hit_count.assert_called_once_with("(malaria) AND HAS_FT:y")
+        assert result == {"query": "(malaria) AND HAS_FT:y", "hit_count": 1234}
+
+    def test_synonym_is_forwarded_only_when_set(self):
+        client = MagicMock()
+        client.get_hit_count.return_value = 5
+        srv._client_cache.set(client)
+
+        _run(srv.count_papers(query="malaria", synonym=True))
+        client.get_hit_count.assert_called_once_with("malaria", synonym=True)
+
+        client.get_hit_count.reset_mock()
+        _run(srv.count_papers(query="malaria"))
+        client.get_hit_count.assert_called_once_with("malaria")
+
+    def test_api_error_becomes_tool_error(self):
+        from pyeuropepmc.core.error_codes import ErrorCodes
+        from pyeuropepmc.core.exceptions import SearchError
+
+        client = MagicMock()
+        client.get_hit_count.side_effect = SearchError(ErrorCodes.SEARCH003, {"query": "x"})
+        srv._client_cache.set(client)
+        with pytest.raises(ToolError):
+            _run(srv.count_papers(query="x"))
+
+
+class TestGetPaperReferences:
+    def test_uppercases_source_and_caps_page_size(self):
+        client = MagicMock()
+        client.get_references.return_value = {"hitCount": 1, "referenceList": {"reference": []}}
+        srv._article_client_cache.set(client)
+
+        result = _run(srv.get_paper_references(article_id="123", source="med", limit=10))
+
+        client.get_references.assert_called_once_with("MED", "123", page=1, page_size=10)
+        assert result["hitCount"] == 1
+
+    def test_api_error_becomes_tool_error(self):
+        from pyeuropepmc.core.error_codes import ErrorCodes
+        from pyeuropepmc.core.exceptions import APIClientError
+
+        client = MagicMock()
+        client.get_references.side_effect = APIClientError(ErrorCodes.NET001, {"error": "boom"})
+        srv._article_client_cache.set(client)
+        with pytest.raises(ToolError):
+            _run(srv.get_paper_references(article_id="123"))
+
+
+class TestS2Identifier:
+    @pytest.mark.parametrize(
+        ("raw", "expected"),
+        [
+            ("22745249", "PMID:22745249"),
+            (" 22745249 ", "PMID:22745249"),
+            ("pmc3525259", "PMCID:PMC3525259"),
+            ("10.1126/science.1225829", "DOI:10.1126/science.1225829"),
+            ("PMID:22745249", "PMID:22745249"),
+            ("DOI:10.1/x", "DOI:10.1/x"),
+            (
+                "649def34f8be52c8b66281af98ae884c09aef38b",
+                "649def34f8be52c8b66281af98ae884c09aef38b",
+            ),
+        ],
+    )
+    def test_normalises(self, raw, expected):
+        assert srv._s2_identifier(raw) == expected
+
+    def test_snowball_sends_prefixed_identifier_to_walker(self):
+        walker = MagicMock()
+        report = MagicMock(total_input=0, total_output=0, duplicates_removed=0)
+        walker.snowball.return_value = ([], report)
+        srv._citation_walker_cache.set(walker)
+
+        _run(srv.citation_snowball(identifier="22745249"))
+
+        assert walker.snowball.call_args.kwargs["identifier"] == "PMID:22745249"
+
+
+class TestGetPaperCitations:
+    def test_uses_citations_endpoint_and_unwraps_list(self):
+        client = MagicMock()
+        client.get_citations.return_value = {
+            "hitCount": 2,
+            "citationList": {"citation": [{"id": "2"}, {"id": "3"}]},
+        }
+        srv._article_client_cache.set(client)
+
+        result = _run(srv.get_paper_citations(pmid="1", limit=50))
+
+        client.get_citations.assert_called_once_with("MED", "1", page=1, page_size=50)
+        assert result == [{"id": "2"}, {"id": "3"}]
+
+    def test_source_is_uppercased(self):
+        client = MagicMock()
+        client.get_citations.return_value = {"hitCount": 0}
+        srv._article_client_cache.set(client)
+
+        assert _run(srv.get_paper_citations(pmid="PMC9", source="pmc", limit=5)) == []
+        client.get_citations.assert_called_once_with("PMC", "PMC9", page=1, page_size=5)
+
+    def test_rejects_bad_source(self):
+        with pytest.raises(ToolError, match="source"):
+            _run(srv.get_paper_citations(pmid="1", source="MED OR"))
+
+    def test_api_error_becomes_tool_error(self):
+        from pyeuropepmc.core.error_codes import ErrorCodes
+        from pyeuropepmc.core.exceptions import APIClientError
+
+        client = MagicMock()
+        client.get_citations.side_effect = APIClientError(ErrorCodes.NET001, {"error": "boom"})
+        srv._article_client_cache.set(client)
+        with pytest.raises(ToolError):
+            _run(srv.get_paper_citations(pmid="1"))
