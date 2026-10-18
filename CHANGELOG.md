@@ -4,6 +4,12 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
+## [3.1.0] - 2026-10-19
+
+> MCP release. `search_papers` could hang on any broad query, and
+> `get_paper_citations` never returned a result; both are fixed, and the server
+> gains full-text retrieval. The server now has 27 tools.
+
 ### 🐛 Bug Fixes
 
 - **MCP `search_papers`, `search_authors`, `get_paper_details` and the LLM tools
@@ -36,6 +42,22 @@ All notable changes to PyEuropePMC are documented here.
   and name the reason.
 - New MCP tools `count_papers` (hit count for a query, with the same filters)
   and `get_paper_references` (reference list of a paper).
+
+### 📚 Documentation
+
+- The MCP Registry entry (`server.json`) has a description that says what the
+  server does, and declares its optional environment variables
+  (`SEMANTIC_SCHOLAR_API_KEY`, `OPENAI_API_KEY`, `OPENAI_BASE_URL`,
+  `OPENAI_MODEL`, `PYEUROPEPMC_MCP_LOG_LEVEL`) so clients can offer them at
+  install time. The PyPI page gains keywords, project links and a description
+  that mentions the MCP server. The READMEs show how to add the server to Claude
+  Code, Cursor and VS Code.
+
+### 🔧 Maintenance
+
+- The MCP end-to-end tests pass the environment to the server subprocess; before,
+  they imported whichever pyeuropepmc was installed instead of the code under
+  test.
 
 ## [3.0.0] - 2026-09-17
 
