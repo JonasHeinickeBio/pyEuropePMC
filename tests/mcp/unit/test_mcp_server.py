@@ -225,7 +225,7 @@ class TestFetchPaperSummary:
         summary = asyncio.run(srv._fetch_paper_summary("1", client))
         assert summary["pmid"] == "1"
         assert summary["title"] == "T"
-        client.search_all.assert_called_once_with("ext_id:1", pageSize=1)
+        client.search_all.assert_called_once_with("ext_id:1", page_size=1, max_results=1)
 
     def test_not_found(self):
         client = MagicMock()

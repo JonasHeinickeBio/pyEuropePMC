@@ -332,7 +332,7 @@ def _paper_summary_from_raw(raw: dict[str, Any]) -> dict[str, Any]:
 
 async def _fetch_paper_summary(pmid: str, client: SearchClient) -> dict[str, Any] | None:
     """Fetch a minimal paper dict for LLM tools, or None if not found."""
-    results = await _run_blocking(client.search_all, f"ext_id:{pmid}", pageSize=1)
+    results = await _run_blocking(client.search_all, f"ext_id:{pmid}", page_size=1, max_results=1)
     if not results:
         return None
     return _paper_summary_from_raw(results[0])
@@ -402,7 +402,7 @@ async def search_papers(
     """Search Europe PMC for papers (single source — prefer `unified_search` for
     multi-source coverage)."""
     client = _get_client()
-    kwargs: dict[str, Any] = {"pageSize": limit, "resultType": result_type}
+    kwargs: dict[str, Any] = {"page_size": limit, "max_results": limit, "resultType": result_type}
     if sort:
         kwargs["sort"] = sort
     results = await _run_blocking(client.search_all, query, **kwargs)
@@ -426,7 +426,7 @@ async def get_paper_details(
         raise ToolError("At least one ID (pmid, pmcid, doi) is required")
 
     client = _get_client()
-    results = await _run_blocking(client.search_all, query, pageSize=1)
+    results = await _run_blocking(client.search_all, query, page_size=1, max_results=1)
     if not results:
         raise ToolError("No results found")
     return _as_dict(results[0])
@@ -439,7 +439,9 @@ async def search_authors(
 ) -> list[dict[str, Any]]:
     """Search for authors in Europe PMC."""
     client = _get_client()
-    results = await _run_blocking(client.search_all, f'AUTH:"{query}"', pageSize=limit)
+    results = await _run_blocking(
+        client.search_all, f'AUTH:"{query}"', page_size=limit, max_results=limit
+    )
     return [_to_serializable(r) for r in results]
 
 
@@ -455,7 +457,9 @@ async def get_paper_citations(
 ) -> list[dict[str, Any]]:
     """Get papers that cite a given paper (Europe PMC)."""
     client = _get_client()
-    results = await _run_blocking(client.search_all, f"CITED:{pmid}", pageSize=limit)
+    results = await _run_blocking(
+        client.search_all, f"CITED:{pmid}", page_size=limit, max_results=limit
+    )
     return [_to_serializable(r) for r in results]
 
 
@@ -715,7 +719,7 @@ async def paper_screening(
     client = _get_client()
     if ctx:
         await ctx.info(f"Fetching up to {limit} candidates for {query!r}")
-    raw = await _run_blocking(client.search_all, query, pageSize=limit)
+    raw = await _run_blocking(client.search_all, query, page_size=limit, max_results=limit)
     papers = [_paper_summary_from_raw(p) for p in raw]
     if ctx:
         await ctx.info(f"Screening {len(papers)} papers against inclusion/exclusion criteria")
@@ -782,7 +786,7 @@ async def literature_review(
     client = _get_client()
     if ctx:
         await ctx.info(f"Gathering source papers for {research_topic!r}")
-    raw = await _run_blocking(client.search_all, research_topic, pageSize=25)
+    raw = await _run_blocking(client.search_all, research_topic, page_size=25, max_results=25)
     papers = [_paper_summary_from_raw(p) for p in raw]
     result = await _run_blocking(
         agent.generate_literature_review,

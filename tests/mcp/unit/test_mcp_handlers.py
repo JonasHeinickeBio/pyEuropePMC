@@ -114,7 +114,7 @@ class TestSearchPapers:
         result = _run(srv.search_papers(query="x", limit=10, sort="cited", result_type="lite"))
 
         client.search_all.assert_called_once_with(
-            "x", pageSize=10, resultType="lite", sort="cited"
+            "x", page_size=10, max_results=10, resultType="lite", sort="cited"
         )
         assert result == [{"title": "a"}]
 
@@ -125,7 +125,9 @@ class TestSearchPapers:
 
         _run(srv.search_papers(query="x"))
 
-        client.search_all.assert_called_once_with("x", pageSize=25, resultType="core")
+        client.search_all.assert_called_once_with(
+            "x", page_size=25, max_results=25, resultType="core"
+        )
 
 
 class TestGetPaperDetails:
@@ -136,7 +138,7 @@ class TestGetPaperDetails:
 
         result = _run(srv.get_paper_details(pmid="123"))
 
-        client.search_all.assert_called_once_with("ext_id:123", pageSize=1)
+        client.search_all.assert_called_once_with("ext_id:123", page_size=1, max_results=1)
         assert result == {"title": "a"}
 
     def test_by_pmcid(self):
@@ -144,14 +146,14 @@ class TestGetPaperDetails:
         client.search_all.return_value = [{"title": "a"}]
         srv._client_cache.set(client)
         _run(srv.get_paper_details(pmcid="PMC1"))
-        client.search_all.assert_called_once_with("ext_id:PMC1", pageSize=1)
+        client.search_all.assert_called_once_with("ext_id:PMC1", page_size=1, max_results=1)
 
     def test_by_doi(self):
         client = MagicMock()
         client.search_all.return_value = [{"title": "a"}]
         srv._client_cache.set(client)
         _run(srv.get_paper_details(doi="10.1/x"))
-        client.search_all.assert_called_once_with("doi:10.1/x", pageSize=1)
+        client.search_all.assert_called_once_with("doi:10.1/x", page_size=1, max_results=1)
 
     def test_no_identifier_raises(self):
         with pytest.raises(ToolError, match="At least one ID"):
@@ -173,7 +175,7 @@ class TestSearchAuthors:
         _run(srv.search_authors(query="Smith"))
         args, kwargs = client.search_all.call_args
         assert args[0] == 'AUTH:"Smith"'
-        assert kwargs == {"pageSize": 25}
+        assert kwargs == {"page_size": 25, "max_results": 25}
 
 
 class TestGetPaperCitations:
@@ -182,7 +184,7 @@ class TestGetPaperCitations:
         client.search_all.return_value = [{"pmid": "2"}]
         srv._client_cache.set(client)
         result = _run(srv.get_paper_citations(pmid="1", limit=50))
-        client.search_all.assert_called_once_with("CITED:1", pageSize=50)
+        client.search_all.assert_called_once_with("CITED:1", page_size=50, max_results=50)
         assert result == [{"pmid": "2"}]
 
 
@@ -722,3 +724,33 @@ class TestBibliographyTools:
         assert result["input_libraries"] == 2
         assert result["merged_entries"] == 1
         assert result["deduplicated"] == 4
+
+
+class TestSearchPapersStopsAtLimit:
+    """`limit` must cap the result set, not just size the pages.
+
+    Regression: the tools passed only ``pageSize``, so ``SearchClient.search_all``
+    paginated through every match (millions for a broad query) and the call hung
+    or died on a network error.
+    """
+
+    def test_stops_after_limit_across_real_pagination(self):
+        from pyeuropepmc.features.literature.search import SearchClient
+
+        client = SearchClient.__new__(SearchClient)
+        pages: list[int] = []
+
+        def fake_search(query, page_size=100, cursorMark="*", **kwargs):
+            pages.append(page_size)
+            return {"n": page_size}
+
+        client.search = fake_search  # type: ignore[method-assign]
+        client._extract_page_results = lambda data: (  # type: ignore[method-assign]
+            [{"id": i} for i in range(data["n"])],
+            "next",
+        )
+
+        results = _run(srv._run_blocking(client.search_all, "CRISPR", page_size=3, max_results=3))
+
+        assert len(results) == 3
+        assert pages == [3]
