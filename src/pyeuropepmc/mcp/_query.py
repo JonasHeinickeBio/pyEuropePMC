@@ -726,6 +726,11 @@ class _PubMed:
             )
         if value.kind != "range":
             return f"{self.date(value.text)}[dp]"
+        if value.text.startswith("{"):
+            self.note(
+                f"{value.text} excludes its bounds, but PubMed's [dp] range includes them.",
+                exact=False,
+            )
         match = re.fullmatch(r"\s*(\S+)\s+TO\s+(\S+)\s*", value.text[1:-1], re.IGNORECASE)
         low, high = (match[1], match[2]) if match else ("*", "*")
         low = "1800" if low == "*" else self.date(low)
@@ -745,10 +750,12 @@ class _PubMed:
             return "hasabstract" if yes else "NOT hasabstract"
         return _DROP
 
-    def term(self, name: str | None, value: Token | Group, ctx: str | None) -> Any:
+    def term(
+        self, name: str | None, value: Token | Group, ctx: str | None, negated: bool = False
+    ) -> Any:
         name = (name or ctx or "").upper() or None
         if isinstance(value, Group):
-            return self.group(value, name)
+            return self.group(value, name, negated=negated)
         if name is None:
             return value.text
         if name == "SRC":
@@ -770,7 +777,9 @@ class _PubMed:
             )
         return f"{value.text}[{tag}]" if tag else _DROP
 
-    def clauses(self, group: Group, ctx: str | None) -> list[tuple[list[str], Any, str]]:
+    def clauses(
+        self, group: Group, ctx: str | None, negated: bool
+    ) -> list[tuple[list[str], Any, str]]:
         """``(connectors, translation, original)`` for each operand of ``group``."""
         out: list[tuple[list[str], Any, str]] = []
         connectors: list[str] = []
@@ -778,28 +787,59 @@ class _PubMed:
             if isinstance(item, Op):
                 connectors.append(item.text)
                 continue
+            under_not = negated or "NOT" in connectors
             if isinstance(item, Group):
-                piece = self.group(item, ctx)
+                piece = self.group(item, ctx, negated=under_not)
             else:
-                piece = self.term(item.field, item.value, ctx)
+                piece = self.term(item.field, item.value, ctx, under_not)
             out.append((connectors, piece, render(item, root=False)))
             connectors = []
         return out
 
-    def group(self, group: Group, ctx: str | None = None, *, root: bool = False) -> Any:
+    def drop(
+        self, original: str, connectors: list[str], following: list[str], negated: bool
+    ) -> None:
+        """Record a clause that has no PubMed equivalent, with the direction of the error.
+
+        Leaving a clause out of an OR narrows the result (the clause joined by OR is the one
+        that goes), out of an AND or a NOT-joined exclusion it widens it. The connectors that
+        matter are the ones before the clause or, for the first clause of a group, the one
+        after it. Inside a group that is itself negated the effect is reversed, so no direction
+        is claimed there.
+        """
+        self.dropped.append(original)
+        left_out = f"{original} has no PubMed equivalent and was left out"
+        if negated:
+            self.note(
+                f"{left_out}. It sits inside a NOT, so whether the result is broader or "
+                "narrower than the original is not stated.",
+                exact=False,
+            )
+            return
+        narrower = "OR" in (connectors or following[:1])
+        self.note(
+            f"{left_out}, so the translation is {'narrower' if narrower else 'broader'} "
+            "than the original.",
+            exact=False,
+        )
+
+    def group(
+        self,
+        group: Group,
+        ctx: str | None = None,
+        *,
+        root: bool = False,
+        negated: bool = False,
+    ) -> Any:
         parts: list[str] = []
-        for connectors, piece, original in self.clauses(group, ctx):
+        clauses = self.clauses(group, ctx, negated)
+        for index, (connectors, piece, original) in enumerate(clauses):
             self.negated = self.negated or "NOT" in connectors
             if piece is _DROP_SILENT:
                 continue
             if piece is _DROP or piece is None:
-                self.dropped.append(original)
-                narrower = "OR" in connectors
-                self.note(
-                    f"{original} has no PubMed equivalent and was left out, so the translation "
-                    f"is {'narrower' if narrower else 'broader'} than the original.",
-                    exact=False,
-                )
+                following = clauses[index + 1][0] if index + 1 < len(clauses) else []
+                self.drop(original, connectors, following, negated)
                 continue
             if not parts:
                 lead = ["NOT"] if connectors and connectors[-1] == "NOT" else []

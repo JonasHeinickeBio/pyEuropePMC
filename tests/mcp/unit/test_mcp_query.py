@@ -299,6 +299,37 @@ class TestTranslatePubmed:
         assert t.query == "smith[au]"
         assert "narrower" in t.warnings[0]
 
+    @pytest.mark.parametrize(
+        ("source", "query", "direction"),
+        [
+            ("CITES:1_MED OR AUTH:smith", "smith[au]", "narrower"),  # first clause of an OR
+            ("AUTH:smith OR CITES:1_MED", "smith[au]", "narrower"),
+            ("CITES:1_MED AND AUTH:smith", "smith[au]", "broader"),
+            ("AUTH:smith AND CITES:1_MED", "smith[au]", "broader"),
+            ("AUTH:smith AND NOT HAS_FT:y", "smith[au]", "broader"),  # an exclusion goes
+            ("(CITES:1_MED OR x) AND y", "(x) AND y", "narrower"),
+        ],
+    )
+    def test_the_direction_of_a_dropped_clause(self, source, query, direction):
+        t = qm.translate_pubmed(source)
+        assert t.query == query
+        assert t.warnings[0].endswith(f"is {direction} than the original.")
+
+    def test_no_direction_is_claimed_inside_a_negated_group(self):
+        t = qm.translate_pubmed("a AND NOT (b OR HAS_FT:y)")
+        assert t.query == "a AND NOT (b)"
+        assert "inside a NOT" in t.warnings[0]
+        assert "not stated" in t.warnings[0]
+        assert "is broader than" not in t.warnings[0]
+        assert "is narrower than" not in t.warnings[0]
+
+    def test_an_exclusive_range_is_not_an_exact_translation(self):
+        t = qm.translate_pubmed("PUB_YEAR:{2020 TO 2022}")
+        assert t.query == "2020:2022[dp]"
+        assert t.exact is False
+        assert "excludes its bounds" in t.warnings[0]
+        assert qm.translate_pubmed("PUB_YEAR:[2020 TO 2022]").exact is True
+
     def test_dropping_the_first_clause_keeps_a_following_not(self):
         t = qm.translate_pubmed("CITES:1_MED AND NOT TITLE:x")
         assert t.query == "NOT x[ti]"
