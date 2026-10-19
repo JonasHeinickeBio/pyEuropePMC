@@ -238,6 +238,38 @@ class TestShrinkBlockJson:
         assert ft.shrink_block_json('{"type":"figure","uri":"a"}' + " " * 0, 5) is None
 
 
+class TestTakeWithinHeadings:
+    """A section heading must not use up the budget and leave the section empty."""
+
+    def test_oversized_first_block_after_a_heading_is_cut_not_dropped(self):
+        units = [(0, None, "## Conclusions"), (0, 0, "x" * 500), (0, 1, "y" * 50)]
+        kept, _total, truncated = ft.take_within(units, 100)
+        assert truncated is True
+        assert kept[0] == (0, None, "## Conclusions")
+        assert len(kept) == 2 and kept[1][1] == 0
+        assert kept[1][2] == "x" * (100 - len("## Conclusions") - 2 - 2)
+        assert ft.units_to_markdown(kept)  # not just a heading
+
+    def test_headings_alone_never_count_as_content(self):
+        units = [(0, None, "## A"), (1, None, "## B"), (1, 0, "z" * 300)]
+        kept, _total, _truncated = ft.take_within(units, 60)
+        assert [u[0:2] for u in kept] == [(0, None), (1, None), (1, 0)]
+
+    def test_a_later_block_that_does_not_fit_is_dropped_whole(self):
+        units = [(0, None, "## A"), (0, 0, "x" * 10), (0, 1, "y" * 500)]
+        kept, _total, truncated = ft.take_within(units, 100)
+        assert [u[1] for u in kept] == [None, 0]
+        assert truncated is True
+
+    def test_json_units_still_shrink_instead_of_being_cut(self):
+        text = ft.json.dumps({"type": "paragraph", "text": "w" * 400}, separators=(",", ":"))
+        kept, _total, truncated = ft.take_within(
+            [(0, 0, text)], 150, fit_first=ft.shrink_block_json
+        )
+        assert truncated is True
+        ft.json.loads(kept[0][2])
+
+
 class TestTakeWithinFitFirst:
     def test_oversized_json_unit_is_shrunk_not_cut(self):
         text = ft.json.dumps({"type": "table", "rows": [["a", "b"]] * 100}, separators=(",", ":"))

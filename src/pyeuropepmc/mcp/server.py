@@ -43,6 +43,8 @@ Tools:
         fulltext_index_query  — Search local SQLite FTS5 full-text index
         get_paper_fulltext    — Structured full text of an open-access paper
         paper_figures         — Figures, tables and supplementary files of a PMC article
+        get_papers_batch      — Metadata of many papers (PMIDs, PMCIDs, DOIs) in one call
+        get_papers_fulltext_batch — Full text of several open-access papers within a budget
         find_open_access      — Free copies of a paper via Unpaywall (needs UNPAYWALL_EMAIL)
         get_paper_annotations — Text-mined genes, chemicals, diseases, ... of a paper
         find_papers_by_entity — Papers in which an entity (gene, chemical, ...) is mentioned
@@ -63,6 +65,7 @@ Tools:
 from __future__ import annotations
 
 import argparse
+import asyncio
 from collections import Counter
 from collections.abc import Callable
 from functools import partial
@@ -92,7 +95,12 @@ from pyeuropepmc.core.exceptions import (
 )
 from pyeuropepmc.features.literature.annotations import AnnotationsClient
 from pyeuropepmc.features.literature.article import ArticleClient
-from pyeuropepmc.mcp import _annotations as ann, _fulltext as ft, _openaccess as oa
+from pyeuropepmc.mcp import (
+    _annotations as ann,
+    _batch as bm,
+    _fulltext as ft,
+    _openaccess as oa,
+)
 
 # The pyeuropepmc modules below import without any extra: each one loads its
 # optional libraries lazily. A flag that only records whether the module
@@ -1038,6 +1046,259 @@ async def paper_figures(
         "figure_count": len(items),
         "counts_by_type": dict(Counter(item.get("figure_type", "") for item in items)),
         "figures": items,
+    }
+
+
+# ---------------------------------------------------------------------------
+# Batch lookups
+# ---------------------------------------------------------------------------
+
+_FULLTEXT_CONCURRENCY = 4
+
+
+async def _fetch_batch_records(
+    entries: list[bm.Entry], result_type: str
+) -> tuple[dict[tuple[str, str], dict[str, Any]], dict[tuple[str, str], str]]:
+    """Look all valid entries up in as few Europe PMC requests as possible.
+
+    Returns the records indexed by identifier and, for every entry whose request failed, the
+    error text: one failing chunk must not take the other chunks down with it.
+    """
+    index: dict[tuple[str, str], dict[str, Any]] = {}
+    errors: dict[tuple[str, str], str] = {}
+    client = _get_client()
+    for chunk in bm.chunks(entries):
+        size = min(1000, 3 * len(chunk))  # a DOI can name a preprint and its published version
+        try:
+            results = await _run_blocking(
+                client.search_all,
+                bm.build_query(chunk),
+                page_size=size,
+                max_results=size,
+                resultType=result_type,
+            )
+        except EuropePMCError as exc:
+            for entry in chunk:
+                errors[(entry.kind, entry.value.lower())] = str(exc)
+            continue
+        for key, record in bm.index_records([_as_dict(r) for r in results]).items():
+            index.setdefault(key, record)
+    return index, errors
+
+
+@mcp.tool(annotations=_ro("Get papers in batch"))
+async def get_papers_batch(
+    ids: Annotated[
+        list[str],
+        Field(
+            description="PMIDs, PMCIDs and DOIs, mixed allowed (bare digits are a PMID; "
+            "'doi:' and https://doi.org/ prefixes are accepted)",
+            min_length=1,
+            max_length=100,
+        ),
+    ],
+    fields: Annotated[
+        list[str] | None,
+        Field(
+            description="Fields to return per paper, from: "
+            + ", ".join(bm.FIELDS)
+            + ". Default: "
+            + ", ".join(bm.DEFAULT_FIELDS)
+            + ". 'abstract' makes the lookup slower and the answer larger."
+        ),
+    ] = None,
+) -> dict[str, Any]:
+    """Look up many papers at once: one combined Europe PMC query per 50 identifiers instead of
+    one call per paper. Every input gets a result in the order given, with a status: ok,
+    not_found, invalid (malformed identifier) or error (that request failed). One bad
+    identifier never fails the batch; a repeated identifier repeats its result."""
+    try:
+        wanted = bm.validate_fields(fields)
+    except ValueError as exc:
+        raise ToolError(str(exc)) from exc
+    entries = [bm.classify(i) for i in ids]
+    index, errors = await _fetch_batch_records(entries, "core" if "abstract" in wanted else "lite")
+
+    results = []
+    for entry in entries:
+        item: dict[str, Any] = {
+            "id": entry.raw,
+            "id_type": entry.kind,
+            "status": "ok",
+            "record": None,
+            "error": None,
+        }
+        error = errors.get((entry.kind, entry.value.lower()))
+        record = bm.lookup(index, entry)
+        if entry.kind == "invalid":
+            item.update(status="invalid", error=entry.problem)
+        elif error and record is None:
+            item.update(status="error", error=error)
+        elif record is None:
+            item.update(status="not_found")
+        else:
+            item["record"] = bm.project(record, wanted)
+        results.append(item)
+    return {
+        "requested": len(ids),
+        "distinct": len(bm.distinct_valid(entries)),
+        "by_status": dict(Counter(r["status"] for r in results)),
+        "results": results,
+    }
+
+
+def _render_fulltext_markdown(
+    xml: str, sections: list[str] | None, max_chars: int
+) -> dict[str, Any]:
+    """Markdown of the (filtered) sections of one article, cut at a block boundary."""
+    parser = FullTextXMLParser(xml)
+    all_sections = parser.get_full_text_sections_structured()
+    chosen = ft.select_sections(all_sections, sections)
+    units = ft.render_units(chosen, "markdown")
+    kept, total, truncated = ft.take_within(units, max_chars)
+    return {
+        "title": parser.extract_metadata().get("title") or "",
+        "content": ft.units_to_markdown(kept),
+        "total_chars": total,
+        "returned_chars": sum(len(u[2]) + 2 for u in kept),
+        "truncated": truncated,
+        "matched": bool(chosen),
+        "sections_available": ft.section_titles(all_sections),
+    }
+
+
+async def _xml_or_error(pmcid: str) -> tuple[str | None, str | None]:
+    try:
+        return await _fulltext_xml(pmcid), None
+    except ToolError as exc:
+        return None, str(exc)
+
+
+def _fulltext_status(
+    entry: bm.Entry, record: dict[str, Any] | None, error: str | None
+) -> dict[str, Any]:
+    """Status and identifying fields of one input before any full text is fetched."""
+    item: dict[str, Any] = {"id": entry.raw, "id_type": entry.kind, "status": "ok"}
+    pmcid = str((record or {}).get("pmcid") or "")
+    if entry.kind == "invalid":
+        item.update(status="invalid", error=entry.problem)
+    elif error and record is None:
+        item.update(status="error", error=error)
+    elif record is None:
+        item["status"] = "not_found"
+    elif not pmcid:
+        item["status"] = "not_in_pmc"
+    elif record.get("isOpenAccess") != "Y":
+        item.update(status="not_open_access", pmcid=pmcid)
+    else:
+        item["pmcid"] = pmcid
+    return item
+
+
+async def _render_into(
+    item: dict[str, Any],
+    xml: str | None,
+    error: str | None,
+    sections: list[str] | None,
+    allowance: int,
+) -> int:
+    """Fill ``item`` with the rendered text of one paper; returns the characters used."""
+    if xml is None:
+        item.update(status="error", error=error)
+        return 0
+    try:
+        data = await _run_blocking(_render_fulltext_markdown, xml, sections, allowance)
+    except ParsingError as exc:
+        item.update(status="error", error=str(exc))
+        return 0
+    item["title"] = data["title"]
+    if not data["matched"]:
+        item.update(status="no_matching_section", sections_available=data["sections_available"])
+        return 0
+    item.update(
+        content=data["content"],
+        total_chars=data["total_chars"],
+        returned_chars=data["returned_chars"],
+        truncated=data["truncated"],
+    )
+    return int(data["returned_chars"])
+
+
+@mcp.tool(annotations=_ro("Get full text of several papers"))
+async def get_papers_fulltext_batch(
+    ids: Annotated[
+        list[str],
+        Field(
+            description="PMIDs, PMCIDs and DOIs, mixed allowed. Only open-access papers "
+            "have full text",
+            min_length=1,
+            max_length=20,
+        ),
+    ],
+    sections: Annotated[
+        list[str] | None,
+        Field(
+            description="Only these sections of every paper: case-insensitive substrings of "
+            "a title, e.g. ['methods', 'results']. Default: all sections."
+        ),
+    ] = None,
+    max_chars_per_paper: Annotated[
+        int, Field(description="Cap on the content of one paper", ge=1000, le=100000)
+    ] = 8000,
+    max_total_chars: Annotated[
+        int, Field(description="Cap on the content of the whole response", ge=1000, le=300000)
+    ] = 60000,
+) -> dict[str, Any]:
+    """Markdown full text of several open-access papers in one call, within a size budget.
+
+    The identifiers are resolved with one query, papers that are not open access are reported
+    without being downloaded, and the rest are fetched four at a time. The total budget is
+    handed out in the order given: once it is used up, the remaining papers are reported as
+    skipped_budget and not downloaded. Each result has a status: ok, not_found, invalid,
+    not_in_pmc, not_open_access, no_matching_section, duplicate, error or skipped_budget.
+    Use `get_paper_fulltext` for one paper at a larger size.
+    """
+    _require_available(FULLTEXT_AVAILABLE, "FullTextXMLParser")
+    entries = [bm.classify(i) for i in ids]
+    index, errors = await _fetch_batch_records(entries, "lite")
+
+    results: list[dict[str, Any]] = []
+    candidates: list[int] = []
+    first_by_pmcid: dict[str, int] = {}
+    for pos, entry in enumerate(entries):
+        item = _fulltext_status(
+            entry,
+            bm.lookup(index, entry),
+            errors.get((entry.kind, entry.value.lower())),
+        )
+        if item["status"] == "ok":
+            if item["pmcid"] in first_by_pmcid:
+                item.update(status="duplicate", duplicate_of=first_by_pmcid[item["pmcid"]])
+            else:
+                first_by_pmcid[item["pmcid"]] = pos
+                candidates.append(pos)
+        results.append(item)
+
+    remaining = max_total_chars
+    for start in range(0, len(candidates), _FULLTEXT_CONCURRENCY):
+        window = candidates[start : start + _FULLTEXT_CONCURRENCY]
+        if remaining <= 0:
+            for pos in candidates[start:]:
+                results[pos]["status"] = "skipped_budget"
+            break
+        fetched = await asyncio.gather(*(_xml_or_error(results[p]["pmcid"]) for p in window))
+        for pos, (xml, error) in zip(window, fetched, strict=True):
+            if remaining <= 0:
+                results[pos]["status"] = "skipped_budget"
+                continue
+            allowance = min(max_chars_per_paper, remaining)
+            remaining -= await _render_into(results[pos], xml, error, sections, allowance)
+    return {
+        "requested": len(ids),
+        "by_status": dict(Counter(r["status"] for r in results)),
+        "total_chars_returned": max_total_chars - remaining,
+        "budget_exhausted": remaining <= 0,
+        "results": results,
     }
 
 
