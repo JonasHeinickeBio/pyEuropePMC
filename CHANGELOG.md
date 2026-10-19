@@ -4,6 +4,20 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
+### ✨ Features
+
+- New MCP tools `get_paper_data_links` and `get_paper_lab_links`. `get_paper_data_links` answers
+  "where is the data of this paper?" from Europe PMC's consolidated `datalinks` service: accession
+  numbers text-mined from the full text (dbSNP, RefSeq, OMIM, ClinicalTrials.gov, cited DOIs) and
+  records that providers link to the paper (BioStudies supplementary data, model-organism
+  databases, Altmetric), flattened to one list with `category`, `kind`, `scheme`, `id`, `url`,
+  `origin` (text mined or supplied by a provider) and mention count, with counts per category
+  and scheme and a category/scheme filter. The service labels every link `dataset`, even an
+  Altmetric page, so the category and section tag are used instead. `get_paper_lab_links`
+  lists third-party links grouped by provider; Europe PMC ignores `providerId` and `pageSize`, so
+  the provider filter and the limit are applied by the server. A paper without links gives an
+  empty list. Supplementary files stay in `paper_figures`; no separate tool was added.
+
 ## [3.7.0] - 2026-10-19
 
 > MCP release: export. `export_papers` turns a search or a list of identifiers into BibTeX,

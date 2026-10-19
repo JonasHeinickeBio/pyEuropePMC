@@ -56,6 +56,8 @@ Tools:
         find_open_access      — Free copies of a paper via Unpaywall (needs UNPAYWALL_EMAIL)
         get_paper_annotations — Text-mined genes, chemicals, diseases, ... of a paper
         find_papers_by_entity — Papers in which an entity (gene, chemical, ...) is mentioned
+        get_paper_data_links  — Datasets, accessions and database records linked to a paper
+        get_paper_lab_links   — Links to a paper from third-party providers (BioStudies, ...)
 
     Screening & review:
         paper_screening       — PRISMA-compliant automated screening
@@ -110,6 +112,7 @@ from pyeuropepmc.mcp import (
     _batch as bm,
     _export as ex,
     _fulltext as ft,
+    _links as lk,
     _openaccess as oa,
     _query as qm,
     _status as st,
@@ -2078,6 +2081,91 @@ async def find_papers_by_entity(
         "articles_filtered_out": filtered_out,
         "articles": articles,
         "next_cursor": ann.next_cursor(page.get("nextCursorMark")),
+    }
+
+
+# ---------------------------------------------------------------------------
+# Data and lab links
+# ---------------------------------------------------------------------------
+
+
+async def _link_target(pmcid: str, pmid: str, doi: str) -> tuple[str, str]:
+    """``(source, id)`` for the link services, which take ``PMC/PMC123`` or ``MED/123``."""
+    source, _, ext_id = (await _annotation_article_id(pmcid, pmid, doi)).partition(":")
+    return source, ext_id
+
+
+@mcp.tool(annotations=_ro("Get paper data links"))
+async def get_paper_data_links(
+    pmcid: Annotated[str, Field(description="PMC ID of the article, e.g. PMC1234567")] = "",
+    pmid: Annotated[str, Field(description="PubMed ID (alternative to pmcid)")] = "",
+    doi: Annotated[str, Field(description="DOI (alternative to pmcid)")] = "",
+    category: Annotated[
+        str,
+        Field(
+            description="Only this category, e.g. 'Data Citations', SNPs, RefSeq, "
+            "'Clinical Trials', Diseases, Altmetric. Case-insensitive; "
+            "`categories` in the result lists what exists."
+        ),
+    ] = "",
+    scheme: Annotated[
+        str, Field(description="Only this identifier scheme, e.g. dbSNP, RefSeq, DOI, OMIM")
+    ] = "",
+    limit: Annotated[int, Field(description="Max links to return", ge=1, le=1000)] = 100,
+) -> dict[str, Any]:
+    """Where is the data of this paper? Accession numbers Europe PMC text-mined from the full
+    text (dbSNP, RefSeq, OMIM, ClinicalTrials.gov, cited DOIs) and records that providers link
+    to the paper (BioStudies supplementary data, model-organism databases, Altmetric), as one
+    flat list. `kind` separates supporting_data and related_data from altmetrics and
+    recommended_reviews; `origin` says whether a link was text_mined or supplied by a
+    provider. A paper without links gives an empty list, which is a valid answer."""
+    source, ext_id = await _link_target(pmcid, pmid, doi)
+    try:
+        response = await _run_blocking(_get_article_client().get_data_links, source, ext_id)
+    except EuropePMCError as exc:
+        raise ToolError(str(exc)) from exc
+    everything = lk.flatten_data_links(response)
+    chosen = lk.select(everything, category=category, scheme=scheme)
+    return {
+        "article": {"source": source, "id": ext_id},
+        "total": len(everything),
+        "matching": len(chosen),
+        "categories": lk.count_by(everything, "category"),
+        "schemes": lk.count_by(everything, "scheme"),
+        "links": chosen[:limit],
+        "truncated": len(chosen) > limit,
+    }
+
+
+@mcp.tool(annotations=_ro("Get paper lab links"))
+async def get_paper_lab_links(
+    pmcid: Annotated[str, Field(description="PMC ID of the article, e.g. PMC1234567")] = "",
+    pmid: Annotated[str, Field(description="PubMed ID (alternative to pmcid)")] = "",
+    doi: Annotated[str, Field(description="DOI (alternative to pmcid)")] = "",
+    provider: Annotated[
+        str,
+        Field(
+            description="Only this provider: part of its name (e.g. biostudies) or its "
+            "numeric id. Europe PMC ignores a provider filter, so this is applied here."
+        ),
+    ] = "",
+) -> dict[str, Any]:
+    """Links that third parties publish for a paper, grouped by provider with the provider's
+    description: BioStudies supplementary material, model-organism databases, GO annotations,
+    Faculty Opinions recommendations, Altmetric. Use get_paper_data_links for the data
+    accessions mentioned in the text."""
+    source, ext_id = await _link_target(pmcid, pmid, doi)
+    try:
+        response = await _run_blocking(_get_article_client().get_lab_links, source, ext_id)
+    except EuropePMCError as exc:
+        raise ToolError(str(exc)) from exc
+    everything = lk.flatten_lab_links(response)
+    providers = lk.flatten_lab_links(response, provider=provider)
+    return {
+        "article": {"source": source, "id": ext_id},
+        "available_providers": [p["provider"] for p in everything],
+        "link_count": sum(len(p["links"]) for p in providers),
+        "providers": providers,
     }
 
 

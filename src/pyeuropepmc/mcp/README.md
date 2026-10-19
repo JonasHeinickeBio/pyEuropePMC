@@ -105,6 +105,8 @@ itself does not implement auth) and point any MCP HTTP client at
 | `find_open_access` | Where a paper can be read for free: Unpaywall open-access status (gold, green, hybrid, bronze, closed), the best copy with PDF link and licence, a few alternatives, and whether `get_paper_fulltext` will work. By DOI, PMID or PMCID | `UNPAYWALL_EMAIL` in the server's environment |
 | `get_paper_annotations` | Text-mined genes, proteins, chemicals, diseases, organisms and GO terms of a paper, grouped by entity with mention counts, sections and example mentions; filter by type, section, provider | — |
 | `find_papers_by_entity` | Articles in which an entity (`CHEBI:16236`, `ethanol`, a gene) is mentioned, with how often and where; 1 to 8 articles per page, cursor paging | — |
+| `get_paper_data_links` | Where the data of a paper is: accession numbers Europe PMC text-mined from the full text (dbSNP, RefSeq, OMIM, ClinicalTrials.gov, cited DOIs) and records providers link to it (BioStudies, model-organism databases), as a flat list with category, kind, scheme, URL and origin; filter by category or scheme. Supplementary files are in `paper_figures` | — |
+| `get_paper_lab_links` | Links third parties publish for a paper, grouped by provider with a description (BioStudies, GO annotations, Faculty Opinions, Altmetric); the provider filter is applied by the server because Europe PMC ignores it | — |
 | `analyze_citations`, `compare_citations`, `summarize_citations` | LLM-powered citation analysis | `agentic` + an LLM provider |
 | `paper_screening` | PRISMA-style automated screening | `agentic` + an LLM provider |
 | `research_question_analysis`, `preprint_analysis`, `literature_review`, `knowledge_graph` | LLM-powered research tooling | `agentic` + an LLM provider |

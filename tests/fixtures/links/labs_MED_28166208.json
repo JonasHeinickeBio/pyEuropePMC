@@ -1,0 +1,51 @@
+{
+ "version": "6.9",
+ "hitCount": 2,
+ "request": {
+  "id": "28166208",
+  "source": "MED",
+  "offSet": 1,
+  "pageSize": 10
+ },
+ "linksCountList": {
+  "provider": [
+   {
+    "providerName": "BioStudies: supplemental material and supporting data",
+    "linksCount": 1
+   },
+   {
+    "providerName": "Altmetric",
+    "linksCount": 1
+   }
+  ]
+ },
+ "providers": {
+  "provider": [
+   {
+    "id": 1518,
+    "name": "BioStudies: supplemental material and supporting data",
+    "description": "Database of biological studies",
+    "frontTab": "N",
+    "link": [
+     {
+      "title": "In vitro reconstitution demonstrates the cell wall ligase activity of LCP proteins.",
+      "url": "http://www.ebi.ac.uk/biostudies/studies/S-EPMC5362317?xr=true"
+     }
+    ]
+   },
+   {
+    "id": 1562,
+    "name": "Altmetric",
+    "description": "Discover the attention surrounding your research",
+    "frontTab": "N",
+    "link": [
+     {
+      "title": "In vitro reconstitution demonstrates the cell wall ligase activity of LCP proteins",
+      "url": "https://www.altmetric.com/details/16207227",
+      "imgUrl": "https://api.altmetric.com/v1/donut/16207227_64.png"
+     }
+    ]
+   }
+  ]
+ }
+}

@@ -1,0 +1,759 @@
+{
+ "version": "6.9",
+ "hitCount": 20,
+ "request": {
+  "id": "32257953",
+  "source": "MED"
+ },
+ "dataLinkList": {
+  "Category": [
+   {
+    "Name": "SNPs",
+    "CategoryLinkCount": 17,
+    "Section": [
+     {
+      "ObtainedBy": "tm_accession",
+      "SectionLinkCount": 17,
+      "Tags": [
+       "supporting_data"
+      ],
+      "Linklist": {
+       "Link": [
+        {
+         "PublicationDate": "24-07-2026",
+         "RelationshipType": {
+          "Name": "References"
+         },
+         "ObtainedBy": "tm_accession",
+         "Source": {
+          "Identifier": {
+           "ID": "32257953",
+           "IDScheme": "MED"
+          },
+          "Type": {
+           "Name": "literature"
+          }
+         },
+         "Target": {
+          "Identifier": {
+           "ID": "rs25487",
+           "IDScheme": "dbSNP",
+           "IDURL": "http://identifiers.org/dbsnp:rs25487"
+          },
+          "Type": {
+           "Name": "dataset"
+          },
+          "Title": "rs25487",
+          "Publisher": {
+           "Name": "Europe PMC"
+          }
+         },
+         "LinkProvider": {
+          "Name": "Europe PMC"
+         },
+         "Frequency": 8
+        },
+        {
+         "PublicationDate": "24-07-2026",
+         "RelationshipType": {
+          "Name": "References"
+         },
+         "ObtainedBy": "tm_accession",
+         "Source": {
+          "Identifier": {
+           "ID": "32257953",
+           "IDScheme": "MED"
+          },
+          "Type": {
+           "Name": "literature"
+          }
+         },
+         "Target": {
+          "Identifier": {
+           "ID": "rs1470383",
+           "IDScheme": "dbSNP",
+           "IDURL": "http://identifiers.org/dbsnp:rs1470383"
+          },
+          "Type": {
+           "Name": "dataset"
+          },
+          "Title": "rs1470383",
+          "Publisher": {
+           "Name": "Europe PMC"
+          }
+         },
+         "LinkProvider": {
+          "Name": "Europe PMC"
+         },
+         "Frequency": 6
+        },
+        {
+         "PublicationDate": "24-07-2026",
+         "RelationshipType": {
+          "Name": "References"
+         },
+         "ObtainedBy": "tm_accession",
+         "Source": {
+          "Identifier": {
+           "ID": "32257953",
+           "IDScheme": "MED"
+          },
+          "Type": {
+           "Name": "literature"
+          }
+         },
+         "Target": {
+          "Identifier": {
+           "ID": "rs2279744",
+           "IDScheme": "dbSNP",
+           "IDURL": "http://identifiers.org/dbsnp:rs2279744"
+          },
+          "Type": {
+           "Name": "dataset"
+          },
+          "Title": "rs2279744",
+          "Publisher": {
+           "Name": "Europe PMC"
+          }
+         },
+         "LinkProvider": {
+          "Name": "Europe PMC"
+         },
+         "Frequency": 6
+        },
+        {
+         "PublicationDate": "24-07-2026",
+         "RelationshipType": {
+          "Name": "References"
+         },
+         "ObtainedBy": "tm_accession",
+         "Source": {
+          "Identifier": {
+           "ID": "32257953",
+           "IDScheme": "MED"
+          },
+          "Type": {
+           "Name": "literature"
+          }
+         },
+         "Target": {
+          "Identifier": {
+           "ID": "rs11615",
+           "IDScheme": "dbSNP",
+           "IDURL": "http://identifiers.org/dbsnp:rs11615"
+          },
+          "Type": {
+           "Name": "dataset"
+          },
+          "Title": "rs11615",
+          "Publisher": {
+           "Name": "Europe PMC"
+          }
+         },
+         "LinkProvider": {
+          "Name": "Europe PMC"
+         },
+         "Frequency": 6
+        },
+        {
+         "PublicationDate": "24-07-2026",
+         "RelationshipType": {
+          "Name": "References"
+         },
+         "ObtainedBy": "tm_accession",
+         "Source": {
+          "Identifier": {
+           "ID": "32257953",
+           "IDScheme": "MED"
+          },
+          "Type": {
+           "Name": "literature"
+          }
+         },
+         "Target": {
+          "Identifier": {
+           "ID": "rs1690924",
+           "IDScheme": "dbSNP",
+           "IDURL": "http://identifiers.org/dbsnp:rs1690924"
+          },
+          "Type": {
+           "Name": "dataset"
+          },
+          "Title": "rs1690924",
+          "Publisher": {
+           "Name": "Europe PMC"
+          }
+         },
+         "LinkProvider": {
+          "Name": "Europe PMC"
+         },
+         "Frequency": 5
+        },
+        {
+         "PublicationDate": "24-07-2026",
+         "RelationshipType": {
+          "Name": "References"
+         },
+         "ObtainedBy": "tm_accession",
+         "Source": {
+          "Identifier": {
+           "ID": "32257953",
+           "IDScheme": "MED"
+          },
+          "Type": {
+           "Name": "literature"
+          }
+         },
+         "Target": {
+          "Identifier": {
+           "ID": "rs2279115",
+           "IDScheme": "dbSNP",
+           "IDURL": "http://identifiers.org/dbsnp:rs2279115"
+          },
+          "Type": {
+           "Name": "dataset"
+          },
+          "Title": "rs2279115",
+          "Publisher": {
+           "Name": "Europe PMC"
+          }
+         },
+         "LinkProvider": {
+          "Name": "Europe PMC"
+         },
+         "Frequency": 5
+        },
+        {
+         "PublicationDate": "24-07-2026",
+         "RelationshipType": {
+          "Name": "References"
+         },
+         "ObtainedBy": "tm_accession",
+         "Source": {
+          "Identifier": {
+           "ID": "32257953",
+           "IDScheme": "MED"
+          },
+          "Type": {
+           "Name": "literature"
+          }
+         },
+         "Target": {
+          "Identifier": {
+           "ID": "rs1801131",
+           "IDScheme": "dbSNP",
+           "IDURL": "http://identifiers.org/dbsnp:rs1801131"
+          },
+          "Type": {
+           "Name": "dataset"
+          },
+          "Title": "rs1801131",
+          "Publisher": {
+           "Name": "Europe PMC"
+          }
+         },
+         "LinkProvider": {
+          "Name": "Europe PMC"
+         },
+         "Frequency": 5
+        },
+        {
+         "PublicationDate": "24-07-2026",
+         "RelationshipType": {
+          "Name": "References"
+         },
+         "ObtainedBy": "tm_accession",
+         "Source": {
+          "Identifier": {
+           "ID": "32257953",
+           "IDScheme": "MED"
+          },
+          "Type": {
+           "Name": "literature"
+          }
+         },
+         "Target": {
+          "Identifier": {
+           "ID": "rs1045642",
+           "IDScheme": "dbSNP",
+           "IDURL": "http://identifiers.org/dbsnp:rs1045642"
+          },
+          "Type": {
+           "Name": "dataset"
+          },
+          "Title": "rs1045642",
+          "Publisher": {
+           "Name": "Europe PMC"
+          }
+         },
+         "LinkProvider": {
+          "Name": "Europe PMC"
+         },
+         "Frequency": 5
+        },
+        {
+         "PublicationDate": "24-07-2026",
+         "RelationshipType": {
+          "Name": "References"
+         },
+         "ObtainedBy": "tm_accession",
+         "Source": {
+          "Identifier": {
+           "ID": "32257953",
+           "IDScheme": "MED"
+          },
+          "Type": {
+           "Name": "literature"
+          }
+         },
+         "Target": {
+          "Identifier": {
+           "ID": "rs3212986",
+           "IDScheme": "dbSNP",
+           "IDURL": "http://identifiers.org/dbsnp:rs3212986"
+          },
+          "Type": {
+           "Name": "dataset"
+          },
+          "Title": "rs3212986",
+          "Publisher": {
+           "Name": "Europe PMC"
+          }
+         },
+         "LinkProvider": {
+          "Name": "Europe PMC"
+         },
+         "Frequency": 5
+        },
+        {
+         "PublicationDate": "24-07-2026",
+         "RelationshipType": {
+          "Name": "References"
+         },
+         "ObtainedBy": "tm_accession",
+         "Source": {
+          "Identifier": {
+           "ID": "32257953",
+           "IDScheme": "MED"
+          },
+          "Type": {
+           "Name": "literature"
+          }
+         },
+         "Target": {
+          "Identifier": {
+           "ID": "rs1801133",
+           "IDScheme": "dbSNP",
+           "IDURL": "http://identifiers.org/dbsnp:rs1801133"
+          },
+          "Type": {
+           "Name": "dataset"
+          },
+          "Title": "rs1801133",
+          "Publisher": {
+           "Name": "Europe PMC"
+          }
+         },
+         "LinkProvider": {
+          "Name": "Europe PMC"
+         },
+         "Frequency": 4
+        },
+        {
+         "PublicationDate": "24-07-2026",
+         "RelationshipType": {
+          "Name": "References"
+         },
+         "ObtainedBy": "tm_accession",
+         "Source": {
+          "Identifier": {
+           "ID": "32257953",
+           "IDScheme": "MED"
+          },
+          "Type": {
+           "Name": "literature"
+          }
+         },
+         "Target": {
+          "Identifier": {
+           "ID": "rs13181",
+           "IDScheme": "dbSNP",
+           "IDURL": "http://identifiers.org/dbsnp:rs13181"
+          },
+          "Type": {
+           "Name": "dataset"
+          },
+          "Title": "rs13181",
+          "Publisher": {
+           "Name": "Europe PMC"
+          }
+         },
+         "LinkProvider": {
+          "Name": "Europe PMC"
+         },
+         "Frequency": 4
+        },
+        {
+         "PublicationDate": "24-07-2026",
+         "RelationshipType": {
+          "Name": "References"
+         },
+         "ObtainedBy": "tm_accession",
+         "Source": {
+          "Identifier": {
+           "ID": "32257953",
+           "IDScheme": "MED"
+          },
+          "Type": {
+           "Name": "literature"
+          }
+         },
+         "Target": {
+          "Identifier": {
+           "ID": "rs717620",
+           "IDScheme": "dbSNP",
+           "IDURL": "http://identifiers.org/dbsnp:rs717620"
+          },
+          "Type": {
+           "Name": "dataset"
+          },
+          "Title": "rs717620",
+          "Publisher": {
+           "Name": "Europe PMC"
+          }
+         },
+         "LinkProvider": {
+          "Name": "Europe PMC"
+         },
+         "Frequency": 4
+        },
+        {
+         "PublicationDate": "24-07-2026",
+         "RelationshipType": {
+          "Name": "References"
+         },
+         "ObtainedBy": "tm_accession",
+         "Source": {
+          "Identifier": {
+           "ID": "32257953",
+           "IDScheme": "MED"
+          },
+          "Type": {
+           "Name": "literature"
+          }
+         },
+         "Target": {
+          "Identifier": {
+           "ID": "rs1695",
+           "IDScheme": "dbSNP",
+           "IDURL": "http://identifiers.org/dbsnp:rs1695"
+          },
+          "Type": {
+           "Name": "dataset"
+          },
+          "Title": "rs1695",
+          "Publisher": {
+           "Name": "Europe PMC"
+          }
+         },
+         "LinkProvider": {
+          "Name": "Europe PMC"
+         },
+         "Frequency": 4
+        },
+        {
+         "PublicationDate": "24-07-2026",
+         "RelationshipType": {
+          "Name": "References"
+         },
+         "ObtainedBy": "tm_accession",
+         "Source": {
+          "Identifier": {
+           "ID": "32257953",
+           "IDScheme": "MED"
+          },
+          "Type": {
+           "Name": "literature"
+          }
+         },
+         "Target": {
+          "Identifier": {
+           "ID": "rs4645878",
+           "IDScheme": "dbSNP",
+           "IDURL": "http://identifiers.org/dbsnp:rs4645878"
+          },
+          "Type": {
+           "Name": "dataset"
+          },
+          "Title": "rs4645878",
+          "Publisher": {
+           "Name": "Europe PMC"
+          }
+         },
+         "LinkProvider": {
+          "Name": "Europe PMC"
+         },
+         "Frequency": 4
+        },
+        {
+         "PublicationDate": "24-07-2026",
+         "RelationshipType": {
+          "Name": "References"
+         },
+         "ObtainedBy": "tm_accession",
+         "Source": {
+          "Identifier": {
+           "ID": "32257953",
+           "IDScheme": "MED"
+          },
+          "Type": {
+           "Name": "literature"
+          }
+         },
+         "Target": {
+          "Identifier": {
+           "ID": "rs1799793",
+           "IDScheme": "dbSNP",
+           "IDURL": "http://identifiers.org/dbsnp:rs1799793"
+          },
+          "Type": {
+           "Name": "dataset"
+          },
+          "Title": "rs1799793",
+          "Publisher": {
+           "Name": "Europe PMC"
+          }
+         },
+         "LinkProvider": {
+          "Name": "Europe PMC"
+         },
+         "Frequency": 3
+        },
+        {
+         "PublicationDate": "24-07-2026",
+         "RelationshipType": {
+          "Name": "References"
+         },
+         "ObtainedBy": "tm_accession",
+         "Source": {
+          "Identifier": {
+           "ID": "32257953",
+           "IDScheme": "MED"
+          },
+          "Type": {
+           "Name": "literature"
+          }
+         },
+         "Target": {
+          "Identifier": {
+           "ID": "rs1042522",
+           "IDScheme": "dbSNP",
+           "IDURL": "http://identifiers.org/dbsnp:rs1042522"
+          },
+          "Type": {
+           "Name": "dataset"
+          },
+          "Title": "rs1042522",
+          "Publisher": {
+           "Name": "Europe PMC"
+          }
+         },
+         "LinkProvider": {
+          "Name": "Europe PMC"
+         },
+         "Frequency": 2
+        },
+        {
+         "PublicationDate": "24-07-2026",
+         "RelationshipType": {
+          "Name": "References"
+         },
+         "ObtainedBy": "tm_accession",
+         "Source": {
+          "Identifier": {
+           "ID": "32257953",
+           "IDScheme": "MED"
+          },
+          "Type": {
+           "Name": "literature"
+          }
+         },
+         "Target": {
+          "Identifier": {
+           "ID": "rs937282",
+           "IDScheme": "dbSNP",
+           "IDURL": "http://identifiers.org/dbsnp:rs937282"
+          },
+          "Type": {
+           "Name": "dataset"
+          },
+          "Title": "rs937282",
+          "Publisher": {
+           "Name": "Europe PMC"
+          }
+         },
+         "LinkProvider": {
+          "Name": "Europe PMC"
+         },
+         "Frequency": 1
+        }
+       ]
+      }
+     }
+    ]
+   },
+   {
+    "Name": "Data Citations",
+    "CategoryLinkCount": 1,
+    "Section": [
+     {
+      "ObtainedBy": "tm_accession",
+      "SectionLinkCount": 1,
+      "Tags": [
+       "supporting_data"
+      ],
+      "Linklist": {
+       "Link": [
+        {
+         "PublicationDate": "24-07-2026",
+         "RelationshipType": {
+          "Name": "References"
+         },
+         "ObtainedBy": "tm_accession",
+         "Source": {
+          "Identifier": {
+           "ID": "32257953",
+           "IDScheme": "MED"
+          },
+          "Type": {
+           "Name": "literature"
+          }
+         },
+         "Target": {
+          "Identifier": {
+           "ID": "10.6091/ibj.13332.2014",
+           "IDScheme": "DOI",
+           "IDURL": "http://identifiers.org/doi:10.6091/ibj.13332.2014"
+          },
+          "Type": {
+           "Name": "dataset"
+          },
+          "Title": "10.6091/ibj.13332.2014",
+          "Publisher": {
+           "Name": "Europe PMC"
+          }
+         },
+         "LinkProvider": {
+          "Name": "Europe PMC"
+         },
+         "Frequency": 1
+        }
+       ]
+      }
+     }
+    ]
+   },
+   {
+    "Name": "Altmetric",
+    "CategoryLinkCount": 1,
+    "Section": [
+     {
+      "ObtainedBy": "ext_links",
+      "SectionLinkCount": 1,
+      "Tags": [
+       "altmetrics"
+      ],
+      "Linklist": {
+       "Link": [
+        {
+         "PublicationDate": "26-04-2023",
+         "RelationshipType": {
+          "Name": "IsReferencedBy"
+         },
+         "ObtainedBy": "ext_links",
+         "Source": {
+          "Identifier": {
+           "ID": "32257953",
+           "IDScheme": "PMID"
+          },
+          "Type": {
+           "Name": "literature"
+          }
+         },
+         "Target": {
+          "Identifier": {
+           "ID": "https://www.altmetric.com/details/80329100",
+           "IDScheme": "URL",
+           "IDURL": "https://www.altmetric.com/details/80329100"
+          },
+          "Type": {
+           "Name": "dataset"
+          },
+          "Title": "Genetic Polymorphisms and Platinum-Based Chemotherapy-Induced Toxicities in Patients With Lung Cancer: A Systematic Review and Meta-Analysis",
+          "Publisher": {
+           "Name": "Altmetric"
+          },
+          "ImageURL": "https://api.altmetric.com/v1/donut/80329100_64.png"
+         },
+         "LinkProvider": {
+          "Name": "Europe PMC"
+         }
+        }
+       ]
+      }
+     }
+    ]
+   },
+   {
+    "Name": "BioStudies: supplemental material and supporting data",
+    "CategoryLinkCount": 1,
+    "Section": [
+     {
+      "ObtainedBy": "ext_links",
+      "SectionLinkCount": 1,
+      "Tags": [
+       "supporting_data"
+      ],
+      "Linklist": {
+       "Link": [
+        {
+         "PublicationDate": "17-04-2025",
+         "RelationshipType": {
+          "Name": "IsReferencedBy"
+         },
+         "ObtainedBy": "ext_links",
+         "Source": {
+          "Identifier": {
+           "ID": "32257953",
+           "IDScheme": "PMID"
+          },
+          "Type": {
+           "Name": "literature"
+          }
+         },
+         "Target": {
+          "Identifier": {
+           "ID": "http://www.ebi.ac.uk/biostudies/studies/S-EPMC7090160?xr=true",
+           "IDScheme": "URL",
+           "IDURL": "http://www.ebi.ac.uk/biostudies/studies/S-EPMC7090160?xr=true"
+          },
+          "Type": {
+           "Name": "dataset"
+          },
+          "Title": "Genetic Polymorphisms and Platinum-Based Chemotherapy-Induced Toxicities in Patients With Lung Cancer: A Systematic Review and Meta-Analysis.",
+          "Publisher": {
+           "Name": "BioStudies: supplemental material and supporting data"
+          }
+         },
+         "LinkProvider": {
+          "Name": "Europe PMC"
+         }
+        }
+       ]
+      }
+     }
+    ]
+   }
+  ]
+ }
+}
