@@ -4,6 +4,12 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
+## [3.2.0] - 2026-10-19
+
+> MCP release: text-mined annotations. `AnnotationsClient` returned no data for any
+> article and its entity lookup always failed; both are fixed. The server now has
+> 29 tools.
+
 ### 🐛 Bug Fixes
 
 - **`AnnotationsClient` discarded every real article response.**
