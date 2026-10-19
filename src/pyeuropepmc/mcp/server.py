@@ -43,6 +43,9 @@ Tools:
         fulltext_index_query  — Search local SQLite FTS5 full-text index
         get_paper_fulltext    — Structured full text of an open-access paper
         paper_figures         — Figures, tables and supplementary files of a PMC article
+        epmc_status           — Is Europe PMC up? Probes the endpoints this server uses
+        cache_status          — Entries, hits and misses of the server's caches (counts only)
+        clear_cache           — Empty one of the in-memory caches
         validate_query        — Check a Europe PMC query for the mistakes it silently accepts
         build_query           — Build a query from structured input
         translate_query       — Rewrite a query for PubMed and other databases
@@ -72,6 +75,7 @@ import argparse
 import asyncio
 from collections import Counter
 from collections.abc import Callable
+import datetime
 from functools import partial
 from importlib.metadata import PackageNotFoundError, version as _pkg_version
 import json
@@ -87,6 +91,7 @@ from mcp.server.fastmcp import Context, FastMCP
 from mcp.server.fastmcp.exceptions import ToolError
 from mcp.types import ToolAnnotations
 from pydantic import Field
+import requests
 
 from pyeuropepmc import SearchClient
 from pyeuropepmc.cache.cache import CacheConfig
@@ -105,6 +110,7 @@ from pyeuropepmc.mcp import (
     _fulltext as ft,
     _openaccess as oa,
     _query as qm,
+    _status as st,
 )
 
 # The pyeuropepmc modules below import without any extra: each one loads its
@@ -246,6 +252,11 @@ class _Lazy(Generic[_T]):
         with self._lock:
             self._value = None
 
+    def peek(self) -> _T | None:
+        """The value if it has been built; never builds it (a status report must not create
+        a client, and with it a cache, just to say that there is none)."""
+        return self._value
+
     def set(self, value: _T) -> None:
         """Inject a pre-built value (tests: bypass the factory with a mock)."""
         with self._lock:
@@ -262,6 +273,8 @@ _fulltext_client_cache: _Lazy[Any] = _Lazy(
     lambda: FullTextClient() if FULLTEXT_AVAILABLE else None
 )
 _fulltext_xml_cache = ft.XmlCache()
+_status_cache = st.StatusCache()
+_status_lock = threading.Lock()
 
 
 def _make_unpaywall_client() -> Any:
@@ -1049,6 +1062,126 @@ async def paper_figures(
         "figure_count": len(items),
         "counts_by_type": dict(Counter(item.get("figure_type", "") for item in items)),
         "figures": items,
+    }
+
+
+# ---------------------------------------------------------------------------
+# Service status and caches
+# ---------------------------------------------------------------------------
+
+
+def _status_snapshot() -> dict[str, Any]:
+    """The service status, probed at most once per ``StatusCache.ttl`` however often it is asked.
+
+    The lock is held across the probe so that several callers arriving together wait for one
+    probe instead of each starting their own.
+    """
+    with _status_lock:
+        cached = _status_cache.get()
+        if cached is not None:
+            result, age = cached
+            return {**result, "cached": True, "age_seconds": round(age)}
+        results = st.probe(requests.get)
+        result = st.build_result(results, datetime.datetime.now(datetime.timezone.utc))
+        _status_cache.set(result)
+        return {**result, "cached": False, "age_seconds": 0}
+
+
+@mcp.tool(annotations=_ro("Europe PMC service status"))
+async def epmc_status() -> dict[str, Any]:
+    """Is Europe PMC up right now? Probes the endpoints this server depends on (search, full
+    text, citations, annotations) and returns ok, degraded (some fail), down (none answers) or
+    unknown (only 4xx answers: a blocked probe or a moved endpoint), with the HTTP status and
+    the time in milliseconds of each. Use it before retrying a tool that failed with a network
+    error, a timeout or a 5xx. The answer is kept for 30 seconds, so asking again does not
+    probe again (`cached` says so), and it contains no URLs or response bodies.
+    """
+    return await _run_blocking(_status_snapshot)
+
+
+def _client_cache_stats(lazy: _Lazy[Any]) -> dict[str, Any]:
+    """Counts for one client's cache; ``created: false`` if the client was never needed."""
+    client = lazy.peek()
+    if client is None:
+        return {"created": False, "entries": 0}
+    try:
+        stats = client.get_cache_stats()
+        overall = stats.get("overall", {})
+        layer = stats.get("layers", {}).get("l1", {})
+    except Exception:  # noqa: BLE001 - a broken cache must not break the report
+        return {"created": True, "error": "statistics unavailable"}
+    return {
+        "created": True,
+        "entries": layer.get("entry_count", 0),
+        "max_entries": layer.get("maxsize"),
+        "size_bytes": layer.get("size_bytes"),
+        "hits": overall.get("hits", 0),
+        "misses": overall.get("misses", 0),
+        "hit_rate": overall.get("hit_rate"),
+    }
+
+
+@mcp.tool(annotations=_ro("Cache status", local=True))
+async def cache_status() -> dict[str, Any]:
+    """How full are the server's caches and how often do they help? For the search, article and
+    annotation clients and for the full-text XML cache: entries, capacity, size, hits, misses
+    and hit rate. Counts only: no cache keys (they can contain query text), no cached content
+    and no file paths.
+    """
+    return {
+        "search": _client_cache_stats(_client_cache),
+        "article": _client_cache_stats(_article_client_cache),
+        "annotations": _client_cache_stats(_annotations_client_cache),
+        "xml": _fulltext_xml_cache.stats(),
+        "service_status": {"cached": _status_cache.get() is not None},
+    }
+
+
+_CACHE_SCOPES: dict[str, _Lazy[Any]] = {
+    "search": _client_cache,
+    "article": _article_client_cache,
+    "annotations": _annotations_client_cache,
+}
+
+
+def _clear_one(scope: str) -> dict[str, Any]:
+    if scope == "xml":
+        return {"cleared": True, "entries_dropped": _fulltext_xml_cache.clear()}
+    client = _CACHE_SCOPES[scope].peek()
+    if client is None:
+        return {"cleared": False, "entries_dropped": 0, "reason": "nothing cached yet"}
+    before = _client_cache_stats(_CACHE_SCOPES[scope]).get("entries", 0)
+    ok = bool(client.clear_cache())
+    return {"cleared": ok, "entries_dropped": before if ok else 0}
+
+
+@mcp.tool(
+    annotations=ToolAnnotations(
+        title="Clear a server cache",
+        readOnlyHint=False,
+        destructiveHint=False,
+        idempotentHint=True,
+        openWorldHint=False,
+    )
+)
+async def clear_cache(
+    scope: Annotated[
+        Literal["search", "article", "annotations", "xml", "all"],
+        Field(
+            description="Which cache: search (search results, batch lookups, counts), article "
+            "(citations, references), annotations, xml (downloaded full text) or all of them"
+        ),
+    ],
+) -> dict[str, Any]:
+    """Empty one of the server's in-memory caches, so that the next call asks Europe PMC again.
+    Only worth doing when you suspect a cached answer is stale (the caches hold results for a
+    day); every cleared entry has to be fetched again, which is load on Europe PMC. It changes
+    server state, so a client may ask for approval. It never touches files on disk.
+    """
+    scopes = ["search", "article", "annotations", "xml"] if scope == "all" else [scope]
+    return {
+        "scope": scope,
+        "results": {name: _clear_one(name) for name in scopes},
     }
 
 
