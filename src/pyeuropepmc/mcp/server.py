@@ -43,6 +43,7 @@ Tools:
         fulltext_index_query  — Search local SQLite FTS5 full-text index
         get_paper_fulltext    — Structured full text of an open-access paper
         paper_figures         — Figures, tables and supplementary files of a PMC article
+        find_open_access      — Free copies of a paper via Unpaywall (needs UNPAYWALL_EMAIL)
         get_paper_annotations — Text-mined genes, chemicals, diseases, ... of a paper
         find_papers_by_entity — Papers in which an entity (gene, chemical, ...) is mentioned
 
@@ -83,10 +84,15 @@ from pydantic import Field
 from pyeuropepmc import SearchClient
 from pyeuropepmc.cache.cache import CacheConfig
 from pyeuropepmc.core.error_codes import ErrorCodes
-from pyeuropepmc.core.exceptions import EuropePMCError, FullTextError, ParsingError
+from pyeuropepmc.core.exceptions import (
+    EuropePMCError,
+    FullTextError,
+    ParsingError,
+    UnpaywallError,
+)
 from pyeuropepmc.features.literature.annotations import AnnotationsClient
 from pyeuropepmc.features.literature.article import ArticleClient
-from pyeuropepmc.mcp import _annotations as ann, _fulltext as ft
+from pyeuropepmc.mcp import _annotations as ann, _fulltext as ft, _openaccess as oa
 
 # The pyeuropepmc modules below import without any extra: each one loads its
 # optional libraries lazily. A flag that only records whether the module
@@ -243,6 +249,31 @@ _fulltext_client_cache: _Lazy[Any] = _Lazy(
     lambda: FullTextClient() if FULLTEXT_AVAILABLE else None
 )
 _fulltext_xml_cache = ft.XmlCache()
+
+
+def _make_unpaywall_client() -> Any:
+    """An Unpaywall client with the contact e-mail from the environment.
+
+    Unpaywall's terms ask every caller for an e-mail address, so there is deliberately no
+    default: without one the tool says which variable to set. ``UNPAYWALL_EMAIL`` and
+    ``CROSSREF_EMAIL`` are the names the rest of the library already reads.
+    """
+    from pyeuropepmc.features.enrich.sources.unpaywall_client import UnpaywallClient
+
+    email = (os.environ.get("UNPAYWALL_EMAIL") or os.environ.get("CROSSREF_EMAIL") or "").strip()
+    if not email:
+        raise ToolError(
+            "find_open_access needs a contact e-mail address for Unpaywall: set the "
+            "UNPAYWALL_EMAIL environment variable of the MCP server (Unpaywall's terms ask "
+            "for one; it is sent with each request)."
+        )
+    try:
+        return UnpaywallClient(email)
+    except UnpaywallError as exc:
+        raise ToolError(f"UNPAYWALL_EMAIL is not usable: {exc}") from exc
+
+
+_unpaywall_client_cache: _Lazy[Any] = _Lazy(_make_unpaywall_client)
 _annotations_client_cache: _Lazy[AnnotationsClient] = _Lazy(
     lambda: AnnotationsClient(cache_config=CacheConfig(enabled=True))
 )
@@ -1008,6 +1039,92 @@ async def paper_figures(
         "counts_by_type": dict(Counter(item.get("figure_type", "") for item in items)),
         "figures": items,
     }
+
+
+# ---------------------------------------------------------------------------
+# Open-access locations
+# ---------------------------------------------------------------------------
+
+
+async def _europepmc_record(query: str, *, required: bool) -> dict[str, Any] | None:
+    """The lite Europe PMC record for ``query``; ``None`` when absent or, if not required,
+    when the lookup itself fails."""
+    try:
+        results = await _run_blocking(
+            _get_client().search_all, query, page_size=1, max_results=1, resultType="lite"
+        )
+    except EuropePMCError as exc:
+        if required:
+            raise ToolError(str(exc)) from exc
+        return None
+    return _as_dict(results[0]) if results else None
+
+
+@mcp.tool(annotations=_ro("Find open-access copies"))
+async def find_open_access(
+    doi: Annotated[str, Field(description="DOI, e.g. 10.1038/s41586-020-2649-2")] = "",
+    pmid: Annotated[str, Field(description="PubMed ID (alternative to doi)")] = "",
+    pmcid: Annotated[str, Field(description="PMC ID (alternative to doi)")] = "",
+) -> dict[str, Any]:
+    """Where can this paper be read for free? Looks the DOI up in Unpaywall and returns the
+    open-access status (gold, green, hybrid, bronze, closed), the best copy with its PDF
+    link and licence, and a few alternatives. ``europepmc_fulltext`` says whether
+    `get_paper_fulltext` will work for it. Needs UNPAYWALL_EMAIL in the server's environment.
+    """
+    # Validate locally, then fetch the client (it fails fast when no e-mail is configured),
+    # and only then touch the network.
+    if doi.strip():
+        clean = oa.clean_doi(doi)
+        if not clean:
+            raise ToolError(f"doi must look like 10.1234/abc, got {doi!r}")
+        query = f'DOI:"{clean}"'
+    else:
+        query = _fulltext_query(pmcid, pmid, "")
+    client = _unpaywall_client_cache.get()
+
+    if doi.strip():
+        record = await _europepmc_record(query, required=False)
+    else:
+        record = await _europepmc_record(query, required=True)
+        if record is None:
+            raise ToolError(f"No Europe PMC record found for {pmcid or pmid!r}")
+        clean = oa.clean_doi(str(record.get("doi") or ""))
+        if not clean:
+            raise ToolError(
+                f"{pmcid or pmid!r} has no DOI in Europe PMC, and Unpaywall looks papers up by DOI"
+            )
+
+    try:
+        found = await _run_blocking(client.lookup_by_doi, clean)
+    except UnpaywallError as exc:
+        message = (
+            str(exc.context.get("message", exc)) if isinstance(exc.context, dict) else str(exc)
+        )
+        if "429" in message:
+            message = "Unpaywall is rate limiting this server (HTTP 429); retry later"
+        raise ToolError(message) from exc
+
+    has_pmc = bool(record and record.get("pmcid"))
+    result: dict[str, Any] = {
+        "doi": clean,
+        "pmcid": (record or {}).get("pmcid") or None,
+        "europepmc_fulltext": None
+        if record is None
+        else has_pmc and record.get("isOpenAccess") == "Y",
+        "found": found is not None,
+    }
+    if found is None:
+        result.update(
+            is_oa=False,
+            oa_status=None,
+            best_location=None,
+            alternatives=[],
+            location_count=0,
+            note="Unpaywall does not know this DOI",
+        )
+        return result
+    result.update(oa.summarize(found))
+    return result
 
 
 # ---------------------------------------------------------------------------

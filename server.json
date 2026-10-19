@@ -67,6 +67,12 @@
           "format": "string",
           "isRequired": false,
           "default": "gpt-4o-mini"
+        },
+        {
+          "name": "UNPAYWALL_EMAIL",
+          "description": "Optional. Your contact e-mail address, sent with each Unpaywall request (their terms ask for one). Needed by the find_open_access tool only; there is no default.",
+          "format": "string",
+          "isRequired": false
         }
       ]
     }

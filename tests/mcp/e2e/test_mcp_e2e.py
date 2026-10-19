@@ -31,13 +31,18 @@ pytestmark = [pytest.mark.slow, pytest.mark.integration, pytest.mark.e2e]
 
 
 @asynccontextmanager
-async def _server_session():
-    """Spawn the real server subprocess and yield an initialized (session, InitializeResult)."""
+async def _server_session(*, drop_env: tuple[str, ...] = ()):
+    """Spawn the real server subprocess and yield an initialized (session, InitializeResult).
+
+    ``drop_env`` names variables the subprocess must not inherit.
+    """
     # stdio_client only forwards a short allow-list of variables by default. Hand over the
     # whole environment so the subprocess imports the same pyeuropepmc as the test
     # (PYTHONPATH, a worktree checkout) rather than whichever install is first on its path.
     params = StdioServerParameters(
-        command=sys.executable, args=["-m", "pyeuropepmc.mcp.server"], env=dict(os.environ)
+        command=sys.executable,
+        args=["-m", "pyeuropepmc.mcp.server"],
+        env={k: v for k, v in os.environ.items() if k not in drop_env},
     )
     async with stdio_client(params) as (read, write), ClientSession(read, write) as client:
         init_result = await client.initialize()
@@ -246,3 +251,42 @@ class TestMCPAnnotationsAgainstRealEuropePMC:
             assert result.isError is False
             assert result.structuredContent["articles"] == []
             assert result.structuredContent["next_cursor"] is None
+
+
+class TestMCPOpenAccess:
+    async def test_without_an_email_the_tool_says_which_variable_to_set(self):
+        async with _server_session(drop_env=("UNPAYWALL_EMAIL", "CROSSREF_EMAIL")) as (
+            session,
+            _init_result,
+        ):
+            result = await session.call_tool(
+                "find_open_access", {"doi": "10.1186/1479-7364-2-2-138"}
+            )
+            assert result.isError is True
+            assert "UNPAYWALL_EMAIL" in result.content[0].text
+
+    @pytest.mark.network
+    @pytest.mark.skipif(
+        not (os.environ.get("UNPAYWALL_EMAIL") or os.environ.get("CROSSREF_EMAIL")),
+        reason="Unpaywall needs a contact e-mail: set UNPAYWALL_EMAIL to run this test",
+    )
+    async def test_open_access_paper_and_unknown_doi(self):
+        async with _server_session() as (session, _init_result):
+            found = await session.call_tool(
+                "find_open_access", {"doi": "10.1186/1479-7364-2-2-138"}
+            )
+            data = found.structuredContent
+            assert found.isError is False
+            assert data["found"] is True
+            assert data["is_oa"] is True
+            assert data["best_location"]["url"]
+            assert data["europepmc_fulltext"] is True
+
+            by_pmid = await session.call_tool("find_open_access", {"pmid": "16004729"})
+            assert by_pmid.structuredContent["doi"] == "10.1186/1479-7364-2-2-138"
+
+            unknown = await session.call_tool(
+                "find_open_access", {"doi": "10.1234/this-doi-does-not-exist-0000"}
+            )
+            assert unknown.isError is False
+            assert unknown.structuredContent["found"] is False
