@@ -4,6 +4,28 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
+### ✨ Features
+
+- New MCP tools `validate_query`, `build_query`, `translate_query` and
+  `evaluate_query`. Europe PMC does not reject a malformed query, it answers a
+  different one: an unclosed parenthesis or a dangling operator is dropped
+  silently (`malaria AND (dengue OR zika` finds 7,226 records, the closed query
+  26,733), an unknown field, a flag that is not `y`/`n` and a date range with a
+  missing or reversed bound match nothing, a bare leading wildcard gives HTTP
+  503, and AND mixed with OR without parentheses is not read as either grouping
+  (`a AND b OR c` returns just the records of `a`). `validate_query` reports each
+  of these with its position, checks fields against Europe PMC's own field list
+  and normalises a valid query. `build_query` writes a query from structured
+  input (`all_of`, `any_of`, `none_of`, dates, open access, full text, source,
+  `cites`) and explains it; `search_papers`, `count_papers` and `build_query`
+  now share one filter implementation built on `QueryBuilder`.
+  `translate_query` rewrites a query for PubMed, with `exact`, `warnings` and
+  `dropped` for the constructs that do not map, and as a keyword approximation
+  for arXiv, OpenAlex, Semantic Scholar and Crossref. `evaluate_query` scores a
+  query against papers you already know: recall, the PMIDs it misses, excluded
+  papers it still finds, precision and F1 on the seeds, measured by running the
+  query on Europe PMC.
+
 ## [3.4.0] - 2026-10-19
 
 > MCP release: batch lookups for metadata and full text, and a fix for sections that
