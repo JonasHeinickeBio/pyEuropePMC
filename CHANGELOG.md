@@ -4,6 +4,11 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
+## [3.4.0] - 2026-10-19
+
+> MCP release: batch lookups for metadata and full text, and a fix for sections that
+> shrank to their heading under a size cap. The server now has 32 tools.
+
 ### 🐛 Bug Fixes
 
 - **MCP `get_paper_fulltext` could return a bare section heading.** When the first
