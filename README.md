@@ -108,7 +108,7 @@ pyeuropepmc benchmark list-datasets
 
 ## 🤖 MCP server
 
-`pyeuropepmc-mcp` serves 29 tools over the [Model Context Protocol](https://modelcontextprotocol.io/): multi-source search with date, open-access and source filters, hit counts, paper details, citations and references, open-access full text as markdown or typed sections (with a section filter and a size cap, so a long paper fits in one response), text-mined entity annotations (genes, chemicals, diseases) of a paper or across papers, citation-graph walking, ClinicalTrials.gov search, figure extraction, a local full-text index, bibliography conversion and LLM-powered analysis. The server is part of the core install. `pip install "pyeuropepmc[all]"` enables every tool; otherwise the `bib_*` tools need `bibliography`, and the LLM tools need `agentic` plus an OpenAI-compatible API key (see Configuration below).
+`pyeuropepmc-mcp` serves 30 tools over the [Model Context Protocol](https://modelcontextprotocol.io/): multi-source search with date, open-access and source filters, hit counts, paper details, citations and references, open-access full text as markdown or typed sections (with a section filter and a size cap, so a long paper fits in one response), free copies of papers that are not open access in Europe PMC (via Unpaywall), text-mined entity annotations (genes, chemicals, diseases) of a paper or across papers, citation-graph walking, ClinicalTrials.gov search, figure extraction, a local full-text index, bibliography conversion and LLM-powered analysis. The server is part of the core install. `pip install "pyeuropepmc[all]"` enables every tool; otherwise the `bib_*` tools need `bibliography`, and the LLM tools need `agentic` plus an OpenAI-compatible API key (see Configuration below).
 
 ```bash
 pyeuropepmc-mcp                                # stdio, for Claude Desktop and similar clients
@@ -147,7 +147,7 @@ Europe PMC needs no API key. Other services read these environment variables. A 
 
 | Variable | Used for |
 |---|---|
-| `UNPAYWALL_EMAIL`, `CROSSREF_EMAIL` | Contact e-mail for Unpaywall and Crossref. `FullTextClient` needs one of them for its Unpaywall fallback. |
+| `UNPAYWALL_EMAIL`, `CROSSREF_EMAIL` | Contact e-mail for Unpaywall and Crossref. `FullTextClient` needs one of them for its Unpaywall fallback, and so does the MCP tool `find_open_access`. |
 | `OPENALEX_EMAIL`, `DATACITE_EMAIL`, `ROR_EMAIL`, `ROR_CLIENT_ID` | The other enrichment sources |
 | `SEMANTIC_SCHOLAR_API_KEY` | Semantic Scholar, with higher rate limits |
 | `CORE_API_KEY` | The `core` search source |

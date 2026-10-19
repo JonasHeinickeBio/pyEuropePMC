@@ -4,6 +4,17 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
+### ✨ Features
+
+- New MCP tool `find_open_access`: where a paper can be read for free. It looks
+  the DOI (or the DOI behind a PMID or PMCID) up in Unpaywall once and returns the
+  open-access status, the best copy with its PDF link and licence, up to five
+  alternatives, and `europepmc_fulltext`, which says whether `get_paper_fulltext`
+  will work for the paper. It needs a contact e-mail in `UNPAYWALL_EMAIL` (or
+  `CROSSREF_EMAIL`), the variables the library already reads, and has no default
+  address; without one it says which variable to set. `server.json` declares the
+  variable.
+
 ## [3.2.0] - 2026-10-19
 
 > MCP release: text-mined annotations. `AnnotationsClient` returned no data for any

@@ -92,6 +92,7 @@ itself does not implement auth) and point any MCP HTTP client at
 | `fulltext_index_query` | Search a local SQLite FTS5 full-text index | — |
 | `get_paper_fulltext` | Structured full text of an open-access paper by PMCID / PMID / DOI: `markdown`, typed `sections`, or an `outline`; filter by section title, cap with `max_chars` (cut at a block boundary, `truncated` says so), optional parsed references | — |
 | `paper_figures` | Figures, tables and supplementary files of a PMC Open Access article, with Europe PMC download URLs | — |
+| `find_open_access` | Where a paper can be read for free: Unpaywall open-access status (gold, green, hybrid, bronze, closed), the best copy with PDF link and licence, a few alternatives, and whether `get_paper_fulltext` will work. By DOI, PMID or PMCID | `UNPAYWALL_EMAIL` in the server's environment |
 | `get_paper_annotations` | Text-mined genes, proteins, chemicals, diseases, organisms and GO terms of a paper, grouped by entity with mention counts, sections and example mentions; filter by type, section, provider | — |
 | `find_papers_by_entity` | Articles in which an entity (`CHEBI:16236`, `ethanol`, a gene) is mentioned, with how often and where; 1 to 8 articles per page, cursor paging | — |
 | `analyze_citations`, `compare_citations`, `summarize_citations` | LLM-powered citation analysis | `agentic` + an LLM provider |
