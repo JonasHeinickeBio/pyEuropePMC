@@ -450,7 +450,10 @@ async def _annotation_article_id(pmcid: str, pmid: str, doi: str) -> str:
         if not results:
             raise ToolError(f"No Europe PMC record found for DOI {doi!r}")
         record = _as_dict(results[0])
-        return f"{record.get('source', 'MED')}:{record.get('id', '')}"
+        ext_id = str(record.get("id") or "").strip()
+        if not ext_id:
+            raise ToolError(f"The Europe PMC record for DOI {doi!r} has no id")
+        return f"{record.get('source') or 'MED'}:{ext_id}"
     raise ToolError("One of pmcid, pmid, or doi is required")
 
 

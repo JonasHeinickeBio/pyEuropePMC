@@ -197,6 +197,28 @@ class TestAnnotationArticleId:
         assert _run(srv._annotation_article_id("", "", "10.1/x")) == "MED:16004729"
         assert client.search_all.call_args.args[0] == 'DOI:"10.1/x"'
 
+    @pytest.mark.parametrize(
+        ("record", "expected"),
+        [
+            ({"id": " 42 "}, "MED:42"),
+            ({"source": "PPR", "id": "PPR1"}, "PPR:PPR1"),
+            ({"source": "", "id": "7"}, "MED:7"),
+        ],
+    )
+    def test_doi_record_source_defaults_to_med(self, record, expected):
+        client = MagicMock()
+        client.search_all.return_value = [record]
+        srv._client_cache.set(client)
+        assert _run(srv._annotation_article_id("", "", "10.1/x")) == expected
+
+    @pytest.mark.parametrize("record", [{}, {"source": "MED"}, {"id": "  "}, {"id": None}])
+    def test_doi_record_without_an_id_is_an_error(self, record):
+        client = MagicMock()
+        client.search_all.return_value = [record]
+        srv._client_cache.set(client)
+        with pytest.raises(ToolError, match="has no id"):
+            _run(srv._annotation_article_id("", "", "10.1/x"))
+
     def test_unknown_doi(self):
         client = MagicMock()
         client.search_all.return_value = []
