@@ -4,6 +4,11 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
+## [3.8.0] - 2026-10-19
+
+> MCP release: data links. `get_paper_data_links` answers "where is the data of this paper?"
+> and `get_paper_lab_links` lists what third parties link to it. The server now has 42 tools.
+
 ### ✨ Features
 
 - New MCP tools `get_paper_data_links` and `get_paper_lab_links`. `get_paper_data_links` answers
