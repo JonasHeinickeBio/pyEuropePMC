@@ -25,6 +25,7 @@ import io
 import os
 import re
 import sys
+from urllib.parse import urlparse
 
 from mcp import ClientSession
 from mcp.client.stdio import StdioServerParameters, stdio_client
@@ -578,7 +579,8 @@ class TestMCPLinksAgainstRealEuropePMC:
             data = result.structuredContent
             assert result.isError is False
             assert [p["provider"] for p in data["providers"]] == ["Saccharomyces Genome Database"]
-            assert data["providers"][0]["links"][0]["url"].startswith("https://www.yeastgenome")
+            url = urlparse(data["providers"][0]["links"][0]["url"])
+            assert url.scheme == "https" and url.hostname == "www.yeastgenome.org"
             assert len(data["available_providers"]) >= 3
 
     async def test_a_paper_without_links_and_a_bad_identifier(self):

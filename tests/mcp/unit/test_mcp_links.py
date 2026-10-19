@@ -105,6 +105,19 @@ class TestFlattenDataLinks:
     def test_odd_shapes_do_not_raise(self, response):
         assert lk.flatten_data_links(response) == []
 
+    def test_non_object_entries_inside_lists_are_skipped(self):
+        link = {"Target": {"Identifier": {"ID": "x", "IDScheme": "S"}}}
+        response = {
+            "dataLinkList": {
+                "Category": [
+                    None,
+                    "text",
+                    {"Name": "C", "Section": [None, 3, {"Linklist": {"Link": [None, "x", link]}}]},
+                ]
+            }
+        }
+        assert [flat["id"] for flat in lk.flatten_data_links(response)] == ["x"]
+
     def test_a_single_object_instead_of_a_list_is_accepted(self):
         link = {"Target": {"Identifier": {"ID": "x", "IDScheme": "S"}}}
         response = {
@@ -153,6 +166,14 @@ class TestFlattenLabLinks:
             "Altmetric"
         ]
         assert lk.flatten_lab_links(LABS_YEAST, provider="nope") == []
+
+    def test_non_object_providers_and_links_are_skipped(self):
+        response = {
+            "providers": {"provider": [None, "x", {"name": "P", "link": [None, {"url": "u"}]}]}
+        }
+        [provider] = lk.flatten_lab_links(response)
+        assert provider["provider"] == "P"
+        assert [link["url"] for link in provider["links"]] == ["u"]
 
     def test_a_missing_provider_list_is_empty(self):
         assert lk.flatten_lab_links({"hitCount": 0}) == []

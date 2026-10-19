@@ -72,14 +72,19 @@ def flatten_data_links(response: dict[str, Any]) -> list[dict[str, Any]]:
     out: list[dict[str, Any]] = []
     listing = response.get("dataLinkList")
     for category in _list(listing.get("Category") if isinstance(listing, dict) else None):
+        if not isinstance(category, dict):
+            continue
         category_name = _text(category.get("Name")) or "Unknown"
         for section in _list(category.get("Section")):
+            if not isinstance(section, dict):
+                continue
             tags = [t for t in _list(section.get("Tags")) if isinstance(t, str)]
             kind = tags[0] if tags else None
             origin = section.get("ObtainedBy")
             linklist = section.get("Linklist")
             for link in _list(linklist.get("Link") if isinstance(linklist, dict) else None):
-                out.append(_link(link, category_name, kind, origin))
+                if isinstance(link, dict):
+                    out.append(_link(link, category_name, kind, origin))
     return out
 
 
@@ -115,6 +120,8 @@ def flatten_lab_links(response: dict[str, Any], *, provider: str = "") -> list[d
     container = response.get("providers")
     out: list[dict[str, Any]] = []
     for item in _list(container.get("provider") if isinstance(container, dict) else None):
+        if not isinstance(item, dict):
+            continue
         name = _text(item.get("name")) or ""
         provider_id = item.get("id")
         if wanted and wanted not in name.lower() and wanted != str(provider_id):
