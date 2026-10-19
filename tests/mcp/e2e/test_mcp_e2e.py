@@ -290,3 +290,79 @@ class TestMCPOpenAccess:
             )
             assert unknown.isError is False
             assert unknown.structuredContent["found"] is False
+
+
+@pytest.mark.network
+class TestMCPBatchAgainstRealEuropePMC:
+    MIXED = [
+        "16004729",
+        "PMC5321187",
+        "10.1038/s41579-019-0296-0",
+        "99999999",
+        "not an id",
+        "https://doi.org/10.1186/1479-7364-2-2-138",
+    ]
+
+    async def test_metadata_batch_keeps_order_and_reports_every_status(self):
+        async with _server_session() as (session, _init_result):
+            result = await session.call_tool("get_papers_batch", {"ids": self.MIXED})
+            data = result.structuredContent
+            assert result.isError is False
+            assert [r["id"] for r in data["results"]] == self.MIXED
+            assert [r["status"] for r in data["results"]] == [
+                "ok",
+                "ok",
+                "ok",
+                "not_found",
+                "invalid",
+                "ok",
+            ]
+            first, second = data["results"][0]["record"], data["results"][1]["record"]
+            assert first["pmcid"] == "PMC3525259"
+            assert second["pmid"] == "27534792"
+            assert data["results"][5]["record"]["pmid"] == "16004729"
+
+    async def test_a_batch_larger_than_one_chunk(self):
+        async with _server_session() as (session, _init_result):
+            ids = [str(31636443 + i) for i in range(60)]
+            result = await session.call_tool(
+                "get_papers_batch", {"ids": ids, "fields": ["pmid", "year"]}
+            )
+            data = result.structuredContent
+            assert result.isError is False
+            assert len(data["results"]) == 60
+            assert data["by_status"].get("ok", 0) >= 55
+            assert [r["record"]["pmid"] for r in data["results"] if r["record"]][:3] == ids[:3]
+
+    async def test_abstracts_on_request(self):
+        async with _server_session() as (session, _init_result):
+            result = await session.call_tool(
+                "get_papers_batch", {"ids": ["16004729"], "fields": ["title", "abstract"]}
+            )
+            assert result.structuredContent["results"][0]["record"]["abstract"]
+
+    async def test_fulltext_batch_reports_papers_without_open_access_and_shares_a_budget(self):
+        async with _server_session() as (session, _init_result):
+            result = await session.call_tool(
+                "get_papers_fulltext_batch",
+                {
+                    "ids": ["PMC3525259", "PMC5321187", "PMC6999107", "99999999", "16004729"],
+                    "sections": ["conclusion", "results"],
+                    "max_chars_per_paper": 2000,
+                    "max_total_chars": 3000,
+                },
+            )
+            data = result.structuredContent
+            assert result.isError is False
+            statuses = [r["status"] for r in data["results"]]
+            assert statuses[0] == "ok"
+            assert statuses[2] == "not_open_access"
+            assert statuses[3] == "not_found"
+            assert statuses[4] == "duplicate"
+            assert data["total_chars_returned"] <= 3000
+            assert data["total_chars_returned"] == sum(
+                r.get("returned_chars", 0) for r in data["results"]
+            )
+            body = data["results"][0]["content"]
+            assert body.startswith("##")
+            assert len(body.splitlines()) > 1  # a section with text, not a bare heading

@@ -4,6 +4,28 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
+### 🐛 Bug Fixes
+
+- **MCP `get_paper_fulltext` could return a bare section heading.** When the first
+  paragraph or table of a section did not fit `max_chars`, the heading used up the
+  budget and the section came back as `## Conclusions` with no text. The first
+  *block* is now cut to the remaining budget instead; a heading never counts as
+  content.
+
+### ✨ Features
+
+- New MCP tools `get_papers_batch` and `get_papers_fulltext_batch`, for agents that
+  would otherwise make one call per paper. `get_papers_batch` takes up to 100 PMIDs,
+  PMCIDs and DOIs (mixed), looks them up with one combined Europe PMC query per 50
+  identifiers (120 identifiers answer in about half a second), and returns a result
+  with a status (`ok`, `not_found`, `invalid`, `error`) for every input in the order
+  given; a bad identifier never fails the batch. `fields` chooses what comes back,
+  with `abstract` optional. `get_papers_fulltext_batch` returns the markdown full
+  text of up to 20 papers within a size budget: papers that are not open access
+  are reported without being downloaded, the rest are fetched four at a time, and
+  once `max_total_chars` is used up the remaining papers are `skipped_budget` and
+  not downloaded.
+
 ## [3.3.0] - 2026-10-19
 
 > MCP release: `find_open_access` tells an agent where a paper that is not open access in

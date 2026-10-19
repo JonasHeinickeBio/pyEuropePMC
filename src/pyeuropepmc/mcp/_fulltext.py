@@ -225,28 +225,31 @@ def take_within(
     """The longest prefix of ``units`` that fits ``max_chars``, with the total size and
     whether anything was left out.
 
-    The first unit is always attempted, so one oversized table does not leave the caller
-    with nothing: plain text is cut at the limit; with ``fit_first`` (JSON units, which
-    must stay parseable) that function shrinks it, and a unit it cannot shrink is left out.
+    The first *block* is always attempted, so one oversized paragraph or table does not leave
+    the caller with a bare section heading, or nothing at all: plain text is cut at the
+    limit; with ``fit_first`` (JSON units, which must stay parseable) that function shrinks
+    it, and a unit it cannot shrink is left out. A heading unit has ``None`` as its block
+    index and never counts as the first block.
     """
     total = sum(len(u[2]) + sep_len for u in units)
     kept: list[Unit] = []
     used = 0
     truncated = False
+    have_block = False
     for si, bi, text in units:
         cost = len(text) + sep_len
-        if kept and used + cost > max_chars:
-            truncated = True
-            break
-        if not kept and cost > max_chars:
-            truncated = True
-            budget = max(max_chars - sep_len, 0)
+        if used + cost <= max_chars:
+            kept.append((si, bi, text))
+            used += cost
+            have_block = have_block or bi is not None
+            continue
+        truncated = True
+        if bi is not None and not have_block:
+            budget = max(max_chars - used - sep_len, 0)
             fitted = fit_first(text, budget) if fit_first else text[:budget]
             if fitted:
                 kept.append((si, bi, fitted))
-            break
-        kept.append((si, bi, text))
-        used += cost
+        break
     return kept, total, truncated
 
 

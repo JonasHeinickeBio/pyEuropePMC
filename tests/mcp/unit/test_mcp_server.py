@@ -331,6 +331,8 @@ class TestToolRegistry:
         "fulltext_index_query",
         "get_paper_fulltext",
         "paper_figures",
+        "get_papers_batch",
+        "get_papers_fulltext_batch",
         "find_open_access",
         "get_paper_annotations",
         "find_papers_by_entity",
