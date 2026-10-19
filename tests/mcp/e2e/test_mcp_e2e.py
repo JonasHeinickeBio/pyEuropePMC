@@ -20,7 +20,10 @@ failure entirely.
 from __future__ import annotations
 
 from contextlib import asynccontextmanager
+import csv
+import io
 import os
+import re
 import sys
 
 from mcp import ClientSession
@@ -480,3 +483,63 @@ class TestMCPStatusAgainstRealEuropePMC:
             tools = {t.name: t for t in (await session.list_tools()).tools}
             assert tools["clear_cache"].annotations.readOnlyHint is False
             assert tools["epmc_status"].annotations.readOnlyHint is True
+
+
+@pytest.mark.network
+class TestMCPExportAgainstRealEuropePMC:
+    IDS = ["16004729", "PMC5321187", "10.1038/s41579-019-0296-0", "99999999", "bad id"]
+
+    async def test_bibtex_for_known_papers_keeps_order_and_names_what_is_missing(self):
+        async with _server_session() as (session, _init_result):
+            result = await session.call_tool(
+                "export_papers", {"ids": self.IDS, "format": "bibtex"}
+            )
+            data = result.structuredContent
+            assert result.isError is False
+            assert data["exported"] == 3
+            assert [e["status"] for e in data["skipped"]] == ["not_found", "invalid"]
+            keys = re.findall(r"@article\{(\w+),", data["content"])
+            assert keys[0] == "vasiliou2005analysis"
+            assert len(set(keys)) == len(keys) == 3
+            assert "pmid = {16004729}" in data["content"]
+
+    async def test_every_format_for_a_query_and_the_next_part(self):
+        async with _server_session() as (session, _init_result):
+            query = "malaria AND TITLE:vaccine"
+            first = await session.call_tool(
+                "export_papers", {"query": query, "format": "csv", "limit": 3}
+            )
+            data = first.structuredContent
+            assert first.isError is False
+            assert data["exported"] == 3
+            assert data["total_hits"] > 3
+            assert data["next_skip"] == 3
+            assert len(list(csv.reader(io.StringIO(data["content"])))) == 4
+
+            second = await session.call_tool(
+                "export_papers", {"query": query, "format": "csv", "limit": 3, "skip": 3}
+            )
+            ids_first = {row[0] for row in csv.reader(io.StringIO(data["content"]))}
+            second_rows = csv.reader(io.StringIO(second.structuredContent["content"]))
+            assert not (ids_first - {"id"}) & {row[0] for row in second_rows}
+
+            for fmt in ("ris", "csl-json", "json", "markdown", "bibtex"):
+                result = await session.call_tool(
+                    "export_papers", {"query": query, "format": fmt, "limit": 2}
+                )
+                assert result.isError is False, fmt
+                assert result.structuredContent["exported"] == 2, fmt
+
+    async def test_a_ris_export_has_start_and_end_pages_and_the_bibtex_reads_back(self):
+        async with _server_session() as (session, _init_result):
+            ris = await session.call_tool("export_papers", {"ids": ["16004729"], "format": "ris"})
+            text = ris.structuredContent["content"]
+            assert "SP  - 138" in text and "EP  - 143" in text
+            assert text.rstrip().endswith("ER  -")
+
+            bib = await session.call_tool(
+                "export_papers", {"ids": ["33069326"], "format": "bibtex"}
+            )
+            # the consortium name stays one author despite the "and" in it
+            expected = "author = {{GBD 2019 Diseases and Injuries Collaborators}}"
+            assert expected in bib.structuredContent["content"]

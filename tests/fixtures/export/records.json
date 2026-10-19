@@ -1,0 +1,1182 @@
+{
+ "vasiliou": {
+  "id": "16004729",
+  "source": "MED",
+  "pmid": "16004729",
+  "pmcid": "PMC3525259",
+  "doi": "10.1186/1479-7364-2-2-138",
+  "title": "Analysis and update of the human aldehyde dehydrogenase (ALDH) gene family.",
+  "authorString": "Vasiliou V, Nebert DW.",
+  "journalInfo": {
+   "issue": "2",
+   "volume": "2",
+   "journalIssueId": 1319833,
+   "dateOfPublication": "2005 Jun",
+   "monthOfPublication": 6,
+   "yearOfPublication": 2005,
+   "journal": {
+    "medlineAbbreviation": "Hum Genomics",
+    "title": "Human genomics",
+    "essn": "1479-7364",
+    "issn": "1473-9542",
+    "isoabbreviation": "Hum Genomics",
+    "nlmid": "101202210"
+   },
+   "printPublicationDate": "2005-06-01"
+  },
+  "pubYear": "2005",
+  "pageInfo": "138-143",
+  "abstractText": "The aldehyde dehydrogenase (ALDH) gene superfamily encodes enzymes that are critical for certain life processes and detoxification via the NAD(P)(+)-dependent oxidation of numerous endogenous and exogenous aldehyde substrates, including pharmaceuticals and environmental pollutants. Analysis of the ALDH gene superfamily in the latest databases showed that the human genome contains 19 putatively functional genes and three pseudogenes. A number of ALDH genes are upregulated as a part of the oxidative stress response and inexplicably overexpressed in various tumours, leading to problems during cancer chemotherapy. Mutations in ALDH genes cause inborn errors of metabolism--such as the Sjögren-Larsson syndrome, type II hyperprolinaemia and gamma-hydroxybutyric aciduria--and are likely to contribute to several complex diseases, including cancer and Alzheimer's disease. The ALDH gene products appear to be multifunctional proteins, possessing both catalytic and non-catalytic properties.",
+  "pubTypeList": {
+   "pubType": [
+    "research-article",
+    "Journal Article",
+    "Research Support, N.I.H., Extramural"
+   ]
+  },
+  "authorList": {
+   "author": [
+    {
+     "fullName": "Vasiliou V",
+     "firstName": "Vasilis",
+     "lastName": "Vasiliou",
+     "initials": "V"
+    },
+    {
+     "fullName": "Nebert DW",
+     "firstName": "Daniel W",
+     "lastName": "Nebert",
+     "initials": "DW"
+    }
+   ]
+  }
+ },
+ "gbd": {
+  "id": "33069326",
+  "source": "MED",
+  "pmid": "33069326",
+  "pmcid": "PMC7567026",
+  "doi": "10.1016/s0140-6736(20)30925-9",
+  "title": "Global burden of 369 diseases and injuries in 204 countries and territories, 1990-2019: a systematic analysis for the Global Burden of Disease Study 2019.",
+  "authorString": "GBD 2019 Diseases and Injuries Collaborators.",
+  "journalInfo": {
+   "issue": "10258",
+   "volume": "396",
+   "journalIssueId": 3040476,
+   "dateOfPublication": "2020 Oct",
+   "monthOfPublication": 10,
+   "yearOfPublication": 2020,
+   "journal": {
+    "medlineAbbreviation": "Lancet",
+    "title": "Lancet (London, England)",
+    "essn": "1474-547X",
+    "issn": "0140-6736",
+    "isoabbreviation": "Lancet",
+    "nlmid": "2985213R"
+   },
+   "printPublicationDate": "2020-10-01"
+  },
+  "pubYear": "2020",
+  "pageInfo": "1204-1222",
+  "abstractText": "<h4>Background</h4>In an era of shifting global agendas and expanded emphasis on non-communicable diseases and injuries along with communicable diseases, sound evidence on trends by cause at the national level is essential. The Global Burden of Diseases, Injuries, and Risk Factors Study (GBD) provides a systematic scientific assessment of published, publicly available, and contributed data on incidence, prevalence, and mortality for a mutually exclusive and collectively exhaustive list of diseases and injuries.<h4>Methods</h4>GBD estimates incidence, prevalence, mortality, years of life lost (YLLs), years lived with disability (YLDs), and disability-adjusted life-years (DALYs) due to 369 diseases and injuries, for two sexes, and for 204 countries and territories. Input data were extracted from censuses, household surveys, civil registration and vital statistics, disease registries, health service use, air pollution monitors, satellite imaging, disease notifications, and other sources. Cause-specific death rates and cause fractions were calculated using the Cause of Death Ensemble model and spatiotemporal Gaussian process regression. Cause-specific deaths were adjusted to match the total all-cause deaths calculated as part of the GBD population, fertility, and mortality estimates. Deaths were multiplied by standard life expectancy at each age to calculate YLLs. A Bayesian meta-regression modelling tool, DisMod-MR 2.1, was used to ensure consistency between incidence, prevalence, remission, excess mortality, and cause-specific mortality for most causes. Prevalence estimates were multiplied by disability weights for mutually exclusive sequelae of diseases and injuries to calculate YLDs. We considered results in the context of the Socio-demographic Index (SDI), a composite indicator of income per capita, years of schooling, and fertility rate in females younger than 25 years. Uncertainty intervals (UIs) were generated for every metric using the 25th and 975th ordered 1000 draw values of the posterior distribution.<h4>Findings</h4>Global health has steadily improved over the past 30 years as measured by age-standardised DALY rates. After taking into account population growth and ageing, the absolute number of DALYs has remained stable. Since 2010, the pace of decline in global age-standardised DALY rates has accelerated in age groups younger than 50 years compared with the 1990-2010 time period, with the greatest annualised rate of decline occurring in the 0-9-year age group. Six infectious diseases were among the top ten causes of DALYs in children younger than 10 years in 2019: lower respiratory infections (ranked second), diarrhoeal diseases (third), malaria (fifth), meningitis (sixth), whooping cough (ninth), and sexually transmitted infections (which, in this age group, is fully accounted for by congenital syphilis; ranked tenth). In adolescents aged 10-24 years, three injury causes were among the top causes of DALYs: road injuries (ranked first), self-harm (third), and interpersonal violence (fifth). Five of the causes that were in the top ten for ages 10-24 years were also in the top ten in the 25-49-year age group: road injuries (ranked first), HIV/AIDS (second), low back pain (fourth), headache disorders (fifth), and depressive disorders (sixth). In 2019, ischaemic heart disease and stroke were the top-ranked causes of DALYs in both the 50-74-year and 75-years-and-older age groups. Since 1990, there has been a marked shift towards a greater proportion of burden due to YLDs from non-communicable diseases and injuries. In 2019, there were 11 countries where non-communicable disease and injury YLDs constituted more than half of all disease burden. Decreases in age-standardised DALY rates have accelerated over the past decade in countries at the lower end of the SDI range, while improvements have started to stagnate or even reverse in countries with higher SDI.<h4>Interpretation</h4>As disability becomes an increasingly large component of disease burden and a larger component of health expenditure, greater research and development investment is needed to identify new, more effective intervention strategies. With a rapidly ageing global population, the demands on health services to deal with disabling outcomes, which increase with age, will require policy makers to anticipate these changes. The mix of universal and more geographically specific influences on health reinforces the need for regular reporting on population health in detail and by underlying cause to help decision makers to identify success stories of disease control to emulate, as well as opportunities to improve.<h4>Funding</h4>Bill & Melinda Gates Foundation.",
+  "pubTypeList": {
+   "pubType": [
+    "research-article",
+    "Journal Article"
+   ]
+  },
+  "authorList": {
+   "author": [
+    {
+     "collectiveName": "GBD 2019 Diseases and Injuries Collaborators"
+    }
+   ]
+  }
+ },
+ "no_abstract": {
+  "id": "42217054",
+  "source": "MED",
+  "pmid": "42217054",
+  "doi": "10.1007/s00401-026-03034-1",
+  "title": "GRP78 associates with alpha-synuclein in vulnerable neurons of the Parkinson's disease brain.",
+  "authorString": "Hrabos D, Mrowiecova A, Cicmancova J, Ehrmann J.",
+  "journalInfo": {
+   "issue": "1",
+   "volume": "151",
+   "journalIssueId": 4188221,
+   "dateOfPublication": "2026 May",
+   "monthOfPublication": 5,
+   "yearOfPublication": 2026,
+   "journal": {
+    "medlineAbbreviation": "Acta Neuropathol",
+    "title": "Acta neuropathologica",
+    "essn": "1432-0533",
+    "issn": "0001-6322",
+    "nlmid": "0412041",
+    "isoabbreviation": "Acta Neuropathol"
+   },
+   "printPublicationDate": "2026-05-01"
+  },
+  "pubYear": "2026",
+  "pageInfo": "64",
+  "pubTypeList": {
+   "pubType": [
+    "Letter"
+   ]
+  },
+  "authorList": {
+   "author": [
+    {
+     "fullName": "Hrabos D",
+     "firstName": "Dominik",
+     "lastName": "Hrabos",
+     "initials": "D"
+    },
+    {
+     "fullName": "Mrowiecova A",
+     "firstName": "Anna",
+     "lastName": "Mrowiecova",
+     "initials": "A"
+    },
+    {
+     "fullName": "Cicmancova J",
+     "firstName": "Jitka",
+     "lastName": "Cicmancova",
+     "initials": "J"
+    },
+    {
+     "fullName": "Ehrmann J",
+     "firstName": "Jiri",
+     "lastName": "Ehrmann",
+     "initials": "J"
+    }
+   ]
+  }
+ },
+ "long_authors": {
+  "id": "SYN-LONG",
+  "source": "MED",
+  "pmid": "900000001",
+  "doi": "10.0000/synthetic.long",
+  "title": "A consortium study with a very long author list.",
+  "authorString": "Okafor A, Lindqvist L, Nakamura T, Haddad B, Ferreira H, Kowalski Z, Mbeki D, Dubois E, Ivanova T, Santos C, Okafor1 A, Lindqvist1 L, Nakamura1 T, Haddad1 B, Ferreira1 H, Kowalski1 Z, Mbeki1 D, Dubois1 E, Ivanova1 T, Santos1 C, Okafor2 A, Lindqvist2 L, Nakamura2 T, Haddad2 B, Ferreira2 H, Kowalski2 Z, Mbeki2 D, Dubois2 E, Ivanova2 T, Santos2 C, Okafor3 A, Lindqvist3 L, Nakamura3 T, Haddad3 B, Ferreira3 H, Kowalski3 Z, Mbeki3 D, Dubois3 E, Ivanova3 T, Santos3 C, Okafor4 A, Lindqvist4 L, Nakamura4 T, Haddad4 B, Ferreira4 H, Kowalski4 Z, Mbeki4 D, Dubois4 E, Ivanova4 T, Santos4 C, Okafor5 A, Lindqvist5 L, Nakamura5 T, Haddad5 B, Ferreira5 H, Kowalski5 Z, Mbeki5 D, Dubois5 E, Ivanova5 T, Santos5 C, Okafor6 A, Lindqvist6 L, Nakamura6 T, Haddad6 B, Ferreira6 H, Kowalski6 Z, Mbeki6 D, Dubois6 E, Ivanova6 T, Santos6 C, Okafor7 A, Lindqvist7 L, Nakamura7 T, Haddad7 B, Ferreira7 H, Kowalski7 Z, Mbeki7 D, Dubois7 E, Ivanova7 T, Santos7 C, Okafor8 A, Lindqvist8 L, Nakamura8 T, Haddad8 B, Ferreira8 H, Kowalski8 Z, Mbeki8 D, Dubois8 E, Ivanova8 T, Santos8 C, Okafor9 A, Lindqvist9 L, Nakamura9 T, Haddad9 B, Ferreira9 H, Kowalski9 Z, Mbeki9 D, Dubois9 E, Ivanova9 T, Santos9 C, Okafor10 A, Lindqvist10 L, Nakamura10 T, Haddad10 B, Ferreira10 H, Kowalski10 Z, Mbeki10 D, Dubois10 E, Ivanova10 T, Santos10 C, Okafor11 A, Lindqvist11 L, Nakamura11 T, Haddad11 B, Ferreira11 H, Kowalski11 Z, Mbeki11 D, Dubois11 E, Ivanova11 T, Santos11 C, Okafor12 A, Lindqvist12 L, Nakamura12 T, Haddad12 B, Ferreira12 H, Kowalski12 Z, Mbeki12 D, Dubois12 E, Ivanova12 T, Santos12 C, Okafor13 A, Lindqvist13 L, Nakamura13 T, Haddad13 B, Ferreira13 H, Kowalski13 Z, Mbeki13 D, Dubois13 E, Ivanova13 T, Santos13 C, Okafor14 A, Lindqvist14 L, Nakamura14 T, Haddad14 B, Ferreira14 H, Kowalski14 Z, Mbeki14 D, Dubois14 E, Ivanova14 T, Santos14 C.",
+  "journalInfo": {
+   "issue": "2",
+   "volume": "2",
+   "journalIssueId": 1319833,
+   "dateOfPublication": "2005 Jun",
+   "monthOfPublication": 6,
+   "yearOfPublication": 2005,
+   "journal": {
+    "medlineAbbreviation": "Hum Genomics",
+    "title": "Human genomics",
+    "essn": "1479-7364",
+    "issn": "1473-9542",
+    "isoabbreviation": "Hum Genomics",
+    "nlmid": "101202210"
+   },
+   "printPublicationDate": "2005-06-01"
+  },
+  "pubYear": "2005",
+  "pageInfo": "138-143",
+  "pubTypeList": {
+   "pubType": [
+    "research-article",
+    "Journal Article",
+    "Research Support, N.I.H., Extramural"
+   ]
+  },
+  "authorList": {
+   "author": [
+    {
+     "fullName": "Okafor A",
+     "lastName": "Okafor",
+     "firstName": "Amara",
+     "initials": "A"
+    },
+    {
+     "fullName": "Lindqvist L",
+     "lastName": "Lindqvist",
+     "firstName": "Layla",
+     "initials": "L"
+    },
+    {
+     "fullName": "Nakamura T",
+     "lastName": "Nakamura",
+     "firstName": "Thabo",
+     "initials": "T"
+    },
+    {
+     "fullName": "Haddad B",
+     "lastName": "Haddad",
+     "firstName": "Beatriz",
+     "initials": "B"
+    },
+    {
+     "fullName": "Ferreira H",
+     "lastName": "Ferreira",
+     "firstName": "Haruto",
+     "initials": "H"
+    },
+    {
+     "fullName": "Kowalski Z",
+     "lastName": "Kowalski",
+     "firstName": "Zofia",
+     "initials": "Z"
+    },
+    {
+     "fullName": "Mbeki D",
+     "lastName": "Mbeki",
+     "firstName": "Dmitri",
+     "initials": "D"
+    },
+    {
+     "fullName": "Dubois E",
+     "lastName": "Dubois",
+     "firstName": "Elin",
+     "initials": "E"
+    },
+    {
+     "fullName": "Ivanova T",
+     "lastName": "Ivanova",
+     "firstName": "Tiago",
+     "initials": "T"
+    },
+    {
+     "fullName": "Santos C",
+     "lastName": "Santos",
+     "firstName": "Camille",
+     "initials": "C"
+    },
+    {
+     "fullName": "Okafor1 A",
+     "lastName": "Okafor1",
+     "firstName": "Amara",
+     "initials": "A"
+    },
+    {
+     "fullName": "Lindqvist1 L",
+     "lastName": "Lindqvist1",
+     "firstName": "Layla",
+     "initials": "L"
+    },
+    {
+     "fullName": "Nakamura1 T",
+     "lastName": "Nakamura1",
+     "firstName": "Thabo",
+     "initials": "T"
+    },
+    {
+     "fullName": "Haddad1 B",
+     "lastName": "Haddad1",
+     "firstName": "Beatriz",
+     "initials": "B"
+    },
+    {
+     "fullName": "Ferreira1 H",
+     "lastName": "Ferreira1",
+     "firstName": "Haruto",
+     "initials": "H"
+    },
+    {
+     "fullName": "Kowalski1 Z",
+     "lastName": "Kowalski1",
+     "firstName": "Zofia",
+     "initials": "Z"
+    },
+    {
+     "fullName": "Mbeki1 D",
+     "lastName": "Mbeki1",
+     "firstName": "Dmitri",
+     "initials": "D"
+    },
+    {
+     "fullName": "Dubois1 E",
+     "lastName": "Dubois1",
+     "firstName": "Elin",
+     "initials": "E"
+    },
+    {
+     "fullName": "Ivanova1 T",
+     "lastName": "Ivanova1",
+     "firstName": "Tiago",
+     "initials": "T"
+    },
+    {
+     "fullName": "Santos1 C",
+     "lastName": "Santos1",
+     "firstName": "Camille",
+     "initials": "C"
+    },
+    {
+     "fullName": "Okafor2 A",
+     "lastName": "Okafor2",
+     "firstName": "Amara",
+     "initials": "A"
+    },
+    {
+     "fullName": "Lindqvist2 L",
+     "lastName": "Lindqvist2",
+     "firstName": "Layla",
+     "initials": "L"
+    },
+    {
+     "fullName": "Nakamura2 T",
+     "lastName": "Nakamura2",
+     "firstName": "Thabo",
+     "initials": "T"
+    },
+    {
+     "fullName": "Haddad2 B",
+     "lastName": "Haddad2",
+     "firstName": "Beatriz",
+     "initials": "B"
+    },
+    {
+     "fullName": "Ferreira2 H",
+     "lastName": "Ferreira2",
+     "firstName": "Haruto",
+     "initials": "H"
+    },
+    {
+     "fullName": "Kowalski2 Z",
+     "lastName": "Kowalski2",
+     "firstName": "Zofia",
+     "initials": "Z"
+    },
+    {
+     "fullName": "Mbeki2 D",
+     "lastName": "Mbeki2",
+     "firstName": "Dmitri",
+     "initials": "D"
+    },
+    {
+     "fullName": "Dubois2 E",
+     "lastName": "Dubois2",
+     "firstName": "Elin",
+     "initials": "E"
+    },
+    {
+     "fullName": "Ivanova2 T",
+     "lastName": "Ivanova2",
+     "firstName": "Tiago",
+     "initials": "T"
+    },
+    {
+     "fullName": "Santos2 C",
+     "lastName": "Santos2",
+     "firstName": "Camille",
+     "initials": "C"
+    },
+    {
+     "fullName": "Okafor3 A",
+     "lastName": "Okafor3",
+     "firstName": "Amara",
+     "initials": "A"
+    },
+    {
+     "fullName": "Lindqvist3 L",
+     "lastName": "Lindqvist3",
+     "firstName": "Layla",
+     "initials": "L"
+    },
+    {
+     "fullName": "Nakamura3 T",
+     "lastName": "Nakamura3",
+     "firstName": "Thabo",
+     "initials": "T"
+    },
+    {
+     "fullName": "Haddad3 B",
+     "lastName": "Haddad3",
+     "firstName": "Beatriz",
+     "initials": "B"
+    },
+    {
+     "fullName": "Ferreira3 H",
+     "lastName": "Ferreira3",
+     "firstName": "Haruto",
+     "initials": "H"
+    },
+    {
+     "fullName": "Kowalski3 Z",
+     "lastName": "Kowalski3",
+     "firstName": "Zofia",
+     "initials": "Z"
+    },
+    {
+     "fullName": "Mbeki3 D",
+     "lastName": "Mbeki3",
+     "firstName": "Dmitri",
+     "initials": "D"
+    },
+    {
+     "fullName": "Dubois3 E",
+     "lastName": "Dubois3",
+     "firstName": "Elin",
+     "initials": "E"
+    },
+    {
+     "fullName": "Ivanova3 T",
+     "lastName": "Ivanova3",
+     "firstName": "Tiago",
+     "initials": "T"
+    },
+    {
+     "fullName": "Santos3 C",
+     "lastName": "Santos3",
+     "firstName": "Camille",
+     "initials": "C"
+    },
+    {
+     "fullName": "Okafor4 A",
+     "lastName": "Okafor4",
+     "firstName": "Amara",
+     "initials": "A"
+    },
+    {
+     "fullName": "Lindqvist4 L",
+     "lastName": "Lindqvist4",
+     "firstName": "Layla",
+     "initials": "L"
+    },
+    {
+     "fullName": "Nakamura4 T",
+     "lastName": "Nakamura4",
+     "firstName": "Thabo",
+     "initials": "T"
+    },
+    {
+     "fullName": "Haddad4 B",
+     "lastName": "Haddad4",
+     "firstName": "Beatriz",
+     "initials": "B"
+    },
+    {
+     "fullName": "Ferreira4 H",
+     "lastName": "Ferreira4",
+     "firstName": "Haruto",
+     "initials": "H"
+    },
+    {
+     "fullName": "Kowalski4 Z",
+     "lastName": "Kowalski4",
+     "firstName": "Zofia",
+     "initials": "Z"
+    },
+    {
+     "fullName": "Mbeki4 D",
+     "lastName": "Mbeki4",
+     "firstName": "Dmitri",
+     "initials": "D"
+    },
+    {
+     "fullName": "Dubois4 E",
+     "lastName": "Dubois4",
+     "firstName": "Elin",
+     "initials": "E"
+    },
+    {
+     "fullName": "Ivanova4 T",
+     "lastName": "Ivanova4",
+     "firstName": "Tiago",
+     "initials": "T"
+    },
+    {
+     "fullName": "Santos4 C",
+     "lastName": "Santos4",
+     "firstName": "Camille",
+     "initials": "C"
+    },
+    {
+     "fullName": "Okafor5 A",
+     "lastName": "Okafor5",
+     "firstName": "Amara",
+     "initials": "A"
+    },
+    {
+     "fullName": "Lindqvist5 L",
+     "lastName": "Lindqvist5",
+     "firstName": "Layla",
+     "initials": "L"
+    },
+    {
+     "fullName": "Nakamura5 T",
+     "lastName": "Nakamura5",
+     "firstName": "Thabo",
+     "initials": "T"
+    },
+    {
+     "fullName": "Haddad5 B",
+     "lastName": "Haddad5",
+     "firstName": "Beatriz",
+     "initials": "B"
+    },
+    {
+     "fullName": "Ferreira5 H",
+     "lastName": "Ferreira5",
+     "firstName": "Haruto",
+     "initials": "H"
+    },
+    {
+     "fullName": "Kowalski5 Z",
+     "lastName": "Kowalski5",
+     "firstName": "Zofia",
+     "initials": "Z"
+    },
+    {
+     "fullName": "Mbeki5 D",
+     "lastName": "Mbeki5",
+     "firstName": "Dmitri",
+     "initials": "D"
+    },
+    {
+     "fullName": "Dubois5 E",
+     "lastName": "Dubois5",
+     "firstName": "Elin",
+     "initials": "E"
+    },
+    {
+     "fullName": "Ivanova5 T",
+     "lastName": "Ivanova5",
+     "firstName": "Tiago",
+     "initials": "T"
+    },
+    {
+     "fullName": "Santos5 C",
+     "lastName": "Santos5",
+     "firstName": "Camille",
+     "initials": "C"
+    },
+    {
+     "fullName": "Okafor6 A",
+     "lastName": "Okafor6",
+     "firstName": "Amara",
+     "initials": "A"
+    },
+    {
+     "fullName": "Lindqvist6 L",
+     "lastName": "Lindqvist6",
+     "firstName": "Layla",
+     "initials": "L"
+    },
+    {
+     "fullName": "Nakamura6 T",
+     "lastName": "Nakamura6",
+     "firstName": "Thabo",
+     "initials": "T"
+    },
+    {
+     "fullName": "Haddad6 B",
+     "lastName": "Haddad6",
+     "firstName": "Beatriz",
+     "initials": "B"
+    },
+    {
+     "fullName": "Ferreira6 H",
+     "lastName": "Ferreira6",
+     "firstName": "Haruto",
+     "initials": "H"
+    },
+    {
+     "fullName": "Kowalski6 Z",
+     "lastName": "Kowalski6",
+     "firstName": "Zofia",
+     "initials": "Z"
+    },
+    {
+     "fullName": "Mbeki6 D",
+     "lastName": "Mbeki6",
+     "firstName": "Dmitri",
+     "initials": "D"
+    },
+    {
+     "fullName": "Dubois6 E",
+     "lastName": "Dubois6",
+     "firstName": "Elin",
+     "initials": "E"
+    },
+    {
+     "fullName": "Ivanova6 T",
+     "lastName": "Ivanova6",
+     "firstName": "Tiago",
+     "initials": "T"
+    },
+    {
+     "fullName": "Santos6 C",
+     "lastName": "Santos6",
+     "firstName": "Camille",
+     "initials": "C"
+    },
+    {
+     "fullName": "Okafor7 A",
+     "lastName": "Okafor7",
+     "firstName": "Amara",
+     "initials": "A"
+    },
+    {
+     "fullName": "Lindqvist7 L",
+     "lastName": "Lindqvist7",
+     "firstName": "Layla",
+     "initials": "L"
+    },
+    {
+     "fullName": "Nakamura7 T",
+     "lastName": "Nakamura7",
+     "firstName": "Thabo",
+     "initials": "T"
+    },
+    {
+     "fullName": "Haddad7 B",
+     "lastName": "Haddad7",
+     "firstName": "Beatriz",
+     "initials": "B"
+    },
+    {
+     "fullName": "Ferreira7 H",
+     "lastName": "Ferreira7",
+     "firstName": "Haruto",
+     "initials": "H"
+    },
+    {
+     "fullName": "Kowalski7 Z",
+     "lastName": "Kowalski7",
+     "firstName": "Zofia",
+     "initials": "Z"
+    },
+    {
+     "fullName": "Mbeki7 D",
+     "lastName": "Mbeki7",
+     "firstName": "Dmitri",
+     "initials": "D"
+    },
+    {
+     "fullName": "Dubois7 E",
+     "lastName": "Dubois7",
+     "firstName": "Elin",
+     "initials": "E"
+    },
+    {
+     "fullName": "Ivanova7 T",
+     "lastName": "Ivanova7",
+     "firstName": "Tiago",
+     "initials": "T"
+    },
+    {
+     "fullName": "Santos7 C",
+     "lastName": "Santos7",
+     "firstName": "Camille",
+     "initials": "C"
+    },
+    {
+     "fullName": "Okafor8 A",
+     "lastName": "Okafor8",
+     "firstName": "Amara",
+     "initials": "A"
+    },
+    {
+     "fullName": "Lindqvist8 L",
+     "lastName": "Lindqvist8",
+     "firstName": "Layla",
+     "initials": "L"
+    },
+    {
+     "fullName": "Nakamura8 T",
+     "lastName": "Nakamura8",
+     "firstName": "Thabo",
+     "initials": "T"
+    },
+    {
+     "fullName": "Haddad8 B",
+     "lastName": "Haddad8",
+     "firstName": "Beatriz",
+     "initials": "B"
+    },
+    {
+     "fullName": "Ferreira8 H",
+     "lastName": "Ferreira8",
+     "firstName": "Haruto",
+     "initials": "H"
+    },
+    {
+     "fullName": "Kowalski8 Z",
+     "lastName": "Kowalski8",
+     "firstName": "Zofia",
+     "initials": "Z"
+    },
+    {
+     "fullName": "Mbeki8 D",
+     "lastName": "Mbeki8",
+     "firstName": "Dmitri",
+     "initials": "D"
+    },
+    {
+     "fullName": "Dubois8 E",
+     "lastName": "Dubois8",
+     "firstName": "Elin",
+     "initials": "E"
+    },
+    {
+     "fullName": "Ivanova8 T",
+     "lastName": "Ivanova8",
+     "firstName": "Tiago",
+     "initials": "T"
+    },
+    {
+     "fullName": "Santos8 C",
+     "lastName": "Santos8",
+     "firstName": "Camille",
+     "initials": "C"
+    },
+    {
+     "fullName": "Okafor9 A",
+     "lastName": "Okafor9",
+     "firstName": "Amara",
+     "initials": "A"
+    },
+    {
+     "fullName": "Lindqvist9 L",
+     "lastName": "Lindqvist9",
+     "firstName": "Layla",
+     "initials": "L"
+    },
+    {
+     "fullName": "Nakamura9 T",
+     "lastName": "Nakamura9",
+     "firstName": "Thabo",
+     "initials": "T"
+    },
+    {
+     "fullName": "Haddad9 B",
+     "lastName": "Haddad9",
+     "firstName": "Beatriz",
+     "initials": "B"
+    },
+    {
+     "fullName": "Ferreira9 H",
+     "lastName": "Ferreira9",
+     "firstName": "Haruto",
+     "initials": "H"
+    },
+    {
+     "fullName": "Kowalski9 Z",
+     "lastName": "Kowalski9",
+     "firstName": "Zofia",
+     "initials": "Z"
+    },
+    {
+     "fullName": "Mbeki9 D",
+     "lastName": "Mbeki9",
+     "firstName": "Dmitri",
+     "initials": "D"
+    },
+    {
+     "fullName": "Dubois9 E",
+     "lastName": "Dubois9",
+     "firstName": "Elin",
+     "initials": "E"
+    },
+    {
+     "fullName": "Ivanova9 T",
+     "lastName": "Ivanova9",
+     "firstName": "Tiago",
+     "initials": "T"
+    },
+    {
+     "fullName": "Santos9 C",
+     "lastName": "Santos9",
+     "firstName": "Camille",
+     "initials": "C"
+    },
+    {
+     "fullName": "Okafor10 A",
+     "lastName": "Okafor10",
+     "firstName": "Amara",
+     "initials": "A"
+    },
+    {
+     "fullName": "Lindqvist10 L",
+     "lastName": "Lindqvist10",
+     "firstName": "Layla",
+     "initials": "L"
+    },
+    {
+     "fullName": "Nakamura10 T",
+     "lastName": "Nakamura10",
+     "firstName": "Thabo",
+     "initials": "T"
+    },
+    {
+     "fullName": "Haddad10 B",
+     "lastName": "Haddad10",
+     "firstName": "Beatriz",
+     "initials": "B"
+    },
+    {
+     "fullName": "Ferreira10 H",
+     "lastName": "Ferreira10",
+     "firstName": "Haruto",
+     "initials": "H"
+    },
+    {
+     "fullName": "Kowalski10 Z",
+     "lastName": "Kowalski10",
+     "firstName": "Zofia",
+     "initials": "Z"
+    },
+    {
+     "fullName": "Mbeki10 D",
+     "lastName": "Mbeki10",
+     "firstName": "Dmitri",
+     "initials": "D"
+    },
+    {
+     "fullName": "Dubois10 E",
+     "lastName": "Dubois10",
+     "firstName": "Elin",
+     "initials": "E"
+    },
+    {
+     "fullName": "Ivanova10 T",
+     "lastName": "Ivanova10",
+     "firstName": "Tiago",
+     "initials": "T"
+    },
+    {
+     "fullName": "Santos10 C",
+     "lastName": "Santos10",
+     "firstName": "Camille",
+     "initials": "C"
+    },
+    {
+     "fullName": "Okafor11 A",
+     "lastName": "Okafor11",
+     "firstName": "Amara",
+     "initials": "A"
+    },
+    {
+     "fullName": "Lindqvist11 L",
+     "lastName": "Lindqvist11",
+     "firstName": "Layla",
+     "initials": "L"
+    },
+    {
+     "fullName": "Nakamura11 T",
+     "lastName": "Nakamura11",
+     "firstName": "Thabo",
+     "initials": "T"
+    },
+    {
+     "fullName": "Haddad11 B",
+     "lastName": "Haddad11",
+     "firstName": "Beatriz",
+     "initials": "B"
+    },
+    {
+     "fullName": "Ferreira11 H",
+     "lastName": "Ferreira11",
+     "firstName": "Haruto",
+     "initials": "H"
+    },
+    {
+     "fullName": "Kowalski11 Z",
+     "lastName": "Kowalski11",
+     "firstName": "Zofia",
+     "initials": "Z"
+    },
+    {
+     "fullName": "Mbeki11 D",
+     "lastName": "Mbeki11",
+     "firstName": "Dmitri",
+     "initials": "D"
+    },
+    {
+     "fullName": "Dubois11 E",
+     "lastName": "Dubois11",
+     "firstName": "Elin",
+     "initials": "E"
+    },
+    {
+     "fullName": "Ivanova11 T",
+     "lastName": "Ivanova11",
+     "firstName": "Tiago",
+     "initials": "T"
+    },
+    {
+     "fullName": "Santos11 C",
+     "lastName": "Santos11",
+     "firstName": "Camille",
+     "initials": "C"
+    },
+    {
+     "fullName": "Okafor12 A",
+     "lastName": "Okafor12",
+     "firstName": "Amara",
+     "initials": "A"
+    },
+    {
+     "fullName": "Lindqvist12 L",
+     "lastName": "Lindqvist12",
+     "firstName": "Layla",
+     "initials": "L"
+    },
+    {
+     "fullName": "Nakamura12 T",
+     "lastName": "Nakamura12",
+     "firstName": "Thabo",
+     "initials": "T"
+    },
+    {
+     "fullName": "Haddad12 B",
+     "lastName": "Haddad12",
+     "firstName": "Beatriz",
+     "initials": "B"
+    },
+    {
+     "fullName": "Ferreira12 H",
+     "lastName": "Ferreira12",
+     "firstName": "Haruto",
+     "initials": "H"
+    },
+    {
+     "fullName": "Kowalski12 Z",
+     "lastName": "Kowalski12",
+     "firstName": "Zofia",
+     "initials": "Z"
+    },
+    {
+     "fullName": "Mbeki12 D",
+     "lastName": "Mbeki12",
+     "firstName": "Dmitri",
+     "initials": "D"
+    },
+    {
+     "fullName": "Dubois12 E",
+     "lastName": "Dubois12",
+     "firstName": "Elin",
+     "initials": "E"
+    },
+    {
+     "fullName": "Ivanova12 T",
+     "lastName": "Ivanova12",
+     "firstName": "Tiago",
+     "initials": "T"
+    },
+    {
+     "fullName": "Santos12 C",
+     "lastName": "Santos12",
+     "firstName": "Camille",
+     "initials": "C"
+    },
+    {
+     "fullName": "Okafor13 A",
+     "lastName": "Okafor13",
+     "firstName": "Amara",
+     "initials": "A"
+    },
+    {
+     "fullName": "Lindqvist13 L",
+     "lastName": "Lindqvist13",
+     "firstName": "Layla",
+     "initials": "L"
+    },
+    {
+     "fullName": "Nakamura13 T",
+     "lastName": "Nakamura13",
+     "firstName": "Thabo",
+     "initials": "T"
+    },
+    {
+     "fullName": "Haddad13 B",
+     "lastName": "Haddad13",
+     "firstName": "Beatriz",
+     "initials": "B"
+    },
+    {
+     "fullName": "Ferreira13 H",
+     "lastName": "Ferreira13",
+     "firstName": "Haruto",
+     "initials": "H"
+    },
+    {
+     "fullName": "Kowalski13 Z",
+     "lastName": "Kowalski13",
+     "firstName": "Zofia",
+     "initials": "Z"
+    },
+    {
+     "fullName": "Mbeki13 D",
+     "lastName": "Mbeki13",
+     "firstName": "Dmitri",
+     "initials": "D"
+    },
+    {
+     "fullName": "Dubois13 E",
+     "lastName": "Dubois13",
+     "firstName": "Elin",
+     "initials": "E"
+    },
+    {
+     "fullName": "Ivanova13 T",
+     "lastName": "Ivanova13",
+     "firstName": "Tiago",
+     "initials": "T"
+    },
+    {
+     "fullName": "Santos13 C",
+     "lastName": "Santos13",
+     "firstName": "Camille",
+     "initials": "C"
+    },
+    {
+     "fullName": "Okafor14 A",
+     "lastName": "Okafor14",
+     "firstName": "Amara",
+     "initials": "A"
+    },
+    {
+     "fullName": "Lindqvist14 L",
+     "lastName": "Lindqvist14",
+     "firstName": "Layla",
+     "initials": "L"
+    },
+    {
+     "fullName": "Nakamura14 T",
+     "lastName": "Nakamura14",
+     "firstName": "Thabo",
+     "initials": "T"
+    },
+    {
+     "fullName": "Haddad14 B",
+     "lastName": "Haddad14",
+     "firstName": "Beatriz",
+     "initials": "B"
+    },
+    {
+     "fullName": "Ferreira14 H",
+     "lastName": "Ferreira14",
+     "firstName": "Haruto",
+     "initials": "H"
+    },
+    {
+     "fullName": "Kowalski14 Z",
+     "lastName": "Kowalski14",
+     "firstName": "Zofia",
+     "initials": "Z"
+    },
+    {
+     "fullName": "Mbeki14 D",
+     "lastName": "Mbeki14",
+     "firstName": "Dmitri",
+     "initials": "D"
+    },
+    {
+     "fullName": "Dubois14 E",
+     "lastName": "Dubois14",
+     "firstName": "Elin",
+     "initials": "E"
+    },
+    {
+     "fullName": "Ivanova14 T",
+     "lastName": "Ivanova14",
+     "firstName": "Tiago",
+     "initials": "T"
+    },
+    {
+     "fullName": "Santos14 C",
+     "lastName": "Santos14",
+     "firstName": "Camille",
+     "initials": "C"
+    }
+   ]
+  },
+  "_synthetic": "author list extended to 150 names; everything else from the record structure of PMID 16004729"
+ },
+ "special_chars": {
+  "id": "SYN-CHARS",
+  "source": "MED",
+  "pmid": "900000002",
+  "pmcid": "PMC9000002",
+  "doi": "10.0000/synthetic_chars%20&#1",
+  "title": "Analysis & update of the <i>ALDH</i> (100%) gene_family: α-synuclein, {β}-sheets and #1 \\ ~ ^ $x$ H<sub>2</sub>O.",
+  "authorString": "Müller HJ, Ångström A, R&D Working Group (100%).",
+  "journalInfo": {
+   "issue": "2",
+   "volume": "2",
+   "journalIssueId": 1319833,
+   "dateOfPublication": "2005 Jun",
+   "monthOfPublication": 6,
+   "yearOfPublication": 2005,
+   "journal": {
+    "medlineAbbreviation": "Hum Genomics",
+    "title": "Journal of Odd & Special Characters",
+    "essn": "1479-7364",
+    "issn": "1473-9542",
+    "isoabbreviation": "Hum Genomics",
+    "nlmid": "101202210"
+   },
+   "printPublicationDate": "2005-06-01"
+  },
+  "pubYear": "2005",
+  "pageInfo": "138-143",
+  "abstractText": "<h4>Background</h4><p>Cost was 5% of R&amp;D; see file_name #2.</p><h4>Methods</h4><p>We used <i>in vitro</i> assays at 37 °C.</p>",
+  "pubTypeList": {
+   "pubType": [
+    "research-article",
+    "Journal Article",
+    "Research Support, N.I.H., Extramural"
+   ]
+  },
+  "authorList": {
+   "author": [
+    {
+     "fullName": "Müller H",
+     "firstName": "Hans-Jürgen",
+     "lastName": "Müller",
+     "initials": "HJ"
+    },
+    {
+     "fullName": "Ångström A",
+     "firstName": "Anders",
+     "lastName": "Ångström",
+     "initials": "A"
+    },
+    {
+     "collectiveName": "R&D Working Group (100%)"
+    }
+   ]
+  },
+  "keywordList": {
+   "keyword": [
+    "alpha-synuclein",
+    "R&D",
+    "50% cut_off"
+   ]
+  },
+  "_synthetic": "title, authors, abstract, keywords and DOI replaced with strings that need escaping; structure from PMID 16004729"
+ },
+ "preprint": {
+  "id": "PPR900003",
+  "source": "PPR",
+  "doi": "10.0000/synthetic.preprint",
+  "title": "A preprint without a journal",
+  "authorString": "Doe J.",
+  "authorList": {
+   "author": [
+    {
+     "fullName": "Doe J",
+     "firstName": "Jane",
+     "lastName": "Doe",
+     "initials": "J"
+    }
+   ]
+  },
+  "pubYear": "2025",
+  "pubTypeList": {
+   "pubType": [
+    "Preprint"
+   ]
+  },
+  "_synthetic": "minimal preprint record"
+ }
+}

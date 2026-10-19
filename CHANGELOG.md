@@ -6,6 +6,20 @@ All notable changes to PyEuropePMC are documented here.
 
 ### ✨ Features
 
+- New MCP tool `export_papers`: papers as BibTeX, RIS, CSL-JSON, CSV, JSON or
+  Markdown, for a search `query` or a list of `ids`, ready for Zotero, Mendeley,
+  EndNote, Pandoc or a spreadsheet. BibTeX keys (`vasiliou2005analysis`) are
+  unique within an export, get `a`, `b`, ... on a collision and do not change
+  when the export is cut to size; text that LaTeX reads as syntax (`& % # _ $`) is
+  escaped, a consortium name stays one author, RIS has separate `SP` and `EP`
+  lines and keywords, and a paper with more than 100 authors lists the first
+  100 (BibTeX adds `and others`). Records are never cut in the middle: `truncated`
+  says that some were left out and `next_skip` or `remaining` say where to
+  continue. Nothing is written to disk. DOIs are passed through untouched; old
+  ones such as `10.1002/(SICI)...<1661::AID-SIM968>3.0.CO;2-2` contain `<...>`.
+
+### ✨ Features
+
 - New MCP tools `epmc_status`, `cache_status` and `clear_cache`. `epmc_status`
   probes the four endpoints the health workflow watches (search, full text,
   citations, annotations) at once, with one request each, a short timeout and the

@@ -50,6 +50,7 @@ Tools:
         build_query           — Build a query from structured input
         translate_query       — Rewrite a query for PubMed and other databases
         evaluate_query        — Recall of a query against papers you already know
+        export_papers         — BibTeX, RIS, CSL-JSON, CSV, JSON or Markdown for a query/ids
         get_papers_batch      — Metadata of many papers (PMIDs, PMCIDs, DOIs) in one call
         get_papers_fulltext_batch — Full text of several open-access papers within a budget
         find_open_access      — Free copies of a paper via Unpaywall (needs UNPAYWALL_EMAIL)
@@ -107,6 +108,7 @@ from pyeuropepmc.features.literature.article import ArticleClient
 from pyeuropepmc.mcp import (
     _annotations as ann,
     _batch as bm,
+    _export as ex,
     _fulltext as ft,
     _openaccess as oa,
     _query as qm,
@@ -1402,6 +1404,203 @@ async def evaluate_query(
         "f1_on_seeds": f1,
         "warnings": [i.to_dict() for i in result.warnings],
     }
+
+
+# ---------------------------------------------------------------------------
+# Export
+# ---------------------------------------------------------------------------
+
+_EXPORT_FORMATS = ("bibtex", "ris", "csl-json", "csv", "json", "markdown")
+
+
+def _export_units(
+    fmt: str, records: list[dict[str, Any]], fields: tuple[str, ...], abstract: bool
+) -> tuple[str, list[str], str, str, list[ex.Paper]]:
+    """``(header, one text per record, separator, footer, papers)`` for a format.
+
+    Every record becomes one unit so that an export can be cut at a record boundary and still
+    be valid: a BibTeX or RIS file stays parseable, a JSON array stays closed.
+    """
+    papers: list[ex.Paper] = []
+    if fmt in ("bibtex", "ris", "csl-json"):
+        papers = [ex.to_paper(r) for r in records]
+        if not abstract:
+            for paper in papers:
+                paper.abstract = ""
+        ex.assign_keys(papers)
+    if fmt == "bibtex":
+        return "", [ex.bibtex_entry(p) for p in papers], "\n\n", "", papers
+    if fmt == "ris":
+        return "", [ex.ris_entry(p) for p in papers], "\n\n", "", papers
+    if fmt == "csl-json":
+        return "[", [ex.csl_text(ex.csl_item(p)) for p in papers], ",\n", "]", papers
+    rows = ex.table_rows(records, fields)
+    if fmt == "json":
+        return "[", [json.dumps(r, ensure_ascii=False) for r in rows], ",\n", "]", papers
+    values = [[r[f] for f in fields] for r in rows]
+    if fmt == "csv":
+        return ex.csv_row(list(fields)), [ex.csv_row(v) for v in values], "\n", "", papers
+    return ex.markdown_header(fields), [ex.markdown_row(v) for v in values], "\n", "", papers
+
+
+def _fit_units(
+    header: str, units: list[str], sep: str, footer: str, max_chars: int
+) -> tuple[str, int]:
+    """The header, as many whole units as fit ``max_chars``, and the footer.
+
+    The first unit is always kept, so one very long record cannot leave the export empty.
+    """
+    kept: list[str] = []
+    size = len(header) + len(footer)
+    for unit in units:
+        cost = len(unit) + len(sep)
+        if kept and size + cost > max_chars:
+            break
+        kept.append(unit)
+        size += cost
+    body = sep.join(kept)
+    if header == "[":  # a JSON array: the bracket opens it, the footer closes it
+        return f"[{body}{footer}", len(kept)
+    if header:  # CSV and Markdown: header lines, then one row per record
+        return f"{header}\n{body}", len(kept)
+    return body, len(kept)
+
+
+async def _export_records(
+    query: str, ids: list[str] | None, limit: int, skip: int, result_type: str
+) -> tuple[list[dict[str, Any]], list[dict[str, str]], int | None]:
+    """The records to export, what was left out of an identifier list and why, and, for a
+    query, how many records match in all."""
+    skipped: list[dict[str, str]] = []
+    if ids is not None:
+        entries = [bm.classify(i) for i in ids[:limit]]
+        index, errors = await _fetch_batch_records(entries, result_type)
+        records: list[dict[str, Any]] = []
+        seen: set[tuple[str, str]] = set()
+        for entry in entries:
+            record = bm.lookup(index, entry)
+            if entry.kind == "invalid":
+                skipped.append({"id": entry.raw, "status": "invalid"})
+            elif record is None:
+                failed = errors.get((entry.kind, entry.value.lower()))
+                skipped.append({"id": entry.raw, "status": "error" if failed else "not_found"})
+            elif (str(record.get("source")), str(record.get("id"))) in seen:
+                skipped.append({"id": entry.raw, "status": "duplicate"})
+            else:
+                seen.add((str(record.get("source")), str(record.get("id"))))
+                records.append(record)
+        return records, skipped, None
+    wanted = skip + limit
+    found = await _run_blocking(
+        _get_client().search_all,
+        query,
+        page_size=wanted,
+        max_results=wanted,
+        resultType=result_type,
+    )
+    total = await _run_blocking(_get_client().get_hit_count, query)
+    return [_as_dict(r) for r in found][skip:], skipped, total
+
+
+@mcp.tool(annotations=_ro("Export papers"))
+async def export_papers(
+    format: Annotated[
+        Literal["bibtex", "ris", "csl-json", "csv", "json", "markdown"],
+        Field(description="Output format"),
+    ] = "bibtex",
+    query: Annotated[
+        str, Field(description="A Europe PMC search query; give this or ids, not both")
+    ] = "",
+    ids: Annotated[
+        list[str] | None,
+        Field(
+            description="PMIDs, PMCIDs and DOIs (mixed) to export, in this order; give this or "
+            "query, not both",
+            max_length=200,
+        ),
+    ] = None,
+    limit: Annotated[int, Field(description="Most records to export", ge=1, le=1000)] = 100,
+    skip: Annotated[
+        int, Field(description="Query only: results to skip, for the next part", ge=0, le=999)
+    ] = 0,
+    fields: Annotated[
+        list[str] | None,
+        Field(
+            description="csv, json and markdown only: columns, from "
+            + ", ".join(bm.FIELDS)
+            + ". Default: "
+            + ", ".join(bm.DEFAULT_FIELDS)
+        ),
+    ] = None,
+    include_abstract: Annotated[
+        bool, Field(description="bibtex, ris and csl-json only: include the abstract")
+    ] = False,
+    max_chars: Annotated[
+        int,
+        Field(
+            description="Cut the export at a record boundary after this many characters",
+            ge=1000,
+            le=500000,
+        ),
+    ] = 60000,
+) -> dict[str, Any]:
+    """Export papers as a file's worth of text to hand to a reference manager or a spreadsheet:
+    BibTeX, RIS or CSL-JSON (Zotero, Mendeley, EndNote, Pandoc) or CSV, JSON or Markdown.
+    Give a search `query` or a list of `ids`. BibTeX keys look like `vasiliou2005analysis`,
+    are unique within the export and do not change when it is cut to size; text that LaTeX
+    reads as syntax (& % # _ $) is escaped. A paper with more than 100 authors lists the first
+    100 (BibTeX adds `and others`). The export is never cut in the middle of a record:
+    `truncated` says that records were left out; `next_skip` (query) or `remaining` (ids) say
+    where to continue. Nothing is written to disk.
+    """
+    if bool(query.strip()) == bool(ids):
+        raise ToolError("Give either query or ids, not both and not neither")
+    try:
+        wanted = bm.validate_fields(fields)
+    except ValueError as exc:
+        raise ToolError(str(exc)) from exc
+    if query.strip():
+        problems = qm.lint(query).errors
+        if problems:
+            raise ToolError(f"Fix the query first: {_problems(problems)}")
+        if skip + limit > 1000:
+            raise ToolError("skip + limit must not exceed 1000; narrow the query instead")
+    wants_core = format in ("bibtex", "ris", "csl-json") or "abstract" in wanted
+    try:
+        records, skipped, total = await _export_records(
+            query.strip(), ids, limit, skip, "core" if wants_core else "lite"
+        )
+    except EuropePMCError as exc:
+        raise ToolError(str(exc)) from exc
+
+    header, units, sep, footer, papers = _export_units(format, records, wanted, include_abstract)
+    content, kept = _fit_units(header, units, sep, footer, max_chars)
+    left_out = len(units) - kept
+    notes = []
+    omitted = sum(1 for p in papers if p.authors_omitted)
+    if omitted:
+        tail = " and BibTeX ends them with 'and others'" if format == "bibtex" else ""
+        notes.append(
+            f"{omitted} paper(s) have more than {ex.MAX_AUTHORS} authors; the first "
+            f"{ex.MAX_AUTHORS} are listed{tail}"
+        )
+    result: dict[str, Any] = {
+        "format": format,
+        "content": content,
+        "exported": kept,
+        "found": len(units),
+        "truncated": left_out > 0,
+        "returned_chars": len(content),
+        "skipped": skipped,
+        "notes": notes,
+    }
+    if ids is not None:
+        result["remaining"] = [r.get("pmid") or r.get("id") for r in records[kept:]]
+    else:
+        result["total_hits"] = total
+        more = (skip + kept) < (total or 0) and skip + kept <= 999
+        result["next_skip"] = skip + kept if more else None
+    return result
 
 
 # ---------------------------------------------------------------------------
