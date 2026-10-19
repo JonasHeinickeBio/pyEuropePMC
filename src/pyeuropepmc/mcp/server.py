@@ -43,6 +43,8 @@ Tools:
         fulltext_index_query  — Search local SQLite FTS5 full-text index
         get_paper_fulltext    — Structured full text of an open-access paper
         paper_figures         — Figures, tables and supplementary files of a PMC article
+        get_paper_annotations — Text-mined genes, chemicals, diseases, ... of a paper
+        find_papers_by_entity — Papers in which an entity (gene, chemical, ...) is mentioned
 
     Screening & review:
         paper_screening       — PRISMA-compliant automated screening
@@ -82,8 +84,9 @@ from pyeuropepmc import SearchClient
 from pyeuropepmc.cache.cache import CacheConfig
 from pyeuropepmc.core.error_codes import ErrorCodes
 from pyeuropepmc.core.exceptions import EuropePMCError, FullTextError, ParsingError
+from pyeuropepmc.features.literature.annotations import AnnotationsClient
 from pyeuropepmc.features.literature.article import ArticleClient
-from pyeuropepmc.mcp import _fulltext as ft
+from pyeuropepmc.mcp import _annotations as ann, _fulltext as ft
 
 # The pyeuropepmc modules below import without any extra: each one loads its
 # optional libraries lazily. A flag that only records whether the module
@@ -240,6 +243,9 @@ _fulltext_client_cache: _Lazy[Any] = _Lazy(
     lambda: FullTextClient() if FULLTEXT_AVAILABLE else None
 )
 _fulltext_xml_cache = ft.XmlCache()
+_annotations_client_cache: _Lazy[AnnotationsClient] = _Lazy(
+    lambda: AnnotationsClient(cache_config=CacheConfig(enabled=True))
+)
 _unified_cache: _Lazy[Any] = _Lazy(lambda: UnifiedSearch() if UNIFIED_AVAILABLE else None)
 _citation_walker_cache: _Lazy[Any] = _Lazy(
     lambda: CitationWalker() if CITATION_WALKER_AVAILABLE else None
@@ -420,6 +426,35 @@ async def _locate_fulltext(
             "open-access articles"
         )
     return resolved, record
+
+
+async def _annotation_article_id(pmcid: str, pmid: str, doi: str) -> str:
+    """The ``SRC:ID`` form the Annotations API wants; a bare PMCID is answered with HTTP 400."""
+    if pmcid:
+        match = _PMC_ID_RE.match(pmcid.strip())
+        if not match:
+            raise ToolError(f"pmcid must look like PMC1234567, got {pmcid!r}")
+        return f"PMC:PMC{match.group(1)}"
+    if pmid:
+        if not pmid.strip().isdigit():
+            raise ToolError(f"pmid must be digits only, got {pmid!r}")
+        return f"MED:{pmid.strip()}"
+    if doi:
+        results = await _run_blocking(
+            _get_client().search_all,
+            f'DOI:"{doi.strip()}"',
+            page_size=1,
+            max_results=1,
+            resultType="lite",
+        )
+        if not results:
+            raise ToolError(f"No Europe PMC record found for DOI {doi!r}")
+        record = _as_dict(results[0])
+        ext_id = str(record.get("id") or "").strip()
+        if not ext_id:
+            raise ToolError(f"The Europe PMC record for DOI {doi!r} has no id")
+        return f"{record.get('source') or 'MED'}:{ext_id}"
+    raise ToolError("One of pmcid, pmid, or doi is required")
 
 
 def _fulltext_error(exc: FullTextError, pmcid: str) -> ToolError:
@@ -972,6 +1007,145 @@ async def paper_figures(
         "figure_count": len(items),
         "counts_by_type": dict(Counter(item.get("figure_type", "") for item in items)),
         "figures": items,
+    }
+
+
+# ---------------------------------------------------------------------------
+# Text-mined annotations
+# ---------------------------------------------------------------------------
+
+
+@mcp.tool(annotations=_ro("Get paper annotations"))
+async def get_paper_annotations(
+    pmcid: Annotated[str, Field(description="PMC ID of the article, e.g. PMC1234567")] = "",
+    pmid: Annotated[str, Field(description="PubMed ID (alternative to pmcid)")] = "",
+    doi: Annotated[str, Field(description="DOI (alternative to pmcid)")] = "",
+    annotation_type: Annotated[
+        str,
+        Field(
+            description="Only this entity type, e.g. Gene_Proteins, Chemicals, Diseases, "
+            "Organisms, 'Gene Ontology'. Case-insensitive; the result lists "
+            "available_types when nothing matches."
+        ),
+    ] = "",
+    section: Annotated[
+        str, Field(description="Only mentions in this section, e.g. Abstract, Results, Methods")
+    ] = "",
+    provider: Annotated[
+        str, Field(description="Only this annotation provider, e.g. 'Europe PMC'")
+    ] = "",
+    limit: Annotated[
+        int, Field(description="Max entities to return, most mentioned first", ge=1, le=1000)
+    ] = 50,
+) -> dict[str, Any]:
+    """Genes, proteins, chemicals, diseases, organisms and other entities that Europe PMC
+    text-mined from a paper, grouped by entity with mention counts, sections and example
+    mentions. A review with hundreds of mentions comes back as a short entity list."""
+    article_id = await _annotation_article_id(pmcid, pmid, doi)
+    client = _annotations_client_cache.get()
+    try:
+        result = await _run_blocking(
+            client.get_annotations_by_article_ids, [article_id], format="JSON"
+        )
+    except EuropePMCError as exc:
+        raise ToolError(str(exc)) from exc
+    raw = result.get("raw")
+    records = raw if isinstance(raw, list) else []
+    record = records[0] if records and isinstance(records[0], dict) else {}
+    found = ann.collect(
+        record.get("annotations") or [],
+        annotation_type=annotation_type,
+        section=section,
+        provider=provider,
+    )
+    entities = found["entities"]
+    return {
+        "article": {
+            "id": article_id,
+            "source": record.get("source", ""),
+            "pmcid": record.get("pmcid", ""),
+        },
+        "found": bool(record),
+        "annotation_count": found["annotation_count"],
+        "entity_count": len(entities),
+        "by_type": dict(Counter(e["type"] for e in entities).most_common()),
+        "available_types": found["available_types"],
+        "entities": entities[:limit],
+        "truncated": len(entities) > limit,
+    }
+
+
+@mcp.tool(annotations=_ro("Find papers by entity"))
+async def find_papers_by_entity(
+    entity: Annotated[
+        str,
+        Field(description="Entity identifier or name, e.g. 'CHEBI:16236', 'ethanol', 'BRCA1'"),
+    ],
+    annotation_type: Annotated[
+        str,
+        Field(description="Only count mentions of this type, e.g. Chemicals, Diseases"),
+    ] = "",
+    section: Annotated[
+        str, Field(description="Only count mentions in this section, e.g. Abstract, Results")
+    ] = "",
+    provider: Annotated[str, Field(description="Only count mentions from this provider")] = "",
+    limit: Annotated[
+        int, Field(description="Articles per page (Europe PMC allows 1 to 8)", ge=1, le=8)
+    ] = 5,
+    cursor: Annotated[
+        str, Field(description="next_cursor of the previous page; empty for the first page")
+    ] = "",
+) -> dict[str, Any]:
+    """Articles in which Europe PMC found a given entity, with how often and where it is
+    mentioned. One page per call: pass ``next_cursor`` back as ``cursor`` for the next.
+
+    Europe PMC's entity search ignores type, section and provider, so the three filters
+    here apply to the mentions it returns: an article without a matching mention is left
+    out and counted in ``articles_filtered_out``.
+    """
+    if not entity.strip():
+        raise ToolError("entity must not be empty")
+    client = _annotations_client_cache.get()
+    try:
+        result = await _run_blocking(
+            client.get_annotations_by_entity,
+            entity.strip(),
+            page_size=limit,
+            format="JSON",
+            cursor_mark=cursor or None,
+        )
+    except EuropePMCError as exc:
+        raise ToolError(str(exc)) from exc
+    raw = result.get("raw")
+    page = raw if isinstance(raw, dict) else {}
+    articles = []
+    filtered_out = 0
+    for item in page.get("articles") or []:
+        if not isinstance(item, dict):
+            continue
+        summary = ann.summarize_article(
+            item.get("annotations") or [],
+            annotation_type=annotation_type,
+            section=section,
+            provider=provider,
+        )
+        if not summary["mentions"]:
+            filtered_out += 1
+            continue
+        articles.append(
+            {
+                "source": item.get("source", ""),
+                "id": item.get("extId", ""),
+                "pmcid": item.get("pmcid", ""),
+                **summary,
+            }
+        )
+    return {
+        "entity": entity.strip(),
+        "article_count": len(articles),
+        "articles_filtered_out": filtered_out,
+        "articles": articles,
+        "next_cursor": ann.next_cursor(page.get("nextCursorMark")),
     }
 
 

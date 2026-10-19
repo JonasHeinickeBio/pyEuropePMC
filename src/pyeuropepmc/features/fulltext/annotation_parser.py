@@ -544,15 +544,30 @@ class AnnotationParser:
 
 
 # Convenience functions for direct use
-def normalize_annotations_response(response: dict[str, Any]) -> dict[str, Any]:
+def normalize_annotations_response(response: dict[str, Any] | list[Any]) -> dict[str, Any]:
     """Normalize annotation response to ensure consistent structure.
 
     Args:
-        response: Raw annotation response
+        response: Raw annotation response. ``annotationsByArticleIds`` answers with a
+            top-level list (one record per article in JSON, one annotation per item in
+            JSON-LD); ``annotationsByEntity`` answers with an object.
 
     Returns:
-        Normalized response dict with required fields
+        Normalized response dict with required fields. A list is kept as is under
+        ``raw`` and ``annotations``: treating it as invalid, as an earlier version did,
+        discarded every real article response.
     """
+    if isinstance(response, list):
+        return {
+            "entities": [],
+            "sentences": [],
+            "relationships": [],
+            "metadata": {},
+            "raw": response,
+            "annotations": response,
+            "valid": True,
+        }
+
     if not isinstance(response, dict):
         return {
             "entities": [],

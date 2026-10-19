@@ -1,0 +1,350 @@
+[
+ {
+  "source": "MED",
+  "extId": "16004729",
+  "pmcid": "PMC3525259",
+  "annotations": [
+   {
+    "prefix": "endogenous and exogenous ",
+    "exact": "aldehyde",
+    "postfix": " substrates , including",
+    "tags": [
+     {
+      "name": "aldehyde",
+      "uri": "http://browser.ihtsdotools.org/?perspective=full&conceptId1=60530008"
+     }
+    ],
+    "id": "http://europepmc.org/article/MED/16004729#phenebank-edd4f83d500bcb77190855ba7e6eb672",
+    "type": "Molecule",
+    "section": "Abstract (http://purl.org/dc/terms/abstract)",
+    "provider": "PheneBank"
+   },
+   {
+    "exact": "A number of ALDH genes are upregulated as a part of the oxidative stress response and inexplicably overexpressed in various tumours, leading to problems during cancer chemotherapy.",
+    "tags": [
+     {
+      "name": "ALDH",
+      "uri": "https://www.ensembl.org/Homo_sapiens/Gene/Summary?db=core;g=ENSG00000134333"
+     },
+     {
+      "name": "cancer",
+      "uri": "https://www.ebi.ac.uk/ols/ontologies/efo/terms?short_form=MONDO_0004992"
+     }
+    ],
+    "id": "http://europepmc.org/article/MED/16004729#opentargets-072c8e383718b899a361ecea4f4511ad",
+    "type": "Gene Disease Relationship",
+    "section": "Abstract (http://purl.org/dc/terms/abstract)",
+    "provider": "Open Targets Platform"
+   },
+   {
+    "exact": "Mutations in ALDH genes cause inborn errors of metabolism -- such as the Sjo\u0308gren - Larsson syndrome, type II hyperprolinaemia and \u03b3-hydroxybutyric aciduria -- and are likely to contribute to several complex diseases, including cancer and Alzheimer's disease.",
+    "tags": [
+     {
+      "name": "ALDH",
+      "uri": "https://www.ensembl.org/Homo_sapiens/Gene/Summary?db=core;g=ENSG00000134333"
+     },
+     {
+      "name": "cancer",
+      "uri": "https://www.ebi.ac.uk/ols/ontologies/efo/terms?short_form=MONDO_0004992"
+     }
+    ],
+    "id": "http://europepmc.org/article/MED/16004729#opentargets-a56a1ca8f6443043db8e3643ba35dfc0",
+    "type": "Gene Disease Relationship",
+    "section": "Abstract (http://purl.org/dc/terms/abstract)",
+    "provider": "Open Targets Platform"
+   },
+   {
+    "exact": "Mutations in ALDH genes cause inborn errors of metabolism -- such as the Sjo\u0308gren - Larsson syndrome, type II hyperprolinaemia and \u03b3-hydroxybutyric aciduria -- and are likely to contribute to several complex diseases, including cancer and Alzheimer's disease.",
+    "tags": [
+     {
+      "name": "ALDH",
+      "uri": "https://www.ensembl.org/Homo_sapiens/Gene/Summary?db=core;g=ENSG00000134333"
+     },
+     {
+      "name": "Sjo\u0308gren - Larsson syndrome",
+      "uri": "https://www.ebi.ac.uk/ols/ontologies/efo/terms?short_form=MONDO_0010031"
+     }
+    ],
+    "id": "http://europepmc.org/article/MED/16004729#opentargets-55d42aa0449473effecec88b7d1f02b6",
+    "type": "Gene Disease Relationship",
+    "section": "Abstract (http://purl.org/dc/terms/abstract)",
+    "provider": "Open Targets Platform"
+   },
+   {
+    "exact": "A number of ALDH genes are upregulated as a part of the oxidative stress response and inexplicably overexpressed in various tumours, leading to problems during cancer chemotherapy.",
+    "tags": [
+     {
+      "name": "ALDH",
+      "uri": "https://www.ensembl.org/Homo_sapiens/Gene/Summary?db=core;g=ENSG00000134333"
+     },
+     {
+      "name": "tumours",
+      "uri": "https://www.ebi.ac.uk/ols/ontologies/efo/terms?short_form=EFO_0000616"
+     }
+    ],
+    "id": "http://europepmc.org/article/MED/16004729#opentargets-e00af8549ab350da093507e572982d91",
+    "type": "Gene Disease Relationship",
+    "section": "Abstract (http://purl.org/dc/terms/abstract)",
+    "provider": "Open Targets Platform"
+   },
+   {
+    "prefix": "endogenous and exogenous",
+    "exact": "aldehyde",
+    "postfix": "substrates, including pharmace",
+    "tags": [
+     {
+      "name": "aldehyde",
+      "uri": "http://purl.obolibrary.org/obo/CHEBI_17478"
+     }
+    ],
+    "id": "http://europepmc.org/article/MED/16004729#europepmc-8c42c72380f293b56a96900065837ce1",
+    "type": "Chemicals",
+    "section": "Abstract (http://purl.org/dc/terms/abstract)",
+    "provider": "Europe PMC"
+   },
+   {
+    "prefix": "Analysis of the",
+    "exact": "ALDH",
+    "postfix": "gene superfamily in",
+    "tags": [
+     {
+      "name": "JW1293",
+      "uri": "https://www.uniprot.org/uniprotkb/P23883/entry"
+     }
+    ],
+    "id": "http://europepmc.org/article/MED/16004729#europepmc-d5027140d4b6b0b33632fd3cdebeeb23",
+    "type": "Gene_Proteins",
+    "section": "Abstract (http://purl.org/dc/terms/abstract)",
+    "provider": "Europe PMC"
+   },
+   {
+    "prefix": "showed that the",
+    "exact": "human",
+    "postfix": "genome contains 19",
+    "tags": [
+     {
+      "name": "human",
+      "uri": "http://identifiers.org/taxonomy/9606"
+     }
+    ],
+    "id": "http://europepmc.org/article/MED/16004729#europepmc-58b1193083bd00f52c07cc71b4043550",
+    "type": "Organisms",
+    "section": "Abstract (http://purl.org/dc/terms/abstract)",
+    "provider": "Europe PMC"
+   },
+   {
+    "prefix": "A number of",
+    "exact": "ALDH",
+    "postfix": "genes are upregulated",
+    "tags": [
+     {
+      "name": "JW1293",
+      "uri": "https://www.uniprot.org/uniprotkb/P23883/entry"
+     }
+    ],
+    "id": "http://europepmc.org/article/MED/16004729#europepmc-8806e8488ae86961a2f449f3eacd1008",
+    "type": "Gene_Proteins",
+    "section": "Abstract (http://purl.org/dc/terms/abstract)",
+    "provider": "Europe PMC"
+   },
+   {
+    "prefix": "overexpressed in various",
+    "exact": "tumours",
+    "postfix": ", leading to problems",
+    "tags": [
+     {
+      "name": "neoplasms benign malignant and unspecified including cysts and polyps",
+      "uri": "http://linkedlifedata.com/resource/umls-concept/C0027651"
+     }
+    ],
+    "id": "http://europepmc.org/article/MED/16004729#europepmc-1d8ea4474db6ab922cf8d38777ac2119",
+    "type": "Diseases",
+    "section": "Abstract (http://purl.org/dc/terms/abstract)",
+    "provider": "Europe PMC"
+   },
+   {
+    "prefix": "to problems during",
+    "exact": "cancer",
+    "postfix": "chemotherapy.",
+    "tags": [
+     {
+      "name": "malignant neoplastic primary",
+      "uri": "http://linkedlifedata.com/resource/umls-concept/C1306459"
+     }
+    ],
+    "id": "http://europepmc.org/article/MED/16004729#europepmc-0227ed8861a2a717fe29d0318345906f",
+    "type": "Diseases",
+    "section": "Abstract (http://purl.org/dc/terms/abstract)",
+    "provider": "Europe PMC"
+   },
+   {
+    "prefix": "Mutations in",
+    "exact": "ALDH",
+    "postfix": "genes cause inborn",
+    "tags": [
+     {
+      "name": "JW1293",
+      "uri": "https://www.uniprot.org/uniprotkb/P23883/entry"
+     }
+    ],
+    "id": "http://europepmc.org/article/MED/16004729#europepmc-cfdf1b42c4e834d826eb890a0c0f2b63",
+    "type": "Gene_Proteins",
+    "section": "Abstract (http://purl.org/dc/terms/abstract)",
+    "provider": "Europe PMC"
+   },
+   {
+    "prefix": "complex diseases, including",
+    "exact": "cancer",
+    "postfix": "and Alzheimer's disease.",
+    "tags": [
+     {
+      "name": "malignant neoplastic primary",
+      "uri": "http://linkedlifedata.com/resource/umls-concept/C1306459"
+     }
+    ],
+    "id": "http://europepmc.org/article/MED/16004729#europepmc-ae11c38f78bf9e3f74042c0c5b705f90",
+    "type": "Diseases",
+    "section": "Abstract (http://purl.org/dc/terms/abstract)",
+    "provider": "Europe PMC"
+   },
+   {
+    "prefix": "including cancer and",
+    "exact": "Alzheimer's disease",
+    "postfix": "disease.",
+    "tags": [
+     {
+      "name": "alzheimers dis",
+      "uri": "http://linkedlifedata.com/resource/umls-concept/C0002395"
+     }
+    ],
+    "id": "http://europepmc.org/article/MED/16004729#europepmc-b055d39b04ea8e8dc809a957b5846f36",
+    "type": "Diseases",
+    "section": "Abstract (http://purl.org/dc/terms/abstract)",
+    "provider": "Europe PMC"
+   },
+   {
+    "prefix": "The",
+    "exact": "ALDH",
+    "postfix": "gene products appear",
+    "tags": [
+     {
+      "name": "JW1293",
+      "uri": "https://www.uniprot.org/uniprotkb/P23883/entry"
+     }
+    ],
+    "id": "http://europepmc.org/article/MED/16004729#europepmc-d99f37723cd83ca93219d34720820cce",
+    "type": "Gene_Proteins",
+    "section": "Abstract (http://purl.org/dc/terms/abstract)",
+    "provider": "Europe PMC"
+   },
+   {
+    "prefix": "The",
+    "exact": "aldehyde dehydrogenase",
+    "postfix": "dehydrogenase ( ALDH",
+    "tags": [
+     {
+      "name": "styD",
+      "uri": "https://www.uniprot.org/uniprotkb/O06837/entry"
+     }
+    ],
+    "id": "http://europepmc.org/article/MED/16004729#europepmc-15de62bb8c18e2bae3271bcb15c57eb0",
+    "type": "Gene_Proteins",
+    "section": "Abstract (http://purl.org/dc/terms/abstract)",
+    "provider": "Europe PMC"
+   },
+   {
+    "prefix": "aldehyde dehydrogenase (",
+    "exact": "ALDH",
+    "postfix": ") gene superfamily",
+    "tags": [
+     {
+      "name": "JW1293",
+      "uri": "https://www.uniprot.org/uniprotkb/P23883/entry"
+     }
+    ],
+    "id": "http://europepmc.org/article/MED/16004729#europepmc-0dfe11c80ac65a59fc5ffa899329cf2c",
+    "type": "Gene_Proteins",
+    "section": "Abstract (http://purl.org/dc/terms/abstract)",
+    "provider": "Europe PMC"
+   },
+   {
+    "prefix": "life processes and",
+    "exact": "detoxification",
+    "postfix": "via the NAD(P)",
+    "tags": [
+     {
+      "name": "detoxification",
+      "uri": "http://identifiers.org/GO:0098754"
+     }
+    ],
+    "id": "http://europepmc.org/article/MED/16004729#europepmc-cc9e164bd19acbff36554366a7f7f0fb",
+    "type": "Gene Ontology",
+    "section": "Abstract (http://purl.org/dc/terms/abstract)",
+    "provider": "Europe PMC"
+   },
+   {
+    "prefix": "genes cause inborn",
+    "exact": "errors of",
+    "postfix": "of metabolism --",
+    "tags": [
+     {
+      "name": "of confusion",
+      "uri": "http://linkedlifedata.com/resource/umls-concept/C4047995"
+     }
+    ],
+    "id": "http://europepmc.org/article/MED/16004729#europepmc-a6ea44ac498ea05724c5fa5e5e0e6a29",
+    "type": "Diseases",
+    "section": "Abstract (http://purl.org/dc/terms/abstract)",
+    "provider": "Europe PMC"
+   },
+   {
+    "prefix": "inborn errors of",
+    "exact": "metabolism",
+    "postfix": "-- such as",
+    "tags": [
+     {
+      "name": "acylglycerol homeostasis",
+      "uri": "http://identifiers.org/GO:0055090"
+     }
+    ],
+    "id": "http://europepmc.org/article/MED/16004729#europepmc-5b3122e6f1455852b54ba2ef2f7bac3d",
+    "type": "Gene Ontology",
+    "section": "Abstract (http://purl.org/dc/terms/abstract)",
+    "provider": "Europe PMC"
+   },
+   {
+    "prefix": "such as the",
+    "exact": "Sj\u00f6gren - Larsson syndrome",
+    "postfix": "- Larsson syndrome,",
+    "tags": [
+     {
+      "name": "sicca sjogrens syndrome",
+      "uri": "http://linkedlifedata.com/resource/umls-concept/C1527336"
+     }
+    ],
+    "id": "http://europepmc.org/article/MED/16004729#europepmc-0c7769a6e3a1f8ddae314bde9cf00e31",
+    "type": "Diseases",
+    "section": "Abstract (http://purl.org/dc/terms/abstract)",
+    "provider": "Europe PMC"
+   },
+   {
+    "prefix": "- Larsson syndrome,",
+    "exact": "type II hyperprolinaemia",
+    "postfix": "II hyperprolinaemia and",
+    "tags": [
+     {
+      "name": "1 alpha pyrroline5carboxylate dehydrogenase deficiency",
+      "uri": "http://linkedlifedata.com/resource/umls-concept/C2931835"
+     }
+    ],
+    "id": "http://europepmc.org/article/MED/16004729#europepmc-907792cb9b1075ff15bcf196455e5ad3",
+    "type": "Diseases",
+    "section": "Abstract (http://purl.org/dc/terms/abstract)",
+    "provider": "Europe PMC"
+   }
+  ],
+  "fullTextIdList": [
+   "PMC3525259"
+  ]
+ }
+]

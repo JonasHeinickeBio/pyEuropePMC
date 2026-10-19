@@ -191,6 +191,79 @@ class TestGetAnnotationsByEntity:
             )
 
 
+class TestEntityRequestMatchesTheApi:
+    """The Annotations API takes entity/type/cursorMark and pageSize 1-8; checked live."""
+
+    @patch.object(AnnotationsClient, "_get")
+    def test_sends_entity_type_and_page_size_the_api_understands(
+        self, mock_get, annotations_client, mock_response
+    ):
+        mock_get.return_value = mock_response
+
+        annotations_client.get_annotations_by_entity(
+            "CHEBI:16236", "Chemicals", page_size=3, format="JSON", cursor_mark="1.5"
+        )
+
+        params = mock_get.call_args.kwargs["params"]
+        assert params == {
+            "entity": "CHEBI:16236",
+            "type": "Chemicals",
+            "pageSize": 3,
+            "format": "JSON",
+            "cursorMark": "1.5",
+        }
+
+    @patch.object(AnnotationsClient, "_get")
+    def test_type_and_cursor_are_optional_and_the_default_page_size_is_accepted(
+        self, mock_get, annotations_client, mock_response
+    ):
+        mock_get.return_value = mock_response
+
+        annotations_client.get_annotations_by_entity("ethanol")
+
+        params = mock_get.call_args.kwargs["params"]
+        assert params["entity"] == "ethanol"
+        assert params["pageSize"] == 8
+        assert "type" not in params
+        assert "cursorMark" not in params
+        assert "entityId" not in params
+        assert "page" not in params
+
+    def test_page_size_above_eight_is_rejected_before_the_api_does(self, annotations_client):
+        with pytest.raises(ValidationError):
+            annotations_client.get_annotations_by_entity("ethanol", page_size=9)
+
+
+class TestListResponses:
+    """annotationsByArticleIds answers with a list; it used to be reported as invalid."""
+
+    @patch.object(AnnotationsClient, "_get")
+    def test_article_list_response_is_kept(self, mock_get, annotations_client):
+        records = [{"source": "MED", "extId": "1", "annotations": [{"exact": "x"}]}]
+        response = Mock()
+        response.status_code = 200
+        response.json.return_value = records
+        mock_get.return_value = response
+
+        result = annotations_client.get_annotations_by_article_ids(["MED:1"], format="JSON")
+
+        assert result["valid"] is True
+        assert result["raw"] == records
+        assert result["annotations"] == records
+
+    def test_normalize_accepts_an_empty_list(self):
+        from pyeuropepmc.features.fulltext.annotation_parser import normalize_annotations_response
+
+        result = normalize_annotations_response([])
+        assert result["valid"] is True
+        assert result["raw"] == []
+
+    def test_normalize_still_rejects_other_types(self):
+        from pyeuropepmc.features.fulltext.annotation_parser import normalize_annotations_response
+
+        assert normalize_annotations_response("junk")["valid"] is False  # type: ignore[arg-type]
+
+
 class TestGetAnnotationsByProvider:
     """Test get_annotations_by_provider method."""
 

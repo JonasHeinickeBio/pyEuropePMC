@@ -182,3 +182,67 @@ class TestMCPFullTextAgainstRealEuropePMC:
             figures = await session.call_tool("paper_figures", {"pmcid": self.PMCID})
             assert figures.isError is False
             assert figures.structuredContent["figure_count"] >= 3
+
+
+@pytest.mark.network
+class TestMCPAnnotationsAgainstRealEuropePMC:
+    PMID = "16004729"  # a review with several hundred text-mined mentions
+
+    async def test_paper_annotations_are_grouped_and_capped(self):
+        async with _server_session() as (session, _init_result):
+            result = await session.call_tool(
+                "get_paper_annotations", {"pmid": self.PMID, "limit": 10}
+            )
+            data = result.structuredContent
+            assert result.isError is False
+            assert data["found"] is True
+            assert data["annotation_count"] > data["entity_count"] > 10
+            assert len(data["entities"]) == 10
+            assert data["truncated"] is True
+            assert data["entities"][0]["mentions"] >= data["entities"][-1]["mentions"]
+            assert len(str(data)) < 20_000
+
+    async def test_filters_and_pmcid_input(self):
+        async with _server_session() as (session, _init_result):
+            result = await session.call_tool(
+                "get_paper_annotations",
+                {"pmcid": "PMC3525259", "annotation_type": "diseases", "section": "abstract"},
+            )
+            data = result.structuredContent
+            assert result.isError is False
+            assert data["article"]["id"] == "PMC:PMC3525259"
+            assert set(data["by_type"]) <= {"Diseases"}
+            assert data["entity_count"] > 0
+
+    async def test_unknown_paper_is_not_an_error(self):
+        async with _server_session() as (session, _init_result):
+            result = await session.call_tool("get_paper_annotations", {"pmid": "99999999999"})
+            assert result.isError is False
+            assert result.structuredContent["found"] is False
+
+    async def test_entity_search_pages_with_the_cursor(self):
+        async with _server_session() as (session, _init_result):
+            first = await session.call_tool(
+                "find_papers_by_entity", {"entity": "ethanol", "limit": 2}
+            )
+            page1 = first.structuredContent
+            assert first.isError is False
+            assert page1["article_count"] == 2
+            assert page1["next_cursor"]
+
+            second = await session.call_tool(
+                "find_papers_by_entity",
+                {"entity": "ethanol", "limit": 2, "cursor": page1["next_cursor"]},
+            )
+            page2 = second.structuredContent
+            assert second.isError is False
+            ids1 = {a["id"] for a in page1["articles"]}
+            ids2 = {a["id"] for a in page2["articles"]}
+            assert ids2 and not ids1 & ids2
+
+    async def test_entity_search_for_an_unknown_entity_is_empty(self):
+        async with _server_session() as (session, _init_result):
+            result = await session.call_tool("find_papers_by_entity", {"entity": "zzzzzz"})
+            assert result.isError is False
+            assert result.structuredContent["articles"] == []
+            assert result.structuredContent["next_cursor"] is None

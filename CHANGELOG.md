@@ -4,6 +4,30 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
+### 🐛 Bug Fixes
+
+- **`AnnotationsClient` discarded every real article response.**
+  `annotationsByArticleIds` answers with a top-level list, but
+  `normalize_annotations_response` accepted only an object and replaced a list
+  with an empty `valid: False` result, so `get_annotations_by_article_ids`
+  returned no data for any article. A list is now kept under `raw` and
+  `annotations`.
+- **`AnnotationsClient.get_annotations_by_entity` always failed with HTTP 400.**
+  It sent `entityId`, `entityType` and `page`; the API takes `entity`, an optional
+  `type` and a `cursorMark`, and accepts a `pageSize` of 1 to 8 only (the old
+  default was 25). `entity_type` is now optional, `page_size` defaults to 8 and is
+  validated against that range, and `cursor_mark` pages through the results.
+  Europe PMC's entity search ignores `type`, `provider` and `section`; the
+  docstring says so.
+
+### ✨ Features
+
+- New MCP tools `get_paper_annotations` and `find_papers_by_entity`: the
+  genes, proteins, chemicals, diseases and organisms that Europe PMC text-mined
+  from a paper, grouped by entity with mention counts, sections and example
+  mentions (a review with 371 mentions comes back as a 15 KB entity list instead
+  of 154 KB), and the articles in which a given entity occurs, with cursor paging.
+
 ## [3.1.0] - 2026-10-19
 
 > MCP release. `search_papers` could hang on any broad query, and
