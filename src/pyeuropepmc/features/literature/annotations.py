@@ -15,6 +15,9 @@ from pyeuropepmc.core.error_codes import ErrorCodes
 from pyeuropepmc.core.exceptions import APIClientError, ValidationError
 from pyeuropepmc.features.fulltext.annotation_parser import normalize_annotations_response
 
+# annotationsByEntity answers any pageSize outside 1-8 with HTTP 400.
+_ENTITY_MAX_PAGE_SIZE = 8
+
 __all__ = ["AnnotationsClient"]
 
 
@@ -258,26 +261,36 @@ class AnnotationsClient(BaseAPIClient):
     def get_annotations_by_entity(
         self,
         entity_id: str,
-        entity_type: str,
+        entity_type: str | None = None,
         provider: str | None = None,
         section: str | None = None,
         page: int = 1,
-        page_size: int = 25,
+        page_size: int = 8,
         format: str = "JSON-LD",
+        cursor_mark: str | None = None,
         **kwargs: Any,
     ) -> dict[str, Any]:
         """
         Retrieve annotations for a specific entity across all articles.
 
         Args:
-            entity_id: Entity identifier (e.g., 'CHEBI:16236' for ethanol)
-            entity_type: Type of entity (e.g., 'CHEBI', 'GO', 'Disease')
+            entity_id: Entity identifier (e.g., 'CHEBI:16236') or a name (e.g., 'ethanol').
+                Sent as the API's ``entity`` parameter.
+            entity_type: Optional type of entity (e.g., 'Chemicals', 'Diseases'); sent as
+                the API's ``type`` parameter. An empty string is rejected.
             provider: Filter by annotation provider
             section: Section to retrieve annotations from - 'abstract', or 'fulltext'.
                 If omitted or None, retrieves annotations from the entire article.
-            page: Page number for pagination, starting at 1 (default: 1)
-            page_size: Number of results per page (default: 25)
+            page: Validated but not sent: the API pages with a cursor, see ``cursor_mark``.
+
+            Note:
+                Checked against the live API in October 2026, ``annotationsByEntity``
+                returned the same articles whatever ``type``, ``provider`` and ``section``
+                were sent. Filter the returned annotations yourself if you need that.
+            page_size: Number of articles per page, 1 to 8 (default: 8). The API rejects
+                anything larger with HTTP 400, so the old default of 25 always failed.
             format: Response format - 'JSON-LD' (default), 'JSON', or 'XML'
+            cursor_mark: ``nextCursorMark`` of the previous page; omit for the first page
             **kwargs: Additional query parameters
 
         Returns:
@@ -292,7 +305,7 @@ class AnnotationsClient(BaseAPIClient):
             >>> # Get all annotations for a specific chemical (ethanol)
             >>> annotations = client.get_annotations_by_entity(
             ...     entity_id='CHEBI:16236',
-            ...     entity_type='CHEBI'
+            ...     entity_type='Chemicals'
             ... )
         """
         if not entity_id or not isinstance(entity_id, str):
@@ -304,7 +317,7 @@ class AnnotationsClient(BaseAPIClient):
                 actual_value=entity_id,
             )
 
-        if not entity_type or not isinstance(entity_type, str):
+        if entity_type is not None and (not entity_type or not isinstance(entity_type, str)):
             context = {"entity_type": entity_type}
             raise ValidationError(
                 ErrorCodes.VALID001,
@@ -315,17 +328,23 @@ class AnnotationsClient(BaseAPIClient):
 
         self._validate_section(section)
         self._validate_format(format)
-        self._validate_pagination(page, page_size)
+        self._validate_pagination(page, page_size, max_page_size=_ENTITY_MAX_PAGE_SIZE)
 
         endpoint = "annotationsByEntity"
+        # The API takes `entity` and `type` and pages with `cursorMark`. This method used
+        # to send `entityId`, `entityType` and `page`, which it answers with HTTP 400.
         params: dict[str, Any] = {
-            "entityId": entity_id,
-            "entityType": entity_type,
-            "page": page,
+            "entity": entity_id,
             "pageSize": page_size,
             "format": format,
             **kwargs,
         }
+
+        if entity_type:
+            params["type"] = entity_type
+
+        if cursor_mark:
+            params["cursorMark"] = cursor_mark
 
         if section:
             params["section"] = section
@@ -512,7 +531,7 @@ class AnnotationsClient(BaseAPIClient):
                 actual_value=format,
             )
 
-    def _validate_pagination(self, page: int, page_size: int) -> None:
+    def _validate_pagination(self, page: int, page_size: int, max_page_size: int = 1000) -> None:
         """Validate pagination parameters."""
         if page < 1:
             context = {"page": page}
@@ -523,8 +542,8 @@ class AnnotationsClient(BaseAPIClient):
                 actual_value=page,
             )
 
-        if page_size < 1 or page_size > 1000:
-            context = {"page_size": page_size}
+        if page_size < 1 or page_size > max_page_size:
+            context = {"page_size": page_size, "max_page_size": max_page_size}
             raise ValidationError(
                 ErrorCodes.VALID001,
                 context=context,

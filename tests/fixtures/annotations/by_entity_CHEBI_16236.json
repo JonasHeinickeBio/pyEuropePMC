@@ -1,0 +1,79 @@
+{
+ "nextCursorMark": 1.717932057,
+ "cursorMark": 0.0,
+ "articles": [
+  {
+   "source": "MED",
+   "extId": "32387679",
+   "pmcid": "PMC7306473",
+   "annotations": [
+    {
+     "exact": "CHEBI:16236",
+     "tags": [
+      {
+       "name": "CHEBI:16236",
+       "uri": "http://identifiers.org/ebi/chebi:CHEBI:16236"
+      }
+     ],
+     "type": "Accession Numbers",
+     "section": "Supplementary material (http://purl.obolibrary.org/obo/IAO_0000326)",
+     "provider": "Biostudies",
+     "frequency": 4,
+     "fileName": "NIHMS1594356-supplement-6.pdf"
+    }
+   ],
+   "fullTextIdList": [
+    "PMC7306473"
+   ]
+  },
+  {
+   "source": "MED",
+   "extId": "26526515",
+   "pmcid": "PMC4624446",
+   "annotations": [
+    {
+     "exact": "CHEBI:16236",
+     "tags": [
+      {
+       "name": "CHEBI:16236",
+       "uri": "https://identifiers.org/ebi/CHEBI:16236"
+      }
+     ],
+     "type": "Accession Numbers",
+     "provider": "Europe PMC",
+     "frequency": 1,
+     "subType": "ChEBI"
+    }
+   ],
+   "fullTextIdList": [
+    "PMC4624446"
+   ]
+  },
+  {
+   "source": "MED",
+   "extId": "17932057",
+   "pmcid": "PMC2238832",
+   "annotations": [
+    {
+     "prefix": "entifier for the entity, for example, ",
+     "exact": "CHEBI:16236",
+     "postfix": ". ",
+     "tags": [
+      {
+       "name": "CHEBI:16236",
+       "uri": "https://identifiers.org/ebi/CHEBI:16236"
+      }
+     ],
+     "id": "http://europepmc.org/article/PMC/PMC2238832#europepmc-96408a18afbd8616e7ab58c3584fec7f",
+     "type": "Accession Numbers",
+     "section": "Article (http://semanticscience.org/resource/SIO_001029)",
+     "provider": "Europe PMC",
+     "subType": "ChEBI"
+    }
+   ],
+   "fullTextIdList": [
+    "PMC2238832"
+   ]
+  }
+ ]
+}
