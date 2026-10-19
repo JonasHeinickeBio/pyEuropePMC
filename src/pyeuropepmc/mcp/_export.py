@@ -348,14 +348,31 @@ def bibtex_fields(paper: Paper) -> dict[str, str]:
     return {k: v for k, v in fields.items() if v}
 
 
-def bibtex_entry(paper: Paper) -> str:
-    """One entry. ``BibtexManager`` writes a library sorted by key, which would lose the order
-    the papers were asked for in, so each entry is written alone and joined in input order."""
-    from pyeuropepmc.features.bibliography.bibtex import BibtexManager
-    from pyeuropepmc.features.bibliography.models import BibEntry, BibLibrary
+def _balanced(text: str) -> bool:
+    depth = 0
+    for char in text:
+        depth += (char == "{") - (char == "}")
+        if depth < 0:
+            return False
+    return depth == 0
 
-    entry = BibEntry(paper.kind, paper.key, bibtex_fields(paper))
-    return str(BibtexManager().write_string(BibLibrary(entries=[entry]))).strip()
+
+def bibtex_entry(paper: Paper) -> str:
+    """One entry, fields in alphabetical order (the layout ``BibtexManager`` writes).
+
+    Written here rather than through ``BibtexManager``: its writer needs ``bibtexparser``,
+    an optional extra, so an export would fail in a plain install, and it sorts a whole
+    library by key, which would lose the order the papers were asked for in. A value with
+    unbalanced braces would end the entry early, so braces that survive in an unescaped
+    field (``doi``, ``url``) are percent-encoded.
+    """
+    lines = []
+    for name, value in sorted(bibtex_fields(paper).items()):
+        if not _balanced(value):
+            value = value.replace("{", "%7B").replace("}", "%7D")
+        lines.append(f" {name} = {{{value}}}")
+    body = ",\n".join(lines)
+    return f"@{paper.kind}{{{paper.key},\n{body}\n}}"
 
 
 def to_bibtex(papers: list[Paper]) -> str:

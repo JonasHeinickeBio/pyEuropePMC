@@ -16,6 +16,7 @@ import io
 import json
 from pathlib import Path
 import re
+import sys
 from unittest.mock import MagicMock
 
 from mcp.server.fastmcp.exceptions import ToolError
@@ -79,6 +80,46 @@ class TestGolden:
         # RIS ends an entry with "ER  - " (a trailing space is conventional); the repository's
         # trailing-whitespace hook strips it from the golden file, so compare without it.
         assert _trimmed(text) == _trimmed(golden)
+
+
+class TestBibtexNeedsNoExtra:
+    """``BibtexManager`` needs bibtexparser to write; the export must work without it."""
+
+    def test_it_works_when_bibtexparser_cannot_be_imported(self, monkeypatch):
+        monkeypatch.setitem(sys.modules, "bibtexparser", None)  # an import now raises
+        text, kept = render("bibtex", [RECORDS["vasiliou"], RECORDS["gbd"]])
+        assert kept == 2
+        assert text.startswith("@article{vasiliou2005analysis,")
+
+    def test_the_module_does_not_import_the_library_bibliography_code(self):
+        source = Path(ex.__file__).read_text()
+        pattern = r"^\s*(?:from|import)\s+pyeuropepmc\.features\.bibliography"
+        imports = re.findall(pattern, source, re.M)
+        assert imports == []
+
+    def test_the_layout_is_the_librarys(self):
+        paper = ex.to_paper(RECORDS["no_abstract"])
+        ex.assign_keys([paper])
+        lines = ex.bibtex_entry(paper).splitlines()
+        assert lines[0] == "@article{hrabos2026grp78,"
+        assert lines[1].startswith(" author = {")
+        assert lines[-1] == "}"
+        assert all(line.endswith(",") for line in lines[1:-2])
+        assert not lines[-2].endswith(",")
+        names = [line.split(" = ")[0].strip() for line in lines[1:-1]]
+        assert names == sorted(names)
+
+    def test_unbalanced_braces_in_a_raw_field_cannot_end_the_entry_early(self):
+        paper = ex.to_paper({"id": "1", "source": "MED", "doi": "10.0000/a}b{{c", "title": "T"})
+        ex.assign_keys([paper])
+        entry = ex.bibtex_entry(paper)
+        assert "doi = {10.0000/a%7Db%7B%7Bc}" in entry
+        assert entry.count("{") == entry.count("}")
+
+    def test_balanced_braces_are_left_alone(self):
+        paper = ex.to_paper({"id": "1", "source": "MED", "doi": "10.0000/{a}", "title": "T"})
+        ex.assign_keys([paper])
+        assert "doi = {10.0000/{a}}" in ex.bibtex_entry(paper)
 
 
 class TestFormatsAreValid:
