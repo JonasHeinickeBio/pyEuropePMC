@@ -24,6 +24,7 @@ ALL_CACHES = [
     srv._fulltext_xml_cache,
     srv._annotations_client_cache,
     srv._unpaywall_client_cache,
+    srv._status_cache,
     srv._unified_cache,
     srv._citation_walker_cache,
     srv._clinical_trials_cache,

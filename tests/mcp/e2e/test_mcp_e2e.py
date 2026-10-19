@@ -434,3 +434,49 @@ class TestMCPQueryToolsAgainstRealEuropePMC:
             assert result.isError is False
             assert result.structuredContent["query"] == "crispr[ti] AND 2020:2022[dp]"
             assert result.structuredContent["exact"] is True
+
+
+@pytest.mark.network
+class TestMCPStatusAgainstRealEuropePMC:
+    async def test_the_status_probe_answers_and_is_kept(self):
+        async with _server_session() as (session, _init_result):
+            first = await session.call_tool("epmc_status", {})
+            data = first.structuredContent
+            assert first.isError is False
+            # whatever state Europe PMC is in, the answer has this shape
+            assert data["status"] in {"ok", "degraded", "down", "unknown"}
+            assert set(data["endpoints"]) == {"search", "fulltext", "citations", "annotations"}
+            for endpoint in data["endpoints"].values():
+                assert endpoint["verdict"] in {"ok", "error", "unreachable", "unexpected"}
+                assert endpoint["ms"] >= 0
+            assert data["cached"] is False
+            assert "ebi.ac.uk" not in str(data)  # no URLs
+
+            second = await session.call_tool("epmc_status", {})
+            assert second.structuredContent["cached"] is True
+            assert second.structuredContent["checked_at"] == data["checked_at"]
+
+    async def test_cache_status_counts_a_cached_search_and_clear_cache_empties_it(self):
+        async with _server_session() as (session, _init_result):
+            before = await session.call_tool("cache_status", {})
+            assert before.structuredContent["search"] == {"created": False, "entries": 0}
+
+            await session.call_tool("count_papers", {"query": "malaria AND dengue"})
+            await session.call_tool("count_papers", {"query": "malaria AND dengue"})
+            during = (await session.call_tool("cache_status", {})).structuredContent["search"]
+            assert during["created"] is True
+            assert during["entries"] >= 1
+            assert during["hits"] >= 1  # the second call was served from the cache
+            assert "malaria" not in str(during)
+
+            cleared = await session.call_tool("clear_cache", {"scope": "search"})
+            assert cleared.isError is False
+            assert cleared.structuredContent["results"]["search"]["cleared"] is True
+            after = (await session.call_tool("cache_status", {})).structuredContent["search"]
+            assert after["entries"] == 0
+
+    async def test_clear_cache_is_declared_as_changing_state(self):
+        async with _server_session() as (session, _init_result):
+            tools = {t.name: t for t in (await session.list_tools()).tools}
+            assert tools["clear_cache"].annotations.readOnlyHint is False
+            assert tools["epmc_status"].annotations.readOnlyHint is True

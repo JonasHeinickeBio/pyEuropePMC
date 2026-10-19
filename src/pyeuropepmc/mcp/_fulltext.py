@@ -28,19 +28,25 @@ class XmlCache:
 
     A paper is usually asked for several times in a row (text, then figures, then
     references), and one fetch takes seconds. It has the ``reset`` method of the
-    server's other lazy singletons so tests can clear it the same way.
+    server's other lazy singletons so tests can clear it the same way, and counts hits and
+    misses so ``cache_status`` can say whether it is earning its keep.
     """
 
     def __init__(self, maxsize: int = 8) -> None:
         self._maxsize = maxsize
         self._items: OrderedDict[str, str] = OrderedDict()
         self._lock = threading.Lock()
+        self.hits = 0
+        self.misses = 0
 
     def get(self, key: str) -> str | None:
         with self._lock:
             value = self._items.get(key)
-            if value is not None:
-                self._items.move_to_end(key)
+            if value is None:
+                self.misses += 1
+                return None
+            self.hits += 1
+            self._items.move_to_end(key)
             return value
 
     def set(self, key: str, value: str) -> None:
@@ -50,9 +56,29 @@ class XmlCache:
             while len(self._items) > self._maxsize:
                 self._items.popitem(last=False)
 
+    def clear(self) -> int:
+        """Drop every entry, keep the counters; returns how many entries there were."""
+        with self._lock:
+            count = len(self._items)
+            self._items.clear()
+            return count
+
     def reset(self) -> None:
         with self._lock:
             self._items.clear()
+            self.hits = self.misses = 0
+
+    def stats(self) -> dict[str, Any]:
+        """Counts only: no key (a PMCID names what was read) and no content."""
+        with self._lock:
+            total = self.hits + self.misses
+            return {
+                "entries": len(self._items),
+                "max_entries": self._maxsize,
+                "hits": self.hits,
+                "misses": self.misses,
+                "hit_rate": round(self.hits / total, 4) if total else None,
+            }
 
 
 def _strip(obj: Any) -> Any:

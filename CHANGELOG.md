@@ -4,6 +4,20 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
+### ✨ Features
+
+- New MCP tools `epmc_status`, `cache_status` and `clear_cache`. `epmc_status`
+  probes the four endpoints the health workflow watches (search, full text,
+  citations, annotations) at once, with one request each, a short timeout and the
+  body never read, and answers `ok`, `degraded`, `down` or `unknown` (only 4xx) with
+  the HTTP status and milliseconds of each; the answer is kept for 30 seconds so
+  asking again does not probe again. The endpoint list is defined once in code and
+  a test compares it with `europepmc-health.yml`. `cache_status` reports entries,
+  capacity, size, hits, misses and hit rate of the search, article and annotation
+  caches and of the full-text XML cache (which now counts its hits), counts only:
+  no keys, content or paths. `clear_cache` empties one of those in-memory caches
+  and is declared as changing state (`readOnlyHint: false`).
+
 ## [3.5.0] - 2026-10-19
 
 > MCP release: query tools. Europe PMC answers a malformed query with a different result
