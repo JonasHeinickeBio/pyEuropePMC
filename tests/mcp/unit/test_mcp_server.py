@@ -339,6 +339,7 @@ class TestToolRegistry:
         "build_query",
         "translate_query",
         "evaluate_query",
+        "export_papers",
         "get_papers_batch",
         "get_papers_fulltext_batch",
         "find_open_access",
