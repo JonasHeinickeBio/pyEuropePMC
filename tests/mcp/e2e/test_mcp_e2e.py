@@ -543,3 +543,48 @@ class TestMCPExportAgainstRealEuropePMC:
             # the consortium name stays one author despite the "and" in it
             expected = "author = {{GBD 2019 Diseases and Injuries Collaborators}}"
             assert expected in bib.structuredContent["content"]
+
+
+@pytest.mark.network
+class TestMCPLinksAgainstRealEuropePMC:
+    async def test_data_links_of_a_paper_with_text_mined_snps(self):
+        async with _server_session() as (session, _init_result):
+            result = await session.call_tool(
+                "get_paper_data_links", {"pmid": "32257953", "category": "SNPs", "limit": 5}
+            )
+            data = result.structuredContent
+            assert result.isError is False
+            assert data["article"] == {"source": "MED", "id": "32257953"}
+            assert data["matching"] >= 10
+            assert len(data["links"]) == 5 and data["truncated"] is True
+            snp = data["links"][0]
+            assert snp["scheme"] == "dbSNP" and snp["id"].startswith("rs")
+            assert snp["origin"] == "text_mined" and snp["kind"] == "supporting_data"
+            assert snp["url"].startswith("http")
+
+    async def test_a_doi_resolves_to_the_same_links_as_its_pmid(self):
+        async with _server_session() as (session, _init_result):
+            by_doi = await session.call_tool(
+                "get_paper_data_links", {"doi": "10.1038/s41586-021-03583-3"}
+            )
+            assert by_doi.isError is False
+            assert by_doi.structuredContent["article"]["id"] == "34040261"
+
+    async def test_lab_links_with_a_provider_filter(self):
+        async with _server_session() as (session, _init_result):
+            result = await session.call_tool(
+                "get_paper_lab_links", {"pmcid": "PMC3257301", "provider": "genome"}
+            )
+            data = result.structuredContent
+            assert result.isError is False
+            assert [p["provider"] for p in data["providers"]] == ["Saccharomyces Genome Database"]
+            assert data["providers"][0]["links"][0]["url"].startswith("https://www.yeastgenome")
+            assert len(data["available_providers"]) >= 3
+
+    async def test_a_paper_without_links_and_a_bad_identifier(self):
+        async with _server_session() as (session, _init_result):
+            none = await session.call_tool("get_paper_data_links", {"pmid": "25883711"})
+            assert none.isError is False
+            assert none.structuredContent["links"] == []
+            bad = await session.call_tool("get_paper_lab_links", {"pmid": "abc"})
+            assert bad.isError is True
