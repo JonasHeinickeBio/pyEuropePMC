@@ -52,6 +52,11 @@ def _run(coro):
     return asyncio.run(coro)
 
 
+def _trimmed(text: str) -> str:
+    """Text without trailing whitespace on any line or at the end."""
+    return "\n".join(line.rstrip() for line in text.splitlines()).rstrip()
+
+
 def render(fmt, records, *, abstract=True, fields=None, max_chars=10**6):
     wanted = fields or (TABLE_FIELDS if fmt in ("csv", "json", "markdown") else bm.DEFAULT_FIELDS)
     header, units, sep, footer, _ = srv._export_units(fmt, records, wanted, abstract)
@@ -71,7 +76,9 @@ class TestGolden:
     def test_output_matches_the_reviewed_file(self, name, fmt):
         text, _kept = render(fmt, [RECORDS[name]])
         golden = (FIXTURES / "golden" / f"{name}.{EXT[fmt]}").read_text()
-        assert text + "\n" == golden
+        # RIS ends an entry with "ER  - " (a trailing space is conventional); the repository's
+        # trailing-whitespace hook strips it from the golden file, so compare without it.
+        assert _trimmed(text) == _trimmed(golden)
 
 
 class TestFormatsAreValid:
