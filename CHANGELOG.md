@@ -4,6 +4,12 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
+## [3.5.0] - 2026-10-19
+
+> MCP release: query tools. Europe PMC answers a malformed query with a different result
+> instead of an error; `validate_query` catches that before the query is sent. The
+> server now has 36 tools.
+
 ### ✨ Features
 
 - New MCP tools `validate_query`, `build_query`, `translate_query` and
