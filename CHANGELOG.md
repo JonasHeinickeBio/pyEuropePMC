@@ -4,6 +4,11 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
+## [3.3.0] - 2026-10-19
+
+> MCP release: `find_open_access` tells an agent where a paper that is not open access in
+> Europe PMC can be read for free. The server now has 30 tools.
+
 ### ✨ Features
 
 - New MCP tool `find_open_access`: where a paper can be read for free. It looks
