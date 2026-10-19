@@ -18,6 +18,12 @@ updates:
     commit-message:
       prefix: "deps"
       include: "scope"
+    # mcp 2.x removed `mcp.server.fastmcp` (FastMCP became MCPServer); the server
+    # needs a deliberate migration, so skip major bumps until that is done.
+    ignore:
+      - dependency-name: "mcp"
+        update-types:
+          - "version-update:semver-major"
     # Group minor and patch updates together
     groups:
       development-dependencies:
