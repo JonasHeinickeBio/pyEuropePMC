@@ -43,6 +43,10 @@ Tools:
         fulltext_index_query  — Search local SQLite FTS5 full-text index
         get_paper_fulltext    — Structured full text of an open-access paper
         paper_figures         — Figures, tables and supplementary files of a PMC article
+        validate_query        — Check a Europe PMC query for the mistakes it silently accepts
+        build_query           — Build a query from structured input
+        translate_query       — Rewrite a query for PubMed and other databases
+        evaluate_query        — Recall of a query against papers you already know
         get_papers_batch      — Metadata of many papers (PMIDs, PMCIDs, DOIs) in one call
         get_papers_fulltext_batch — Full text of several open-access papers within a budget
         find_open_access      — Free copies of a paper via Unpaywall (needs UNPAYWALL_EMAIL)
@@ -100,6 +104,7 @@ from pyeuropepmc.mcp import (
     _batch as bm,
     _fulltext as ft,
     _openaccess as oa,
+    _query as qm,
 )
 
 # The pyeuropepmc modules below import without any extra: each one loads its
@@ -537,24 +542,22 @@ def _with_filters(
     has_fulltext: bool = False,
     source: str = "",
 ) -> str:
-    """AND Europe PMC field filters onto ``query``; with no filter it is returned unchanged."""
-    clauses: list[str] = []
-    for label, value in (("date_from", date_from), ("date_to", date_to)):
-        if value and not _DATE_RE.match(value):
-            raise ToolError(f"{label} must be YYYY, YYYY-MM or YYYY-MM-DD, got {value!r}")
-    if date_from or date_to:
-        clauses.append(f"FIRST_PDATE:[{date_from or '*'} TO {date_to or '*'}]")
-    if open_access:
-        clauses.append("OPEN_ACCESS:y")
-    if has_fulltext:
-        clauses.append("HAS_FT:y")
-    if source:
-        if not _SOURCE_RE.match(source):
-            raise ToolError(f"source must be a short code such as MED, PMC or PPR, got {source!r}")
-        clauses.append(f"SRC:{source.upper()}")
-    if not clauses:
-        return query
-    return " AND ".join([f"({query})", *clauses])
+    """AND Europe PMC field filters onto ``query``; with no filter it is returned unchanged.
+
+    The clauses come from ``_query.filter_clauses``, the one place that writes them, so a
+    filter means the same here, in ``build_query`` and in anything built on the query builder.
+    """
+    try:
+        return qm.apply_filters(
+            query,
+            date_from=date_from,
+            date_to=date_to,
+            open_access=open_access,
+            has_fulltext=has_fulltext,
+            source=source,
+        )
+    except qm.QueryProblem as exc:
+        raise ToolError(str(exc)) from exc
 
 
 def _s2_identifier(identifier: str) -> str:
@@ -1046,6 +1049,225 @@ async def paper_figures(
         "figure_count": len(items),
         "counts_by_type": dict(Counter(item.get("figure_type", "") for item in items)),
         "figures": items,
+    }
+
+
+# ---------------------------------------------------------------------------
+# Query tools
+# ---------------------------------------------------------------------------
+
+
+def _problems(issues: list[qm.Issue]) -> str:
+    return "; ".join(f"{i.message}" for i in issues if i.severity == "error")
+
+
+@mcp.tool(annotations=_ro("Validate a Europe PMC query", local=True))
+async def validate_query(
+    query: Annotated[str, Field(description="A Europe PMC search query")],
+) -> dict[str, Any]:
+    """Check a Europe PMC query before running it. Europe PMC does not reject a malformed query,
+    it answers a different one: an unclosed parenthesis or a dangling operator is dropped
+    silently, an unknown field, a flag that is not y/n and a date range with a missing or
+    reversed bound match nothing, and AND mixed with OR without parentheses is not read as
+    either grouping. Each problem comes with its position. `valid` is false when there are
+    errors; warnings are things worth a second look. `normalized` is the cleaned-up query
+    (capital operators, explicit AND) and is only given for a query without errors.
+    """
+    result = qm.lint(query)
+    return {
+        "valid": not result.errors,
+        "problems": [i.to_dict() for i in result.errors],
+        "warnings": [i.to_dict() for i in result.warnings],
+        "normalized": result.normalized,
+    }
+
+
+@mcp.tool(annotations=_ro("Build a Europe PMC query", local=True))
+async def build_query(
+    all_of: Annotated[
+        list[str] | None,
+        Field(
+            description="Terms that must all match. A plain word or phrase is searched as "
+            "written ('heart attack' becomes a phrase); write FIELD:value, a quoted string "
+            "or a parenthesised expression to say more, e.g. 'TITLE:crispr'."
+        ),
+    ] = None,
+    any_of: Annotated[
+        list[str] | None, Field(description="Terms of which at least one must match")
+    ] = None,
+    none_of: Annotated[list[str] | None, Field(description="Terms that must not match")] = None,
+    date_from: Annotated[
+        str, Field(description="First publication date, from (YYYY, YYYY-MM or YYYY-MM-DD)")
+    ] = "",
+    date_to: Annotated[
+        str, Field(description="First publication date, to (YYYY, YYYY-MM or YYYY-MM-DD)")
+    ] = "",
+    open_access: Annotated[bool, Field(description="Only open-access records")] = False,
+    has_fulltext: Annotated[bool, Field(description="Only records with full text")] = False,
+    source: Annotated[
+        str, Field(description="Only this source, e.g. MED, PMC or PPR (preprints)")
+    ] = "",
+    cites: Annotated[str, Field(description="Only records that cite this PMID")] = "",
+) -> dict[str, Any]:
+    """Build a Europe PMC query from structured input instead of writing syntax by hand, and
+    check the result. Returns the query, a plain-language explanation of what it asks for, and
+    any warnings. At least one of all_of, any_of or a filter is needed (none_of alone would
+    match almost everything). The same filters are available on `search_papers`.
+    """
+    try:
+        query, explanation = qm.build(
+            all_of or [],
+            any_of or [],
+            none_of or [],
+            date_from=date_from,
+            date_to=date_to,
+            open_access=open_access,
+            has_fulltext=has_fulltext,
+            source=source,
+            cites=cites,
+        )
+    except qm.QueryProblem as exc:
+        raise ToolError(str(exc)) from exc
+    result = qm.lint(query)
+    if result.errors:
+        raise ToolError(
+            f"The query built from this input is not valid: {_problems(result.issues)}"
+        )
+    return {
+        "query": query,
+        "explanation": explanation,
+        "warnings": [i.to_dict() for i in result.warnings],
+    }
+
+
+_FREE_TEXT_TARGETS = ("arxiv", "openalex", "semantic_scholar", "crossref")
+
+
+@mcp.tool(annotations=_ro("Translate a Europe PMC query", local=True))
+async def translate_query(
+    query: Annotated[str, Field(description="A Europe PMC search query")],
+    target: Annotated[
+        Literal["pubmed", "arxiv", "openalex", "semantic_scholar", "crossref"],
+        Field(description="Database to translate the query for"),
+    ] = "pubmed",
+) -> dict[str, Any]:
+    """Rewrite a Europe PMC query for another database. For PubMed the field codes map where
+    they have an equivalent (TITLE[ti], AUTH[au], JOURNAL[ta], dates[dp], ...); a construct
+    that does not map (CITES, HAS_*, CITED, ...) is left out and named in `warnings` and
+    `dropped`, and `exact` is false whenever the translation is narrower, broader or only
+    approximate. The other targets search free text, so field codes and operators are stripped
+    and `exact` is always false. A query with errors is refused; see `validate_query`.
+    """
+    result = qm.lint(query)
+    if result.errors:
+        raise ToolError(f"Fix the query first: {_problems(result.issues)}")
+    if target == "pubmed":
+        translation = qm.translate_pubmed(query)
+        return {
+            "target": target,
+            "query": translation.query,
+            "exact": translation.exact,
+            "warnings": translation.warnings,
+            "dropped": translation.dropped,
+        }
+    from pyeuropepmc.features.search.query_translation import translate_query as to_source
+
+    return {
+        "target": target,
+        "query": to_source(result.normalized or query, target),
+        "exact": False,
+        "warnings": [
+            f"{target} searches free text: field codes, operators and quotation marks were "
+            "removed, so this is a keyword approximation of the original."
+        ],
+        "dropped": [],
+    }
+
+
+async def _seed_hits(query: str, pmids: list[str]) -> tuple[set[str], set[str]]:
+    """Of ``pmids``, those Europe PMC knows and, among them, those the query matches."""
+    client = _get_client()
+    known: set[str] = set()
+    matched: set[str] = set()
+    for start in range(0, len(pmids), bm.CHUNK_SIZE):
+        chunk = pmids[start : start + bm.CHUNK_SIZE]
+        ids = "(" + " OR ".join(f"(EXT_ID:{p} AND SRC:MED)" for p in chunk) + ")"
+        for found, text in ((known, ids), (matched, f"({query}) AND {ids}")):
+            results = await _run_blocking(
+                client.search_all,
+                text,
+                page_size=len(chunk),
+                max_results=len(chunk),
+                resultType="idlist",
+            )
+            found.update(
+                str(r.get("pmid") or r.get("id"))
+                for r in (_as_dict(x) for x in results)
+                if r.get("source", "MED") == "MED"
+            )
+    return known, matched
+
+
+def _pmid_list(values: list[str], label: str) -> list[str]:
+    bad = [v for v in values if not str(v).strip().isdigit()]
+    if bad:
+        raise ToolError(f"{label} must be PMIDs (digits only), got {bad[0]!r}")
+    return list(dict.fromkeys(str(v).strip() for v in values))
+
+
+@mcp.tool(annotations=_ro("Evaluate a query against known papers"))
+async def evaluate_query(
+    query: Annotated[str, Field(description="A Europe PMC search query")],
+    included_pmids: Annotated[
+        list[str],
+        Field(description="PMIDs the query should find", min_length=1, max_length=200),
+    ],
+    excluded_pmids: Annotated[
+        list[str] | None,
+        Field(description="PMIDs the query should not find", max_length=200),
+    ] = None,
+) -> dict[str, Any]:
+    """Score a Europe PMC query against papers you already know, for systematic-review work:
+    recall (how many of the included PMIDs it finds) and how many excluded ones it still
+    finds, with the PMIDs it misses. This runs the query on Europe PMC itself, so it measures
+    what the search really returns, not a local reading of the syntax. PMIDs that Europe PMC
+    does not know are reported apart and left out of the scores. A query with errors is
+    refused; see `validate_query`.
+    """
+    result = qm.lint(query)
+    if result.errors:
+        raise ToolError(f"Fix the query first: {_problems(result.issues)}")
+    included = _pmid_list(included_pmids, "included_pmids")
+    excluded = _pmid_list(excluded_pmids or [], "excluded_pmids")
+    try:
+        inc_known, inc_matched = await _seed_hits(query, included)
+        exc_known, exc_matched = await _seed_hits(query, excluded) if excluded else (set(), set())
+        total = await _run_blocking(_get_client().get_hit_count, query)
+    except EuropePMCError as exc:
+        raise ToolError(str(exc)) from exc
+
+    recall = len(inc_matched) / len(inc_known) if inc_known else None
+    found_any = len(inc_matched) + len(exc_matched)
+    precision = len(inc_matched) / found_any if found_any else None
+    f1 = 2 * precision * recall / (precision + recall) if precision and recall else None
+    return {
+        "total_hits": total,
+        "included": {
+            "known": len(inc_known),
+            "matched": len(inc_matched),
+            "recall": recall,
+            "missed": sorted(inc_known - inc_matched),
+            "unknown_to_europepmc": sorted(set(included) - inc_known),
+        },
+        "excluded": {
+            "known": len(exc_known),
+            "matched": len(exc_matched),
+            "matched_pmids": sorted(exc_matched),
+            "unknown_to_europepmc": sorted(set(excluded) - exc_known),
+        },
+        "precision_on_seeds": precision,
+        "f1_on_seeds": f1,
+        "warnings": [i.to_dict() for i in result.warnings],
     }
 
 

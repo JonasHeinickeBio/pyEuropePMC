@@ -366,3 +366,71 @@ class TestMCPBatchAgainstRealEuropePMC:
             body = data["results"][0]["content"]
             assert body.startswith("##")
             assert len(body.splitlines()) > 1  # a section with text, not a bare heading
+
+
+@pytest.mark.network
+class TestMCPQueryToolsAgainstRealEuropePMC:
+    async def test_the_linter_flags_what_europepmc_silently_accepts(self):
+        """The premise of validate_query: a broken query returns numbers, not an error."""
+        async with _server_session() as (session, _init_result):
+            broken = "malaria AND (dengue OR zika"
+            fixed = "malaria AND (dengue OR zika)"
+            verdict = await session.call_tool("validate_query", {"query": broken})
+            assert verdict.structuredContent["valid"] is False
+            assert verdict.structuredContent["problems"][0]["code"] == "UNMATCHED_PAREN"
+            ok = await session.call_tool("validate_query", {"query": fixed})
+            assert ok.structuredContent["valid"] is True
+
+            counts = {}
+            for label, query in (("broken", broken), ("fixed", fixed)):
+                result = await session.call_tool("count_papers", {"query": query})
+                assert result.isError is False
+                counts[label] = result.structuredContent["hit_count"]
+            assert counts["broken"] != counts["fixed"]  # a different question, no error
+
+    async def test_a_built_query_runs(self):
+        async with _server_session() as (session, _init_result):
+            built = await session.call_tool(
+                "build_query",
+                {
+                    "all_of": ["heart attack"],
+                    "none_of": ["rat"],
+                    "date_from": "2020",
+                    "date_to": "2021-12-31",
+                    "open_access": True,
+                    "source": "MED",
+                },
+            )
+            assert built.isError is False
+            query = built.structuredContent["query"]
+            counted = await session.call_tool("count_papers", {"query": query})
+            assert counted.isError is False
+            assert counted.structuredContent["hit_count"] > 100
+
+    async def test_evaluate_query_scores_against_known_papers(self):
+        async with _server_session() as (session, _init_result):
+            result = await session.call_tool(
+                "evaluate_query",
+                {
+                    "query": '"dual-RNA" AND endonuclease',
+                    "included_pmids": ["22745249", "16004729"],
+                    "excluded_pmids": ["31636443"],
+                },
+            )
+            data = result.structuredContent
+            assert result.isError is False
+            assert data["included"]["matched"] == 1
+            assert data["included"]["missed"] == ["16004729"]
+            assert data["included"]["recall"] == 0.5
+            assert data["excluded"]["matched"] == 0
+            assert data["total_hits"] > 0
+
+    async def test_translate_query_for_pubmed(self):
+        async with _server_session() as (session, _init_result):
+            result = await session.call_tool(
+                "translate_query",
+                {"query": "TITLE:crispr AND PUB_YEAR:[2020 TO 2022] AND SRC:MED"},
+            )
+            assert result.isError is False
+            assert result.structuredContent["query"] == "crispr[ti] AND 2020:2022[dp]"
+            assert result.structuredContent["exact"] is True
