@@ -4,6 +4,11 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
+## [3.7.0] - 2026-10-19
+
+> MCP release: export. `export_papers` turns a search or a list of identifiers into BibTeX,
+> RIS, CSL-JSON, CSV, JSON or Markdown. The server now has 40 tools.
+
 ### ✨ Features
 
 - New MCP tool `export_papers`: papers as BibTeX, RIS, CSL-JSON, CSV, JSON or
@@ -17,6 +22,12 @@ All notable changes to PyEuropePMC are documented here.
   says that some were left out and `next_skip` or `remaining` say where to
   continue. Nothing is written to disk. DOIs are passed through untouched; old
   ones such as `10.1002/(SICI)...<1661::AID-SIM968>3.0.CO;2-2` contain `<...>`.
+
+### 🔧 Maintenance
+
+- Dependency updates: coverage 7.16.2, cachetools 7.2, langchain 1.4, urllib3 2.8.0 and
+  newer GitHub Actions (checkout 7, setup-uv 10.3, codecov-action 7.1). `mcp` 2.x is not
+  supported yet (tracked in #334); Dependabot ignores major `mcp` bumps until then.
 
 ## [3.6.0] - 2026-10-19
 
