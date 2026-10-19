@@ -4,6 +4,11 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
+## [3.6.0] - 2026-10-19
+
+> MCP release: service status and cache tools. `epmc_status` tells an agent whether a failure is
+> Europe PMC's before it retries. The server now has 39 tools.
+
 ### ✨ Features
 
 - New MCP tools `epmc_status`, `cache_status` and `clear_cache`. `epmc_status`
