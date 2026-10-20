@@ -24,7 +24,7 @@ FIXTURES = Path(__file__).parents[2] / "fixtures" / "links"
 
 
 def _load(name: str) -> dict:
-    return json.loads((FIXTURES / name).read_text())
+    return json.loads((FIXTURES / name).read_text(encoding="utf-8"))
 
 
 SNPS = _load("data_MED_32257953.json")

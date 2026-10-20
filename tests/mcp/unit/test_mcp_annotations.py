@@ -21,8 +21,10 @@ from pyeuropepmc.core.exceptions import APIClientError
 from pyeuropepmc.mcp import _annotations as ann, server as srv
 
 FIXTURES = Path(__file__).parents[2] / "fixtures" / "annotations"
-BY_ARTICLE = json.loads((FIXTURES / "by_article_abstract_MED_16004729.json").read_text())
-BY_ENTITY = json.loads((FIXTURES / "by_entity_CHEBI_16236.json").read_text())
+BY_ARTICLE = json.loads(
+    (FIXTURES / "by_article_abstract_MED_16004729.json").read_text(encoding="utf-8")
+)
+BY_ENTITY = json.loads((FIXTURES / "by_entity_CHEBI_16236.json").read_text(encoding="utf-8"))
 
 
 def _run(coro):

@@ -25,7 +25,7 @@ import pytest
 from pyeuropepmc.mcp import _batch as bm, _export as ex, server as srv
 
 FIXTURES = Path(__file__).parents[2] / "fixtures" / "export"
-RECORDS = json.loads((FIXTURES / "records.json").read_text())
+RECORDS = json.loads((FIXTURES / "records.json").read_text(encoding="utf-8"))
 EXT = {
     "bibtex": "bib",
     "ris": "ris",
@@ -76,7 +76,7 @@ class TestGolden:
     @pytest.mark.parametrize("fmt", list(EXT))
     def test_output_matches_the_reviewed_file(self, name, fmt):
         text, _kept = render(fmt, [RECORDS[name]])
-        golden = (FIXTURES / "golden" / f"{name}.{EXT[fmt]}").read_text()
+        golden = (FIXTURES / "golden" / f"{name}.{EXT[fmt]}").read_text(encoding="utf-8")
         # RIS ends an entry with "ER  - " (a trailing space is conventional); the repository's
         # trailing-whitespace hook strips it from the golden file, so compare without it.
         assert _trimmed(text) == _trimmed(golden)
@@ -92,7 +92,7 @@ class TestBibtexNeedsNoExtra:
         assert text.startswith("@article{vasiliou2005analysis,")
 
     def test_the_module_does_not_import_the_library_bibliography_code(self):
-        source = Path(ex.__file__).read_text()
+        source = Path(ex.__file__).read_text(encoding="utf-8")
         pattern = r"^\s*(?:from|import)\s+pyeuropepmc\.features\.bibliography"
         imports = re.findall(pattern, source, re.M)
         assert imports == []
