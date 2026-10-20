@@ -85,7 +85,7 @@ def _reset_state():
 class TestEndpointList:
     def test_it_matches_the_health_workflow(self):
         """One list, two places: a change to one without the other must fail here."""
-        text = WORKFLOW.read_text()
+        text = WORKFLOW.read_text(encoding="utf-8")
         block = text[
             text.index("ENDPOINTS=(") : text.index("\n          )", text.index("ENDPOINTS=("))
         ]
