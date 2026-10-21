@@ -4,6 +4,11 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
+## [4.0.1] - 2026-10-21
+
+> Patch release: connections no longer stall for 30 to 60 seconds on a network with an IPv6
+> address but no IPv6 route.
+
 ### 🐛 Fixed
 
 - A new connection no longer waits for a dead IPv6 address. Python tries a host's addresses one
