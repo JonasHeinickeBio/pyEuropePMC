@@ -23,6 +23,11 @@ logger = logging.getLogger(__name__)
 __all__ = ["EuropePMCEnrichmentClient"]
 
 
+# Words in a Europe PMC comment/correction type that mark a notice about the paper
+# itself ("Retraction in", "Erratum in", "Update in", ...) rather than a comment on it.
+_NOTICE_WORDS = ("retraction", "erratum", "correction", "update", "concern", "republished")
+
+
 class EuropePMCEnrichmentClient:
     """
     Enrichment adapter around the native Europe PMC :class:`SearchClient`.
@@ -141,6 +146,21 @@ class EuropePMCEnrichmentClient:
                 }
             )
 
+        corrections: list[dict[str, Any]] = []
+        for c in (rec.get("commentCorrectionList", {}) or {}).get("commentCorrection", []) or []:
+            kind = str(c.get("type") or "")
+            if any(word in kind.lower() for word in _NOTICE_WORDS):
+                corrections.append(
+                    {
+                        "type": kind,
+                        "source": c.get("source"),
+                        "id": c.get("id"),
+                        "reference": c.get("reference"),
+                    }
+                )
+
+        pub_types = (rec.get("pubTypeList", {}) or {}).get("pubType") or []
+
         full_text_urls: list[str] = []
         for u in (rec.get("fullTextUrlList", {}) or {}).get("fullTextUrl", []) or []:
             url = u.get("url")
@@ -175,4 +195,6 @@ class EuropePMCEnrichmentClient:
             "mesh_terms": mesh_terms or None,
             "grants": grants or None,
             "full_text_urls": full_text_urls or None,
+            "corrections": corrections or None,
+            "is_retracted": "Retracted Publication" in pub_types,
         }

@@ -26,6 +26,7 @@ Two tools need configuration. `find_open_access` reads `UNPAYWALL_EMAIL` (Unpayw
 | Test a query against papers you already know | `evaluate_query` |
 | Search | `search_papers` (Europe PMC), `unified_search` (several sources, duplicates merged), `search_authors` |
 | Look up papers you have identifiers for | `get_paper_details` (one), `get_papers_batch` (up to 100) |
+| See impact, funders, institutions and retractions of one paper | `enrich_paper` |
 | Read a paper | `get_paper_fulltext`, `get_papers_fulltext_batch`, `paper_figures` |
 | Find a free copy of a paper that is not open access in Europe PMC | `find_open_access` |
 | Find genes, chemicals, diseases | `get_paper_annotations`, `find_papers_by_entity` |
@@ -70,6 +71,17 @@ get_paper_fulltext       pmcid="PMC5321187", format="sections", sections=["Metho
 
 Europe PMC serves full-text XML only for papers in its open-access set. For any other paper, `find_open_access` asks Unpaywall where a free copy is (publisher, repository or preprint) and returns the best link, the licence and a few alternatives.
 
+### Impact, funding and retractions
+
+```text
+enrich_paper  doi="10.1016/S0140-6736(97)11096-0", include=["updates", "impact"]
+enrich_paper  pmid="26017442", sources=["crossref", "openalex"], time_budget=20
+```
+
+`enrich_paper` asks Europe PMC, Crossref, OpenAlex, Semantic Scholar and iCite (and Unpaywall once `UNPAYWALL_EMAIL` is set) at the same time and merges their answers into one record of a few kilobytes, usually in two seconds (see [how long it takes](#how-long-enrich_paper-takes)). `ror_details=true` adds each institution's city, country code, website and coordinates from ROR, at about 0.3 seconds per distinct institution. `include` picks the groups: `impact`, `funding`, `affiliations`, `oa` and `updates`. `updates` lists correction and retraction notices from Crossref and Europe PMC and sets `is_retracted`; it means that no retraction notice was found there, not that none exists anywhere.
+
+Look at `sources` before trusting a gap. Each source is `ok`, `empty` (it answered without data), `error` (with the reason, for example a Semantic Scholar rate limit), `timeout` (still running when `time_budget` ended, 30 seconds by default) or `unavailable` (the extra or e-mail address it needs is missing). `complete` is true only when every source answered. A failed source gives a partial record, never an error.
+
 ### Entities, data and supplements
 
 ```text
@@ -98,6 +110,43 @@ These were measured against the live service in October 2026. The tools handle t
 - **`labsLinks` ignores its provider filter** and `datalinks` ignores its page size. `get_paper_lab_links` and `get_paper_data_links` filter and limit on the server side.
 - **Unknown identifiers** get an empty answer with HTTP 200 from the link services. Identifiers are checked before the request, and a paper without links gives an empty list, which is a valid result.
 
+## How long `enrich_paper` takes
+
+Measured on 21 October 2026 with `benchmarks/benchmark_enrich_paper.py`: three papers (a retracted paper with 24 authors, a three-author paper from a DOI, an open-access paper), three calls each, one at a time against the live services. One Linux machine, Python 3.10, no API keys and no e-mail addresses configured (so Semantic Scholar, OpenAlex and Crossref ran without their polite or authenticated pools), no caching. Public services vary by network and by day: read these as the order of magnitude, not as a guarantee. Run the script to measure your own setup.
+
+**Time of a whole call**, in seconds, median (fastest to slowest of 9 calls). Every call also asks Europe PMC, which resolves the identifier first; that lookup takes about 1.4 s of every figure below.
+
+| Sources asked | Call | Answer size |
+|---|---|---|
+| Europe PMC only | 1.8 (1.7 to 4.9) | 3.0 KB (the merged record, without the tool's framing) |
+| + Crossref | 1.7 (1.7 to 3.7) | 2.9 KB |
+| + OpenAlex | 1.9 (1.7 to 31.9) | 4.4 KB |
+| + Semantic Scholar | 1.8 (1.7 to 4.5) | 1.8 KB |
+| + iCite | 1.9 (1.6 to 4.2) | 1.8 KB |
+| **All sources (default)** | **2.0** (1.6 to 74.4) | 5.6 KB |
+| All sources + `ror_details` | 5.3 (1.9 to 32.3) | 7.8 KB |
+
+The sources run at the same time, so asking for all of them costs about as much as the slowest one, not their sum. Adding a source mostly adds data, not time. The answer is 2 to 8 KB, well under 15 KB; the size depends on the number of authors, institutions and funders more than on the sources.
+
+**Time of each source** inside those calls (its own request, seconds, median and range over 9 to 63 calls):
+
+| Source | Median | Range |
+|---|---|---|
+| Europe PMC | 0.4 | 0.4 to 33.7 |
+| Crossref | 0.1 | 0.1 to 35.8 |
+| iCite | 0.3 | 0.1 to 36.2 |
+| OpenAlex | 0.4 | 0.3 to 73.0 |
+| Semantic Scholar | 0.4 | 0.3 to 2.9 |
+| ROR (`ror_details`) | about 0.3 per distinct institution | 0.1 to 0.3 s for 1 institution, 1.3 to 1.7 s for 5, 3.4 to 7.4 s for 12 |
+
+**ROR details cost about 0.3 s per distinct institution.** For the three papers the median call went from about 2 s to 3.6, 4.0 and 5.4 s. A later single pass (one call per paper) gave 8.5 s as the median with ROR, with the ROR step between 0.3 and 6.7 s, so expect a few seconds with a wide spread. The lookup runs once, after the merge, and each institution is fetched once however many authors share it (the retracted paper has 13 author-institution pairs but one institution, so one request). An earlier version fetched every institution twice, once inside the OpenAlex client and once in the enricher, and once per author-institution pair inside OpenAlex: 14 ROR requests for the retracted paper instead of 1, 29 instead of 12 for the open-access paper, and a median of 8.4 s instead of 5.3 s with ROR on.
+
+**Slow outliers.** 4 of the 72 calls (the 63 of the first pass and 9 repeats of the ROR row after the change) had a source wait 30 to 36 s before it answered: OpenAlex in all four and, in one of them, Europe PMC, Crossref and iCite as well (74 s in all). Because that call stalled several sources at once, it looks like a network stall on the measuring machine, not a slow source. With the default `time_budget` of 30 s such a call is reported as `timeout` for the sources still waiting, and the rest of the record is returned. Raise `time_budget` (up to 120) if you would rather wait for a slow source than get a partial record.
+
+**Failures.** Semantic Scholar did not know the DOI-only paper and answered "not found" in all 9 calls for it, which shows up as `error` in `sources` and does not affect the rest. No rate limit (HTTP 429) occurred in these calls without an API key; if one does, the source shows `error` with the reason and the record is partial.
+
+**Cost control.** Pass `sources` to leave out sources you do not need, keep `ror_details` off unless you want an institution's place or website, and lower `time_budget` for an interactive answer. A slow request that misses the budget keeps its worker thread until it ends; each enricher allows at most four requests per source in flight, so repeated calls against a stalled service queue up, and are reported as `timeout`, instead of starting more threads.
+
 ## When something fails
 
 Call `epmc_status` first. It makes one request to each of the four endpoints the tools depend on (search, full text, citations, annotations) and answers `ok`, `degraded`, `down` or `unknown` with the HTTP status and the time of each. The answer is kept for 30 seconds, so asking again does not add load to a service that may be struggling. If Europe PMC is healthy and a result looks stale, `cache_status` shows the hit rate of the in-memory caches and `clear_cache` empties one of them (`search`, `article`, `annotations`, `xml` or `all`); nothing on disk is touched.
@@ -111,6 +160,7 @@ A failed call comes back with `isError: true` and a message that names the cause
 | `get_papers_batch` | 100 identifiers per call, looked up 50 at a time |
 | `get_papers_fulltext_batch` | 20 papers, within `max_chars_per_paper` and `max_total_chars` |
 | `evaluate_query` | 200 included and 200 excluded PMIDs |
+| `enrich_paper` | `time_budget` 2 to 120 seconds (30 by default); at most 30 authors, 20 funders and 20 notices in the answer; at most four requests per source in flight |
 | `export_papers` | 1,000 records per call; continue with `skip` or the `remaining` ids |
 | `find_papers_by_entity` | 1 to 8 articles per page, continued with `cursor` |
 | `get_paper_fulltext` | `max_chars` up to 500,000 |

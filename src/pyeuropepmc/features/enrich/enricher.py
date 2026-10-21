@@ -5,11 +5,14 @@ This module provides a high-level interface for enriching paper metadata
 using multiple external APIs (CrossRef, Unpaywall, Semantic Scholar, OpenAlex).
 """
 
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from collections.abc import Iterable
+from concurrent.futures import ThreadPoolExecutor, TimeoutError as FuturesTimeout, as_completed
 import json
 import logging
 from pathlib import Path
 import re
+import threading
+import time
 from typing import Any, cast
 from urllib.parse import urlparse
 
@@ -58,7 +61,7 @@ class PaperEnricher:
     >>> print(f"Citations: {enriched['merged'].get('citation_count')}")
     """
 
-    def __init__(self, config: EnrichmentConfig) -> None:
+    def __init__(self, config: EnrichmentConfig, max_workers: int | None = None) -> None:
         """
         Initialize paper enricher.
 
@@ -66,8 +69,17 @@ class PaperEnricher:
         ----------
         config : EnrichmentConfig
             Configuration for enrichment
+        max_workers : int, optional
+            Upper bound on source requests in flight across all ``enrich_paper`` calls of this
+            enricher (default: four per source, at least four). A source that misses a
+            ``time_budget`` keeps its worker until its request ends, so a cap keeps repeated
+            calls against a slow source from piling up threads; calls beyond the cap wait for
+            a free worker and are reported as ``timeout`` if the budget ends first.
         """
         self.config = config
+        self._max_workers = max_workers
+        self._pool: ThreadPoolExecutor | None = None
+        self._pool_lock = threading.Lock()
         self.clients: dict[str, Any] = {}
         self.merger = DataMerger()
         self.reporter = EnrichmentReporter()
@@ -126,6 +138,10 @@ class PaperEnricher:
                     rate_limit_delay=config.rate_limit_delay,
                     cache_config=config.cache_config,
                     email=config.openalex_email,
+                    # ROR is looked up once, after the merge, by this enricher (deduplicated
+                    # and inside the time budget). The OpenAlex client's own lookup would
+                    # fetch the same records a second time, one request per institution.
+                    enable_ror_enrichment=False,
                 ),
             ),
             (
@@ -170,8 +186,22 @@ class PaperEnricher:
         """Exit context manager and clean up resources."""
         self.close()
 
+    def _get_pool(self) -> ThreadPoolExecutor:
+        """The shared worker pool, created on first use (and again after ``close()``)."""
+        with self._pool_lock:
+            if self._pool is None:
+                workers = self._max_workers or max(4, 4 * len(self.clients))
+                self._pool = ThreadPoolExecutor(
+                    max_workers=workers, thread_name_prefix="pyeuropepmc-enrich"
+                )
+            return self._pool
+
     def close(self) -> None:
-        """Close all API clients."""
+        """Close all API clients and release the worker pool (slow requests are not waited for)."""
+        with self._pool_lock:
+            pool, self._pool = self._pool, None
+        if pool is not None:
+            pool.shutdown(wait=False, cancel_futures=True)
         for name, client in self.clients.items():
             try:
                 client.close()
@@ -184,6 +214,9 @@ class PaperEnricher:
         identifier: str | None = None,
         save_responses: bool = False,
         save_dir: str | Path | None = None,
+        *,
+        only_sources: Iterable[str] | None = None,
+        time_budget: float | None = None,
         **kwargs: Any,
     ) -> dict[str, Any]:
         """
@@ -201,13 +234,23 @@ class PaperEnricher:
             Write raw + merged JSON to ``save_dir`` (default: ``False``).
         save_dir : str or Path, optional
             Directory for response files (default: the current working dir).
+        only_sources : iterable of str, optional
+            Query only these configured sources (default: all of them). ROR is
+            not affected; it follows ``EnrichmentConfig.enable_ror``.
+        time_budget : float, optional
+            Seconds to wait for the sources together (default: no limit). A source
+            that has not answered by then is reported as ``timeout`` and left out
+            of the merge; its request is not cancelled and ends on its own.
         **kwargs
             Additional parameters passed through to each source's ``enrich()``.
 
         Returns
         -------
         dict
-            ``{identifier, doi, pmid, sources: [...], <source>: <data>, merged: {...}}``.
+            ``{identifier, doi, pmid, sources: [...], source_status: {...},
+            <source>: <data>, merged: {...}}``. ``source_status`` has an entry per
+            configured source: ``{"status": "ok" | "empty" | "error" | "timeout" |
+            "skipped", "seconds": float, "error": str}``.
 
         Raises
         ------
@@ -243,27 +286,55 @@ class PaperEnricher:
             if name != "ror"
         }
         runnable = {n: t for n, t in targets.items() if t}
+        wanted = None if only_sources is None else set(only_sources)
+        status: dict[str, dict[str, Any]] = {}
+        for name in targets:
+            if name not in runnable:
+                status[name] = {"status": "skipped", "reason": "no usable identifier"}
+            elif wanted is not None and name not in wanted:
+                status[name] = {"status": "skipped", "reason": "not requested"}
+                del runnable[name]
+        results["source_status"] = status
+        fan_out_started = time.monotonic()
 
-        def _one(name: str) -> tuple[str, Any]:
+        def _one(name: str) -> tuple[str, Any, float]:
+            started = time.monotonic()
             client = self.clients[name]
-            return name, client.enrich(identifier=runnable[name], **kwargs)
+            data = client.enrich(identifier=runnable[name], **kwargs)
+            return name, data, time.monotonic() - started
 
         if runnable:
-            with ThreadPoolExecutor(max_workers=len(runnable)) as pool:
-                futures = {pool.submit(_one, n): n for n in runnable}
-                for fut in as_completed(futures):
+            pool = self._get_pool()
+            futures = {pool.submit(_one, n): n for n in runnable}
+            try:
+                for fut in as_completed(futures, timeout=time_budget):
                     name = futures[fut]
                     try:
-                        _, data = fut.result()
+                        _, data, seconds = fut.result()
                     except Exception as e:  # noqa: BLE001 - per-source, keep going
                         logger.error("Error enriching from %s: %s", name, e, exc_info=True)
+                        status[name] = {"status": "error", "error": self._describe_error(e)}
                         continue
+                    status[name] = {
+                        "status": "ok" if data else "empty",
+                        "seconds": round(seconds, 2),
+                    }
                     if data:
                         results[name] = data
                         results["sources"].append(name)
                         logger.info("Enriched from %s", name)
                     else:
                         logger.debug("No data from %s", name)
+            except FuturesTimeout:
+                waited = round(time.monotonic() - fan_out_started, 2)
+                for fut, name in futures.items():
+                    if name in status:
+                        continue
+                    status[name] = {"status": "timeout", "seconds": waited}
+                    # A task that never got a worker is withdrawn; a running one ends on its own.
+                    if fut.cancel():
+                        status[name]["reason"] = "not started: workers busy with slow requests"
+                    logger.warning("%s did not answer within %ss", name, time_budget)
 
         # Merge results
         if results["sources"]:
@@ -275,8 +346,20 @@ class PaperEnricher:
 
         # Enrich institutions with ROR data if ROR is enabled and we have author data
         if self.config.enable_ror and results.get("merged", {}).get("authors"):
+            ror_started = time.monotonic()
+            ror_stats: dict[str, int] = {}
+            deadline = None if time_budget is None else fan_out_started + time_budget
             try:
-                ror_enriched_institutions = self._enrich_institutions_with_ror(results["merged"])
+                ror_enriched_institutions = self._enrich_institutions_with_ror(
+                    results["merged"], deadline=deadline, stats=ror_stats
+                )
+                ror_seconds = round(time.monotonic() - ror_started, 2)
+                if ror_stats.get("done", 0) < ror_stats.get("total", 0):
+                    status["ror"] = {"status": "timeout", "seconds": ror_seconds, **ror_stats}
+                elif ror_enriched_institutions:
+                    status["ror"] = {"status": "ok", "seconds": ror_seconds, **ror_stats}
+                else:
+                    status["ror"] = {"status": "empty", "seconds": ror_seconds, **ror_stats}
                 if ror_enriched_institutions:
                     results["ror"] = ror_enriched_institutions
                     results["sources"].append("ror")
@@ -289,6 +372,7 @@ class PaperEnricher:
                     logger.debug("No additional ROR enrichment needed")
             except Exception as e:
                 logger.error(f"Error enriching institutions with ROR: {e}")
+                status["ror"] = {"status": "error", "error": self._describe_error(e)}
 
         if save_responses:
             try:
@@ -297,6 +381,12 @@ class PaperEnricher:
                 logger.error(f"Failed to save responses: {e}")
 
         return results
+
+    @staticmethod
+    def _describe_error(exc: Exception) -> str:
+        """``ClassName: message`` for a source status, short and without line breaks."""
+        message = " ".join(str(exc).split())
+        return f"{type(exc).__name__}: {message}"[:200]
 
     def _save_responses(self, results: dict[str, Any], save_dir: str | Path | None) -> None:
         """
@@ -324,7 +414,7 @@ class PaperEnricher:
         # Save raw responses for each source
         for source in results:
             if (
-                source not in ["identifier", "doi", "pmid", "sources", "merged"]
+                source not in ["identifier", "doi", "pmid", "sources", "source_status", "merged"]
                 and results.get(source) is not None
             ):
                 filename = save_dir / f"raw_{source}_{safe_doi}.json"
@@ -578,7 +668,12 @@ class PaperEnricher:
             logger.error(f"Error generating enrichment report: {e}", exc_info=True)
             raise
 
-    def _enrich_institutions_with_ror(self, merged_data: dict[str, Any]) -> dict[str, Any]:
+    def _enrich_institutions_with_ror(
+        self,
+        merged_data: dict[str, Any],
+        deadline: float | None = None,
+        stats: dict[str, int] | None = None,
+    ) -> dict[str, Any]:
         """
         Enrich institutions in author data with detailed ROR information.
 
@@ -588,6 +683,11 @@ class PaperEnricher:
         ----------
         merged_data : dict
             Merged enrichment data containing authors
+        deadline : float, optional
+            ``time.monotonic()`` value after which no further institution is fetched.
+        stats : dict, optional
+            Filled with ``total`` (institutions to fetch) and ``done`` (fetched or
+            attempted before the deadline).
 
         Returns
         -------
@@ -626,7 +726,14 @@ class PaperEnricher:
 
         # Enrich each ROR ID
         enriched_institutions = {}
+        if stats is not None:
+            stats.update(total=len(ror_ids_to_enrich), done=0)
         for ror_id in ror_ids_to_enrich:
+            if deadline is not None and time.monotonic() >= deadline:
+                logger.warning("ROR enrichment stopped at the time budget")
+                break
+            if stats is not None:
+                stats["done"] += 1
             try:
                 logger.debug(f"Enriching institution with ROR ID: {ror_id}")
                 ror_data = ror_client.enrich(identifier=ror_id)

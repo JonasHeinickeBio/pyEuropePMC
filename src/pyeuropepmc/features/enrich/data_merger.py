@@ -51,6 +51,7 @@ class DataMerger:
         merged.update(self._merge_bibliographic_info(results))
         merged.update(self._merge_references(results))
         merged.update(self._merge_epmc_fields(results))
+        merged.update(self._merge_updates(results))
 
         # Apply ROR enrichment to institutions in authors
         self._apply_ror_enrichment_to_authors(merged, results)
@@ -178,6 +179,39 @@ class DataMerger:
         ):
             if epmc.get(src_key):
                 out[dst_key] = epmc[src_key]
+        return out
+
+    def _merge_updates(self, results: dict[str, Any]) -> dict[str, Any]:
+        """Corrections and retractions from Crossref and Europe PMC, and ``is_retracted``.
+
+        ``is_retracted`` is set only when Crossref or Europe PMC answered: it says no
+        retraction notice was found there, not that none exists anywhere.
+        """
+        epmc: dict[str, Any] = results.get("europepmc") or {}
+        crossref: dict[str, Any] = results.get("crossref") or {}
+        if not isinstance(epmc, dict) or not isinstance(crossref, dict):
+            return {}
+        if not epmc and not crossref:
+            return {}
+        updates: list[dict[str, Any]] = []
+        seen: set[tuple[str, str]] = set()
+        for entry in crossref.get("updates") or []:
+            key = (str(entry.get("type") or "").lower(), str(entry.get("doi") or "").lower())
+            if key not in seen:
+                seen.add(key)
+                updates.append({**entry, "from": "crossref"})
+        for entry in epmc.get("corrections") or []:
+            key = (str(entry.get("type") or "").lower(), str(entry.get("id") or ""))
+            if key not in seen:
+                seen.add(key)
+                updates.append({**entry, "from": "europepmc"})
+        retracted = bool(epmc.get("is_retracted")) or any(
+            u.get("direction") == "updated_by" and str(u.get("type") or "").lower() == "retraction"
+            for u in crossref.get("updates") or []
+        )
+        out: dict[str, Any] = {"is_retracted": retracted}
+        if updates:
+            out["updates"] = updates
         return out
 
     def _merge_additional_metrics(self, results: dict[str, Any]) -> dict[str, Any]:

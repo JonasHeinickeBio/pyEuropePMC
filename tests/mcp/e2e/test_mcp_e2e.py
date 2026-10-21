@@ -22,6 +22,7 @@ from __future__ import annotations
 from contextlib import asynccontextmanager
 import csv
 import io
+import json
 import os
 import re
 import sys
@@ -590,3 +591,47 @@ class TestMCPLinksAgainstRealEuropePMC:
             assert none.structuredContent["links"] == []
             bad = await session.call_tool("get_paper_lab_links", {"pmid": "abc"})
             assert bad.isError is True
+
+
+@pytest.mark.network
+class TestMCPEnrichAgainstRealSources:
+    async def test_a_well_known_paper_has_europe_pmc_and_another_source(self):
+        async with _server_session() as (session, _init_result):
+            result = await session.call_tool(
+                "enrich_paper", {"doi": "10.1038/nature14539", "time_budget": 120}
+            )
+            data = result.structuredContent
+            assert result.isError is False
+            assert data["found"] is True
+            assert data["article"]["pmid"] == "26017442"
+            assert data["article"]["title"].lower().startswith("deep learning")
+            status = {name: entry["status"] for name, entry in data["sources"].items()}
+            assert status["europepmc"] == "ok"
+            assert {status["crossref"], status["icite"]} & {"ok"}
+            assert set(status.values()) <= {"ok", "empty", "error", "timeout", "unavailable"}
+            assert data["impact"]["citation_count"] > 10_000
+            assert len(json.dumps(data)) < 15_000
+
+    async def test_a_retracted_paper_says_so(self):
+        async with _server_session() as (session, _init_result):
+            result = await session.call_tool(
+                "enrich_paper",
+                {
+                    "pmid": "9500320",
+                    "include": ["updates"],
+                    "sources": ["crossref"],
+                    "time_budget": 60,
+                },
+            )
+            data = result.structuredContent
+            assert result.isError is False
+            assert set(data) >= {"article", "updates", "sources"}
+            assert "impact" not in data
+            assert data["updates"]["is_retracted"] is True
+            assert {u["from"] for u in data["updates"]["updates"]} >= {"crossref", "europepmc"}
+            assert set(data["sources"]) == {"europepmc", "crossref"}
+
+    async def test_a_bad_identifier_is_refused_before_any_request(self):
+        async with _server_session() as (session, _init_result):
+            result = await session.call_tool("enrich_paper", {"pmid": "abc"})
+            assert result.isError is True

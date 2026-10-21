@@ -1,0 +1,331 @@
+{
+ "identifier": "10.1038/nature14539",
+ "doi": "10.1038/nature14539",
+ "pmid": "26017442",
+ "sources": [
+  "crossref",
+  "europepmc",
+  "icite",
+  "openalex"
+ ],
+ "source_status": {
+  "semantic_scholar": {
+   "status": "error",
+   "error": "APIClientError: [GENERIC002] get_paper(10.1038/nature14539) failed: Paper with id 10.1038/nature14539 not found"
+  },
+  "crossref": {
+   "status": "ok",
+   "seconds": 0.55
+  },
+  "europepmc": {
+   "status": "ok",
+   "seconds": 0.59
+  },
+  "icite": {
+   "status": "ok",
+   "seconds": 1.18
+  },
+  "openalex": {
+   "status": "ok",
+   "seconds": 32.63
+  }
+ },
+ "europepmc": {
+  "source": "europepmc",
+  "id": "26017442",
+  "source_db": "MED",
+  "doi": "10.1038/nature14539",
+  "pmid": "26017442",
+  "pmcid": null,
+  "title": "Deep learning.",
+  "abstract": "Deep learning allows computational models that are composed of multiple processing layers to learn representations of data with multiple levels of abstraction. These methods have dramatically improved",
+  "author_string": "LeCun Y, Bengio Y, Hinton G.",
+  "journal": "Nature",
+  "publication_year": 2015,
+  "publication_type": [
+   "Research Support, Non-U.S. Gov't",
+   "Review",
+   "Research Support, U.S. Gov't, Non-P.H.S.",
+   "Journal Article"
+  ],
+  "citation_count": 19318,
+  "is_open_access": false,
+  "in_epmc": false,
+  "in_pmc": false,
+  "has_pdf": false,
+  "has_fulltext_xml": true,
+  "mesh_terms": [
+   "Language",
+   "Algorithms",
+   "Artificial Intelligence",
+   "Computers",
+   "Neural Networks, Computer"
+  ],
+  "grants": null,
+  "full_text_urls": [
+   "https://hal.science/hal-04206682",
+   "https://doi.org/10.1038/nature14539"
+  ],
+  "corrections": null,
+  "is_retracted": false
+ },
+ "crossref": {
+  "source": "crossref",
+  "title": "Deep learning",
+  "authors": [
+   {
+    "name": "Yann LeCun",
+    "given": "Yann",
+    "family": "LeCun",
+    "affiliation": [],
+    "sequence": "first"
+   },
+   {
+    "name": "Yoshua Bengio",
+    "given": "Yoshua",
+    "family": "Bengio",
+    "affiliation": [],
+    "sequence": "additional"
+   },
+   {
+    "name": "Geoffrey Hinton",
+    "given": "Geoffrey",
+    "family": "Hinton",
+    "affiliation": [],
+    "sequence": "additional"
+   }
+  ],
+  "abstract": null,
+  "journal": "Nature",
+  "publication_date": "2015-05-27",
+  "citation_count": 78559,
+  "references_count": 103,
+  "license": {
+   "url": "https://www.springer.com/tdm",
+   "start": "2015-05-27T00:00:00Z",
+   "delay_in_days": 0
+  },
+  "funders": null,
+  "updates": null,
+  "type": "journal-article",
+  "issn": [
+   "0028-0836",
+   "1476-4687"
+  ],
+  "volume": "521",
+  "issue": "7553",
+  "page": "436-444",
+  "publisher": "Springer Science and Business Media LLC"
+ },
+ "icite": {
+  "pmid": "26017442",
+  "rcr": 737.5277303352567,
+  "percentile": 100.0,
+  "nih_percentile": 100.0,
+  "citation_count": 18319,
+  "citations_per_year": 1665.3636363636363,
+  "expected_citations": 2.2580352817467824,
+  "field_citation_ratio": null,
+  "is_research_article": false,
+  "provisional": false,
+  "year": 2015
+ },
+ "merged": {
+  "title": "Deep learning.",
+  "authors": [
+   {
+    "name": "Yann LeCun",
+    "given_name": "Yann",
+    "family_name": "LeCun",
+    "orcid": "https://orcid.org/0000-0002-1992-2684",
+    "affiliations": [],
+    "sequence": "first",
+    "sources": [
+     "crossref",
+     "openalex"
+    ],
+    "openalex_id": "https://openalex.org/A5001226970",
+    "institutions": [
+     {
+      "id": "https://openalex.org/I4210114444",
+      "display_name": "Meta (United States)",
+      "country": "United States",
+      "type": "company",
+      "ror_id": "https://ror.org/01zbnvs85"
+     },
+     {
+      "id": "https://openalex.org/I57206974",
+      "display_name": "New York University",
+      "country": "United States",
+      "type": "education",
+      "ror_id": "https://ror.org/0190ak572"
+     }
+    ],
+    "position": "first"
+   },
+   {
+    "name": "Yoshua Bengio",
+    "given_name": "Yoshua",
+    "family_name": "Bengio",
+    "orcid": "https://orcid.org/0000-0002-9322-3515",
+    "affiliations": [],
+    "sequence": "additional",
+    "sources": [
+     "crossref",
+     "openalex"
+    ],
+    "openalex_id": "https://openalex.org/A5086198262",
+    "institutions": [
+     {
+      "id": "https://openalex.org/I70931966",
+      "display_name": "Université de Montréal",
+      "country": "Canada",
+      "type": "education",
+      "ror_id": "https://ror.org/0161xgx34"
+     }
+    ],
+    "position": "middle"
+   },
+   {
+    "name": "Geoffrey Hinton",
+    "given_name": "Geoffrey",
+    "family_name": "Hinton",
+    "orcid": null,
+    "affiliations": [],
+    "sequence": "additional",
+    "sources": [
+     "crossref"
+    ]
+   },
+   {
+    "name": "Geoffrey E. Hinton",
+    "orcid": null,
+    "openalex_id": "https://openalex.org/A5108093963",
+    "institutions": [
+     {
+      "id": "https://openalex.org/I1291425158",
+      "display_name": "Google (United States)",
+      "country": "United States",
+      "type": "company",
+      "ror_id": "https://ror.org/00njsd438"
+     },
+     {
+      "id": "https://openalex.org/I185261750",
+      "display_name": "University of Toronto",
+      "country": "Canada",
+      "type": "education",
+      "ror_id": "https://ror.org/03dbr7087"
+     }
+    ],
+    "position": "last",
+    "sources": [
+     "openalex"
+    ]
+   }
+  ],
+  "abstract": "Deep learning allows computational models that are composed of multiple processing layers to learn representations of data with multiple levels of abstraction. These methods have dramatically improved",
+  "journal": "Nature",
+  "publication_year": 2015,
+  "citation_counts": [
+   {
+    "source": "europepmc",
+    "count": 19318
+   },
+   {
+    "source": "icite",
+    "count": 18319
+   },
+   {
+    "source": "crossref",
+    "count": 78559
+   },
+   {
+    "source": "openalex",
+    "count": 83826
+   }
+  ],
+  "citation_count": 83826,
+  "icite": {
+   "rcr": 737.5277303352567,
+   "percentile": 100.0,
+   "nih_percentile": 100.0
+  },
+  "is_oa": true,
+  "oa_status": "green",
+  "oa_url": "https://hal.science/hal-04206682",
+  "topics": [
+   {
+    "id": "https://openalex.org/T10320",
+    "display_name": "Neural Networks and Applications",
+    "score": 0.7842000126838684
+   },
+   {
+    "id": "https://openalex.org/T10036",
+    "display_name": "Advanced Neural Network Applications",
+    "score": 0.14509999752044678
+   },
+   {
+    "id": "https://openalex.org/T11307",
+    "display_name": "Domain Adaptation and Few-Shot Learning",
+    "score": 0.012400000356137753
+   }
+  ],
+  "license": {
+   "url": "https://www.springer.com/tdm",
+   "start": "2015-05-27T00:00:00Z",
+   "delay_in_days": 0
+  },
+  "external_ids": {
+   "openalex_id": "https://openalex.org/W2919115771",
+   "doi": "10.1038/nature14539",
+   "pmid": "26017442"
+  },
+  "biblio": {
+   "volume": "521",
+   "issue": "7553",
+   "pages": "436-444",
+   "publisher": "Springer Science and Business Media LLC",
+   "issn": [
+    "0028-0836",
+    "1476-4687"
+   ],
+   "type": "journal-article",
+   "first_page": "436",
+   "last_page": "444"
+  },
+  "references": {
+   "count": 103,
+   "cited_by_count": 83826,
+   "related_works": [
+    "https://openalex.org/W2088845016",
+    "https://openalex.org/W589102260",
+    "https://openalex.org/W1966421350",
+    "https://openalex.org/W1868434454",
+    "https://openalex.org/W4226493464",
+    "https://openalex.org/W3133861977",
+    "https://openalex.org/W2951211570",
+    "https://openalex.org/W3103566983",
+    "https://openalex.org/W3048601286",
+    "https://openalex.org/W2965925734"
+   ]
+  },
+  "mesh_terms": [
+   "Language",
+   "Algorithms",
+   "Artificial Intelligence",
+   "Computers",
+   "Neural Networks, Computer"
+  ],
+  "full_text_urls": [
+   "https://hal.science/hal-04206682",
+   "https://doi.org/10.1038/nature14539"
+  ],
+  "publication_type": [
+   "Research Support, Non-U.S. Gov't",
+   "Review",
+   "Research Support, U.S. Gov't, Non-P.H.S.",
+   "Journal Article"
+  ],
+  "is_retracted": false
+ }
+}

@@ -4,6 +4,35 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
+### ✨ Features
+
+- New MCP tool `enrich_paper`: one compact record for a paper (PMCID, PMID, DOI or doi.org URL)
+  merged from Europe PMC, Crossref, OpenAlex, Semantic Scholar, iCite and, with
+  `UNPAYWALL_EMAIL`, Unpaywall. `include` picks the field groups `impact`, `funding`,
+  `affiliations`, `oa` and `updates`; `sources` limits the sources. The answer has a `sources`
+  map with `ok`, `empty`, `error` (with the reason), `timeout` (still running when
+  `time_budget` ended) or `unavailable` for each source, so a failed source or a Semantic
+  Scholar rate limit gives a partial record. About 2 to 7 KB. Read-only: it never saves
+  responses or passes a directory to the enricher.
+- `PaperEnricher` looks ROR up once, after the merge, and no longer lets its OpenAlex client
+  fetch the same records first (one request per author-institution pair, kept by nobody):
+  with ROR on, 14 requests became 1 for a paper with one institution on 13 author lines and 29
+  became 12 for another; the median call with ROR went from 8.4 s to 5.3 s. Source requests
+  now share a worker pool capped at four per source, so repeated calls against a stalled service
+  queue (and are reported as `timeout`) instead of piling up threads. The raw `openalex` entry
+  of a `PaperEnricher` result no longer carries ROR details; the merged record and `ror` do.
+- Measured timings of `enrich_paper` per source and together are in the MCP server guide, with
+  `benchmarks/benchmark_enrich_paper.py` to repeat them.
+- `enrich_paper(ror_details=True)` adds city, country code, website and coordinates of each
+  institution from ROR. It is off by default because it costs one request per institution; the
+  time budget covers it, and the `sources` map shows `ror` with how many institutions it reached.
+- `PaperEnricher.enrich_paper` has `only_sources` and `time_budget` parameters and returns a
+  `source_status` map (`ok`, `empty`, `error`, `timeout`, `skipped`) next to `sources`, with a
+  `ror` entry when ROR is enabled. Without them it behaves as before.
+- The merged enrichment record has `is_retracted` and `updates`: correction and retraction
+  notices from Crossref (`updated-by`, `update-to`) and Europe PMC (retraction, erratum and
+  expression-of-concern links, the `Retracted Publication` type).
+
 ### 📚 Documentation
 
 - New [MCP server guide](docs/features/mcp-server.md): which tool for which job, the common
