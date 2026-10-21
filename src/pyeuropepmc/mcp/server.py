@@ -60,6 +60,7 @@ Tools:
         get_paper_lab_links   — Links to a paper from third-party providers (BioStudies, ...)
         enrich_paper          — Impact, funding, affiliations, open access, retractions of a paper
         pico_decompose        — Question to PICO/PICOS/PICOT/SPIDER elements and a checked query
+        tag_paper_sentences   — A paper's body sentences by rhetorical role (method, result, ...)
         mesh_expand           — MeSH headings, tree numbers and entry terms for search terms
 
     Screening & review:
@@ -121,6 +122,7 @@ from pyeuropepmc.mcp import (
     _openaccess as oa,
     _pico as pc,
     _query as qm,
+    _rhetoric as rh,
     _status as st,
 )
 
@@ -1130,6 +1132,149 @@ async def paper_figures(
         "counts_by_type": dict(Counter(item.get("figure_type", "") for item in items)),
         "figures": items,
     }
+
+
+# ---------------------------------------------------------------------------
+# Rhetorical roles of sentences
+# ---------------------------------------------------------------------------
+
+_MAX_LLM_SENTENCES = 40
+
+
+def _refine_with_llm(tagged: list[rh.Tagged], client: Any) -> dict[str, int]:
+    """Ask the LLM about the sentences the rules left open (unknown or below 0.4), at most
+    ``_MAX_LLM_SENTENCES`` of them, and keep its answer when it names one of our roles."""
+    from pyeuropepmc.features.fulltext.rhetorical import RhetoricalHighlighter
+
+    highlighter = RhetoricalHighlighter(use_llm=True, llm_client=client)
+    asked = failed = 0
+    for item in tagged:
+        if item.role != rh.UNKNOWN and item.confidence >= 0.4:
+            continue
+        if asked >= _MAX_LLM_SENTENCES:
+            break
+        asked += 1
+        try:
+            role, confidence = highlighter._classify_with_llm(item.sentence.text)
+        except Exception:  # noqa: BLE001 - one failed answer leaves the rule's result in place
+            failed += 1
+            continue
+        if role.value in rh.ROLES and confidence > item.confidence:
+            item.role, item.confidence, item.source = role.value, round(confidence, 2), "llm"
+    return {"asked": asked, "failed": failed}
+
+
+@mcp.tool(annotations=_ro("Tag paper sentences by role"))
+async def tag_paper_sentences(
+    pmcid: Annotated[str, Field(description="PMC ID of the article, e.g. PMC1234567")] = "",
+    pmid: Annotated[str, Field(description="PubMed ID (alternative to pmcid)")] = "",
+    doi: Annotated[str, Field(description="DOI (alternative to pmcid)")] = "",
+    roles: Annotated[
+        list[str] | None,
+        Field(
+            description="Only these roles: background, motivation, method, result, claim, "
+            "limitation, conclusion, unknown. Default: all."
+        ),
+    ] = None,
+    sections: Annotated[
+        list[str] | None,
+        Field(
+            description="Only sentences of these sections: case-insensitive substrings of a "
+            "section title, e.g. ['results', 'discussion']. Default: the whole body."
+        ),
+    ] = None,
+    min_confidence: Annotated[
+        float,
+        Field(description="A sentence the rules are less sure about is 'unknown'", ge=0, le=1),
+    ] = 0.3,
+    max_chars: Annotated[
+        int,
+        Field(
+            description="Stop after this many characters of sentence text, between sentences",
+            ge=1000,
+            le=500000,
+        ),
+    ] = 30000,
+    use_llm: Annotated[
+        bool,
+        Field(
+            description="Also ask the configured LLM about up to 40 sentences the rules left "
+            "'unknown'. Needs the agentic extra and a provider, like the other LLM tools; "
+            "the sentences are sent to it."
+        ),
+    ] = False,
+) -> dict[str, Any]:
+    """The sentences of an open-access paper's body, grouped by what they do: background,
+    motivation, method, result, claim (the authors' interpretation), limitation, conclusion.
+    Front matter, the reference list and administrative sections (acknowledgments, funding,
+    conflicts) are left out. Rule-based and offline apart from the download: the section a
+    sentence is in sets its default role and cues in the sentence correct it. Where no rule is
+    sure the sentence is `unknown` instead of a guess; in a paper without recognisable headings
+    only background, method and conclusion sentences are recognised. Measured precision per
+    role is in the guide; discussion sections are the hardest part. Sentences come in reading
+    order and are never cut: `truncated` says whether some were left out. Use it to pull the
+    methods or the results of a paper without knowing what its sections are called."""
+    _require_available(FULLTEXT_AVAILABLE, "FullTextXMLParser")
+    try:
+        wanted = rh.validate_roles(roles)
+    except ValueError as exc:
+        raise ToolError(str(exc)) from exc
+    client = None
+    if use_llm:
+        client = getattr(_require_llm(), "llm_client", None)
+        if client is None:
+            raise ToolError("The configured LLM agent has no client to classify sentences with")
+    resolved, record = await _locate_fulltext(pmcid, pmid, doi)
+    xml = await _fulltext_xml(resolved)
+
+    def _build() -> dict[str, Any]:
+        parser = FullTextXMLParser(xml)
+        all_sections = parser.get_full_text_sections_structured()
+        chosen = ft.select_sections(all_sections, sections)
+        if sections and not chosen:
+            raise ToolError(
+                f"No section matches {sections!r}. Available sections: "
+                f"{ft.section_titles(all_sections)}"
+            )
+        sentences = rh.body_sentences(chosen)
+        if not sentences:
+            raise ToolError(f"{resolved} has no body text to classify in the sections asked for")
+        tagged = rh.tag(sentences, min_confidence)
+        llm_info = _refine_with_llm(tagged, client) if client is not None else None
+        selected = [t for t in tagged if wanted is None or t.role in wanted]
+        kept, total_chars, truncated = rh.fit(selected, max_chars)
+        stats = rh.statistics(tagged)
+        notes = []
+        if set(stats["by_section_kind"]) <= {"none"}:
+            notes.append(
+                "no recognisable section headings: only the sentence cues were used, which "
+                "recognise background, method and conclusion; the rest is 'unknown'"
+            )
+        meta = parser.extract_metadata()
+        result: dict[str, Any] = {
+            "pmcid": resolved,
+            "pmid": record.get("pmid") or meta.get("pmid") or "",
+            "doi": record.get("doi") or meta.get("doi") or "",
+            "title": meta.get("title") or record.get("title") or "",
+            "roles": rh.group(kept),
+            "statistics": stats,
+            "sentences_matching": len(selected),
+            "sentences_returned": len(kept),
+            "total_chars": total_chars,
+            "returned_chars": sum(len(t.sentence.text) for t in kept),
+            "truncated": truncated,
+            "method": "rules+llm" if client is not None else "rules",
+        }
+        if llm_info is not None:
+            result["llm"] = llm_info
+        if notes:
+            result["notes"] = notes
+        return result
+
+    try:
+        return await _run_blocking(_build)
+    except ParsingError as exc:
+        raise ToolError(str(exc)) from exc
 
 
 # ---------------------------------------------------------------------------

@@ -29,6 +29,7 @@ Two tools need configuration. `find_open_access` reads `UNPAYWALL_EMAIL` (Unpayw
 | Look up papers you have identifiers for | `get_paper_details` (one), `get_papers_batch` (up to 100) |
 | See impact, funders, institutions and retractions of one paper | `enrich_paper` |
 | Read a paper | `get_paper_fulltext`, `get_papers_fulltext_batch`, `paper_figures` |
+| Pull the methods, results or limitations out of a paper whatever its headings say | `tag_paper_sentences` |
 | Find a free copy of a paper that is not open access in Europe PMC | `find_open_access` |
 | Find genes, chemicals, diseases | `get_paper_annotations`, `find_papers_by_entity` |
 | Find where the data is | `get_paper_data_links`, `get_paper_lab_links` |
@@ -101,6 +102,33 @@ get_paper_fulltext       pmcid="PMC5321187", format="sections", sections=["Metho
 `format` is `markdown`, `sections` (typed blocks) or `outline`. `max_chars` cuts the text at a block boundary and sets `truncated`, so a long paper fits in one response. `get_papers_fulltext_batch` reads up to 20 papers within a size budget and reports each paper's status (`ok`, `not_open_access`, `not_in_pmc`, `no_matching_section`, `skipped_budget`, ...).
 
 Europe PMC serves full-text XML only for papers in its open-access set. For any other paper, `find_open_access` asks Unpaywall where a free copy is (publisher, repository or preprint) and returns the best link, the licence and a few alternatives.
+
+### Pull the methods or results of a paper
+
+```text
+tag_paper_sentences  pmcid="PMC8658482", roles=["method"], sections=["methods"]
+tag_paper_sentences  doi="10.3390/jcm10235527", roles=["result", "limitation"]
+```
+
+`tag_paper_sentences` splits the body of an open-access paper into sentences and says what each one does: `background`, `motivation` (aim, hypothesis, gap), `method`, `result`, `claim` (the authors' interpretation), `limitation` or `conclusion`. Front matter, the reference list, figure and table captions and administrative sections (acknowledgments, funding, conflicts of interest, ethics and consent statements) are left out. It uses the same download and cached XML as `get_paper_fulltext`. `roles` and `sections` filter what is returned (`statistics` always counts the whole body), sentences come in reading order and are never cut, and `truncated` says whether `max_chars` left some out. A sentence no rule is sure about is `unknown`; `min_confidence` raises the bar further.
+
+It uses rules, not a model: the section a sentence is in gives its default role (methods describe what was done, results what was found) and cues in the sentence move it where a section mixes roles (a discussion restates results, cites earlier work, admits limits). The older `RhetoricalHighlighter` of the library has keyword rules written for computer-science papers; it labelled 13 of the 93 test sentences correctly, so the tool does not use it. `use_llm=true` asks the configured LLM about up to 40 sentences the rules left `unknown` (it needs the `agentic` extra and a provider like the other LLM tools, and the sentences are sent to it); that path is tested with a fake client only.
+
+Measured on 93 sentences from three open-access papers (a retrospective cohort, a yeast study, a randomized trial), labelled by hand by one annotator (`tests/fixtures/rhetoric`, `benchmarks/evaluate_rhetoric_roles.py`):
+
+| Role | Given | Precision | Gold | Recall |
+|---|---|---|---|---|
+| background | 18 | 0.94 | 20 | 0.85 |
+| motivation | 3 | 1.00 | 4 | 0.75 |
+| method | 16 | 1.00 | 17 | 0.94 |
+| result | 26 | 0.92 | 26 | 0.92 |
+| claim | 12 | 0.92 | 13 | 0.85 |
+| limitation | 6 | 1.00 | 7 | 0.86 |
+| conclusion | 5 | 1.00 | 6 | 0.83 |
+
+82 of the 93 sentences got the right role and 7 were `unknown`. By set: 43 of 46 on the sentences used while writing the rules, 22 of 23 on a paper labelled before the rules were run, and 17 of 24 on a harder sample of introduction, results and discussion sentences labelled before the rules saw them. The discussion is the hard part: a sentence there with no cue at all is `unknown`, because guessing `background` was right in only 2 of 7 such cases. The test set is small and one person labelled it and wrote the rules, so read the table as what the rules can do on ordinary biomedical papers, not as a guarantee; the precision of a role on your papers may be lower.
+
+A paper without recognisable headings (a letter, a short report) has no section to start from. Then only the sentence cues work, and only the roles they were precise for are returned: on the same 93 sentences `background` (17 of 22 given) , `method` (6 of 7) and `conclusion` (3 of 3); result, claim, limitation and motivation stay `unknown` (61 of 93 sentences), and the answer carries a note saying so.
 
 ### Impact, funding and retractions
 
@@ -192,6 +220,7 @@ A failed call comes back with `isError: true` and a message that names the cause
 | `get_papers_fulltext_batch` | 20 papers, within `max_chars_per_paper` and `max_total_chars` |
 | `evaluate_query` | 200 included and 200 excluded PMIDs |
 | `pico_decompose` | questions up to 2,000 characters; offline |
+| `tag_paper_sentences` | `max_chars` 1,000 to 500,000 (30,000 by default), whole sentences; `use_llm` looks at 40 sentences at most |
 | `mesh_expand` | 20 terms per call; offline unless `use_api` is set |
 | `enrich_paper` | `time_budget` 2 to 120 seconds (30 by default); at most 30 authors, 20 funders and 20 notices in the answer; at most four requests per source in flight |
 | `export_papers` | 1,000 records per call; continue with `skip` or the `remaining` ids |

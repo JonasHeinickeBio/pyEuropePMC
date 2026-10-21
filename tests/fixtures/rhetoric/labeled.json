@@ -1,0 +1,763 @@
+{
+ "note": "Sentences from three open-access papers, labelled by hand (one annotator) with the roles background, motivation, method, result, claim, limitation, conclusion. dev: used while writing the rules; held_out: labelled before the rules and run once afterwards; stress: 24 more sentences from the same papers (random, aimed at Introduction, Results and Discussion), labelled before the rules were run on them. Texts are quoted from the papers under their CC licences (see papers).",
+ "papers": {
+  "PMC5321187": {
+   "title": "Treatment outcomes of and prognostic factors for definitive radiotherapy with and without chemotherapy for Stage I/II nasal extranodal NK/T-cell lymphoma",
+   "license": "http://creativecommons.org/licenses/by-nc/4.0/"
+  },
+  "PMC3257301": {
+   "title": "The bZIP Transcription Factor Rca1p Is a Central Regulator of a Novel CO2 Sensing Pathway in Yeast",
+   "license": null
+  },
+  "PMC8658482": {
+   "title": "Efficacy of Exercise on Postneedling Soreness: A Randomized Controlled Trial",
+   "license": "https://creativecommons.org/licenses/by/4.0/"
+  }
+ },
+ "sentences": [
+  {
+   "id": "PMC5321187-11",
+   "paper": "PMC5321187",
+   "set": "dev",
+   "section": "INTRODUCTION",
+   "text": "L-asparaginase has been known to be an effective cytotoxic agent for ENKTL, and several L-asparginase–incorporated chemotherapy regimens have been reported to have promising clinical results associated with ENKTL treatment [16–18].",
+   "label": "background"
+  },
+  {
+   "id": "PMC5321187-13",
+   "paper": "PMC5321187",
+   "set": "dev",
+   "section": "INTRODUCTION",
+   "text": "A RT dose of 24–40 Gy was reported to achieve an optimal treatment response and local control for B-cell NHL [19], but a higher RT dose (~45–55 Gy) is required for nasal ENKTL [20, 21].",
+   "label": "background"
+  },
+  {
+   "id": "PMC5321187-14",
+   "paper": "PMC5321187",
+   "set": "dev",
+   "section": "INTRODUCTION",
+   "text": "However, the optimal dose of RT for nasal ENKTL remains unclear.",
+   "label": "motivation"
+  },
+  {
+   "id": "PMC5321187-16",
+   "paper": "PMC5321187",
+   "set": "dev",
+   "section": "MATERIALS AND METHODS/Clinicopathologic features of patients",
+   "text": "A total of 40 patients with nasal ENKTL who received RT with or without chemotherapy in our institution between October 1998 and December 2014 were retrospectively analyzed.",
+   "label": "method"
+  },
+  {
+   "id": "PMC5321187-19",
+   "paper": "PMC5321187",
+   "set": "dev",
+   "section": "MATERIALS AND METHODS/Clinicopathologic features of patients",
+   "text": "The immunochemical stains of the tumor cells of a nasal ENKTL were positive for cytoplasmic CD3 epsilon, CD2 and CD56 and were negative for CD20.",
+   "label": "method"
+  },
+  {
+   "id": "PMC5321187-37",
+   "paper": "PMC5321187",
+   "set": "dev",
+   "section": "MATERIALS AND METHODS/Radiotherapy",
+   "text": "An example of extended-field dose distribution is demonstrated in Supplementary Figure 1.",
+   "label": "method"
+  },
+  {
+   "id": "PMC5321187-39",
+   "paper": "PMC5321187",
+   "set": "dev",
+   "section": "MATERIALS AND METHODS/Chemotherapy",
+   "text": "In the current study, 8 (21.6%) patients with nasal ENKTL were treated with RT alone (RT alone group), and the other 29 (78.4%) patients received at least one course of chemotherapy (combined modality group).",
+   "label": "method"
+  },
+  {
+   "id": "PMC5321187-42",
+   "paper": "PMC5321187",
+   "set": "dev",
+   "section": "MATERIALS AND METHODS/Chemotherapy",
+   "text": "Among the 13 patients who were treated with an L-asparaginase–containing chemotherapy regimen, 8 patients received L-VP, 1 received SMILE, and 4 patients received L-CHOP.",
+   "label": "method"
+  },
+  {
+   "id": "PMC5321187-54",
+   "paper": "PMC5321187",
+   "set": "dev",
+   "section": "RESULTS/Clinicopathologic features and treatment response",
+   "text": "Twenty-seven patients (73.0%) were classified as having limited disease and 10 patients as having extensive disease, using the new stage system proposed by Kim et al. [9].",
+   "label": "result"
+  },
+  {
+   "id": "PMC5321187-56",
+   "paper": "PMC5321187",
+   "set": "dev",
+   "section": "RESULTS/Clinicopathologic features and treatment response",
+   "text": "One patient did not complete the RT course because of rapid disease progression, and the other patient died from incidentally found Type III dissected aortic aneurysm rupture.",
+   "label": "result"
+  },
+  {
+   "id": "PMC5321187-60",
+   "paper": "PMC5321187",
+   "set": "dev",
+   "section": "RESULTS/Clinicopathologic features and treatment response",
+   "text": "For 22 patients receiving a modern RT technique such as IMRT, VMAT or Tomotherapy (1 limited-field RT; 21 extended-field RT), we demonstrated an incidence of acute Grade 3 mucositis of 5/22 (22.7%) and dermatitis of 1/22 (4.5%).",
+   "label": "result"
+  },
+  {
+   "id": "PMC5321187-75",
+   "paper": "PMC5321187",
+   "set": "dev",
+   "section": "RESULTS/Clinical outcomes and prognostic factors",
+   "text": "As demonstrated in Table 3, extensive disease (Stage I/II with local invasiveness) and the presence of B symptoms were significantly associated with a poor PFS, whereas extensive disease was significantly associated with a poor OS in the univariate analysis.",
+   "label": "result"
+  },
+  {
+   "id": "PMC5321187-79",
+   "paper": "PMC5321187",
+   "set": "dev",
+   "section": "DISCUSSION",
+   "text": "The optimal treatment strategies for nasal ENKTL have not been recognized yet because of the relative resistance to anthracycline-based chemotherapy and the rarity of the disease.",
+   "label": "background"
+  },
+  {
+   "id": "PMC5321187-81",
+   "paper": "PMC5321187",
+   "set": "dev",
+   "section": "DISCUSSION",
+   "text": "However, most studies were limited by small sample size and heterogeneity of treatment.",
+   "label": "background"
+  },
+  {
+   "id": "PMC5321187-83",
+   "paper": "PMC5321187",
+   "set": "dev",
+   "section": "DISCUSSION",
+   "text": "Our findings were in line with recently published results of studies investigating the effects of RT alone or RT with chemotherapy on ENKTL, including nasal ENKTL (summarized in Table 4), with a reported overall response rate of 69–96% [2, 13, 21, 25–29].",
+   "label": "claim"
+  },
+  {
+   "id": "PMC5321187-84",
+   "paper": "PMC5321187",
+   "set": "dev",
+   "section": "DISCUSSION",
+   "text": "For nasal ENKTL, combined chemoradiotherapy (sequential or concurrent) has been reported to result in a favorable outcome [2, 9].",
+   "label": "background"
+  },
+  {
+   "id": "PMC5321187-87",
+   "paper": "PMC5321187",
+   "set": "dev",
+   "section": "DISCUSSION",
+   "text": "Lee et al. also reported that there were no differences in OS and PFS between CCRT and chemotherapy followed by RT for nasal ENKTL [26].",
+   "label": "background"
+  },
+  {
+   "id": "PMC5321187-90",
+   "paper": "PMC5321187",
+   "set": "dev",
+   "section": "DISCUSSION",
+   "text": "In the present study, we showed that among patients with limited stage, there were no statistically significant differences in LRC, PFS or OS between RT alone and combined modality treatment groups.",
+   "label": "result"
+  },
+  {
+   "id": "PMC5321187-94",
+   "paper": "PMC5321187",
+   "set": "dev",
+   "section": "DISCUSSION",
+   "text": "Our results further supported the results of a Phase II trial examining the efficacy of ‘sandwich’ L-VP treatment with RT for Stage I/II nasal ENKTL [27].",
+   "label": "claim"
+  },
+  {
+   "id": "PMC5321187-110",
+   "paper": "PMC5321187",
+   "set": "dev",
+   "section": "DISCUSSION",
+   "text": "Recently, Kim et al. proposed a new prognostic index (PINK) for NK/T-cell lymphoma based on the clinical outcome of patients with Stage I–IV nasal and non-nasal ENKTL who received non-CHOP regimens [37].",
+   "label": "background"
+  },
+  {
+   "id": "PMC5321187-118",
+   "paper": "PMC5321187",
+   "set": "dev",
+   "section": "DISCUSSION",
+   "text": "The small number of patients and heterogeneity of treatment of this study may limit the conclusion because ENKTL is a rare disease.",
+   "label": "limitation"
+  },
+  {
+   "id": "PMC5321187-120",
+   "paper": "PMC5321187",
+   "set": "dev",
+   "section": "DISCUSSION",
+   "text": "This study showed that in patients with early-stage nasal ENKTL with limited disease or good modified ENKTL prognostic scores, high-dose RT (≥50 Gy) results were promising for locoregional control and favorable outcome.",
+   "label": "conclusion"
+  },
+  {
+   "id": "PMC5321187-1",
+   "paper": "PMC5321187",
+   "set": "stress",
+   "section": "INTRODUCTION",
+   "text": "ENKTL accounts for <1% of lymphomas in western countries, but it is relatively common in Latin America [2] and Asia, where it accounts for ~3–10% of lymphomas [3, 4].",
+   "label": "background"
+  },
+  {
+   "id": "PMC5321187-3",
+   "paper": "PMC5321187",
+   "set": "stress",
+   "section": "INTRODUCTION",
+   "text": "The presence of Epstein–Barr virus (EBV) infection detected through in situ hybridization for EBV-encoded small ribonucleic acid (RNA) is a distinctive feature of ENKTL [5].",
+   "label": "background"
+  },
+  {
+   "id": "PMC5321187-70",
+   "paper": "PMC5321187",
+   "set": "stress",
+   "section": "RESULTS/Clinical outcomes and prognostic factors",
+   "text": "Among the 11 patients with recurrence or metastases, 3 (27.3%) achieved partial remission after salvage chemotherapy, and 4 received palliative radiotherapy for their metastatic lesions.",
+   "label": "result"
+  },
+  {
+   "id": "PMC5321187-73",
+   "paper": "PMC5321187",
+   "set": "stress",
+   "section": "RESULTS/Clinical outcomes and prognostic factors",
+   "text": "Among the three patients who died of intercurrent disease, two patients received RT alone (one with infection and another with aortic aneurysm rupture), whereas the other patient receiving induction chemotherapy with two courses of CHOP followed by RT developed infection-associated mortality more than 6 months after completing chemotherapy.",
+   "label": "result"
+  },
+  {
+   "id": "PMC5321187-88",
+   "paper": "PMC5321187",
+   "set": "stress",
+   "section": "DISCUSSION",
+   "text": "In a recent multicenter retrospective study, Yang et al. demonstrated that there was no difference in 5-year OS between RT alone (88.8%) and combined modality treatment (chemotherapy followed by RT (86.9%) or chemotherapy following RT (86.3%)) for early-stage nasal ENKTL with low-risk characteristics (age <60 years, Stage I, ECOG 0 or 1, serum LDH level within normal limits, and no primary tumor invasion) [29].",
+   "label": "background"
+  },
+  {
+   "id": "PMC5321187-98",
+   "paper": "PMC5321187",
+   "set": "stress",
+   "section": "DISCUSSION",
+   "text": "Furthermore, Huang et al. reported that the 5-year OS and PFS values were higher in patients receiving ≥54 Gy (5-year OS 75.5% vs 46.1%, P = 0.019; 5-year DFS 60.3% vs 33.4%, P = 0.004) [34].",
+   "label": "background"
+  },
+  {
+   "id": "PMC5321187-114",
+   "paper": "PMC5321187",
+   "set": "stress",
+   "section": "DISCUSSION",
+   "text": "Excluding 8 patients receiving RT alone and 16 patients receiving CHOP or CHOP-like regimens, 10 patients were classified as a low-risk group and 3 patients were classified as an intermediate-risk group according to the prognostic factor of age >60 years in PINK.",
+   "label": "result"
+  },
+  {
+   "id": "PMC5321187-119",
+   "paper": "PMC5321187",
+   "set": "stress",
+   "section": "DISCUSSION",
+   "text": "Although the number of enrolled patients was small, the patient population was homogenous (Stage I and IIE, and primary lesions involved nasal cavity, nasopharynx and paranasal sinuses).",
+   "label": "limitation"
+  },
+  {
+   "id": "PMC3257301-13",
+   "paper": "PMC3257301",
+   "set": "dev",
+   "section": "Introduction",
+   "text": "This led to the identification of the first regulator of CA, the bHLH transcription factor HIF-1α, which controls the expression of major hypoxia-induced genes including CA IX [15].",
+   "label": "background"
+  },
+  {
+   "id": "PMC3257301-22",
+   "paper": "PMC3257301",
+   "set": "dev",
+   "section": "Introduction",
+   "text": "We find that such regulation in C. albicans is independent from the already known sensor adenylyl cyclase, described above, suggesting the existence of a cAMP-independent CO2 signaling pathway in fungi.",
+   "label": "claim"
+  },
+  {
+   "id": "PMC3257301-28",
+   "paper": "PMC3257301",
+   "set": "dev",
+   "section": "Results/Yeast carbonic anhydrases are expressed according to CO2 availability",
+   "text": "However, to allow an in-depth analysis of yeast CA expression we developed an antibody directed against C. albicans Nce103p, and additionally constructed a strain expressing a functional tagged CA in S. cerevisiae: Scnce103Δ+ScNCE103-GFP (Figure 1B).",
+   "label": "method"
+  },
+  {
+   "id": "PMC3257301-33",
+   "paper": "PMC3257301",
+   "set": "dev",
+   "section": "Results/Yeast carbonic anhydrases are expressed according to CO2 availability",
+   "text": "Furthermore, quantitative real time polymerase chain reaction (qRT-PCR) analysis with reverse transcripts of total RNA extracted from C. albicans and S. cerevisiae grown at low and high CO2 concentrations show a similar regulation of CA transcript when expressions were normalized to ACT1 (Figure 1D), confirming previous reports made in S. cerevisiae [17], [18].",
+   "label": "result"
+  },
+  {
+   "id": "PMC3257301-37",
+   "paper": "PMC3257301",
+   "set": "dev",
+   "section": "Results/CO2 regulation of carbonic anhydrases in yeast is independent of cAMP signaling",
+   "text": "Furthermore, Western-blot or qRT-PCR analysis revealed that supplementation of culture media with exogenous cAMP at concentrations known to mimic Cyr1p activity [19] (10 mM) did not affect CA expression in CAI4+pSM2 grown in ambient air (Figure S1).",
+   "label": "result"
+  },
+  {
+   "id": "PMC3257301-57",
+   "paper": "PMC3257301",
+   "set": "dev",
+   "section": "Results/C. albicans NCE103 induction in an ex vivo virulence model is dependent on Rca1p",
+   "text": "These results indicate that Rca1p regulates CaNCE103 in a physiological environment which could be correlated to a CO2 concentration scarcer within the immune cell due to a limited penetration across multiple membranes, the sequestering activity of the mammalian CAs, or the reduced metabolic production of CO2 in the fungal cell as a result of a shift to slower, and gluconeogenic growth.",
+   "label": "claim"
+  },
+  {
+   "id": "PMC3257301-69",
+   "paper": "PMC3257301",
+   "set": "dev",
+   "section": "Results/CO2 regulation of NCE103 in S. cerevisiae occurs through a specific DNA binding motif",
+   "text": "To assess the role of this motif in CO2 regulation of CA expression we neutralized it by removing 7 and 4 bases pairs of the TGACGTCA sequence in the promoters controlling Nce103p expression in S. cerevisiae.",
+   "label": "method"
+  },
+  {
+   "id": "PMC3257301-71",
+   "paper": "PMC3257301",
+   "set": "dev",
+   "section": "Results/CO2 regulation of NCE103 in S. cerevisiae occurs through a specific DNA binding motif",
+   "text": "In summary, our data show that CO2 regulation of CAs expression in yeast is controlled by a conserved transcriptional factor, but involves divergent DNA motifs between S. cerevisiae and C. albicans.",
+   "label": "conclusion"
+  },
+  {
+   "id": "PMC3257301-74",
+   "paper": "PMC3257301",
+   "set": "dev",
+   "section": "Results/ChIP-chip analysis of Rca1p confirms NCE103 binding and points to a wider role in C. albicans CO2 sensing",
+   "text": "The resulting strain (rca1Δ/RCA1+RCA1−HA3) expressed one wild-type and the HA-tagged RCA1 copy.",
+   "label": "method"
+  },
+  {
+   "id": "PMC3257301-79",
+   "paper": "PMC3257301",
+   "set": "dev",
+   "section": "Results/ChIP-chip analysis of Rca1p confirms NCE103 binding and points to a wider role in C. albicans CO2 sensing",
+   "text": "In addition to the promoter region, Rca1p binding was also enriched in the coding region of NCE103 (Figure 4B).",
+   "label": "result"
+  },
+  {
+   "id": "PMC3257301-96",
+   "paper": "PMC3257301",
+   "set": "dev",
+   "section": "Results/ChIP-chip analysis of Rca1p confirms NCE103 binding and points to a wider role in C. albicans CO2 sensing",
+   "text": "In summary, our data establish Rca1p as the first regulator of a fungal CA and imply a wider role of this transcription factor in a new fungal CO2 sensing pathway.",
+   "label": "conclusion"
+  },
+  {
+   "id": "PMC3257301-101",
+   "paper": "PMC3257301",
+   "set": "dev",
+   "section": "Results/Rca1p regulation and role in growth, filamentation and cell wall biogenesis",
+   "text": "Our ChIP-chip data suggest a connection of Rca1p to filamentous growth and cell wall biogenesis, an observation that we confirmed by showing a strong decrease in the morphological response of rca1Δ to serum (Figure 5B and S6) and an increased sensitivity of rca1Δ to Congo red, caffeine and SDS (Figure 5C).",
+   "label": "result"
+  },
+  {
+   "id": "PMC3257301-109",
+   "paper": "PMC3257301",
+   "set": "dev",
+   "section": "Results/Rca1p regulation and role in growth, filamentation and cell wall biogenesis",
+   "text": "In C. albicans, RCA1 expression is 2.5 fold higher in hypercapnia compared to normal atmosphere (Figure 5D).",
+   "label": "result"
+  },
+  {
+   "id": "PMC3257301-133",
+   "paper": "PMC3257301",
+   "set": "dev",
+   "section": "Discussion",
+   "text": "We hypothesize that CA is critically involved in cellular metabolism and a feedback loop involving Rca1p could exist to regulate its expression (Figure 8).",
+   "label": "claim"
+  },
+  {
+   "id": "PMC3257301-136",
+   "paper": "PMC3257301",
+   "set": "dev",
+   "section": "Discussion",
+   "text": "CA mutants will not grow in ambient air where CO2 is scarce but will thrive in niches where the atmosphere is enriched with this gas [6], [7], [8], [9], [10]; the higher concentration allows sufficient spontaneous hydration to HCO3 − to serve as substrate for the above carboxylation reactions.",
+   "label": "background"
+  },
+  {
+   "id": "PMC3257301-143",
+   "paper": "PMC3257301",
+   "set": "dev",
+   "section": "Discussion",
+   "text": "Rca1p function as CA regulator is conserved in S. cerevisiae, though they also have additional functions: Cst6p has already been shown to be involved in functions such as growth on non-optimal carbon sources [23], and our results now highlight the importance of Cst6p in cellular metabolism via its role as an inducer of CA. However, the impact of Cst6p on cell physiology differs when compared to C. albicans since the cts6Δ mutant growth defect in air is complemented by addition of environmental CO2 for S. cerevisiae.",
+   "label": "claim"
+  },
+  {
+   "id": "PMC3257301-170",
+   "paper": "PMC3257301",
+   "set": "dev",
+   "section": "Discussion",
+   "text": "This suggests that the phagocyte might restrict CO2 availability, as it does for other nutrients.",
+   "label": "claim"
+  },
+  {
+   "id": "PMC3257301-173",
+   "paper": "PMC3257301",
+   "set": "dev",
+   "section": "Discussion",
+   "text": "However, it is important to also consider the possibility that an unknown, CO2-independent, pathway is involved in the regulation of Nce103p at colony level.",
+   "label": "limitation"
+  },
+  {
+   "id": "PMC3257301-174",
+   "paper": "PMC3257301",
+   "set": "dev",
+   "section": "Discussion",
+   "text": "CA regulation is exquisitely sensitive to change in CO2 availability in both S. cerevisiae and C. albicans (Figure S8) and our results may be highly applicable to a range of conditions in which fungi expand and act as populations rather than individual cells including the formation of drug-resistant biofilms in pathogenic yeasts such as C. albicans.",
+   "label": "claim"
+  },
+  {
+   "id": "PMC3257301-181",
+   "paper": "PMC3257301",
+   "set": "dev",
+   "section": "Discussion",
+   "text": "However, the putative overlap of these two uncharacterized pathways remains to be defined.",
+   "label": "limitation"
+  },
+  {
+   "id": "PMC3257301-182",
+   "paper": "PMC3257301",
+   "set": "dev",
+   "section": "Discussion",
+   "text": "In conclusion, carbon dioxide is sensed in yeast by two independent pathways.",
+   "label": "conclusion"
+  },
+  {
+   "id": "PMC3257301-188",
+   "paper": "PMC3257301",
+   "set": "dev",
+   "section": "Materials and Methods/Strains",
+   "text": "C. albicans were incubated at 37°C, or 30°C for S. cerevisiae, either in ambient air or air enriched with 5.5% (vol/vol) atmospheric CO2 (Infors HT Minitron) when required.",
+   "label": "method"
+  },
+  {
+   "id": "PMC3257301-192",
+   "paper": "PMC3257301",
+   "set": "dev",
+   "section": "Materials and Methods/Protein extraction and Western blot",
+   "text": "Protein concentrations were quantified using Bradford reagent (Sigma). 30 µg of protein were loaded for each sample on a 12% SDS-acrylamide/bis-acrylamide gel, and proteins were transferred to a PVDF membrane (Millipore).",
+   "label": "method"
+  },
+  {
+   "id": "PMC3257301-219",
+   "paper": "PMC3257301",
+   "set": "dev",
+   "section": "Materials and Methods/Microscopy",
+   "text": "ScNCE103-GFP cells were observed with a Olympus IX-81 fluorescence microscope with a 150 W xenon-mercury lamp and an Olympus 60X Plan NeoFluor oil-immersion objective.",
+   "label": "method"
+  },
+  {
+   "id": "PMC3257301-2",
+   "paper": "PMC3257301",
+   "set": "stress",
+   "section": "Introduction",
+   "text": "C. elegans detects CO2 via a cGMP-gated ion channel [2] whereas in D. melanogaster CO2 is sensed by a pair of 7 transmembrane domains chemoreceptors localized on specialized sensory neurons [4].",
+   "label": "background"
+  },
+  {
+   "id": "PMC3257301-17",
+   "paper": "PMC3257301",
+   "set": "stress",
+   "section": "Introduction",
+   "text": "However, fungal genomes do not posses orthologs of either HIF-1α or AphB-type CA regulators.",
+   "label": "motivation"
+  },
+  {
+   "id": "PMC3257301-62",
+   "paper": "PMC3257301",
+   "set": "stress",
+   "section": "Results/CO2 regulation of carbonic anhydrases by Rca1p orthologs is conserved in S. cerevisiae",
+   "text": "Successful gene inactivations were confirmed by diagnostic PCR and qRT-PCR (Figure S2 and S3).",
+   "label": "result"
+  },
+  {
+   "id": "PMC3257301-129",
+   "paper": "PMC3257301",
+   "set": "stress",
+   "section": "Discussion",
+   "text": "Here we demonstrate for the first time a novel, cAMP independent, CO2 sensing pathway in the yeast species C. albicans and S. cerevisiae.",
+   "label": "claim"
+  },
+  {
+   "id": "PMC3257301-137",
+   "paper": "PMC3257301",
+   "set": "stress",
+   "section": "Discussion",
+   "text": "Regulation of CA expression by CO2 has been reported for S. cerevisiae, S. macrospora, A. fumigatus and A. nidulans [8], [9], [17], [18] and we extend these observations to C. albicans.",
+   "label": "claim"
+  },
+  {
+   "id": "PMC3257301-144",
+   "paper": "PMC3257301",
+   "set": "stress",
+   "section": "Discussion",
+   "text": "Furthermore the observation that RCA1 expression itself is regulated by CO2 underlines the importance of this regulator outside the scope of CA expression.",
+   "label": "claim"
+  },
+  {
+   "id": "PMC3257301-151",
+   "paper": "PMC3257301",
+   "set": "stress",
+   "section": "Discussion",
+   "text": "An additional 84 genes were associated with Rca1p, suggesting a much broader role of this new CO2 signaling pathway.",
+   "label": "claim"
+  },
+  {
+   "id": "PMC3257301-183",
+   "paper": "PMC3257301",
+   "set": "stress",
+   "section": "Discussion",
+   "text": "One, previously described by us, involves the fungal adenylyl cyclase and cAMP [12].",
+   "label": "background"
+  },
+  {
+   "id": "PMC8658482-10",
+   "paper": "PMC8658482",
+   "set": "held_out",
+   "section": "1. Introduction",
+   "text": "As a result, PNS may limit the activities of daily living, overlie the symptoms of the individual, and reduce therapeutic adherence [13].",
+   "label": "background"
+  },
+  {
+   "id": "PMC8658482-13",
+   "paper": "PMC8658482",
+   "set": "held_out",
+   "section": "1. Introduction",
+   "text": "Alternatively, cold spray with stretching seems to reduce PNS symptoms in the short-term (<6 h) [15], while ischemic compression lowers both its intensity and duration [16] after DN of latent MTrPs in the upper trapezius muscle.",
+   "label": "background"
+  },
+  {
+   "id": "PMC8658482-20",
+   "paper": "PMC8658482",
+   "set": "held_out",
+   "section": "1. Introduction",
+   "text": "To resume exercise in its different modalities seems to be beneficial in the management of acute pain; however, the lack of studies showing these effects on PNS justified a randomized clinical trial, which aimed to determine the efficacy of concentric, eccentric, and isometric exercise protocols on the PNS after DN of latent MTrPs in the medial gastrocnemius muscle.",
+   "label": "motivation"
+  },
+  {
+   "id": "PMC8658482-22",
+   "paper": "PMC8658482",
+   "set": "held_out",
+   "section": "2. Materials and Methods/2.1. Study Design",
+   "text": "A randomized single-blind clinical trial with parallel groups to compare the effects of eccentric, concentric, or isometric exercises (three experimental groups) with no intervention (control group) on PNS.",
+   "label": "method"
+  },
+  {
+   "id": "PMC8658482-25",
+   "paper": "PMC8658482",
+   "set": "held_out",
+   "section": "2. Materials and Methods/2.1. Study Design",
+   "text": "All subjects gave their informed consent; anonymity and confidentiality were guaranteed through the encoding of files, following the current regulation and by complying with the Declaration of Helsinki.",
+   "label": "method"
+  },
+  {
+   "id": "PMC8658482-27",
+   "paper": "PMC8658482",
+   "set": "held_out",
+   "section": "2. Materials and Methods/2.2. Participants",
+   "text": "Subjects with at least one latent MTrP in the medial gastrocnemius muscle (MTrP1) were included [24].",
+   "label": "method"
+  },
+  {
+   "id": "PMC8658482-45",
+   "paper": "PMC8658482",
+   "set": "held_out",
+   "section": "2. Materials and Methods/2.4. Post-Needling Intervention",
+   "text": "The subjects were instructed to perform 3 sets of 15 repetitions (3 s each) with 30 s breaks between the sets with the leg to which DN was applied.",
+   "label": "method"
+  },
+  {
+   "id": "PMC8658482-59",
+   "paper": "PMC8658482",
+   "set": "held_out",
+   "section": "2. Materials and Methods/2.6. Study Protocol",
+   "text": "Two VASs were used: one related to pain during DN (nVAS), and another for PNS (pVAS).",
+   "label": "method"
+  },
+  {
+   "id": "PMC8658482-63",
+   "paper": "PMC8658482",
+   "set": "held_out",
+   "section": "2. Materials and Methods/2.7. Sample Size Calculation",
+   "text": "The computation of the sample size was carried out with the software G*Power 3.1.9.4.",
+   "label": "method"
+  },
+  {
+   "id": "PMC8658482-84",
+   "paper": "PMC8658482",
+   "set": "held_out",
+   "section": "3. Results/3.1. Post-Needling Soreness and Pressure Pain Threshold",
+   "text": "On the other hand, no significant time*group interaction was found (p = 0.26), and tests of effect between subjects confirmed no significant main effect of group on (p = 0.48).",
+   "label": "result"
+  },
+  {
+   "id": "PMC8658482-87",
+   "paper": "PMC8658482",
+   "set": "held_out",
+   "section": "3. Results/3.1. Post-Needling Soreness and Pressure Pain Threshold",
+   "text": "As such, starting from 6 h–12 h after intervention, PNS decreased drastically.",
+   "label": "result"
+  },
+  {
+   "id": "PMC8658482-94",
+   "paper": "PMC8658482",
+   "set": "held_out",
+   "section": "3. Results/3.1. Post-Needling Soreness and Pressure Pain Threshold",
+   "text": "Multivariate test confirmed PNS decreased over time within each group (eccentric group: Wilks’ λ = 0.64, F(6,60) = 5.65, p < 0.01, and η2 = 0.36; concentric group: Wilks’ λ = 0.61, F(6,60) = 6.22, p < 0.001, and η2 = 0.38; isometric group: Wilks’ λ = 0.73, F(6,60) = 3.61, p < 0.001, and η2 = 0.26; control group: Wilks’ λ = 0.46, F(6,60) = 11.60, p < 0.001, and η2 = 0.54).",
+   "label": "result"
+  },
+  {
+   "id": "PMC8658482-110",
+   "paper": "PMC8658482",
+   "set": "held_out",
+   "section": "3. Results/3.2. Effects of Pain during the DN, Amount of LTRs, and Sex",
+   "text": "Multivariate test confirmed PNS decreased over time within each group (eccentric group: Wilks’ λ = 0.55, F(6,54) = 7.37, p < 0.001, and η2 = 0.45; concentric group: Wilks’ λ = 0.51, F(6,54) = 8.65, p < 0.001, and η2 = 0.49; isometric group: Wilks’ λ = 0.57, F(6,54) = 6.84, p < 0.001, and η2 = 0.43; and control group: Wilks’ λ = 0.46, F(6,54) = 10.70, p < 0.001, and η2 = 0.54), and decreased over time within each sex (female: Wilks’ λ = 0.35, F(6,54) = 16.54, p < 0.001, and η2 = 0.65; male: Wilks’ λ = 0.36, F(6,54) = 16.09, p < 0.001, and η2 = 0.64) (pairwise comparisons including covariates -LTRs and nVAS-).",
+   "label": "result"
+  },
+  {
+   "id": "PMC8658482-114",
+   "paper": "PMC8658482",
+   "set": "held_out",
+   "section": "4. Discussion",
+   "text": "Our study aimed to investigate the effects of different exercise modalities on PNS and PPT of latent MTrPs, apart from studying pain and the amount of LTRs during DN, and sex as potential modifiers of their course.",
+   "label": "motivation"
+  },
+  {
+   "id": "PMC8658482-115",
+   "paper": "PMC8658482",
+   "set": "held_out",
+   "section": "4. Discussion",
+   "text": "All groups experienced a decrease in PNS over time, which was dramatically pronounced between 6–12 h after the intervention.",
+   "label": "result"
+  },
+  {
+   "id": "PMC8658482-119",
+   "paper": "PMC8658482",
+   "set": "held_out",
+   "section": "4. Discussion",
+   "text": "However, the LTRs appeared to have an effect, while sex had none.",
+   "label": "result"
+  },
+  {
+   "id": "PMC8658482-126",
+   "paper": "PMC8658482",
+   "set": "held_out",
+   "section": "4. Discussion/4.1. Comparison with Previous Studies",
+   "text": "However, their sample included only subjects with active MTrPs.",
+   "label": "background"
+  },
+  {
+   "id": "PMC8658482-127",
+   "paper": "PMC8658482",
+   "set": "held_out",
+   "section": "4. Discussion/4.1. Comparison with Previous Studies",
+   "text": "Interestingly, the PNS reduction observed after concentric and eccentric exercises in our study was similar to the previously reported reduction when using spray and stretch or ischemic compression in latent MTrPs [15,16].",
+   "label": "claim"
+  },
+  {
+   "id": "PMC8658482-146",
+   "paper": "PMC8658482",
+   "set": "held_out",
+   "section": "4. Discussion/4.1. Comparison with Previous Studies",
+   "text": "However, this effect was not confirmed and, sorting groups by sex (adjusting for nVAS and the amount of LTRs), we found similar patterns over PPT course.",
+   "label": "result"
+  },
+  {
+   "id": "PMC8658482-160",
+   "paper": "PMC8658482",
+   "set": "held_out",
+   "section": "4. Discussion/4.3. Strengths and Limitations",
+   "text": "However, these were not related to the purpose of our study.",
+   "label": "limitation"
+  },
+  {
+   "id": "PMC8658482-161",
+   "paper": "PMC8658482",
+   "set": "held_out",
+   "section": "4. Discussion/4.3. Strengths and Limitations",
+   "text": "Future research should be conducted with these limitations in mind.",
+   "label": "limitation"
+  },
+  {
+   "id": "PMC8658482-162",
+   "paper": "PMC8658482",
+   "set": "held_out",
+   "section": "5. Conclusions",
+   "text": "All interventions improved PNS and PPT, but none of them showed a greater improvement above the others.",
+   "label": "conclusion"
+  },
+  {
+   "id": "PMC8658482-165",
+   "paper": "PMC8658482",
+   "set": "held_out",
+   "section": "5. Conclusions",
+   "text": "Considering all potential modifiers, pain during DN significantly influenced PNS progression, while LTRs and sex seemed to determine the course of PPT over time.",
+   "label": "conclusion"
+  },
+  {
+   "id": "PMC8658482-4",
+   "paper": "PMC8658482",
+   "set": "stress",
+   "section": "1. Introduction",
+   "text": "DN consists of inserting a needle through the skin, without injecting or extracting any substance, in order to trigger a mechanical stimulus and the associated responses from the peripheral and central nervous systems [6].",
+   "label": "background"
+  },
+  {
+   "id": "PMC8658482-78",
+   "paper": "PMC8658482",
+   "set": "stress",
+   "section": "3. Results",
+   "text": "Seventy (n = 70) subjects were screened for eligibility criteria.",
+   "label": "result"
+  },
+  {
+   "id": "PMC8658482-85",
+   "paper": "PMC8658482",
+   "set": "stress",
+   "section": "3. Results/3.1. Post-Needling Soreness and Pressure Pain Threshold",
+   "text": "Therefore, by ignoring other outcomes there was no statistical differences in pVAS according to the group.",
+   "label": "result"
+  },
+  {
+   "id": "PMC8658482-90",
+   "paper": "PMC8658482",
+   "set": "stress",
+   "section": "3. Results/3.1. Post-Needling Soreness and Pressure Pain Threshold",
+   "text": "However, just at 72 h, there was a statistically significant difference between the isometric and eccentric group (p = 0.03), and a trend to statistically significant p between the isometric and concentric group (p = 0.08), as well as between the isometric and control group (p = 0.06).",
+   "label": "result"
+  },
+  {
+   "id": "PMC8658482-103",
+   "paper": "PMC8658482",
+   "set": "stress",
+   "section": "3. Results/3.1. Post-Needling Soreness and Pressure Pain Threshold",
+   "text": "Specifically, between consecutive assessments, PPT showed a significant change between 24–48 h after intervention (p < 0.01) in the eccentric group, and between 24–48 h (p < 0.01) in the concentric group.",
+   "label": "result"
+  },
+  {
+   "id": "PMC8658482-131",
+   "paper": "PMC8658482",
+   "set": "stress",
+   "section": "4. Discussion/4.1. Comparison with Previous Studies",
+   "text": "Alternatively, in previous studies investigating the efficacy of different exercise modalities in clinical contexts with pain, other than myofascial syndromes (e.g., tendinopathies), no conclusive recommendations were found, because none of the exercise modalities proved more effective than the others [18,19,20,21,22], which was consistent with our results.",
+   "label": "background"
+  },
+  {
+   "id": "PMC8658482-137",
+   "paper": "PMC8658482",
+   "set": "stress",
+   "section": "4. Discussion/4.1. Comparison with Previous Studies",
+   "text": "Regarding the progression of PPT, each group presented a different scenario.",
+   "label": "result"
+  },
+  {
+   "id": "PMC8658482-157",
+   "paper": "PMC8658482",
+   "set": "stress",
+   "section": "4. Discussion/4.3. Strengths and Limitations",
+   "text": "Furthermore, DN was applied to only one MTrP of the selected muscle, and we ignored whether the same results would be obtained if the same intervention was applied to several MTrPs and/or different muscles simultaneously (which is quite common in clinical practice).",
+   "label": "limitation"
+  }
+ ]
+}
