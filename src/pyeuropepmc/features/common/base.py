@@ -13,11 +13,11 @@ import logging
 from typing import Any
 
 import requests
-from requests.adapters import HTTPAdapter
 from urllib3.util import Retry
 
 from pyeuropepmc._useragent import get_user_agent
 from pyeuropepmc.cache.cache import CacheBackend, CacheConfig
+from pyeuropepmc.core import network
 
 logger = logging.getLogger(__name__)
 
@@ -30,7 +30,7 @@ class BaseHTTPClient:
 
     Provides shared functionality including:
     - HTTP session management
-    - Retry configuration via HTTPAdapter
+    - Retry configuration via the session adapter (which also falls back from a dead IPv6 address)
     - Response caching
     - Context manager support
     - Resource cleanup
@@ -105,9 +105,7 @@ class BaseHTTPClient:
             # this only removes a duplicate and unbounded wait.
             respect_retry_after_header=False,
         )
-        adapter = HTTPAdapter(max_retries=retry_strategy)
-        self.session.mount("https://", adapter)
-        self.session.mount("http://", adapter)
+        network.mount(self.session, max_retries=retry_strategy)
 
         # Initialize cache
         if cache_config is None:

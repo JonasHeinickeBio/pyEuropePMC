@@ -28,6 +28,7 @@ def _no_network(monkeypatch):
         raise AssertionError("a request was made")
 
     monkeypatch.setattr(srv.requests, "get", fail)
+    monkeypatch.setattr(srv, "_nlm_get", fail)
 
 
 class TestSnapshot:

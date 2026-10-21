@@ -207,6 +207,10 @@ The exception classes you are most likely to meet:
 | `FullTextXMLParser`, `EuropePMCParser` | `ParsingError` | `pyeuropepmc.core.exceptions` |
 | `QueryBuilder` | `QueryBuilderError` | `pyeuropepmc.core.exceptions` |
 
+### Why is the first request to a service 30 to 60 seconds slow, and later ones fast?
+
+A host with an IPv6 and an IPv4 address is tried by Python one address at a time, IPv6 first, each for the whole connect timeout. On a network that has an IPv6 address but no working IPv6 route (some VPNs, containers, office networks), every new connection waits for that timeout before it tries IPv4, while `curl` and browsers start IPv4 after a quarter of a second. pyEuropePMC's clients do the same: they start the next address after 0.25 s and use whichever connection completes first, so a dead IPv6 address costs a quarter of a second, not the timeout. On a working network nothing changes. Set `PYEUROPEPMC_HAPPY_EYEBALLS=0` to use the plain `requests` behaviour again. The sessions of every client class are covered; the few places that call `requests.get` directly (some full-text downloads, the citation walker, the library's own MeSH lookup and the query builder's field check) are not, so a stall there points at the same cause.
+
 ### Why do I get timeout errors?
 
 `SearchClient` has no timeout argument. Requests to Europe PMC time out after 15 seconds and are retried with backoff before an error is raised. Check your connection, and try a simpler query or a smaller `pageSize`. `UnifiedSearch` takes `timeout=` (default 30 seconds).
