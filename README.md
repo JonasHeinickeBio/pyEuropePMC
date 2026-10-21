@@ -110,7 +110,21 @@ pyeuropepmc benchmark list-datasets
 
 ## 🤖 MCP server
 
-`pyeuropepmc-mcp` serves 42 tools over the [Model Context Protocol](https://modelcontextprotocol.io/): multi-source search with date, open-access and source filters, a query linter, builder, PubMed translator and evaluator (Europe PMC answers a malformed query with a different result instead of an error), a service-status probe and cache controls, BibTeX, RIS, CSL-JSON, CSV and Markdown export, hit counts, paper details (also for up to 100 papers at once), citations and references, open-access full text as markdown or typed sections (with a section filter and a size cap, so a long paper fits in one response), free copies of papers that are not open access in Europe PMC (via Unpaywall), text-mined entity annotations (genes, chemicals, diseases) of a paper or across papers, data and lab links of a paper (accession numbers, BioStudies, model-organism databases), citation-graph walking, ClinicalTrials.gov search, figure extraction, a local full-text index, bibliography conversion and LLM-powered analysis. The server is part of the core install. `pip install "pyeuropepmc[all]"` enables every tool; otherwise the `bib_*` tools need `bibliography`, and the LLM tools need `agentic` plus an OpenAI-compatible API key (see Configuration below).
+`pyeuropepmc-mcp` serves 42 tools over the [Model Context Protocol](https://modelcontextprotocol.io/), so an AI agent can search the literature, read papers and export references. The server is part of the core install.
+
+| Job | What the tools do |
+|---|---|
+| **Search** | Europe PMC and ten more sources with duplicates merged, hit counts, author search, ClinicalTrials.gov |
+| **Check a query** | A linter for the mistakes Europe PMC silently accepts (it answers a different query instead of an error), a query builder, a PubMed translator, and a recall check against papers you already know |
+| **Look up papers** | Details for one paper, or for up to 100 by PMID, PMCID or DOI in one call |
+| **Read** | Open-access full text as Markdown or typed sections, with a section filter and a size cap; figures, tables and supplementary files; free copies of other papers through Unpaywall |
+| **Entities and data** | Genes, chemicals and diseases text-mined from a paper, papers that mention an entity, and the data a paper links to (accession numbers, BioStudies, model-organism databases) |
+| **Citations** | Citing papers, references and citation-graph walking |
+| **Export** | BibTeX, RIS, CSL-JSON, CSV, JSON or Markdown for a search or a list of papers |
+| **Diagnose** | A service-status probe and cache controls |
+| **Local and LLM tools** | A local full-text index, bibliography conversion, and LLM-powered analysis |
+
+`pip install "pyeuropepmc[all]"` enables every tool; otherwise the `bib_*` tools need `bibliography`, and the LLM tools need `agentic` plus an OpenAI-compatible API key (see Configuration below).
 
 ```bash
 pyeuropepmc-mcp                                # stdio, for Claude Desktop and similar clients
@@ -138,7 +152,7 @@ claude mcp add pyeuropepmc -- uvx pyeuropepmc mcp
 
 Cursor (`.cursor/mcp.json`) and VS Code (`.vscode/mcp.json`, under `"servers"` instead of `"mcpServers"`) take the same `command` and `args`.
 
-The server has no authentication of its own, so keep the HTTP transport on 127.0.0.1 or put an authenticating proxy in front of it. The [MCP server guide](https://github.com/JonasHeinickeBio/pyEuropePMC/blob/main/src/pyeuropepmc/mcp/README.md) lists every tool. The server is listed in the [MCP Registry](https://registry.modelcontextprotocol.io/) as `io.github.JonasHeinickeBio/pyeuropepmc`.
+The server has no authentication of its own, so keep the HTTP transport on 127.0.0.1 or put an authenticating proxy in front of it. The [MCP server guide](https://github.com/JonasHeinickeBio/pyEuropePMC/blob/main/docs/features/mcp-server.md) walks through the common workflows, and the [tool reference](https://github.com/JonasHeinickeBio/pyEuropePMC/blob/main/src/pyeuropepmc/mcp/README.md) lists every tool. The server is listed in the [MCP Registry](https://registry.modelcontextprotocol.io/) as `io.github.JonasHeinickeBio/pyeuropepmc`.
 
 <!-- The MCP Registry confirms this PyPI package belongs to the server by finding the next line in its README. Keep it. -->
 <!-- mcp-name: io.github.JonasHeinickeBio/pyeuropepmc -->

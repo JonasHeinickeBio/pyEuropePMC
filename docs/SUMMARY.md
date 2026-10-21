@@ -28,6 +28,7 @@
 * [XML parsing](features/parsing/README.md)
   * [JATS normalization](features/parsing/jats-normalization.md)
   * [Rhetorical highlighting](features/rhetorical-highlighting.md)
+* [MCP server](features/mcp-server.md)
 * [Metadata enrichment](guides/enrichment.md)
   * [ORCID and NIH iCite clients](features/orcid.md)
 * [Caching](features/caching/README.md)

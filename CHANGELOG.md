@@ -4,6 +4,15 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
+### 📚 Documentation
+
+- New [MCP server guide](docs/features/mcp-server.md): which tool for which job, the common
+  workflows (checking a query, exporting references, reading a paper, finding entities and data,
+  following citations), the Europe PMC behaviours the tools work around, how to diagnose a
+  failure, and the limits of each tool. The README's MCP section is a table by job instead of one
+  long sentence. `tests/mcp/unit/test_mcp_docs.py` fails when a tool is missing from the tool
+  table or the server docstring, or when the tool count in the docs is out of date.
+
 ## [3.8.0] - 2026-10-19
 
 > MCP release: data links. `get_paper_data_links` answers "where is the data of this paper?"
@@ -1714,4 +1723,4 @@ Docs and CI only — no changes to the installed package's runtime behavior.
 - Type hints throughout codebase
 - Built-in retry logic and connection handling
 
-For detailed release information, see [docs/development/release-analysis.md](docs/development/release-analysis.md)
+For how releases are made, see [docs/development/ci-and-release-workflow.md](docs/development/ci-and-release-workflow.md)

@@ -11,7 +11,7 @@ pyEuropePMC is a Python library for searching Europe PMC, downloading full-text 
 - **Enrichment:** add metadata from CrossRef, OpenAlex, Semantic Scholar, Unpaywall and other services.
 - **Analysis:** publication statistics and plots (with the `analytics` and `visualization` extras) and RDF export for knowledge graphs.
 - **Systematic reviews:** search logs that record each query, its filters and its result count.
-- **Command line and MCP:** the `pyeuropepmc` command and the `pyeuropepmc-mcp` server for MCP clients.
+- **Command line and MCP:** the `pyeuropepmc` command and the `pyeuropepmc-mcp` server, which gives AI agents tools to search, read and export papers ([MCP server guide](features/mcp-server.md)).
 
 ## Install
 
