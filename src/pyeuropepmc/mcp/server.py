@@ -100,6 +100,7 @@ import requests
 
 from pyeuropepmc import SearchClient
 from pyeuropepmc.cache.cache import CacheConfig
+from pyeuropepmc.core import network
 from pyeuropepmc.core.error_codes import ErrorCodes
 from pyeuropepmc.core.exceptions import (
     EuropePMCError,
@@ -2437,8 +2438,12 @@ async def pico_decompose(
     }
 
 
+_nlm_session_cache: _Lazy[requests.Session] = _Lazy(network.new_session)
+
+
 def _nlm_get(url: str, params: dict[str, Any], timeout: float) -> Any:
-    response = requests.get(
+    """One request to the NLM MeSH service; the session falls back from a dead IPv6 address."""
+    response = _nlm_session_cache.get().get(
         url, params=params, timeout=timeout, headers={"User-Agent": "pyeuropepmc-mcp"}
     )
     response.raise_for_status()

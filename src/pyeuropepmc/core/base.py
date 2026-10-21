@@ -7,6 +7,7 @@ import requests
 
 from pyeuropepmc._useragent import get_user_agent
 
+from . import network
 from .error_codes import ErrorCodes, error_code_for_status
 from .exceptions import APIClientError, ValidationError
 
@@ -78,7 +79,7 @@ class BaseAPIClient:
 
     def __init__(self, rate_limit_delay: float = 1.0) -> None:
         self.rate_limit_delay: float = rate_limit_delay
-        self.session: requests.Session | None = requests.Session()
+        self.session: requests.Session | None = network.new_session()
 
         self.session.headers.update({"User-Agent": get_user_agent()})
 

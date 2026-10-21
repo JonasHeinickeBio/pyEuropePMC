@@ -4,6 +4,22 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
+### 🐛 Fixed
+
+- A new connection no longer waits for a dead IPv6 address. Python tries a host's addresses one
+  at a time, IPv6 first, each for the full connect timeout, so on a network with an IPv6 address
+  but no IPv6 route every new connection stalled for 30 to 60 seconds before it tried IPv4 (the
+  first request to `id.nlm.nih.gov` took 97.6 s that way and 1.2 to 3.8 s with the fix; `curl`
+  takes 0.6 s). The clients now connect as RFC 8305 describes: the next address starts 0.25 s
+  after the previous one, the first connection that completes is used and the others are
+  closed (`pyeuropepmc.core.network`). On a working network the first address wins and nothing
+  changes. It covers every client that owns a session (`BaseAPIClient` and the clients built on
+  `BaseHTTPClient`: search, article, annotations, full-text sessions, all enrichment sources) and
+  the MCP server's NLM lookups. `PYEUROPEPMC_HAPPY_EYEBALLS=0` restores the plain behaviour.
+  Not covered: the places that call `requests.get` directly (some full-text downloads, the
+  citation walker, `features.review.mesh`, the query builder's field check, dataset downloads),
+  which keep the old behaviour.
+
 ## [4.0.0] - 2026-10-21
 
 > Major release: the MCP server moves to MCP Python SDK 2.x, and gains question decomposition
