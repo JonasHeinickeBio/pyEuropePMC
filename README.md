@@ -7,6 +7,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/JonasHeinickeBio/pyEuropePMC/blob/main/LICENSE)
 [![MCP server](https://img.shields.io/badge/MCP-server-30A46C?logo=modelcontextprotocol&logoColor=white)](https://github.com/JonasHeinickeBio/pyEuropePMC/blob/main/src/pyeuropepmc/mcp/README.md)
 
+[![PyEuropePMC MCP server](https://mcprush.com/badge/pyeuropepmc-mcp/card.svg)](https://mcprush.com/to/pyeuropepmc-mcp?ref=badge)
+
 **PyEuropePMC** is a Python client for [Europe PMC](https://europepmc.org/). It searches the literature, downloads open-access full text, and parses JATS XML into metadata, plain text and structured sections. It also ships a command-line tool and an MCP server for AI agents.
 
 ## ✨ Features
