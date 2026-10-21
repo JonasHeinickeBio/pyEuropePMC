@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import asyncio
 import re
+from urllib.parse import urlparse
 
 import pytest
 import requests
@@ -34,7 +35,8 @@ class TestSnapshot:
         snap = mm.snapshot()
         assert len(snap.descriptors) >= 200
         assert re.fullmatch(r"\d{4}-\d{2}-\d{2}", snap.built)
-        assert "id.nlm.nih.gov" in snap.source
+        url = re.search(r"https://[^\s,)]+", snap.source)
+        assert url is not None and urlparse(url.group()).hostname == "id.nlm.nih.gov"
         for d in snap.descriptors:
             assert re.fullmatch(r"D\d{6,9}", d.ui), d
             assert d.heading and d.trees, d
