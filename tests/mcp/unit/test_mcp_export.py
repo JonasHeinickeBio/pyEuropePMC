@@ -19,10 +19,11 @@ import re
 import sys
 from unittest.mock import MagicMock
 
-from mcp.server.fastmcp.exceptions import ToolError
+from mcp_wire import hint, schema_of
 import pytest
 
 from pyeuropepmc.mcp import _batch as bm, _export as ex, server as srv
+from pyeuropepmc.mcp.server import ToolError
 
 FIXTURES = Path(__file__).parents[2] / "fixtures" / "export"
 RECORDS = json.loads((FIXTURES / "records.json").read_text(encoding="utf-8"))
@@ -596,8 +597,8 @@ class TestExportPapersTool:
     def test_the_tool_reads_only_and_its_bounds_are_in_the_schema(self):
         tools = {t.name: t for t in asyncio.run(srv.mcp.list_tools())}
         tool = tools["export_papers"]
-        assert tool.annotations.readOnlyHint is True
-        props = tool.inputSchema["properties"]
+        assert hint(tool.annotations, "readOnlyHint") is True
+        props = schema_of(tool)["properties"]
         assert (props["limit"]["minimum"], props["limit"]["maximum"]) == (1, 1000)
         assert (props["skip"]["minimum"], props["skip"]["maximum"]) == (0, 999)
         assert props["format"]["enum"] == ["bibtex", "ris", "csl-json", "csv", "json", "markdown"]

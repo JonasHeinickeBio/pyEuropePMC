@@ -10,12 +10,13 @@ from __future__ import annotations
 import asyncio
 from unittest.mock import MagicMock
 
-from mcp.server.fastmcp.exceptions import ToolError
+from mcp_wire import schema_of
 import pytest
 
 from pyeuropepmc.core.error_codes import ErrorCodes
 from pyeuropepmc.core.exceptions import APIClientError
 from pyeuropepmc.mcp import _batch as bm, server as srv
+from pyeuropepmc.mcp.server import ToolError
 
 JATS = """<?xml version="1.0"?>
 <article xmlns:xlink="http://www.w3.org/1999/xlink" article-type="research-article"><front>
@@ -277,9 +278,9 @@ class TestGetPapersBatch:
 
     def test_the_id_list_bounds_are_in_the_schema(self):
         tools = {t.name: t for t in asyncio.run(srv.mcp.list_tools())}
-        ids = tools["get_papers_batch"].inputSchema["properties"]["ids"]
+        ids = schema_of(tools["get_papers_batch"])["properties"]["ids"]
         assert (ids["minItems"], ids["maxItems"]) == (1, 100)
-        ids = tools["get_papers_fulltext_batch"].inputSchema["properties"]["ids"]
+        ids = schema_of(tools["get_papers_fulltext_batch"])["properties"]["ids"]
         assert (ids["minItems"], ids["maxItems"]) == (1, 20)
 
 

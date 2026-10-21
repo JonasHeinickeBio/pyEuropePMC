@@ -30,6 +30,7 @@ from urllib.parse import urlparse
 
 from mcp import ClientSession
 from mcp.client.stdio import StdioServerParameters, stdio_client
+from mcp_wire import hint, is_error, schema_of, structured, wire
 import pytest
 
 pytestmark = [pytest.mark.slow, pytest.mark.integration, pytest.mark.e2e]
@@ -57,8 +58,8 @@ async def _server_session(*, drop_env: tuple[str, ...] = ()):
 class TestMCPProtocol:
     async def test_initialize_reports_server_identity(self):
         async with _server_session() as (_session, init_result):
-            assert init_result.serverInfo.name == "pyeuropepmc-mcp"
-            assert init_result.protocolVersion
+            assert wire(init_result)["serverInfo"]["name"] == "pyeuropepmc-mcp"
+            assert wire(init_result)["protocolVersion"]
 
     async def test_tools_list_is_non_empty_and_well_formed(self):
         async with _server_session() as (session, _init_result):
@@ -66,18 +67,18 @@ class TestMCPProtocol:
             assert len(result.tools) >= 20
             for tool in result.tools:
                 assert tool.description
-                assert tool.inputSchema["type"] == "object"
+                assert schema_of(tool)["type"] == "object"
 
     async def test_unknown_tool_is_reported_as_a_tool_error(self):
         async with _server_session() as (session, _init_result):
             result = await session.call_tool("totally_unknown_tool", {})
-            assert result.isError is True
+            assert is_error(result) is True
             assert "Unknown tool" in result.content[0].text
 
     async def test_missing_required_argument_is_a_validation_error(self):
         async with _server_session() as (session, _init_result):
             result = await session.call_tool("get_paper_details", {})
-            assert result.isError is True
+            assert is_error(result) is True
             assert "At least one ID" in result.content[0].text
 
 
@@ -86,24 +87,24 @@ class TestMCPToolsAgainstRealEuropePMC:
     async def test_search_papers_returns_structured_results(self):
         async with _server_session() as (session, _init_result):
             result = await session.call_tool("search_papers", {"query": "malaria", "limit": 2})
-            assert result.isError is False
-            assert isinstance(result.structuredContent["result"], list)
+            assert is_error(result) is False
+            assert isinstance(structured(result)["result"], list)
 
     async def test_search_papers_stops_at_limit_for_a_broad_query(self):
         async with _server_session() as (session, _init_result):
             result = await session.call_tool("search_papers", {"query": "CRISPR", "limit": 3})
-            assert result.isError is False
-            assert len(result.structuredContent["result"]) == 3
+            assert is_error(result) is False
+            assert len(structured(result)["result"]) == 3
 
     async def test_search_papers_filters_and_count_papers(self):
         async with _server_session() as (session, _init_result):
             args = {"query": "malaria", "date_from": "2023", "date_to": "2023", "source": "MED"}
             found = await session.call_tool("search_papers", {**args, "limit": 2})
             counted = await session.call_tool("count_papers", args)
-            assert found.isError is False
-            assert counted.isError is False
-            assert len(found.structuredContent["result"]) == 2
-            assert counted.structuredContent["hit_count"] > 2
+            assert is_error(found) is False
+            assert is_error(counted) is False
+            assert len(structured(found)["result"]) == 2
+            assert structured(counted)["hit_count"] > 2
 
     async def test_get_paper_citations_and_references(self):
         async with _server_session() as (session, _init_result):
@@ -113,15 +114,15 @@ class TestMCPToolsAgainstRealEuropePMC:
             refs = await session.call_tool(
                 "get_paper_references", {"article_id": "22745249", "limit": 3}
             )
-            assert cited.isError is False
-            assert len(cited.structuredContent["result"]) == 3
-            assert refs.isError is False
-            assert refs.structuredContent["hitCount"] > 0
+            assert is_error(cited) is False
+            assert len(structured(cited)["result"]) == 3
+            assert is_error(refs) is False
+            assert structured(refs)["hitCount"] > 0
 
     async def test_invalid_date_filter_is_a_tool_error(self):
         async with _server_session() as (session, _init_result):
             result = await session.call_tool("search_papers", {"query": "x", "date_from": "soon"})
-            assert result.isError is True
+            assert is_error(result) is True
             assert "date_from" in result.content[0].text
 
     async def test_get_paper_details_round_trip(self):
@@ -129,7 +130,7 @@ class TestMCPToolsAgainstRealEuropePMC:
             search_result = await session.call_tool(
                 "search_papers", {"query": "malaria", "limit": 1}
             )
-            papers = search_result.structuredContent["result"]
+            papers = structured(search_result)["result"]
             if not papers:
                 pytest.skip("Europe PMC returned no candidates for this query right now")
 
@@ -138,8 +139,8 @@ class TestMCPToolsAgainstRealEuropePMC:
                 pytest.skip("Candidate paper has no usable identifier")
 
             details = await session.call_tool("get_paper_details", {"pmid": paper_id})
-            assert details.isError is False
-            assert isinstance(details.structuredContent, dict)
+            assert is_error(details) is False
+            assert isinstance(structured(details), dict)
 
 
 @pytest.mark.network
@@ -152,16 +153,16 @@ class TestMCPFullTextAgainstRealEuropePMC:
             outline = await session.call_tool(
                 "get_paper_fulltext", {"pmcid": self.PMCID, "format": "outline"}
             )
-            assert outline.isError is False
-            titles = outline.structuredContent["sections_available"]
+            assert is_error(outline) is False
+            titles = structured(outline)["sections_available"]
             assert "Conclusions" in titles
 
             part = await session.call_tool(
                 "get_paper_fulltext",
                 {"pmid": "16004729", "sections": ["conclusion"], "include_references": True},
             )
-            data = part.structuredContent
-            assert part.isError is False
+            data = structured(part)
+            assert is_error(part) is False
             assert data["pmcid"] == self.PMCID
             assert data["content"].startswith("## Conclusions")
             assert data["truncated"] is False
@@ -173,8 +174,8 @@ class TestMCPFullTextAgainstRealEuropePMC:
                 "get_paper_fulltext",
                 {"pmcid": self.PMCID, "format": "sections", "max_chars": 3000},
             )
-            data = result.structuredContent
-            assert result.isError is False
+            data = structured(result)
+            assert is_error(result) is False
             assert data["truncated"] is True
             assert data["returned_chars"] <= 3000 + 2
             first_block = data["content"][0]["content"][0]
@@ -183,15 +184,15 @@ class TestMCPFullTextAgainstRealEuropePMC:
     async def test_paper_without_open_access_fails_fast_with_the_reason(self):
         async with _server_session() as (session, _init_result):
             result = await session.call_tool("get_paper_fulltext", {"pmcid": "PMC6999107"})
-            assert result.isError is True
+            assert is_error(result) is True
             assert "not Open Access" in result.content[0].text
 
     async def test_paper_figures_reuses_the_fetched_text(self):
         async with _server_session() as (session, _init_result):
             await session.call_tool("get_paper_fulltext", {"pmcid": self.PMCID})
             figures = await session.call_tool("paper_figures", {"pmcid": self.PMCID})
-            assert figures.isError is False
-            assert figures.structuredContent["figure_count"] >= 3
+            assert is_error(figures) is False
+            assert structured(figures)["figure_count"] >= 3
 
 
 @pytest.mark.network
@@ -203,8 +204,8 @@ class TestMCPAnnotationsAgainstRealEuropePMC:
             result = await session.call_tool(
                 "get_paper_annotations", {"pmid": self.PMID, "limit": 10}
             )
-            data = result.structuredContent
-            assert result.isError is False
+            data = structured(result)
+            assert is_error(result) is False
             assert data["found"] is True
             assert data["annotation_count"] > data["entity_count"] > 10
             assert len(data["entities"]) == 10
@@ -218,8 +219,8 @@ class TestMCPAnnotationsAgainstRealEuropePMC:
                 "get_paper_annotations",
                 {"pmcid": "PMC3525259", "annotation_type": "diseases", "section": "abstract"},
             )
-            data = result.structuredContent
-            assert result.isError is False
+            data = structured(result)
+            assert is_error(result) is False
             assert data["article"]["id"] == "PMC:PMC3525259"
             assert set(data["by_type"]) <= {"Diseases"}
             assert data["entity_count"] > 0
@@ -227,16 +228,16 @@ class TestMCPAnnotationsAgainstRealEuropePMC:
     async def test_unknown_paper_is_not_an_error(self):
         async with _server_session() as (session, _init_result):
             result = await session.call_tool("get_paper_annotations", {"pmid": "99999999999"})
-            assert result.isError is False
-            assert result.structuredContent["found"] is False
+            assert is_error(result) is False
+            assert structured(result)["found"] is False
 
     async def test_entity_search_pages_with_the_cursor(self):
         async with _server_session() as (session, _init_result):
             first = await session.call_tool(
                 "find_papers_by_entity", {"entity": "ethanol", "limit": 2}
             )
-            page1 = first.structuredContent
-            assert first.isError is False
+            page1 = structured(first)
+            assert is_error(first) is False
             assert page1["article_count"] == 2
             assert page1["next_cursor"]
 
@@ -244,8 +245,8 @@ class TestMCPAnnotationsAgainstRealEuropePMC:
                 "find_papers_by_entity",
                 {"entity": "ethanol", "limit": 2, "cursor": page1["next_cursor"]},
             )
-            page2 = second.structuredContent
-            assert second.isError is False
+            page2 = structured(second)
+            assert is_error(second) is False
             ids1 = {a["id"] for a in page1["articles"]}
             ids2 = {a["id"] for a in page2["articles"]}
             assert ids2 and not ids1 & ids2
@@ -253,9 +254,9 @@ class TestMCPAnnotationsAgainstRealEuropePMC:
     async def test_entity_search_for_an_unknown_entity_is_empty(self):
         async with _server_session() as (session, _init_result):
             result = await session.call_tool("find_papers_by_entity", {"entity": "zzzzzz"})
-            assert result.isError is False
-            assert result.structuredContent["articles"] == []
-            assert result.structuredContent["next_cursor"] is None
+            assert is_error(result) is False
+            assert structured(result)["articles"] == []
+            assert structured(result)["next_cursor"] is None
 
 
 class TestMCPOpenAccess:
@@ -267,7 +268,7 @@ class TestMCPOpenAccess:
             result = await session.call_tool(
                 "find_open_access", {"doi": "10.1186/1479-7364-2-2-138"}
             )
-            assert result.isError is True
+            assert is_error(result) is True
             assert "UNPAYWALL_EMAIL" in result.content[0].text
 
     @pytest.mark.network
@@ -280,21 +281,21 @@ class TestMCPOpenAccess:
             found = await session.call_tool(
                 "find_open_access", {"doi": "10.1186/1479-7364-2-2-138"}
             )
-            data = found.structuredContent
-            assert found.isError is False
+            data = structured(found)
+            assert is_error(found) is False
             assert data["found"] is True
             assert data["is_oa"] is True
             assert data["best_location"]["url"]
             assert data["europepmc_fulltext"] is True
 
             by_pmid = await session.call_tool("find_open_access", {"pmid": "16004729"})
-            assert by_pmid.structuredContent["doi"] == "10.1186/1479-7364-2-2-138"
+            assert structured(by_pmid)["doi"] == "10.1186/1479-7364-2-2-138"
 
             unknown = await session.call_tool(
                 "find_open_access", {"doi": "10.1234/this-doi-does-not-exist-0000"}
             )
-            assert unknown.isError is False
-            assert unknown.structuredContent["found"] is False
+            assert is_error(unknown) is False
+            assert structured(unknown)["found"] is False
 
 
 @pytest.mark.network
@@ -311,8 +312,8 @@ class TestMCPBatchAgainstRealEuropePMC:
     async def test_metadata_batch_keeps_order_and_reports_every_status(self):
         async with _server_session() as (session, _init_result):
             result = await session.call_tool("get_papers_batch", {"ids": self.MIXED})
-            data = result.structuredContent
-            assert result.isError is False
+            data = structured(result)
+            assert is_error(result) is False
             assert [r["id"] for r in data["results"]] == self.MIXED
             assert [r["status"] for r in data["results"]] == [
                 "ok",
@@ -333,8 +334,8 @@ class TestMCPBatchAgainstRealEuropePMC:
             result = await session.call_tool(
                 "get_papers_batch", {"ids": ids, "fields": ["pmid", "year"]}
             )
-            data = result.structuredContent
-            assert result.isError is False
+            data = structured(result)
+            assert is_error(result) is False
             assert len(data["results"]) == 60
             assert data["by_status"].get("ok", 0) >= 55
             assert [r["record"]["pmid"] for r in data["results"] if r["record"]][:3] == ids[:3]
@@ -344,7 +345,7 @@ class TestMCPBatchAgainstRealEuropePMC:
             result = await session.call_tool(
                 "get_papers_batch", {"ids": ["16004729"], "fields": ["title", "abstract"]}
             )
-            assert result.structuredContent["results"][0]["record"]["abstract"]
+            assert structured(result)["results"][0]["record"]["abstract"]
 
     async def test_fulltext_batch_reports_papers_without_open_access_and_shares_a_budget(self):
         async with _server_session() as (session, _init_result):
@@ -357,8 +358,8 @@ class TestMCPBatchAgainstRealEuropePMC:
                     "max_total_chars": 3000,
                 },
             )
-            data = result.structuredContent
-            assert result.isError is False
+            data = structured(result)
+            assert is_error(result) is False
             statuses = [r["status"] for r in data["results"]]
             assert statuses[0] == "ok"
             assert statuses[2] == "not_open_access"
@@ -381,16 +382,16 @@ class TestMCPQueryToolsAgainstRealEuropePMC:
             broken = "malaria AND (dengue OR zika"
             fixed = "malaria AND (dengue OR zika)"
             verdict = await session.call_tool("validate_query", {"query": broken})
-            assert verdict.structuredContent["valid"] is False
-            assert verdict.structuredContent["problems"][0]["code"] == "UNMATCHED_PAREN"
+            assert structured(verdict)["valid"] is False
+            assert structured(verdict)["problems"][0]["code"] == "UNMATCHED_PAREN"
             ok = await session.call_tool("validate_query", {"query": fixed})
-            assert ok.structuredContent["valid"] is True
+            assert structured(ok)["valid"] is True
 
             counts = {}
             for label, query in (("broken", broken), ("fixed", fixed)):
                 result = await session.call_tool("count_papers", {"query": query})
-                assert result.isError is False
-                counts[label] = result.structuredContent["hit_count"]
+                assert is_error(result) is False
+                counts[label] = structured(result)["hit_count"]
             assert counts["broken"] != counts["fixed"]  # a different question, no error
 
     async def test_a_built_query_runs(self):
@@ -406,11 +407,11 @@ class TestMCPQueryToolsAgainstRealEuropePMC:
                     "source": "MED",
                 },
             )
-            assert built.isError is False
-            query = built.structuredContent["query"]
+            assert is_error(built) is False
+            query = structured(built)["query"]
             counted = await session.call_tool("count_papers", {"query": query})
-            assert counted.isError is False
-            assert counted.structuredContent["hit_count"] > 100
+            assert is_error(counted) is False
+            assert structured(counted)["hit_count"] > 100
 
     async def test_evaluate_query_scores_against_known_papers(self):
         async with _server_session() as (session, _init_result):
@@ -422,8 +423,8 @@ class TestMCPQueryToolsAgainstRealEuropePMC:
                     "excluded_pmids": ["31636443"],
                 },
             )
-            data = result.structuredContent
-            assert result.isError is False
+            data = structured(result)
+            assert is_error(result) is False
             assert data["included"]["matched"] == 1
             assert data["included"]["missed"] == ["16004729"]
             assert data["included"]["recall"] == 0.5
@@ -436,9 +437,9 @@ class TestMCPQueryToolsAgainstRealEuropePMC:
                 "translate_query",
                 {"query": "TITLE:crispr AND PUB_YEAR:[2020 TO 2022] AND SRC:MED"},
             )
-            assert result.isError is False
-            assert result.structuredContent["query"] == "crispr[ti] AND 2020:2022[dp]"
-            assert result.structuredContent["exact"] is True
+            assert is_error(result) is False
+            assert structured(result)["query"] == "crispr[ti] AND 2020:2022[dp]"
+            assert structured(result)["exact"] is True
 
 
 @pytest.mark.network
@@ -446,8 +447,8 @@ class TestMCPStatusAgainstRealEuropePMC:
     async def test_the_status_probe_answers_and_is_kept(self):
         async with _server_session() as (session, _init_result):
             first = await session.call_tool("epmc_status", {})
-            data = first.structuredContent
-            assert first.isError is False
+            data = structured(first)
+            assert is_error(first) is False
             # whatever state Europe PMC is in, the answer has this shape
             assert data["status"] in {"ok", "degraded", "down", "unknown"}
             assert set(data["endpoints"]) == {"search", "fulltext", "citations", "annotations"}
@@ -458,33 +459,33 @@ class TestMCPStatusAgainstRealEuropePMC:
             assert "ebi.ac.uk" not in str(data)  # no URLs
 
             second = await session.call_tool("epmc_status", {})
-            assert second.structuredContent["cached"] is True
-            assert second.structuredContent["checked_at"] == data["checked_at"]
+            assert structured(second)["cached"] is True
+            assert structured(second)["checked_at"] == data["checked_at"]
 
     async def test_cache_status_counts_a_cached_search_and_clear_cache_empties_it(self):
         async with _server_session() as (session, _init_result):
             before = await session.call_tool("cache_status", {})
-            assert before.structuredContent["search"] == {"created": False, "entries": 0}
+            assert structured(before)["search"] == {"created": False, "entries": 0}
 
             await session.call_tool("count_papers", {"query": "malaria AND dengue"})
             await session.call_tool("count_papers", {"query": "malaria AND dengue"})
-            during = (await session.call_tool("cache_status", {})).structuredContent["search"]
+            during = structured(await session.call_tool("cache_status", {}))["search"]
             assert during["created"] is True
             assert during["entries"] >= 1
             assert during["hits"] >= 1  # the second call was served from the cache
             assert "malaria" not in str(during)
 
             cleared = await session.call_tool("clear_cache", {"scope": "search"})
-            assert cleared.isError is False
-            assert cleared.structuredContent["results"]["search"]["cleared"] is True
-            after = (await session.call_tool("cache_status", {})).structuredContent["search"]
+            assert is_error(cleared) is False
+            assert structured(cleared)["results"]["search"]["cleared"] is True
+            after = structured(await session.call_tool("cache_status", {}))["search"]
             assert after["entries"] == 0
 
     async def test_clear_cache_is_declared_as_changing_state(self):
         async with _server_session() as (session, _init_result):
             tools = {t.name: t for t in (await session.list_tools()).tools}
-            assert tools["clear_cache"].annotations.readOnlyHint is False
-            assert tools["epmc_status"].annotations.readOnlyHint is True
+            assert hint(tools["clear_cache"].annotations, "readOnlyHint") is False
+            assert hint(tools["epmc_status"].annotations, "readOnlyHint") is True
 
 
 @pytest.mark.network
@@ -496,8 +497,8 @@ class TestMCPExportAgainstRealEuropePMC:
             result = await session.call_tool(
                 "export_papers", {"ids": self.IDS, "format": "bibtex"}
             )
-            data = result.structuredContent
-            assert result.isError is False
+            data = structured(result)
+            assert is_error(result) is False
             assert data["exported"] == 3
             assert [e["status"] for e in data["skipped"]] == ["not_found", "invalid"]
             keys = re.findall(r"@article\{(\w+),", data["content"])
@@ -511,8 +512,8 @@ class TestMCPExportAgainstRealEuropePMC:
             first = await session.call_tool(
                 "export_papers", {"query": query, "format": "csv", "limit": 3}
             )
-            data = first.structuredContent
-            assert first.isError is False
+            data = structured(first)
+            assert is_error(first) is False
             assert data["exported"] == 3
             assert data["total_hits"] > 3
             assert data["next_skip"] == 3
@@ -522,20 +523,20 @@ class TestMCPExportAgainstRealEuropePMC:
                 "export_papers", {"query": query, "format": "csv", "limit": 3, "skip": 3}
             )
             ids_first = {row[0] for row in csv.reader(io.StringIO(data["content"]))}
-            second_rows = csv.reader(io.StringIO(second.structuredContent["content"]))
+            second_rows = csv.reader(io.StringIO(structured(second)["content"]))
             assert not (ids_first - {"id"}) & {row[0] for row in second_rows}
 
             for fmt in ("ris", "csl-json", "json", "markdown", "bibtex"):
                 result = await session.call_tool(
                     "export_papers", {"query": query, "format": fmt, "limit": 2}
                 )
-                assert result.isError is False, fmt
-                assert result.structuredContent["exported"] == 2, fmt
+                assert is_error(result) is False, fmt
+                assert structured(result)["exported"] == 2, fmt
 
     async def test_a_ris_export_has_start_and_end_pages_and_the_bibtex_reads_back(self):
         async with _server_session() as (session, _init_result):
             ris = await session.call_tool("export_papers", {"ids": ["16004729"], "format": "ris"})
-            text = ris.structuredContent["content"]
+            text = structured(ris)["content"]
             assert "SP  - 138" in text and "EP  - 143" in text
             assert text.rstrip().endswith("ER  -")
 
@@ -544,7 +545,7 @@ class TestMCPExportAgainstRealEuropePMC:
             )
             # the consortium name stays one author despite the "and" in it
             expected = "author = {{GBD 2019 Diseases and Injuries Collaborators}}"
-            assert expected in bib.structuredContent["content"]
+            assert expected in structured(bib)["content"]
 
 
 @pytest.mark.network
@@ -554,8 +555,8 @@ class TestMCPLinksAgainstRealEuropePMC:
             result = await session.call_tool(
                 "get_paper_data_links", {"pmid": "32257953", "category": "SNPs", "limit": 5}
             )
-            data = result.structuredContent
-            assert result.isError is False
+            data = structured(result)
+            assert is_error(result) is False
             assert data["article"] == {"source": "MED", "id": "32257953"}
             assert data["matching"] >= 10
             assert len(data["links"]) == 5 and data["truncated"] is True
@@ -569,16 +570,16 @@ class TestMCPLinksAgainstRealEuropePMC:
             by_doi = await session.call_tool(
                 "get_paper_data_links", {"doi": "10.1038/s41586-021-03583-3"}
             )
-            assert by_doi.isError is False
-            assert by_doi.structuredContent["article"]["id"] == "34040261"
+            assert is_error(by_doi) is False
+            assert structured(by_doi)["article"]["id"] == "34040261"
 
     async def test_lab_links_with_a_provider_filter(self):
         async with _server_session() as (session, _init_result):
             result = await session.call_tool(
                 "get_paper_lab_links", {"pmcid": "PMC3257301", "provider": "genome"}
             )
-            data = result.structuredContent
-            assert result.isError is False
+            data = structured(result)
+            assert is_error(result) is False
             assert [p["provider"] for p in data["providers"]] == ["Saccharomyces Genome Database"]
             url = urlparse(data["providers"][0]["links"][0]["url"])
             assert url.scheme == "https" and url.hostname == "www.yeastgenome.org"
@@ -587,10 +588,10 @@ class TestMCPLinksAgainstRealEuropePMC:
     async def test_a_paper_without_links_and_a_bad_identifier(self):
         async with _server_session() as (session, _init_result):
             none = await session.call_tool("get_paper_data_links", {"pmid": "25883711"})
-            assert none.isError is False
-            assert none.structuredContent["links"] == []
+            assert is_error(none) is False
+            assert structured(none)["links"] == []
             bad = await session.call_tool("get_paper_lab_links", {"pmid": "abc"})
-            assert bad.isError is True
+            assert is_error(bad) is True
 
 
 @pytest.mark.network
@@ -600,8 +601,8 @@ class TestMCPEnrichAgainstRealSources:
             result = await session.call_tool(
                 "enrich_paper", {"doi": "10.1038/nature14539", "time_budget": 120}
             )
-            data = result.structuredContent
-            assert result.isError is False
+            data = structured(result)
+            assert is_error(result) is False
             assert data["found"] is True
             assert data["article"]["pmid"] == "26017442"
             assert data["article"]["title"].lower().startswith("deep learning")
@@ -623,8 +624,8 @@ class TestMCPEnrichAgainstRealSources:
                     "time_budget": 60,
                 },
             )
-            data = result.structuredContent
-            assert result.isError is False
+            data = structured(result)
+            assert is_error(result) is False
             assert set(data) >= {"article", "updates", "sources"}
             assert "impact" not in data
             assert data["updates"]["is_retracted"] is True
@@ -634,4 +635,4 @@ class TestMCPEnrichAgainstRealSources:
     async def test_a_bad_identifier_is_refused_before_any_request(self):
         async with _server_session() as (session, _init_result):
             result = await session.call_tool("enrich_paper", {"pmid": "abc"})
-            assert result.isError is True
+            assert is_error(result) is True

@@ -13,12 +13,13 @@ import json
 from pathlib import Path
 from unittest.mock import MagicMock
 
-from mcp.server.fastmcp.exceptions import ToolError
+from mcp_wire import schema_of
 import pytest
 
 from pyeuropepmc.core.error_codes import ErrorCodes
 from pyeuropepmc.core.exceptions import APIClientError
 from pyeuropepmc.mcp import _annotations as ann, server as srv
+from pyeuropepmc.mcp.server import ToolError
 
 FIXTURES = Path(__file__).parents[2] / "fixtures" / "annotations"
 BY_ARTICLE = json.loads(
@@ -348,7 +349,7 @@ class TestFindPapersByEntity:
 
     def test_limit_is_bounded_by_the_apis_page_size(self):
         tools = {t.name: t for t in asyncio.run(srv.mcp.list_tools())}
-        assert tools["find_papers_by_entity"].inputSchema["properties"]["limit"]["maximum"] == 8
+        assert schema_of(tools["find_papers_by_entity"])["properties"]["limit"]["maximum"] == 8
 
     def test_api_error_becomes_tool_error(self):
         client = MagicMock()

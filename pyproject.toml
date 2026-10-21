@@ -65,7 +65,7 @@ cachetools = ">=7.2.2,<8.0"
 click = ">=8.0,<8.2"
 defusedxml = ">=0.7.1,<0.8"
 diskcache = ">=5.6.3,<6.0"
-mcp = ">=1.20.0,<2.0.0"
+mcp = ">=1.20.0,<3.0.0"
 pydantic = ">=2.7.4,<3.0"
 python-dotenv = ">=0.19"
 # Imported at module level by pyeuropepmc.mappers; it only ever arrived
@@ -160,6 +160,8 @@ build-backend = "poetry.core.masonry.api"
 #     pytest -m slow
 addopts = "-ra -q --strict-markers --disable-socket --allow-unix-socket --timeout=120 -m 'not slow and not functional and not network and not benchmark and not e2e'"
 testpaths = ["tests"]
+# tests/mcp/mcp_wire.py: version-neutral reads of MCP SDK objects (mcp 1.x and 2.x)
+pythonpath = ["tests/mcp"]
 asyncio_mode = "auto"
 markers = [
   "slow: mark test as slow (use '-m \"not slow\"' to skip)",

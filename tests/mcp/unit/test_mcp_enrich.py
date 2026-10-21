@@ -16,11 +16,12 @@ import threading
 from typing import Any
 from unittest.mock import MagicMock
 
-from mcp.server.fastmcp.exceptions import ToolError
+from mcp_wire import hint, schema_of
 import pytest
 
 from pyeuropepmc.features.enrich import EnrichmentConfig, PaperEnricher
 from pyeuropepmc.mcp import _enrich as en, server as srv
+from pyeuropepmc.mcp.server import ToolError
 
 FIXTURES = Path(__file__).parents[2] / "fixtures" / "enrich"
 RETRACTED = json.loads((FIXTURES / "results_pmid_9500320.json").read_text(encoding="utf-8"))
@@ -430,6 +431,6 @@ class TestMakeEnricher:
 def test_the_tool_is_read_only():
     tools = {t.name: t for t in _run(srv.mcp.list_tools())}
     tool = tools["enrich_paper"]
-    assert tool.annotations.readOnlyHint is True
-    assert not tool.annotations.destructiveHint
-    assert tool.inputSchema["properties"]["time_budget"]["maximum"] == 120
+    assert hint(tool.annotations, "readOnlyHint") is True
+    assert not hint(tool.annotations, "destructiveHint")
+    assert schema_of(tool)["properties"]["time_budget"]["maximum"] == 120

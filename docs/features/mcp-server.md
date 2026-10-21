@@ -12,7 +12,7 @@ pyeuropepmc-mcp                                       # stdio, for any client th
 pyeuropepmc-mcp --transport streamable-http           # HTTP at http://127.0.0.1:8000/mcp
 ```
 
-For Claude Desktop, Cursor and VS Code, add `"command": "pyeuropepmc-mcp"` (or `"command": "uvx"` with `"args": ["pyeuropepmc", "mcp"]`) to the client's MCP configuration; the [README](../../README.md#-mcp-server) shows the file for each. The server has no authentication of its own: keep the HTTP transport on `127.0.0.1` or put an authenticating proxy in front of it.
+For Claude Desktop, Cursor and VS Code, add `"command": "pyeuropepmc-mcp"` (or `"command": "uvx"` with `"args": ["pyeuropepmc", "mcp"]`) to the client's MCP configuration; the [README](../../README.md#-mcp-server) shows the file for each. The server has no authentication of its own: keep the HTTP transport on `127.0.0.1` or put an authenticating proxy in front of it. Behind a proxy that forwards its public host name, add `--allowed-host mcp.example.org` (MCP SDK 2.x answers HTTP 421 to unknown `Host` headers).
 
 Two tools need configuration. `find_open_access` reads `UNPAYWALL_EMAIL` (Unpaywall asks for a contact address), and the LLM tools need the `agentic` extra and an `OPENAI_API_KEY`. A tool whose dependency is missing stays in the tool list and answers with the `pip install` line it needs.
 

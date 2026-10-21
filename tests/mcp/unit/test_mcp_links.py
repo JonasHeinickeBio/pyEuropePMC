@@ -13,12 +13,13 @@ import json
 from pathlib import Path
 from unittest.mock import MagicMock
 
-from mcp.server.fastmcp.exceptions import ToolError
+from mcp_wire import hint, schema_of
 import pytest
 
 from pyeuropepmc.core.error_codes import ErrorCodes
 from pyeuropepmc.core.exceptions import APIClientError
 from pyeuropepmc.mcp import _links as lk, server as srv
+from pyeuropepmc.mcp.server import ToolError
 
 FIXTURES = Path(__file__).parents[2] / "fixtures" / "links"
 
@@ -254,6 +255,6 @@ class TestGetPaperLabLinks:
 def test_tools_are_read_only_and_listed():
     tools = {t.name: t for t in _run(srv.mcp.list_tools())}
     for name in ("get_paper_data_links", "get_paper_lab_links"):
-        assert tools[name].annotations.readOnlyHint is True
-        assert tools[name].inputSchema["properties"]["pmid"]
-    assert tools["get_paper_data_links"].inputSchema["properties"]["limit"]["maximum"] == 1000
+        assert hint(tools[name].annotations, "readOnlyHint") is True
+        assert schema_of(tools[name])["properties"]["pmid"]
+    assert schema_of(tools["get_paper_data_links"])["properties"]["limit"]["maximum"] == 1000

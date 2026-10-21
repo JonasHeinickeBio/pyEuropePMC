@@ -91,8 +91,6 @@ import threading
 from typing import Annotated, Any, Generic, Literal, TypeVar, cast
 
 import anyio
-from mcp.server.fastmcp import Context, FastMCP
-from mcp.server.fastmcp.exceptions import ToolError
 from mcp.types import ToolAnnotations
 from pydantic import Field
 import requests
@@ -199,6 +197,23 @@ except ImportError:
 logger = logging.getLogger("pyeuropepmc.mcp")
 logger.addHandler(logging.NullHandler())
 
+# MCP Python SDK 2.x renamed FastMCP to MCPServer and moved it (and ToolError) to
+# ``mcp.server.mcpserver``; 1.x has ``mcp.server.fastmcp``. Both are supported: only the
+# imports, the way the version is set and the way the HTTP transports are configured differ.
+try:
+    from mcp.server.mcpserver import Context, MCPServer
+    from mcp.server.mcpserver.exceptions import ToolError
+
+    _MCP_SDK_2 = True
+except ImportError:  # pragma: no cover - exercised by the "mcp 1.x" CI job
+    from mcp.server.fastmcp import (  # type: ignore[no-redef,attr-defined]
+        Context,
+        FastMCP as MCPServer,
+    )
+    from mcp.server.fastmcp.exceptions import ToolError  # type: ignore[no-redef]
+
+    _MCP_SDK_2 = False
+
 
 def _server_version() -> str:
     try:
@@ -207,22 +222,24 @@ def _server_version() -> str:
         return "0.0.0+unknown"
 
 
-mcp = FastMCP(
-    "pyeuropepmc-mcp",
-    instructions=(
-        "Tools for searching and analysing biomedical/scientific literature via "
-        "Europe PMC and related sources (PubMed, arXiv, Semantic Scholar, OpenAlex, "
-        "ClinicalTrials.gov). Start with `unified_search` for broad multi-source "
-        "discovery, `get_paper_details` to resolve a single PMID/PMCID/DOI, and "
-        "`citation_snowball` to walk a citation graph. Tools whose descriptions say "
-        "'requires an LLM provider' need an LLM API key configured in the server's "
-        "environment (see pyeuropepmc.agentic.llm_client) and will return a clear "
-        "error otherwise. Availability of some tools depends on optional extras "
-        "(`pip install pyeuropepmc[all]`) — an unavailable tool reports exactly what "
-        "to install."
-    ),
+_INSTRUCTIONS = (
+    "Tools for searching and analysing biomedical/scientific literature via "
+    "Europe PMC and related sources (PubMed, arXiv, Semantic Scholar, OpenAlex, "
+    "ClinicalTrials.gov). Start with `unified_search` for broad multi-source "
+    "discovery, `get_paper_details` to resolve a single PMID/PMCID/DOI, and "
+    "`citation_snowball` to walk a citation graph. Tools whose descriptions say "
+    "'requires an LLM provider' need an LLM API key configured in the server's "
+    "environment (see pyeuropepmc.agentic.llm_client) and will return a clear "
+    "error otherwise. Availability of some tools depends on optional extras "
+    "(`pip install pyeuropepmc[all]`) — an unavailable tool reports exactly what "
+    "to install."
 )
-mcp._mcp_server.version = _server_version()
+
+if _MCP_SDK_2:
+    mcp = MCPServer("pyeuropepmc-mcp", instructions=_INSTRUCTIONS, version=_server_version())
+else:  # pragma: no cover - exercised by the "mcp 1.x" CI job
+    mcp = MCPServer("pyeuropepmc-mcp", instructions=_INSTRUCTIONS)
+    mcp._mcp_server.version = _server_version()  # type: ignore[attr-defined]
 
 
 # ---------------------------------------------------------------------------
@@ -660,7 +677,7 @@ async def unified_search(
         ),
     ] = None,
     limit: Annotated[int, Field(description="Max results per source", ge=1, le=200)] = 25,
-    ctx: Context[Any, Any, Any] | None = None,
+    ctx: Context | None = None,
 ) -> dict[str, Any]:
     """Search across multiple literature sources (PubMed, arXiv, Semantic Scholar, OpenAlex,
     ClinicalTrials.gov) in parallel, with automatic cross-source deduplication."""
@@ -857,7 +874,7 @@ async def citation_snowball(
     max_papers: Annotated[int, Field(description="Max papers per level", ge=1, le=1000)] = 50,
     max_depth: Annotated[int, Field(description="Recursion depth (0 = no limit)", ge=0)] = 1,
     min_citations: Annotated[int, Field(description="Minimum citation count filter", ge=0)] = 0,
-    ctx: Context[Any, Any, Any] | None = None,
+    ctx: Context | None = None,
 ) -> dict[str, Any]:
     """Walk the citation graph forward (cited-by), backward (references), or both, with
     configurable depth and a minimum-citation-count filter."""
@@ -2411,7 +2428,7 @@ async def paper_screening(
     inclusion_criteria: Annotated[list[str], Field(description="Inclusion criteria")],
     exclusion_criteria: Annotated[list[str], Field(description="Exclusion criteria")],
     limit: Annotated[int, Field(description="Papers to screen", ge=1, le=500)] = 25,
-    ctx: Context[Any, Any, Any] | None = None,
+    ctx: Context | None = None,
 ) -> dict[str, Any]:
     """Automated paper screening with PRISMA-compliant criteria, using an LLM (requires
     an LLM provider)."""
@@ -2478,7 +2495,7 @@ async def literature_review(
     excluded_topics: Annotated[
         list[str] | None, Field(description="Topics to exclude from the review")
     ] = None,
-    ctx: Context[Any, Any, Any] | None = None,
+    ctx: Context | None = None,
 ) -> dict[str, Any]:
     """Generate a comprehensive literature review using an LLM (requires an LLM
     provider)."""
@@ -2670,6 +2687,16 @@ def _build_arg_parser() -> argparse.ArgumentParser:
         help="Bind port for the sse/streamable-http transports (default: 8000)",
     )
     parser.add_argument(
+        "--allowed-host",
+        action="append",
+        type=_host_name,
+        default=_hosts_from_env(os.environ.get("PYEUROPEPMC_MCP_ALLOWED_HOSTS", "")),
+        metavar="HOST",
+        help="Host name a client may send in its Host header, for the sse/streamable-http "
+        "transports behind a reverse proxy (repeatable; also PYEUROPEPMC_MCP_ALLOWED_HOSTS, "
+        "comma separated). Needs MCP Python SDK 2.x, which answers HTTP 421 to unknown hosts",
+    )
+    parser.add_argument(
         "--log-level",
         default=os.environ.get("PYEUROPEPMC_MCP_LOG_LEVEL", "INFO"),
         choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
@@ -2678,13 +2705,79 @@ def _build_arg_parser() -> argparse.ArgumentParser:
     return parser
 
 
+def _host_name(value: str) -> str:
+    """A bare host name for ``--allowed-host``: trimmed, without scheme, path or port."""
+    host = value.strip()
+    if not host or "://" in host or "/" in host or ":" in host.replace("[::1]", ""):
+        raise argparse.ArgumentTypeError(
+            f"{value!r} is not a host name: give it without scheme, port or path, "
+            "e.g. mcp.example.org"
+        )
+    return host
+
+
+def _hosts_from_env(raw: str) -> list[str]:
+    """``PYEUROPEPMC_MCP_ALLOWED_HOSTS``: comma separated, spaces around entries ignored."""
+    try:
+        return [_host_name(part) for part in raw.split(",") if part.strip()]
+    except argparse.ArgumentTypeError as exc:
+        raise SystemExit(f"PYEUROPEPMC_MCP_ALLOWED_HOSTS: {exc}") from exc
+
+
+def _transport_security(allowed_hosts: list[str]) -> Any:
+    """Host and Origin rules for the HTTP transports, or ``None`` for the SDK's defaults.
+
+    MCP SDK 2.x turns DNS-rebinding protection on for the loopback bind addresses and
+    answers HTTP 421 to any other ``Host`` header, so a reverse proxy that forwards the
+    public name needs that name allowed. A browser client also sends an ``Origin``, which
+    the SDK checks against its own list: giving the SDK a list replaces its loopback
+    defaults, so they are repeated here, and each allowed host is allowed as an origin over
+    http and https.
+    """
+    if not allowed_hosts:
+        return None
+    from mcp.server.transport_security import TransportSecuritySettings
+
+    hosts = ["127.0.0.1:*", "localhost:*", "[::1]:*"]
+    origins = ["http://127.0.0.1:*", "http://localhost:*", "http://[::1]:*"]
+    for host in allowed_hosts:
+        hosts += [host, f"{host}:*"]
+        for scheme in ("http", "https"):
+            origins += [f"{scheme}://{host}", f"{scheme}://{host}:*"]
+    return TransportSecuritySettings(
+        enable_dns_rebinding_protection=True, allowed_hosts=hosts, allowed_origins=origins
+    )
+
+
+def _serve(args: argparse.Namespace) -> None:
+    """Run the server on the chosen transport with the SDK's own configuration style."""
+    if args.transport == "stdio":
+        mcp.run(transport="stdio")
+        return
+    if not _MCP_SDK_2:  # pragma: no cover - exercised by the "mcp 1.x" CI job
+        if args.allowed_host:
+            raise SystemExit("--allowed-host needs the MCP Python SDK 2.x (pip install -U mcp)")
+        mcp.settings.host = args.host  # type: ignore[attr-defined]
+        mcp.settings.port = args.port  # type: ignore[attr-defined]
+        mcp.run(transport=args.transport)
+        return
+    security = _transport_security(args.allowed_host)
+    if args.transport == "sse":
+        mcp.run(transport="sse", host=args.host, port=args.port, transport_security=security)
+    else:
+        mcp.run(
+            transport="streamable-http",
+            host=args.host,
+            port=args.port,
+            transport_security=security,
+        )
+
+
 def _main_entry(argv: list[str] | None = None) -> None:
     args = _build_arg_parser().parse_args(argv)
     _configure_logging(args.log_level)
-    mcp.settings.host = args.host
-    mcp.settings.port = args.port
     logger.info("pyeuropepmc-mcp v%s starting (transport=%s)", _server_version(), args.transport)
-    mcp.run(transport=args.transport)
+    _serve(args)
 
 
 if __name__ == "__main__":

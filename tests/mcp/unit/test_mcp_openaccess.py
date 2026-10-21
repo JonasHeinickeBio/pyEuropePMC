@@ -11,12 +11,12 @@ from __future__ import annotations
 import asyncio
 from unittest.mock import MagicMock
 
-from mcp.server.fastmcp.exceptions import ToolError
 import pytest
 
 from pyeuropepmc.core.error_codes import ErrorCodes
 from pyeuropepmc.core.exceptions import APIClientError, UnpaywallError
 from pyeuropepmc.mcp import _openaccess as oa, server as srv
+from pyeuropepmc.mcp.server import ToolError
 
 REPO_COPY = {
     "url": "https://europepmc.org/articles/PMC3525259",
