@@ -20,7 +20,9 @@ All notable changes to PyEuropePMC are documented here.
   fragment for each term, joined with AND or OR into a checked query. Offline by default from a
   bundled snapshot of 244 common clinical headings taken from NLM's published MeSH
   (`scripts/build_mesh_snapshot.py`); terms outside it are reported unmatched, not guessed.
-  `use_api=true` asks the NLM MeSH service and covers all of MeSH.
+  `use_api=true` asks the NLM MeSH service and covers all of MeSH; its `time_budget` (30 s) bounds
+  the whole call and terms not reached are reported as skipped. The tool is annotated as open-world
+  because that option sends the terms to id.nlm.nih.gov.
 
 ### 🔧 Changed
 

@@ -250,7 +250,8 @@ def _strip_gerund(span: Span | None) -> tuple[Span | None, Span | None]:
     match = _GERUND.match(span.text)
     if not match:
         return span, None
-    verb = Span(span.text[: match.end()].strip(), span.start, span.start + match.end() - 1)
+    verb_text = match.group(0).rstrip()
+    verb = Span(verb_text, span.start, span.start + len(verb_text))
     rest = span.text[match.end() :]
     return (Span(rest, span.start + match.end(), span.end) if rest else None), verb
 
@@ -372,7 +373,12 @@ def decompose(question: str, framework: str = "PICO") -> Decomposition:
         raise ValueError(
             f"the question is {len(text)} characters; the limit is {MAX_QUESTION_CHARS}"
         )
-    return _decompose_spider(text) if framework == "SPIDER" else _decompose_pico(text, framework)
+    # Parse the question as given: positions refer to the caller's string, leading space included.
+    return (
+        _decompose_spider(question)
+        if framework == "SPIDER"
+        else _decompose_pico(question, framework)
+    )
 
 
 # ---------------------------------------------------------------------------

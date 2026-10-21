@@ -90,6 +90,7 @@ import os
 import re
 import sys
 import threading
+import time
 from typing import Annotated, Any, Generic, Literal, TypeVar, cast
 
 import anyio
@@ -2444,12 +2445,46 @@ def _nlm_get(url: str, params: dict[str, Any], timeout: float) -> Any:
     return response.json()
 
 
-def _expand_terms(terms: list[str], use_api: bool, max_entry_terms: int) -> list[dict[str, Any]]:
+_now = time.monotonic
+
+
+class _BudgetExhausted(Exception):
+    """The time budget of a ``mesh_expand`` call with ``use_api`` ran out."""
+
+
+def _expand_terms(
+    terms: list[str], use_api: bool, max_entry_terms: int, deadline: float | None = None
+) -> list[dict[str, Any]]:
+    """One entry per term. With ``use_api`` no request starts after ``deadline`` and none may
+    run past it; the terms still waiting are reported as skipped, not dropped."""
     out: list[dict[str, Any]] = []
     snapshot = None if use_api else mm.snapshot()
+
+    def fetch(url: str, params: dict[str, Any], timeout: float) -> Any:
+        if deadline is None:
+            return _nlm_get(url, params, timeout)
+        remaining = deadline - _now()
+        if remaining <= 0:
+            raise _BudgetExhausted
+        return _nlm_get(url, params, min(timeout, remaining))
+
     for term in terms:
         try:
-            match = mm.lookup_api(term, _nlm_get) if use_api else snapshot.lookup(term)  # type: ignore[union-attr]
+            if use_api:
+                match = mm.lookup_api(term, fetch)
+            else:
+                assert snapshot is not None
+                match = snapshot.lookup(term)
+        except _BudgetExhausted:
+            out.append(
+                {
+                    "term": term,
+                    "matched": False,
+                    "error": "skipped: time budget exhausted",
+                    "fragment": mm.fragment(mm.Match(term, None)),
+                }
+            )
+            continue
         except (requests.RequestException, ValueError, KeyError, IndexError) as exc:
             out.append(
                 {
@@ -2477,7 +2512,7 @@ def _expand_terms(terms: list[str], use_api: bool, max_entry_terms: int) -> list
     return out
 
 
-@mcp.tool(annotations=_ro("Expand terms with MeSH", local=True))
+@mcp.tool(annotations=_ro("Expand terms with MeSH"))
 async def mesh_expand(
     terms: Annotated[
         list[str],
@@ -2504,6 +2539,15 @@ async def mesh_expand(
     max_entry_terms: Annotated[
         int, Field(description="Entry terms added to each fragment", ge=0, le=20)
     ] = mm.DEFAULT_ENTRY_TERMS,
+    time_budget: Annotated[
+        float,
+        Field(
+            description="With use_api: seconds for all lookups together; terms not reached "
+            "are reported as skipped. Ignored offline.",
+            ge=2,
+            le=120,
+        ),
+    ] = 30,
 ) -> dict[str, Any]:
     """MeSH headings for search terms: the descriptor (ID, heading, tree numbers), its entry
     terms and a ready Europe PMC fragment `(MESH:"Heading" OR "entry term" OR ...)` for each
@@ -2511,15 +2555,17 @@ async def mesh_expand(
     default it works offline from a bundled snapshot of 244 common clinical headings taken
     from NLM's published MeSH (heading, entry terms and tree numbers as published): a term
     that is not in it comes back with `matched: false` and is searched as written, never
-    guessed. `use_api` asks NLM instead, which covers all of MeSH and needs the network; a
-    failed request is reported for that term and does not fail the call."""
+    guessed. `use_api` asks NLM instead, which covers all of MeSH and needs the network (the
+    terms are sent to id.nlm.nih.gov); a failed or skipped request is reported for that term
+    and does not fail the call, and `time_budget` bounds the whole call."""
     joiner = combine.strip().lower()
     if joiner not in ("and", "or"):
         raise ToolError("combine must be 'and' or 'or'")
     cleaned = [t.strip() for t in terms if t.strip()]
     if not cleaned:
         raise ToolError("at least one non-empty term is required")
-    items = await _run_blocking(_expand_terms, cleaned, use_api, max_entry_terms)
+    deadline = _now() + float(time_budget) if use_api else None
+    items = await _run_blocking(_expand_terms, cleaned, use_api, max_entry_terms, deadline)
     query = f" {joiner.upper()} ".join(item["fragment"] for item in items)
     result: dict[str, Any] = {
         "source": "nlm" if use_api else "snapshot",

@@ -24,7 +24,6 @@ import requests
 OUT = Path(__file__).parents[1] / "src" / "pyeuropepmc" / "mcp" / "data" / "mesh_common.json"
 LOOKUP = "https://id.nlm.nih.gov/mesh/lookup/descriptor"
 SPARQL = "https://id.nlm.nih.gov/mesh/sparql"
-MAX_ENTRY_TERMS = 40
 
 HEADINGS = """
 Diabetes Mellitus; Diabetes Mellitus, Type 1; Diabetes Mellitus, Type 2; Hypertension;
@@ -159,7 +158,7 @@ def main() -> None:
                 "ui": ui,
                 "heading": heading,
                 "trees": sorted(trees.get(ui, set())),
-                "entry_terms": sorted(terms, key=str.lower)[:MAX_ENTRY_TERMS],
+                "entry_terms": sorted(terms, key=str.lower),
             }
         )
     snapshot = {

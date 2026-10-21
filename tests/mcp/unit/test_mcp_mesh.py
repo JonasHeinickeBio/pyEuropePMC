@@ -262,6 +262,44 @@ class TestTool:
         assert result["unmatched"] == ["boom"]
         assert result["query_check"]["valid"] is True
 
+    def test_terms_after_the_time_budget_are_skipped_not_dropped(self, monkeypatch):
+        clock = {"now": 0.0}
+        monkeypatch.setattr(srv, "_now", lambda: clock["now"])
+        calls: list[tuple[str, float]] = []
+
+        def slow(url, params, timeout):
+            calls.append((url, timeout))
+            clock["now"] += 12.0  # every request takes 12 seconds
+            if url.endswith("/lookup/descriptor") and params["match"] == "exact":
+                return [{"resource": "http://id.nlm.nih.gov/mesh/D012507", "label": "x"}]
+            if url == mm.SPARQL_URL:
+                return {"results": {"bindings": [{"label": {"value": "Sarcoidosis"}}]}}
+            return []
+
+        monkeypatch.setattr(srv, "_nlm_get", slow)
+        result = _run(srv.mesh_expand(terms=["a", "b", "c", "d"], use_api=True, time_budget=30))
+        done = [t for t in result["terms"] if t.get("matched")]
+        skipped = [
+            t for t in result["terms"] if t.get("error") == "skipped: time budget exhausted"
+        ]
+        assert [t["term"] for t in result["terms"]] == ["a", "b", "c", "d"]  # none dropped
+        assert len(done) == 1 and len(skipped) == 3
+        assert result["unmatched"] == ["b", "c", "d"]
+        assert all(t["fragment"] == f'"{t["term"]}"' for t in skipped)
+        assert len(calls) == 3  # no request started after the budget ran out
+        assert all(timeout <= 15 for _, timeout in calls)
+        assert calls[-1][1] == pytest.approx(6.0)  # and none may run past the deadline
+        assert result["query_check"]["valid"] is True
+
+    def test_the_budget_does_not_apply_offline_and_is_bounded_in_the_schema(self, monkeypatch):
+        from mcp_wire import schema_of
+
+        monkeypatch.setattr(srv, "_now", lambda: pytest.fail("the clock was read offline"))
+        assert _run(srv.mesh_expand(terms=["metformin"], time_budget=2))["terms"][0]["matched"]
+        tools = {t.name: t for t in _run(srv.mcp.list_tools())}
+        budget = schema_of(tools["mesh_expand"])["properties"]["time_budget"]
+        assert (budget["minimum"], budget["maximum"], budget["default"]) == (2, 120, 30)
+
     def test_the_default_never_calls_the_service(self, monkeypatch):
         monkeypatch.setattr(srv, "_nlm_get", lambda *a, **k: pytest.fail("service called"))
         _run(srv.mesh_expand(terms=["metformin"]))
@@ -281,6 +319,8 @@ class TestTool:
         terms = schema_of(tools["mesh_expand"])["properties"]["terms"]
         assert terms["minItems"] == 1 and terms["maxItems"] == mm.MAX_TERMS
         assert hint(tools["mesh_expand"].annotations, "readOnlyHint") is True
+        # use_api sends the terms to id.nlm.nih.gov, so the tool is open-world
+        assert hint(tools["mesh_expand"].annotations, "openWorldHint") is True
 
     def test_the_description_states_the_default_and_the_network_option(self):
         text = " ".join((srv.mesh_expand.__doc__ or "").split())

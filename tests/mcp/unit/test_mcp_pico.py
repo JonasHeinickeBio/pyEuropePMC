@@ -110,6 +110,37 @@ class TestMissingElements:
         assert any("exposure" in n for n in d.notes)
 
 
+class TestPositions:
+    def test_the_relation_span_is_exact_when_several_spaces_follow_the_gerund(self):
+        q = "Is metformin effective for reducing  hospitalisation in adults?"
+        relation = pc.decompose(q).relation
+        assert relation is not None and relation.text == "reducing"
+        assert q[relation.start : relation.end] == "reducing"
+
+    @pytest.mark.parametrize("pad", ["   ", "\n\t ", " "])
+    def test_positions_refer_to_the_question_as_sent_leading_space_included(self, pad):
+        q = pad + "In adults with asthma, does exercise reduce attacks compared with usual care?"
+        d = pc.decompose(q)
+        assert {k: v.text for k, v in d.elements.items()} == {
+            "population": "adults with asthma",
+            "intervention": "exercise",
+            "comparison": "usual care",
+            "outcome": "attacks",
+        }
+        for span in [*d.elements.values(), d.relation]:
+            assert span is not None and q[span.start : span.end] == span.text
+
+    def test_the_tool_reports_positions_in_the_caller_s_string(self):
+        q = "  Does yoga improve sleep in women?  "
+        for span in _run(srv.pico_decompose(question=q))["elements"].values():
+            assert q[span["start"] : span["end"]] == span["text"]
+
+    def test_spider_positions_too(self):
+        q = "  What are the experiences of nurses during the pandemic?"
+        for span in pc.decompose(q, "SPIDER").elements.values():
+            assert q[span.start : span.end] == span.text
+
+
 class TestSpider:
     def test_qualitative_question(self):
         d = pc.decompose(
@@ -167,7 +198,7 @@ class TestValidation:
             if text.strip():
                 d = pc.decompose(text, rng.choice(pc.FRAMEWORKS))
                 for span in d.elements.values():
-                    assert text.strip()[span.start : span.end] == span.text
+                    assert text[span.start : span.end] == span.text
 
 
 class TestQuery:
