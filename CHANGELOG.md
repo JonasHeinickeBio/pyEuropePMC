@@ -4,6 +4,27 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
+## [4.0.0] - 2026-10-21
+
+> Major release: the MCP server moves to MCP Python SDK 2.x, and gains question decomposition
+> (PICO, SPIDER) and MeSH expansion. The server now has 45 tools. The Python API of the library
+> is unchanged; the major version marks a change in the installed dependency set and in how the
+> HTTP transports behave.
+
+### ⚠️ Upgrade notes
+
+- The lock file and `requirements.txt` pin `mcp` 2.3.0. A fresh install now brings `httpx2`,
+  `httpcore2`, `mcp-types`, `opentelemetry-api` and `truststore`, and no longer `httpx`,
+  `httpcore`, `httpx-sse` or `pydantic-settings`. `pip install pyeuropepmc` still accepts
+  `mcp>=1.20.0,<3.0.0`, so an environment that keeps MCP SDK 1.x for another package works; the
+  server detects the SDK it finds.
+- With SDK 2.x the HTTP transports (`--transport sse` and `streamable-http`) answer HTTP 421 to a
+  `Host` header they do not know. Behind a reverse proxy that forwards its public name, start the
+  server with `--allowed-host mcp.example.org` (or `PYEUROPEPMC_MCP_ALLOWED_HOSTS`). Loopback
+  names stay allowed. Not available on SDK 1.x.
+- `pydantic` moves to 2.14 in the lock (with `pydantic-core` 2.50) and `starlette` to 1.7 on
+  Python 3.10 and 1.9 on 3.11 and later.
+
 ### ✨ Features
 
 - New MCP tool `pico_decompose`: a research question split into PICO, PICOS, PICOT or SPIDER
