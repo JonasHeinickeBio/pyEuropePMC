@@ -100,6 +100,8 @@ Text without suggestions is kept as written. Field-qualified parts such as `TITL
 
 ## PICO decomposition
 
+> **Limits.** `PICOParser` takes the rest of the sentence for each element, so elements overlap and the query contains words such as `does` and `with` (as in the output below); on 36 gold questions it found 5 of 106 stated elements exactly. The MCP server's `pico_decompose` tool uses separate rules that are checked against the question and never invent an element; see the [MCP server guide](mcp-server.md#from-a-question-to-a-search) for the measured comparison.
+
 ```python
 from pyeuropepmc.features.review import pico_decompose, pico_to_pubmed_query, pico_to_query
 

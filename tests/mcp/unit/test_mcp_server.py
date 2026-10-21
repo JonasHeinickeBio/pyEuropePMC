@@ -349,6 +349,8 @@ class TestToolRegistry:
         "get_paper_data_links",
         "get_paper_lab_links",
         "enrich_paper",
+        "pico_decompose",
+        "mesh_expand",
         "analyze_citations",
         "compare_citations",
         "summarize_citations",

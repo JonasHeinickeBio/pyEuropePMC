@@ -1,0 +1,3348 @@
+{
+ "source": "NLM MeSH (https://id.nlm.nih.gov/mesh/), as published; see scripts/build_mesh_snapshot.py",
+ "built": "2026-10-21",
+ "descriptors": [
+  {
+   "ui": "D000058",
+   "heading": "Accidental Falls",
+   "trees": [
+    "N06.850.135.122"
+   ],
+   "entry_terms": [
+    "Falling",
+    "Falls",
+    "Falls, Accidental"
+   ]
+  },
+  {
+   "ui": "D000152",
+   "heading": "Acne Vulgaris",
+   "trees": [
+    "C17.800.030.150",
+    "C17.800.794.111"
+   ],
+   "entry_terms": []
+  },
+  {
+   "ui": "D026881",
+   "heading": "Acupuncture",
+   "trees": [
+    "H02.004"
+   ],
+   "entry_terms": []
+  },
+  {
+   "ui": "D000293",
+   "heading": "Adolescent",
+   "trees": [
+    "M01.060.057"
+   ],
+   "entry_terms": [
+    "Adolescents",
+    "Teenagers"
+   ]
+  },
+  {
+   "ui": "D000319",
+   "heading": "Adrenergic beta-Antagonists",
+   "trees": [
+    "D27.505.519.625.050.200.200",
+    "D27.505.696.577.050.200.200"
+   ],
+   "entry_terms": [
+    "Adrenergic beta-Antagonist",
+    "Adrenergic beta-Receptor Blockader",
+    "Adrenergic beta-Receptor Blockaders",
+    "beta-Adrenergic Antagonist",
+    "beta-Adrenergic Antagonists",
+    "beta-Adrenergic Blocker",
+    "beta-Adrenergic Blockers",
+    "beta-Adrenergic Blocking Agent",
+    "beta-Adrenergic Blocking Agents",
+    "beta-Adrenergic Receptor Blockader",
+    "beta-Adrenergic Receptor Blockaders",
+    "beta-Adrenoceptor Antagonist",
+    "beta-Adrenoceptor Antagonists",
+    "beta-Blockers, Adrenergic"
+   ]
+  },
+  {
+   "ui": "D000328",
+   "heading": "Adult",
+   "trees": [
+    "M01.060.116"
+   ],
+   "entry_terms": [
+    "Adults"
+   ]
+  },
+  {
+   "ui": "D000368",
+   "heading": "Aged",
+   "trees": [
+    "M01.060.116.100"
+   ],
+   "entry_terms": [
+    "Elderly"
+   ]
+  },
+  {
+   "ui": "D000369",
+   "heading": "Aged, 80 and over",
+   "trees": [
+    "M01.060.116.100.080"
+   ],
+   "entry_terms": [
+    "Oldest Old"
+   ]
+  },
+  {
+   "ui": "D000428",
+   "heading": "Alcohol Drinking",
+   "trees": [
+    "F01.145.317.269"
+   ],
+   "entry_terms": [
+    "Alcohol Consumption",
+    "Alcohol Drinking Habits",
+    "Alcohol Intake",
+    "Drinking, Alcohol"
+   ]
+  },
+  {
+   "ui": "D000544",
+   "heading": "Alzheimer Disease",
+   "trees": [
+    "C10.228.140.380.100",
+    "C10.574.945.249",
+    "F03.615.400.100"
+   ],
+   "entry_terms": [
+    "Alzheimer Dementia",
+    "Alzheimer Sclerosis",
+    "Alzheimer Syndrome",
+    "Alzheimer Type Senile Dementia",
+    "Alzheimer's Disease",
+    "Alzheimer's Diseases",
+    "Alzheimer-Type Dementia (ATD)",
+    "Dementia, Alzheimer Type",
+    "Dementia, Primary Senile Degenerative",
+    "Dementia, Senile",
+    "Early Onset Alzheimer Disease",
+    "Focal Onset Alzheimer's Disease",
+    "Late Onset Alzheimer Disease",
+    "Presenile Alzheimer Dementia",
+    "Primary Senile Degenerative Dementia",
+    "Senile Dementia, Acute Confusional",
+    "Senile Dementia, Alzheimer Type"
+   ]
+  },
+  {
+   "ui": "D000701",
+   "heading": "Analgesics, Opioid",
+   "trees": [
+    "D27.505.696.277.600.500",
+    "D27.505.696.663.850.014.760.500",
+    "D27.505.954.427.040.550.500",
+    "D27.505.954.427.210.600.500"
+   ],
+   "entry_terms": [
+    "Opioid",
+    "Opioid Analgesic",
+    "Opioid Analgesics",
+    "Opioid Full Agonists",
+    "Opioid Partial Agonists"
+   ]
+  },
+  {
+   "ui": "D000740",
+   "heading": "Anemia",
+   "trees": [
+    "C15.378.050"
+   ],
+   "entry_terms": []
+  },
+  {
+   "ui": "D000758",
+   "heading": "Anesthesia",
+   "trees": [
+    "E03.155"
+   ],
+   "entry_terms": []
+  },
+  {
+   "ui": "D000806",
+   "heading": "Angiotensin-Converting Enzyme Inhibitors",
+   "trees": [
+    "D27.505.519.389.745.085"
+   ],
+   "entry_terms": [
+    "Ace 1 Inhibitor",
+    "Ace I Inhibitors",
+    "ACE Inhibitor",
+    "ACE Inhibitors",
+    "Ace1 Inhibitor",
+    "Ace1 Inhibitors",
+    "Angiotensin Converting Enzyme Inhibitor",
+    "Angiotensin I-Converting Enzyme Inhibitor",
+    "Angiotensin-Converting Enzyme Antagonists",
+    "Angiotensin-Converting Enzyme Inhibitor",
+    "Antagonists, Angiotensin-Converting Enzyme",
+    "Antagonists, Kininase II",
+    "Inhibitors, ACE",
+    "Inhibitors, Angiotensin-Converting Enzyme",
+    "Inhibitors, Kininase II",
+    "Kininase II Antagonists",
+    "Kininase II Inhibitor",
+    "Kininase II Inhibitors"
+   ]
+  },
+  {
+   "ui": "D000900",
+   "heading": "Anti-Bacterial Agents",
+   "trees": [
+    "D27.505.954.122.085"
+   ],
+   "entry_terms": [
+    "Anti-Bacterial Agent",
+    "Anti-Bacterial Compound",
+    "Anti-Bacterial Compounds",
+    "Anti-Mycobacterial Agent",
+    "Antibacterial Agent",
+    "Antibacterial Agents",
+    "Antibiotic",
+    "Antimycobacterial Agent",
+    "Antimycobacterial Agents",
+    "Bacteriocidal Agent",
+    "Bacteriocide",
+    "Bacteriocides"
+   ]
+  },
+  {
+   "ui": "D000894",
+   "heading": "Anti-Inflammatory Agents, Non-Steroidal",
+   "trees": [
+    "D27.505.696.663.850.014.040.500",
+    "D27.505.954.158.030",
+    "D27.505.954.329.030"
+   ],
+   "entry_terms": [
+    "Anti Inflammatory Agents, Nonsteroidal",
+    "Antiinflammatory Agents, Non Steroidal",
+    "Antiinflammatory Agents, Nonsteroidal",
+    "Aspirin-Like Agent",
+    "Non-Steroidal Anti-Inflammatory Agent",
+    "Non-Steroidal Anti-Inflammatory Agents",
+    "Nonsteroidal Anti-Inflammatory Agent",
+    "Nonsteroidal Anti-Inflammatory Agents",
+    "NSAID",
+    "NSAIDs"
+   ]
+  },
+  {
+   "ui": "D000925",
+   "heading": "Anticoagulants",
+   "trees": [
+    "D27.505.954.502.119"
+   ],
+   "entry_terms": [
+    "Anticoagulant",
+    "Anticoagulant Agent",
+    "Anticoagulant Agents",
+    "Anticoagulant Drug",
+    "Anticoagulant Drugs",
+    "Anticoagulation Agents"
+   ]
+  },
+  {
+   "ui": "D000928",
+   "heading": "Antidepressive Agents",
+   "trees": [
+    "D27.505.954.427.700.122"
+   ],
+   "entry_terms": [
+    "Antidepressant",
+    "Antidepressant Drug",
+    "Antidepressant Drugs",
+    "Antidepressant Medication",
+    "Antidepressants",
+    "Antidepressive Agent",
+    "Thymoanaleptic",
+    "Thymoleptic"
+   ]
+  },
+  {
+   "ui": "D000959",
+   "heading": "Antihypertensive Agents",
+   "trees": [
+    "D27.505.954.411.162"
+   ],
+   "entry_terms": [
+    "Anti-Hypertensive",
+    "Anti-Hypertensive Agent",
+    "Anti-Hypertensive Agents",
+    "Anti-Hypertensive Drug",
+    "Anti-Hypertensive Drugs",
+    "Anti-Hypertensives",
+    "Antihypertensive",
+    "Antihypertensive Agent",
+    "Antihypertensive Drug",
+    "Antihypertensive Drugs",
+    "Antihypertensives"
+   ]
+  },
+  {
+   "ui": "D000970",
+   "heading": "Antineoplastic Agents",
+   "trees": [
+    "D27.505.954.248"
+   ],
+   "entry_terms": [
+    "Anticancer Agent",
+    "Anticancer Agents",
+    "Antineoplastic",
+    "Antineoplastic Agent",
+    "Antineoplastic Drug",
+    "Antineoplastic Drugs",
+    "Antineoplastics",
+    "Antitumor Agent",
+    "Antitumor Agents",
+    "Antitumor Drug",
+    "Antitumor Drugs",
+    "Cancer Chemotherapy Agent",
+    "Cancer Chemotherapy Agents",
+    "Cancer Chemotherapy Drug",
+    "Cancer Chemotherapy Drugs",
+    "Chemotherapeutic Anticancer Agents",
+    "Chemotherapeutic Anticancer Drug"
+   ]
+  },
+  {
+   "ui": "D014150",
+   "heading": "Antipsychotic Agents",
+   "trees": [
+    "D27.505.696.277.950.040",
+    "D27.505.954.427.210.950.040",
+    "D27.505.954.427.700.872.331"
+   ],
+   "entry_terms": [
+    "Antipsychotic",
+    "Antipsychotic Agent",
+    "Antipsychotic Drug",
+    "Antipsychotic Drugs",
+    "Antipsychotic Effects",
+    "Antipsychotic Medication",
+    "Antipsychotics",
+    "Major Tranquilizer",
+    "Major Tranquilizers",
+    "Neuroleptic",
+    "Neuroleptic Agent",
+    "Neuroleptic Agents",
+    "Neuroleptic Drug",
+    "Neuroleptic Drugs",
+    "Neuroleptics",
+    "Tranquilizing Agents, Major",
+    "Tranquillizing Agents, Major"
+   ]
+  },
+  {
+   "ui": "D000998",
+   "heading": "Antiviral Agents",
+   "trees": [
+    "D27.505.954.122.388"
+   ],
+   "entry_terms": [
+    "Antiviral",
+    "Antiviral Agent",
+    "Antiviral Drug",
+    "Antiviral Drugs",
+    "Antivirals"
+   ]
+  },
+  {
+   "ui": "D001008",
+   "heading": "Anxiety Disorders",
+   "trees": [
+    "F03.080"
+   ],
+   "entry_terms": [
+    "Anxiety Neuroses"
+   ]
+  },
+  {
+   "ui": "D001172",
+   "heading": "Arthritis, Rheumatoid",
+   "trees": [
+    "C05.550.114.154",
+    "C05.799.114",
+    "C17.300.775.099",
+    "C20.111.199"
+   ],
+   "entry_terms": [
+    "Rheumatoid Arthritis"
+   ]
+  },
+  {
+   "ui": "D001185",
+   "heading": "Artificial Intelligence",
+   "trees": [
+    "G17.035.250",
+    "L01.224.050.375"
+   ],
+   "entry_terms": [
+    "AI (Artificial Intelligence)",
+    "Computational Intelligence",
+    "Computer Reasoning",
+    "Machine Intelligence"
+   ]
+  },
+  {
+   "ui": "D001241",
+   "heading": "Aspirin",
+   "trees": [
+    "D02.455.426.559.389.657.410.595.176"
+   ],
+   "entry_terms": [
+    "2-(Acetyloxy)benzoic Acid",
+    "Acetylsalicylic Acid"
+   ]
+  },
+  {
+   "ui": "D001249",
+   "heading": "Asthma",
+   "trees": [
+    "C08.127.108",
+    "C08.381.495.108",
+    "C08.674.095",
+    "C20.543.480.680.095"
+   ],
+   "entry_terms": [
+    "Asthma, Bronchial",
+    "Bronchial Asthma"
+   ]
+  },
+  {
+   "ui": "D001281",
+   "heading": "Atrial Fibrillation",
+   "trees": [
+    "C14.280.067.198",
+    "C23.550.073.198"
+   ],
+   "entry_terms": [
+    "Auricular Fibrillation"
+   ]
+  },
+  {
+   "ui": "D001289",
+   "heading": "Attention Deficit Disorder with Hyperactivity",
+   "trees": [
+    "F03.625.094.150"
+   ],
+   "entry_terms": [
+    "ADDH",
+    "ADHD",
+    "Attention Deficit Disorders with Hyperactivity",
+    "Attention Deficit Hyperactivity Disorder",
+    "Attention Deficit Hyperactivity Disorders",
+    "Attention Deficit-Hyperactivity Disorder",
+    "Hyperkinetic Syndrome",
+    "Minimal Brain Dysfunction"
+   ]
+  },
+  {
+   "ui": "D000067877",
+   "heading": "Autism Spectrum Disorder",
+   "trees": [
+    "F03.625.164.113"
+   ],
+   "entry_terms": [
+    "Autism Spectrum Disorders",
+    "Autistic Spectrum Disorder"
+   ]
+  },
+  {
+   "ui": "D050110",
+   "heading": "Bariatric Surgery",
+   "trees": [
+    "E02.650.500.062",
+    "E04.062"
+   ],
+   "entry_terms": [
+    "Bariatric Surgeries",
+    "Bariatric Surgical Procedures",
+    "Metabolic Surgery"
+   ]
+  },
+  {
+   "ui": "D001521",
+   "heading": "Behavior Therapy",
+   "trees": [
+    "F04.754.137"
+   ],
+   "entry_terms": [
+    "Behavior Change Techniques",
+    "Behavior Modification",
+    "Behavior Treatment",
+    "Behavioral Therapy",
+    "Conditioning Therapy",
+    "Therapy, Behavior",
+    "Therapy, Conditioning"
+   ]
+  },
+  {
+   "ui": "D015415",
+   "heading": "Biomarkers",
+   "trees": [
+    "D23.101"
+   ],
+   "entry_terms": [
+    "Biochemical Markers",
+    "Biologic Marker",
+    "Biologic Markers",
+    "Biological Markers",
+    "Biomarker",
+    "Clinical Marker",
+    "Clinical Markers",
+    "Immune Marker",
+    "Immune Markers",
+    "Immunologic Marker",
+    "Immunologic Markers",
+    "Laboratory Marker",
+    "Laboratory Markers",
+    "Marker, Biochemical",
+    "Marker, Biological",
+    "Marker, Clinical",
+    "Marker, Immunologic",
+    "Marker, Laboratory",
+    "Marker, Serum",
+    "Marker, Surrogate",
+    "Markers, Biochemical",
+    "Markers, Biological",
+    "Markers, Serum",
+    "Markers, Surrogate",
+    "Markers, Viral",
+    "Serum Marker",
+    "Surrogate End Point",
+    "Surrogate End Points",
+    "Surrogate Endpoint",
+    "Surrogate Marker",
+    "Viral Marker"
+   ]
+  },
+  {
+   "ui": "D001714",
+   "heading": "Bipolar Disorder",
+   "trees": [
+    "F03.600.150.500"
+   ],
+   "entry_terms": [
+    "Affective Psychosis, Bipolar",
+    "Bipolar Mood Disorder",
+    "Manic Depression",
+    "Manic-Depressive Psychosis",
+    "Psychoses, Manic-Depressive",
+    "Psychosis, Manic-Depressive",
+    "Type 1 Bipolar Disorder",
+    "Type 2 Bipolar Disorder"
+   ]
+  },
+  {
+   "ui": "D001786",
+   "heading": "Blood Glucose",
+   "trees": [
+    "D09.947.875.359.448.500"
+   ],
+   "entry_terms": [
+    "Blood Sugar",
+    "Glucose, Blood"
+   ]
+  },
+  {
+   "ui": "D001794",
+   "heading": "Blood Pressure",
+   "trees": [
+    "E01.370.600.875.249",
+    "G09.330.380.076"
+   ],
+   "entry_terms": []
+  },
+  {
+   "ui": "D001803",
+   "heading": "Blood Transfusion",
+   "trees": [
+    "E02.095.135"
+   ],
+   "entry_terms": [
+    "Blood Transfusions"
+   ]
+  },
+  {
+   "ui": "D015992",
+   "heading": "Body Mass Index",
+   "trees": [
+    "E01.370.600.115.100.125",
+    "E05.041.124.125",
+    "G07.100.100.125",
+    "N06.850.505.200.100.175"
+   ],
+   "entry_terms": [
+    "Quetelet Index",
+    "Quetelet's Index"
+   ]
+  },
+  {
+   "ui": "D000070642",
+   "heading": "Brain Injuries, Traumatic",
+   "trees": [
+    "C10.228.140.199.444",
+    "C10.900.300.087.235",
+    "C26.915.300.200.194"
+   ],
+   "entry_terms": [
+    "Encephalopathy, Traumatic",
+    "Injury, Brain, Traumatic",
+    "TBI (Traumatic Brain Injury)",
+    "TBIs (Traumatic Brain Injuries)",
+    "Trauma, Brain",
+    "Traumatic Brain Injury",
+    "Traumatic Encephalopathy"
+   ]
+  },
+  {
+   "ui": "D001942",
+   "heading": "Breast Feeding",
+   "trees": [
+    "F01.145.407.199",
+    "G07.203.650.195",
+    "G07.203.650.220.500.500",
+    "G07.203.650.353.199"
+   ],
+   "entry_terms": [
+    "Breast Fed",
+    "Breastfed",
+    "Breastfeeding",
+    "Breastfeeding, Exclusive",
+    "Chestfeeding"
+   ]
+  },
+  {
+   "ui": "D001943",
+   "heading": "Breast Neoplasms",
+   "trees": [
+    "C04.588.180",
+    "C17.800.090.500"
+   ],
+   "entry_terms": [
+    "Breast Tumors",
+    "Cancer of Breast",
+    "Cancer of the Breast",
+    "Human Mammary Carcinoma",
+    "Malignant Neoplasm of Breast",
+    "Malignant Tumor of Breast",
+    "Mammary Cancer",
+    "Mammary Neoplasm, Human",
+    "Neoplasms, Breast",
+    "Tumors, Breast"
+   ]
+  },
+  {
+   "ui": "D002055",
+   "heading": "Burnout, Professional",
+   "trees": [
+    "C24.580.500",
+    "F01.145.126.990.367.500",
+    "F02.830.900.333.500"
+   ],
+   "entry_terms": [
+    "Career Burnout",
+    "Occupational Burnout"
+   ]
+  },
+  {
+   "ui": "D002056",
+   "heading": "Burns",
+   "trees": [
+    "C26.200"
+   ],
+   "entry_terms": []
+  },
+  {
+   "ui": "D002318",
+   "heading": "Cardiovascular Diseases",
+   "trees": [
+    "C14"
+   ],
+   "entry_terms": [
+    "Adverse Cardiac Event"
+   ]
+  },
+  {
+   "ui": "D017028",
+   "heading": "Caregivers",
+   "trees": [
+    "M01.085",
+    "M01.526.485.200",
+    "N02.360.200"
+   ],
+   "entry_terms": [
+    "Care Givers",
+    "Carers"
+   ]
+  },
+  {
+   "ui": "D016022",
+   "heading": "Case-Control Studies",
+   "trees": [
+    "E05.318.372.500.500",
+    "N05.715.360.330.500.500",
+    "N06.850.520.450.500.500"
+   ],
+   "entry_terms": [
+    "Case Control Studies",
+    "Case-Base Studies",
+    "Case-Comparison Studies",
+    "Case-Compeer Studies",
+    "Case-Referent Studies",
+    "Case-Referrent Studies"
+   ]
+  },
+  {
+   "ui": "D002386",
+   "heading": "Cataract",
+   "trees": [
+    "C11.510.245"
+   ],
+   "entry_terms": [
+    "Pseudoaphakia"
+   ]
+  },
+  {
+   "ui": "D002547",
+   "heading": "Cerebral Palsy",
+   "trees": [
+    "C10.228.140.140.254"
+   ],
+   "entry_terms": [
+    "Cerebral Palsy, Dyskinetic",
+    "Cerebral Palsy, Hypotonic",
+    "Congenital Cerebral Palsy",
+    "CP (Cerebral Palsy)",
+    "Diplegia, Spastic",
+    "Diplegic Infantile Cerebral Palsy",
+    "Infantile Cerebral Palsy, Diplegic",
+    "Infantile Cerebral Palsy, Monoplegic",
+    "Infantile Cerebral Palsy, Quadriplegic",
+    "Little's Disease",
+    "Monoplegic Infantile Cerebral Palsy",
+    "Quadriplegic Infantile Cerebral Palsy",
+    "Rolandic Type Cerebral Palsy",
+    "Spastic Diplegia"
+   ]
+  },
+  {
+   "ui": "D002585",
+   "heading": "Cesarean Section",
+   "trees": [
+    "E04.520.252.500"
+   ],
+   "entry_terms": [
+    "Abdominal Delivery",
+    "C-Section (OB)",
+    "Caesarean Section",
+    "Delivery, Abdominal"
+   ]
+  },
+  {
+   "ui": "D002648",
+   "heading": "Child",
+   "trees": [
+    "M01.060.406"
+   ],
+   "entry_terms": [
+    "Children"
+   ]
+  },
+  {
+   "ui": "D002675",
+   "heading": "Child, Preschool",
+   "trees": [
+    "M01.060.406.448"
+   ],
+   "entry_terms": [
+    "Children, Preschool"
+   ]
+  },
+  {
+   "ui": "D002784",
+   "heading": "Cholesterol",
+   "trees": [
+    "D04.210.500.247.222.284",
+    "D04.210.500.247.808.197",
+    "D10.570.938.208"
+   ],
+   "entry_terms": []
+  },
+  {
+   "ui": "D059350",
+   "heading": "Chronic Pain",
+   "trees": [
+    "C23.888.592.612.274",
+    "F02.830.816.444.433",
+    "G11.561.790.444.461"
+   ],
+   "entry_terms": [
+    "Pain, Chronic"
+   ]
+  },
+  {
+   "ui": "D015928",
+   "heading": "Cognitive Behavioral Therapy",
+   "trees": [
+    "F04.754.137.350"
+   ],
+   "entry_terms": [
+    "Behavior Therapy, Cognitive",
+    "Cognition Therapy",
+    "Cognitive Behavior Therapy",
+    "Cognitive Behaviour Therapy",
+    "Cognitive Psychotherapy",
+    "Cognitive Therapy",
+    "Psychotherapy, Cognitive",
+    "Therapy, Cognition",
+    "Therapy, Cognitive",
+    "Therapy, Cognitive Behavior"
+   ]
+  },
+  {
+   "ui": "D060825",
+   "heading": "Cognitive Dysfunction",
+   "trees": [
+    "F03.615.250.700"
+   ],
+   "entry_terms": [
+    "Cognitive Disorder",
+    "Cognitive Impairments",
+    "Mental Deterioration"
+   ]
+  },
+  {
+   "ui": "D015331",
+   "heading": "Cohort Studies",
+   "trees": [
+    "E05.318.372.500.750",
+    "N05.715.360.330.500.750",
+    "N06.850.520.450.500.750"
+   ],
+   "entry_terms": [
+    "Birth Cohort Study",
+    "Cohort Analysis",
+    "Cohort Studies, Closed",
+    "Cohort Studies, Historical",
+    "Concurrent Studies",
+    "Studies, Closed Cohort",
+    "Studies, Concurrent",
+    "Studies, Historical Cohort"
+   ]
+  },
+  {
+   "ui": "D003093",
+   "heading": "Colitis, Ulcerative",
+   "trees": [
+    "C06.405.205.265.231",
+    "C06.405.205.731.249",
+    "C06.405.469.158.188.231",
+    "C06.405.469.432.249"
+   ],
+   "entry_terms": [
+    "Colitis Gravis",
+    "Idiopathic Proctocolitis",
+    "Inflammatory Bowel Disease, Ulcerative Colitis Type",
+    "Ulcerative Colitis"
+   ]
+  },
+  {
+   "ui": "D015179",
+   "heading": "Colorectal Neoplasms",
+   "trees": [
+    "C04.588.274.476.411.307",
+    "C06.301.371.411.307",
+    "C06.405.249.411.307",
+    "C06.405.469.158.356",
+    "C06.405.469.491.307",
+    "C06.405.469.860.180"
+   ],
+   "entry_terms": [
+    "Colorectal Carcinoma",
+    "Colorectal Tumors",
+    "Neoplasms, Colorectal"
+   ]
+  },
+  {
+   "ui": "D003324",
+   "heading": "Coronary Artery Disease",
+   "trees": [
+    "C14.280.647.250.260",
+    "C14.907.137.126.339",
+    "C14.907.585.250.260"
+   ],
+   "entry_terms": [
+    "Arteriosclerosis, Coronary",
+    "Atherosclerosis, Coronary",
+    "Coronary Atherosclerosis",
+    "Left Main Coronary Disease",
+    "Left Main Disease"
+   ]
+  },
+  {
+   "ui": "D003362",
+   "heading": "Cost-Benefit Analysis",
+   "trees": [
+    "N03.219.151.125"
+   ],
+   "entry_terms": [
+    "Benefits and Costs",
+    "Cost and Benefit",
+    "Cost Benefit Analysis",
+    "Costs and Benefits"
+   ]
+  },
+  {
+   "ui": "D000086382",
+   "heading": "COVID-19",
+   "trees": [
+    "C01.748.610.763.500",
+    "C01.925.705.500",
+    "C01.925.782.600.550.200.163",
+    "C08.381.677.807.500",
+    "C08.730.610.763.500"
+   ],
+   "entry_terms": [
+    "2019 Novel Coronavirus Disease",
+    "2019 Novel Coronavirus Infection",
+    "2019-nCoV Disease",
+    "2019-nCoV Infection",
+    "Coronavirus Disease 2019",
+    "Coronavirus Disease-19",
+    "COVID-19 Pandemics",
+    "COVID-19 Virus Disease",
+    "COVID-19 Virus Infection",
+    "COVID19",
+    "SARS Coronavirus 2 Infection",
+    "SARS-CoV-2 Infection",
+    "Severe Acute Respiratory Syndrome Coronavirus 2 Infection"
+   ]
+  },
+  {
+   "ui": "D064113",
+   "heading": "CRISPR-Cas Systems",
+   "trees": [
+    "G05.308.203.374.394"
+   ],
+   "entry_terms": []
+  },
+  {
+   "ui": "D003424",
+   "heading": "Crohn Disease",
+   "trees": [
+    "C06.405.205.731.500",
+    "C06.405.469.432.500"
+   ],
+   "entry_terms": [
+    "Crohn's Disease",
+    "Crohn's Enteritis",
+    "Enteritis, Regional",
+    "Ileitis, Regional",
+    "Inflammatory Bowel Disease 1",
+    "Regional Enteritis"
+   ]
+  },
+  {
+   "ui": "D003430",
+   "heading": "Cross-Sectional Studies",
+   "trees": [
+    "E05.318.372.500.875",
+    "N05.715.360.330.500.875",
+    "N06.850.520.450.500.875"
+   ],
+   "entry_terms": [
+    "Analysis, Cross-Sectional",
+    "Cross Sectional Analysis",
+    "Cross-Sectional Survey",
+    "Disease Frequency Surveys",
+    "Surveys, Disease Frequency"
+   ]
+  },
+  {
+   "ui": "D000077321",
+   "heading": "Deep Learning",
+   "trees": [
+    "G17.035.250.500.250",
+    "G17.485.500",
+    "L01.224.050.375.530.250",
+    "L01.224.050.375.605.500"
+   ],
+   "entry_terms": [
+    "Hierarchical Learning"
+   ]
+  },
+  {
+   "ui": "D003681",
+   "heading": "Dehydration",
+   "trees": [
+    "C18.452.950.179",
+    "C23.550.274"
+   ],
+   "entry_terms": []
+  },
+  {
+   "ui": "D003693",
+   "heading": "Delirium",
+   "trees": [
+    "C10.597.606.337.500",
+    "C23.888.592.604.339.500",
+    "F01.700.250.500",
+    "F03.615.350"
+   ],
+   "entry_terms": []
+  },
+  {
+   "ui": "D003704",
+   "heading": "Dementia",
+   "trees": [
+    "C10.228.140.380",
+    "F03.615.400"
+   ],
+   "entry_terms": [
+    "Amentia"
+   ]
+  },
+  {
+   "ui": "D003731",
+   "heading": "Dental Caries",
+   "trees": [
+    "C07.793.720.210"
+   ],
+   "entry_terms": [
+    "Caries, Dental",
+    "Carious Lesions",
+    "Decay, Dental",
+    "Dental Cavities",
+    "Dental Cavity",
+    "Dental Decay",
+    "Dental White Spots",
+    "White Spot, Dental",
+    "White Spots, Dental"
+   ]
+  },
+  {
+   "ui": "D003863",
+   "heading": "Depression",
+   "trees": [
+    "F01.145.126.350",
+    "F01.470.282"
+   ],
+   "entry_terms": [
+    "Emotional Depression"
+   ]
+  },
+  {
+   "ui": "D019052",
+   "heading": "Depression, Postpartum",
+   "trees": [
+    "C12.050.703.844.253",
+    "F03.600.300.350"
+   ],
+   "entry_terms": [
+    "Post-Natal Depression",
+    "Post-Natal Dysphoria",
+    "Post-Partum Depression",
+    "Post-Partum Dysphoria",
+    "Postnatal Depression",
+    "Postpartum Depression",
+    "Postpartum Dysphoria"
+   ]
+  },
+  {
+   "ui": "D003876",
+   "heading": "Dermatitis, Atopic",
+   "trees": [
+    "C16.320.850.210",
+    "C17.800.174.193",
+    "C17.800.815.193",
+    "C17.800.827.210",
+    "C20.543.480.343"
+   ],
+   "entry_terms": [
+    "Eczema, Atopic",
+    "Neurodermatitis, Atopic",
+    "Neurodermatitis, Disseminated"
+   ]
+  },
+  {
+   "ui": "D003920",
+   "heading": "Diabetes Mellitus",
+   "trees": [
+    "C18.452.394.750",
+    "C19.246"
+   ],
+   "entry_terms": []
+  },
+  {
+   "ui": "D003922",
+   "heading": "Diabetes Mellitus, Type 1",
+   "trees": [
+    "C18.452.394.750.124",
+    "C19.246.267",
+    "C20.111.327"
+   ],
+   "entry_terms": [
+    "Autoimmune Diabetes",
+    "Diabetes Mellitus, Insulin-Dependent",
+    "Diabetes Mellitus, Insulin-Dependent, 1",
+    "Diabetes Mellitus, Juvenile-Onset",
+    "Diabetes Mellitus, Sudden-Onset",
+    "Diabetes Mellitus, Type I",
+    "IDDM",
+    "Insulin-Dependent Diabetes Mellitus 1",
+    "Juvenile-Onset Diabetes",
+    "Type 1 Diabetes",
+    "Type 1 Diabetes Mellitus"
+   ]
+  },
+  {
+   "ui": "D003924",
+   "heading": "Diabetes Mellitus, Type 2",
+   "trees": [
+    "C18.452.394.750.149",
+    "C19.246.300"
+   ],
+   "entry_terms": [
+    "Diabetes Mellitus, Adult-Onset",
+    "Diabetes Mellitus, Ketosis-Resistant",
+    "Diabetes Mellitus, Maturity-Onset",
+    "Diabetes Mellitus, Non Insulin Dependent",
+    "Diabetes Mellitus, Non-Insulin-Dependent",
+    "Diabetes Mellitus, Noninsulin Dependent",
+    "Diabetes Mellitus, Noninsulin-Dependent",
+    "Diabetes Mellitus, Slow-Onset",
+    "Diabetes Mellitus, Stable",
+    "Diabetes Mellitus, Type II",
+    "Maturity-Onset Diabetes",
+    "Maturity-Onset Diabetes Mellitus",
+    "MODY (Maturity-onset diabetes of the young)",
+    "NIDDM",
+    "Noninsulin-Dependent Diabetes Mellitus",
+    "Type 2 Diabetes",
+    "Type 2 Diabetes Mellitus"
+   ]
+  },
+  {
+   "ui": "D016640",
+   "heading": "Diabetes, Gestational",
+   "trees": [
+    "C12.050.703.170",
+    "C18.452.394.750.448",
+    "C19.246.200"
+   ],
+   "entry_terms": [
+    "Diabetes Mellitus, Gestational",
+    "Diabetes, Pregnancy-Induced",
+    "Gestational Diabetes"
+   ]
+  },
+  {
+   "ui": "D004035",
+   "heading": "Diet Therapy",
+   "trees": [
+    "E02.642.249"
+   ],
+   "entry_terms": [
+    "Diet Modification",
+    "Restriction Diet Therapies",
+    "Restriction Diet Therapy",
+    "Restrictive Diet Therapies",
+    "Restrictive Diet Therapy",
+    "Therapy, Diet"
+   ]
+  },
+  {
+   "ui": "D038441",
+   "heading": "Diet, Mediterranean",
+   "trees": [
+    "E02.642.249.278.250",
+    "G07.203.650.240.278.250"
+   ],
+   "entry_terms": [
+    "Mediterranean Diet"
+   ]
+  },
+  {
+   "ui": "D019587",
+   "heading": "Dietary Supplements",
+   "trees": [
+    "G07.203.300.456",
+    "J02.500.456"
+   ],
+   "entry_terms": [
+    "Dietary Supplementations",
+    "Food Supplementations",
+    "Food Supplements",
+    "Neutraceuticals",
+    "Nutriceuticals"
+   ]
+  },
+  {
+   "ui": "D018450",
+   "heading": "Disease Progression",
+   "trees": [
+    "C23.550.291.656"
+   ],
+   "entry_terms": [
+    "Clinical Progression"
+   ]
+  },
+  {
+   "ui": "D004352",
+   "heading": "Drug Resistance, Microbial",
+   "trees": [
+    "G06.225",
+    "G07.690.773.984.269"
+   ],
+   "entry_terms": [
+    "Antibiotic Resistance",
+    "Antimicrobial Resistance, Drug"
+   ]
+  },
+  {
+   "ui": "D004358",
+   "heading": "Drug Therapy",
+   "trees": [
+    "E02.319"
+   ],
+   "entry_terms": [
+    "Chemotherapy",
+    "Pharmacotherapy",
+    "Therapy, Drug"
+   ]
+  },
+  {
+   "ui": "D064420",
+   "heading": "Drug-Related Side Effects and Adverse Reactions",
+   "trees": [
+    "C25.100"
+   ],
+   "entry_terms": [
+    "Adverse Drug Event",
+    "Adverse Drug Reaction",
+    "Drug Side Effects",
+    "Drug-Related Side Effects and Adverse Reaction",
+    "Side Effects of Drugs",
+    "Toxicity, Drug"
+   ]
+  },
+  {
+   "ui": "D004569",
+   "heading": "Electroencephalography",
+   "trees": [
+    "E01.370.376.300",
+    "E01.370.405.245"
+   ],
+   "entry_terms": [
+    "EEG"
+   ]
+  },
+  {
+   "ui": "D004636",
+   "heading": "Emergency Service, Hospital",
+   "trees": [
+    "N02.278.216.500.968.336",
+    "N02.421.297.195",
+    "N04.452.442.452.422.336"
+   ],
+   "entry_terms": [
+    "Accident and Emergency Department",
+    "Emergency Departments",
+    "Emergency Hospital Service",
+    "Emergency Room",
+    "Emergency Services Utilization",
+    "Emergency Units",
+    "Emergency Ward",
+    "Hospital Emergency Room",
+    "Hospital Emergency Service",
+    "Hospital Service Emergency",
+    "Service, Hospital Emergency"
+   ]
+  },
+  {
+   "ui": "D004827",
+   "heading": "Epilepsy",
+   "trees": [
+    "C10.228.140.490"
+   ],
+   "entry_terms": [
+    "Seizure Disorder"
+   ]
+  },
+  {
+   "ui": "D015444",
+   "heading": "Exercise",
+   "trees": [
+    "G11.427.410.698.277",
+    "I03.350"
+   ],
+   "entry_terms": [
+    "Activity Breaks",
+    "Aerobic Exercise",
+    "Exercise, Physical",
+    "Isometric Exercise"
+   ]
+  },
+  {
+   "ui": "D005081",
+   "heading": "Exercise Therapy",
+   "trees": [
+    "E02.760.169.063.500.387",
+    "E02.779.483",
+    "E02.831.535.483"
+   ],
+   "entry_terms": [
+    "Exercise Prescription",
+    "Rehabilitation Exercise",
+    "Remedial Exercise",
+    "Therapy, Exercise"
+   ]
+  },
+  {
+   "ui": "D015525",
+   "heading": "Fatty Acids, Omega-3",
+   "trees": [
+    "D10.212.302.380.410",
+    "D10.251.355.337",
+    "D10.627.430.450"
+   ],
+   "entry_terms": [
+    "N-3 Fatty Acid",
+    "n-3 Fatty Acids",
+    "n-3 Oil",
+    "n-3 Oils",
+    "n-3 Polyunsaturated Fatty Acid",
+    "n-3 PUFA",
+    "n3 Fatty Acid",
+    "n3 Oil",
+    "n3 Oils",
+    "n3 Polyunsaturated Fatty Acid",
+    "n3 PUFA",
+    "Omega 3 Fatty Acids",
+    "Omega-3 Fatty Acid",
+    "Omega-3 Fatty Acids"
+   ]
+  },
+  {
+   "ui": "D017144",
+   "heading": "Focus Groups",
+   "trees": [
+    "E05.318.308.112",
+    "N05.715.360.300.269",
+    "N06.850.520.308.112"
+   ],
+   "entry_terms": []
+  },
+  {
+   "ui": "D005500",
+   "heading": "Follow-Up Studies",
+   "trees": [
+    "E05.318.372.500.750.249",
+    "N05.715.360.330.500.750.350",
+    "N06.850.520.450.500.750.350"
+   ],
+   "entry_terms": [
+    "Followup Studies"
+   ]
+  },
+  {
+   "ui": "D050723",
+   "heading": "Fractures, Bone",
+   "trees": [
+    "C26.404"
+   ],
+   "entry_terms": [
+    "Bone Fractures",
+    "Broken Bones",
+    "Torsion Fractures"
+   ]
+  },
+  {
+   "ui": "D000073496",
+   "heading": "Frailty",
+   "trees": [
+    "C23.550.359"
+   ],
+   "entry_terms": [
+    "Frailness"
+   ]
+  },
+  {
+   "ui": "D005764",
+   "heading": "Gastroesophageal Reflux",
+   "trees": [
+    "C06.405.117.119.500.484"
+   ],
+   "entry_terms": [
+    "Esophageal Reflux",
+    "Gastric Acid Reflux",
+    "Gastric Acid Reflux Disease",
+    "Gastro-Esophageal Reflux",
+    "Gastro-Esophageal Reflux Disease",
+    "Gastro-oesophageal Reflux",
+    "Gastroesophageal Reflux Disease",
+    "GERD",
+    "Reflux, Gastroesophageal"
+   ]
+  },
+  {
+   "ui": "D000069196",
+   "heading": "Gastrointestinal Microbiome",
+   "trees": [
+    "G06.591.375",
+    "G16.500.275.157.049.100.500.375",
+    "N06.230.124.049.100.500.250"
+   ],
+   "entry_terms": [
+    "Enteric Microbiota",
+    "Flora, Enteric Microflora",
+    "Gastrointestinal Flora",
+    "Gastrointestinal Microbial Community",
+    "Gastrointestinal Microbiota",
+    "Gastrointestinal Microflora",
+    "Gut Flora",
+    "Gut Microbiome",
+    "Gut Microbiota",
+    "Gut Microflora",
+    "Intestinal Flora",
+    "Intestinal Microbiota",
+    "Intestinal Microflora",
+    "Microbiome, GI",
+    "Microflora",
+    "Microflora, GI"
+   ]
+  },
+  {
+   "ui": "D000072669",
+   "heading": "Gene Editing",
+   "trees": [
+    "E05.393.420.270"
+   ],
+   "entry_terms": []
+  },
+  {
+   "ui": "D015870",
+   "heading": "Gene Expression",
+   "trees": [
+    "G05.297"
+   ],
+   "entry_terms": []
+  },
+  {
+   "ui": "D015316",
+   "heading": "Genetic Therapy",
+   "trees": [
+    "E02.095.301",
+    "E05.393.420.301"
+   ],
+   "entry_terms": [
+    "DNA Therapy",
+    "Somatic Gene Therapy",
+    "Therapy, DNA",
+    "Therapy, Gene",
+    "Therapy, Somatic Gene"
+   ]
+  },
+  {
+   "ui": "D016678",
+   "heading": "Genome",
+   "trees": [
+    "G05.360.340"
+   ],
+   "entry_terms": [
+    "Pan-genome"
+   ]
+  },
+  {
+   "ui": "D023281",
+   "heading": "Genomics",
+   "trees": [
+    "H01.158.273.180.350",
+    "H01.158.273.343.350"
+   ],
+   "entry_terms": []
+  },
+  {
+   "ui": "D005901",
+   "heading": "Glaucoma",
+   "trees": [
+    "C11.525.381"
+   ],
+   "entry_terms": []
+  },
+  {
+   "ui": "D005938",
+   "heading": "Glucocorticoids",
+   "trees": [
+    "D06.472.040.543",
+    "D27.505.696.399.472.488"
+   ],
+   "entry_terms": [
+    "Glucocorticoid",
+    "Glucorticoid Effects"
+   ]
+  },
+  {
+   "ui": "D006266",
+   "heading": "Health Education",
+   "trees": [
+    "H02.403.720.750.380",
+    "N02.421.726.407"
+   ],
+   "entry_terms": [
+    "Education, Community Health",
+    "Education, Health",
+    "Health Education, Community"
+   ]
+  },
+  {
+   "ui": "D006282",
+   "heading": "Health Personnel",
+   "trees": [
+    "M01.526.485",
+    "N02.360"
+   ],
+   "entry_terms": [
+    "Health Care Providers",
+    "Healthcare Providers",
+    "Healthcare Workers"
+   ]
+  },
+  {
+   "ui": "D054624",
+   "heading": "Health Status Disparities",
+   "trees": [
+    "I01.240.425.513.500",
+    "N01.224.425.394.500",
+    "N06.850.505.400.425.675"
+   ],
+   "entry_terms": [
+    "Health Status Disparity"
+   ]
+  },
+  {
+   "ui": "D034381",
+   "heading": "Hearing Loss",
+   "trees": [
+    "C09.218.458.341",
+    "C10.597.751.418.341",
+    "C23.888.592.763.393.341"
+   ],
+   "entry_terms": [
+    "Hearing Impairment",
+    "Hearing Loss, Transitory",
+    "Hypoacusis",
+    "Transitory Hearing Loss"
+   ]
+  },
+  {
+   "ui": "D006333",
+   "heading": "Heart Failure",
+   "trees": [
+    "C14.280.434"
+   ],
+   "entry_terms": [
+    "Cardiac Failure",
+    "Heart Failure, Congestive",
+    "Left-Sided Heart Failure",
+    "Right-Sided Heart Failure"
+   ]
+  },
+  {
+   "ui": "D006509",
+   "heading": "Hepatitis B",
+   "trees": [
+    "C01.221.250.500",
+    "C01.925.256.430.400",
+    "C01.925.440.435",
+    "C06.552.380.705.437"
+   ],
+   "entry_terms": [
+    "Hepatitis B Virus Infection"
+   ]
+  },
+  {
+   "ui": "D006526",
+   "heading": "Hepatitis C",
+   "trees": [
+    "C01.221.250.750",
+    "C01.925.440.440",
+    "C01.925.782.350.350",
+    "C06.552.380.705.440"
+   ],
+   "entry_terms": [
+    "Hepatitis, Viral, Non-A, Non-B, Parenterally-Transmitted",
+    "Parenterally-Transmitted Non-A, Non-B Hepatitis",
+    "PT-NANBH"
+   ]
+  },
+  {
+   "ui": "D015658",
+   "heading": "HIV Infections",
+   "trees": [
+    "C01.221.250.875",
+    "C01.221.812.640.400",
+    "C01.778.640.400",
+    "C01.925.782.815.616.400",
+    "C01.925.813.400",
+    "C12.100.937.640.400",
+    "C20.673.480"
+   ],
+   "entry_terms": [
+    "HTLV-III Infections",
+    "HTLV-III-LAV Infections",
+    "T-Lymphotropic Virus Type III Infections, Human"
+   ]
+  },
+  {
+   "ui": "D006760",
+   "heading": "Hospitalization",
+   "trees": [
+    "E02.760.400",
+    "N02.421.585.400"
+   ],
+   "entry_terms": []
+  },
+  {
+   "ui": "D019161",
+   "heading": "Hydroxymethylglutaryl-CoA Reductase Inhibitors",
+   "trees": [
+    "D27.505.519.186.071.202.370",
+    "D27.505.519.389.370",
+    "D27.505.954.557.500.202.370"
+   ],
+   "entry_terms": [
+    "HMG-CoA Reductase Inhibitor",
+    "HMG-CoA Reductase Inhibitors",
+    "Hydroxymethylglutaryl-CoA Reductase Inhibitor",
+    "Inhibitors, HMG-CoA Reductase",
+    "Inhibitors, Hydroxymethylglutaryl-CoA",
+    "Inhibitors, Hydroxymethylglutaryl-Coenzyme A",
+    "Statin",
+    "Statins",
+    "Statins, HMG-CoA"
+   ]
+  },
+  {
+   "ui": "D006973",
+   "heading": "Hypertension",
+   "trees": [
+    "C14.907.489"
+   ],
+   "entry_terms": [
+    "Blood Pressure, High"
+   ]
+  },
+  {
+   "ui": "D007114",
+   "heading": "Immunization",
+   "trees": [
+    "E02.095.465.425.400",
+    "E05.478.550",
+    "N02.421.726.758.310",
+    "N06.850.780.200.425",
+    "N06.850.780.680.310"
+   ],
+   "entry_terms": [
+    "Immunologic Sensitization",
+    "Immunologic Stimulation",
+    "Immunological Stimulation",
+    "Immunostimulation",
+    "Sensitization, Immunologic",
+    "Sensitization, Immunological",
+    "Stimulation, Immunologic"
+   ]
+  },
+  {
+   "ui": "D007167",
+   "heading": "Immunotherapy",
+   "trees": [
+    "E02.095.465.425"
+   ],
+   "entry_terms": []
+  },
+  {
+   "ui": "D015994",
+   "heading": "Incidence",
+   "trees": [
+    "E05.318.308.985.525.375",
+    "N01.224.935.597.500",
+    "N06.850.505.400.975.525.375",
+    "N06.850.520.308.985.525.375"
+   ],
+   "entry_terms": [
+    "Attack Rate",
+    "Cumulative Incidence",
+    "Person-time Rate"
+   ]
+  },
+  {
+   "ui": "D007223",
+   "heading": "Infant",
+   "trees": [
+    "M01.060.703"
+   ],
+   "entry_terms": [
+    "Infants"
+   ]
+  },
+  {
+   "ui": "D007231",
+   "heading": "Infant, Newborn",
+   "trees": [
+    "M01.060.703.520"
+   ],
+   "entry_terms": [
+    "Neonate",
+    "Newborns"
+   ]
+  },
+  {
+   "ui": "D007234",
+   "heading": "Infant, Premature",
+   "trees": [
+    "M01.060.703.520.520"
+   ],
+   "entry_terms": [
+    "Premature Infants",
+    "Preterm Infants"
+   ]
+  },
+  {
+   "ui": "D007246",
+   "heading": "Infertility",
+   "trees": [
+    "C12.100.750"
+   ],
+   "entry_terms": [
+    "Reproductive Sterility",
+    "Sterility",
+    "Sub-Fertility"
+   ]
+  },
+  {
+   "ui": "D007249",
+   "heading": "Inflammation",
+   "trees": [
+    "C23.550.470"
+   ],
+   "entry_terms": []
+  },
+  {
+   "ui": "D015212",
+   "heading": "Inflammatory Bowel Diseases",
+   "trees": [
+    "C06.405.205.731",
+    "C06.405.469.432"
+   ],
+   "entry_terms": [
+    "Bowel Diseases, Inflammatory"
+   ]
+  },
+  {
+   "ui": "D007251",
+   "heading": "Influenza, Human",
+   "trees": [
+    "C01.748.310",
+    "C01.925.782.620.365",
+    "C08.730.310"
+   ],
+   "entry_terms": [
+    "Grippe",
+    "Human Flu",
+    "Human Influenza",
+    "Influenza",
+    "Influenza in Humans"
+   ]
+  },
+  {
+   "ui": "D007328",
+   "heading": "Insulin",
+   "trees": [
+    "D06.472.699.587.200.500.625",
+    "D12.644.548.586.200.500.625"
+   ],
+   "entry_terms": [
+    "Insulin, Regular",
+    "Soluble Insulin"
+   ]
+  },
+  {
+   "ui": "D007362",
+   "heading": "Intensive Care Units",
+   "trees": [
+    "N02.278.388.493"
+   ],
+   "entry_terms": [
+    "ICU Intensive Care Units"
+   ]
+  },
+  {
+   "ui": "D007407",
+   "heading": "Interviews as Topic",
+   "trees": [
+    "E05.318.308.420",
+    "L01.399.250.520",
+    "N05.715.360.300.400",
+    "N06.850.520.308.420"
+   ],
+   "entry_terms": []
+  },
+  {
+   "ui": "D043183",
+   "heading": "Irritable Bowel Syndrome",
+   "trees": [
+    "C06.405.469.158.272.608"
+   ],
+   "entry_terms": [
+    "Colitis, Mucous",
+    "Colon, Irritable"
+   ]
+  },
+  {
+   "ui": "D010535",
+   "heading": "Laparoscopy",
+   "trees": [
+    "E01.370.388.250.520",
+    "E04.502.250.520"
+   ],
+   "entry_terms": [
+    "Celioscopy",
+    "Laparoscopic Assisted Surgery",
+    "Laparoscopic Surgery",
+    "Laparoscopic Surgical Procedure",
+    "Laparoscopic Surgical Procedures",
+    "Peritoneoscopy",
+    "Procedure, Laparoscopic Surgical",
+    "Procedures, Laparoscopic Surgical",
+    "Surgery, Laparoscopic",
+    "Surgical Procedure, Laparoscopic"
+   ]
+  },
+  {
+   "ui": "D007902",
+   "heading": "Length of Stay",
+   "trees": [
+    "E02.760.400.480",
+    "N02.421.585.400.480"
+   ],
+   "entry_terms": []
+  },
+  {
+   "ui": "D007938",
+   "heading": "Leukemia",
+   "trees": [
+    "C04.557.337",
+    "C15.378.508"
+   ],
+   "entry_terms": [
+    "Leucocythaemia",
+    "Leucocythemia"
+   ]
+  },
+  {
+   "ui": "D008103",
+   "heading": "Liver Cirrhosis",
+   "trees": [
+    "C06.552.630",
+    "C23.550.355.412"
+   ],
+   "entry_terms": [
+    "Cirrhosis, Liver",
+    "Hepatic Cirrhosis",
+    "Liver Fibrosis"
+   ]
+  },
+  {
+   "ui": "D017116",
+   "heading": "Low Back Pain",
+   "trees": [
+    "C23.888.592.612.107.400"
+   ],
+   "entry_terms": [
+    "Low Back Ache",
+    "Low Backache",
+    "Lower Back Pain",
+    "Lumbago",
+    "Mechanical Low Back Pain",
+    "Postural Low Back Pain",
+    "Recurrent Low Back Pain"
+   ]
+  },
+  {
+   "ui": "D008175",
+   "heading": "Lung Neoplasms",
+   "trees": [
+    "C04.588.894.797.520",
+    "C08.381.540",
+    "C08.785.520"
+   ],
+   "entry_terms": [
+    "Cancer of Lung",
+    "Cancer of the Lung",
+    "Neoplasms, Lung",
+    "Neoplasms, Pulmonary",
+    "Pulmonary Cancer",
+    "Pulmonary Neoplasms"
+   ]
+  },
+  {
+   "ui": "D008223",
+   "heading": "Lymphoma",
+   "trees": [
+    "C04.557.386",
+    "C15.604.515.569",
+    "C20.683.515.761"
+   ],
+   "entry_terms": [
+    "Germinoblastoma",
+    "Lymphoma, Malignant",
+    "Reticulolymphosarcoma",
+    "Sarcoma, Germinoblastic"
+   ]
+  },
+  {
+   "ui": "D000069550",
+   "heading": "Machine Learning",
+   "trees": [
+    "G17.035.250.500",
+    "L01.224.050.375.530"
+   ],
+   "entry_terms": []
+  },
+  {
+   "ui": "D008268",
+   "heading": "Macular Degeneration",
+   "trees": [
+    "C11.768.585.439"
+   ],
+   "entry_terms": [
+    "Age-Related Maculopathies",
+    "Age-Related Maculopathy",
+    "Macular Degeneration, Age-Related",
+    "Macular Dystrophy",
+    "Maculopathies, Age-Related",
+    "Maculopathy",
+    "Maculopathy, Age-Related"
+   ]
+  },
+  {
+   "ui": "D008279",
+   "heading": "Magnetic Resonance Imaging",
+   "trees": [
+    "E01.370.350.825.500"
+   ],
+   "entry_terms": [
+    "Chemical Shift Imaging",
+    "Functional Magnetic Resonance Imaging",
+    "Magnetic Resonance Imaging, Functional",
+    "MR Tomography",
+    "MRI, Functional",
+    "NMR Imaging",
+    "NMR Tomography",
+    "Proton Spin Tomography",
+    "Steady-State Free Precession MRI",
+    "Tomography, MR",
+    "Tomography, NMR",
+    "Zeugmatography"
+   ]
+  },
+  {
+   "ui": "D003865",
+   "heading": "Major Depressive Disorder",
+   "trees": [
+    "F03.600.300.375"
+   ],
+   "entry_terms": [
+    "Clinical Depression",
+    "Depressive Disorder, Major",
+    "Major Depression Disorder",
+    "Melancholia, Involutional"
+   ]
+  },
+  {
+   "ui": "D008288",
+   "heading": "Malaria",
+   "trees": [
+    "C01.610.752.530",
+    "C01.920.852.750"
+   ],
+   "entry_terms": [
+    "Infections, Plasmodium",
+    "Marsh Fever",
+    "Paludism",
+    "Plasmodium Infections",
+    "Remittent Fever"
+   ]
+  },
+  {
+   "ui": "D044342",
+   "heading": "Malnutrition",
+   "trees": [
+    "C18.654.521"
+   ],
+   "entry_terms": [
+    "Malnourishment",
+    "Nutritional Deficiency",
+    "Undernutrition"
+   ]
+  },
+  {
+   "ui": "D008403",
+   "heading": "Mass Screening",
+   "trees": [
+    "E01.370.500",
+    "E05.318.308.980.438.580",
+    "N02.421.726.233.443",
+    "N05.715.360.300.800.438.500",
+    "N06.850.520.308.980.438.580",
+    "N06.850.780.500"
+   ],
+   "entry_terms": []
+  },
+  {
+   "ui": "D008405",
+   "heading": "Massage",
+   "trees": [
+    "E02.190.599.750.750",
+    "E02.779.867.880.750",
+    "E02.831.535.867.880.750"
+   ],
+   "entry_terms": [
+    "Therapy, Zone"
+   ]
+  },
+  {
+   "ui": "D019122",
+   "heading": "Meditation",
+   "trees": [
+    "E02.190.525.374",
+    "E02.190.901.455",
+    "F04.754.137.750.500"
+   ],
+   "entry_terms": []
+  },
+  {
+   "ui": "D008545",
+   "heading": "Melanoma",
+   "trees": [
+    "C04.557.465.625.650.510",
+    "C04.557.580.625.650.510",
+    "C04.557.665.510",
+    "C04.588.805.377",
+    "C17.800.882.445"
+   ],
+   "entry_terms": [
+    "Malignant Melanoma"
+   ]
+  },
+  {
+   "ui": "D008571",
+   "heading": "Men",
+   "trees": [
+    "M01.390"
+   ],
+   "entry_terms": []
+  },
+  {
+   "ui": "D015201",
+   "heading": "Meta-Analysis as Topic",
+   "trees": [
+    "E05.318.370.500",
+    "E05.581.500.501",
+    "N05.715.360.325.515",
+    "N06.850.520.445.500"
+   ],
+   "entry_terms": [
+    "Clinical Trial Overviews",
+    "Overviews, Clinical Trial"
+   ]
+  },
+  {
+   "ui": "D024821",
+   "heading": "Metabolic Syndrome",
+   "trees": [
+    "C18.452.394.968.500.570",
+    "C18.452.625"
+   ],
+   "entry_terms": [
+    "Dysmetabolic Syndrome X",
+    "Insulin Resistance Syndrome X",
+    "Metabolic Cardiovascular Syndrome",
+    "Metabolic Syndrome X",
+    "Metabolic X Syndrome",
+    "Reaven Syndrome X",
+    "Syndrome X, Insulin Resistance",
+    "Syndrome X, Metabolic"
+   ]
+  },
+  {
+   "ui": "D008687",
+   "heading": "Metformin",
+   "trees": [
+    "D02.078.370.141.450"
+   ],
+   "entry_terms": [
+    "Dimethylbiguanidine",
+    "Dimethylguanylguanidine",
+    "Metformin HCl"
+   ]
+  },
+  {
+   "ui": "D064307",
+   "heading": "Microbiota",
+   "trees": [
+    "G06.591",
+    "G16.500.275.157.049.100.500",
+    "N06.230.124.049.100.500"
+   ],
+   "entry_terms": [
+    "Microbial Community",
+    "Microbial Community Composition",
+    "Microbiome, Human"
+   ]
+  },
+  {
+   "ui": "D008875",
+   "heading": "Middle Aged",
+   "trees": [
+    "M01.060.116.630"
+   ],
+   "entry_terms": []
+  },
+  {
+   "ui": "D008881",
+   "heading": "Migraine Disorders",
+   "trees": [
+    "C10.228.140.546.399.750"
+   ],
+   "entry_terms": [
+    "Headache, Migraine",
+    "Migraine",
+    "Migraine Headache"
+   ]
+  },
+  {
+   "ui": "D064866",
+   "heading": "Mindfulness",
+   "trees": [
+    "F02.463.551",
+    "F04.754.137.350.500"
+   ],
+   "entry_terms": []
+  },
+  {
+   "ui": "D008913",
+   "heading": "Minority Groups",
+   "trees": [
+    "I01.880.853.300"
+   ],
+   "entry_terms": []
+  },
+  {
+   "ui": "D063731",
+   "heading": "Mobile Applications",
+   "trees": [
+    "L01.224.900.685"
+   ],
+   "entry_terms": [
+    "Mobile Apps",
+    "Portable Electronic Applications",
+    "Portable Software Applications"
+   ]
+  },
+  {
+   "ui": "D009026",
+   "heading": "Mortality",
+   "trees": [
+    "E05.318.308.985.550",
+    "N01.224.935.698",
+    "N06.850.505.400.975.550",
+    "N06.850.520.308.985.550"
+   ],
+   "entry_terms": [
+    "Age Specific Death Rate",
+    "CFR Case Fatality Rate",
+    "Crude Mortality Rate",
+    "Death Rate",
+    "Determinants, Mortality",
+    "Differential Mortality",
+    "Excess Mortality",
+    "Mortality Decline",
+    "Mortality Rate"
+   ]
+  },
+  {
+   "ui": "D062405",
+   "heading": "Motivational Interviewing",
+   "trees": [
+    "F02.784.176.279.500",
+    "F04.408.413.349.500",
+    "N02.421.461.363.349.500"
+   ],
+   "entry_terms": []
+  },
+  {
+   "ui": "D009103",
+   "heading": "Multiple Sclerosis",
+   "trees": [
+    "C10.114.375.500",
+    "C10.314.350.500",
+    "C20.111.258.250.500"
+   ],
+   "entry_terms": [
+    "MS (Multiple Sclerosis)",
+    "Sclerosis, Disseminated"
+   ]
+  },
+  {
+   "ui": "D009147",
+   "heading": "Music Therapy",
+   "trees": [
+    "E02.190.888.500",
+    "E02.760.169.063.500.440",
+    "E02.831.440",
+    "F04.754.549"
+   ],
+   "entry_terms": [
+    "Therapy, Music"
+   ]
+  },
+  {
+   "ui": "D009203",
+   "heading": "Myocardial Infarction",
+   "trees": [
+    "C14.280.647.500",
+    "C14.907.585.500",
+    "C23.550.513.355.750",
+    "C23.550.717.489.750"
+   ],
+   "entry_terms": [
+    "Cardiovascular Stroke",
+    "Heart Attack",
+    "Myocardial Infarct"
+   ]
+  },
+  {
+   "ui": "D009369",
+   "heading": "Neoplasms",
+   "trees": [
+    "C04"
+   ],
+   "entry_terms": [
+    "Benign Neoplasm",
+    "Malignancy",
+    "Malignant Neoplasm",
+    "Malignant Neoplasms",
+    "Neoplasia",
+    "Neoplasm",
+    "Neoplasms, Benign",
+    "Tumor",
+    "Tumors"
+   ]
+  },
+  {
+   "ui": "D065626",
+   "heading": "Non-alcoholic Fatty Liver Disease",
+   "trees": [
+    "C06.552.241.519"
+   ],
+   "entry_terms": [
+    "Fatty Liver, Nonalcoholic",
+    "Metabolic Dysfunction-Associated Steatohepatitis",
+    "NAFLD",
+    "Nonalcoholic Fatty Liver Disease"
+   ]
+  },
+  {
+   "ui": "D009726",
+   "heading": "Nurses",
+   "trees": [
+    "M01.526.485.650",
+    "N02.360.650"
+   ],
+   "entry_terms": [
+    "Nursing Personnel",
+    "Personnel, Nursing"
+   ]
+  },
+  {
+   "ui": "D009735",
+   "heading": "Nursing Homes",
+   "trees": [
+    "N02.278.825.610"
+   ],
+   "entry_terms": [
+    "Homes, Nursing"
+   ]
+  },
+  {
+   "ui": "D009765",
+   "heading": "Obesity",
+   "trees": [
+    "C18.654.726.750.500",
+    "C23.888.144.699.500"
+   ],
+   "entry_terms": []
+  },
+  {
+   "ui": "D009293",
+   "heading": "Opioid-Related Disorders",
+   "trees": [
+    "C25.775.643.500",
+    "F03.900.647.500"
+   ],
+   "entry_terms": [
+    "Addiction, Opioid",
+    "Dependence, Opioid",
+    "Opiate Addiction",
+    "Opiate Dependence",
+    "Opioid Addiction",
+    "Opioid Dependence"
+   ]
+  },
+  {
+   "ui": "D010003",
+   "heading": "Osteoarthritis",
+   "trees": [
+    "C05.550.114.606",
+    "C05.799.613"
+   ],
+   "entry_terms": [
+    "Arthritis, Degenerative",
+    "Arthroses",
+    "Osteoarthrosis"
+   ]
+  },
+  {
+   "ui": "D010024",
+   "heading": "Osteoporosis",
+   "trees": [
+    "C05.116.198.579",
+    "C18.452.104.579"
+   ],
+   "entry_terms": [
+    "Age-Related Osteoporosis",
+    "Bone Loss, Age-Related",
+    "Osteoporosis, Involutional",
+    "Senile Osteoporosis"
+   ]
+  },
+  {
+   "ui": "D018384",
+   "heading": "Oxidative Stress",
+   "trees": [
+    "G03.673",
+    "G07.775.750"
+   ],
+   "entry_terms": [
+    "Anti-oxidative Stress",
+    "DNA Oxidative Damage",
+    "Nitro-Oxidative Stress",
+    "Oxidative Injury",
+    "Oxidative Nitrative Stress",
+    "Oxidative Stress Injury",
+    "Stress, Oxidative"
+   ]
+  },
+  {
+   "ui": "D010102",
+   "heading": "Oxygen Inhalation Therapy",
+   "trees": [
+    "E02.880.690"
+   ],
+   "entry_terms": [
+    "Inhalation Therapy, Oxygen",
+    "Therapy, Oxygen Inhalation"
+   ]
+  },
+  {
+   "ui": "D010147",
+   "heading": "Pain Measurement",
+   "trees": [
+    "E01.370.600.550.324"
+   ],
+   "entry_terms": [
+    "Analgesia Tests",
+    "Analog Pain Scale",
+    "Assessment, Pain",
+    "McGill Pain Scale",
+    "Nociception Tests",
+    "Pain Assessment",
+    "Pain Severity",
+    "Visual Analogue Pain Scale"
+   ]
+  },
+  {
+   "ui": "D010166",
+   "heading": "Palliative Care",
+   "trees": [
+    "E02.760.666",
+    "N02.421.585.666"
+   ],
+   "entry_terms": [
+    "Palliative Supportive Care",
+    "Palliative Therapy",
+    "Palliative Treatment",
+    "Supportive Care",
+    "Surgery, Palliative",
+    "Therapy, Palliative"
+   ]
+  },
+  {
+   "ui": "D010190",
+   "heading": "Pancreatic Neoplasms",
+   "trees": [
+    "C04.588.274.761",
+    "C04.588.322.475",
+    "C06.301.761",
+    "C06.689.667",
+    "C19.344.421"
+   ],
+   "entry_terms": [
+    "Cancer of the Pancreas",
+    "Neoplasms, Pancreatic",
+    "Pancreas Cancer",
+    "Pancreas Neoplasms",
+    "Pancreatic Cancer"
+   ]
+  },
+  {
+   "ui": "D058873",
+   "heading": "Pandemics",
+   "trees": [
+    "N06.850.290.200.600"
+   ],
+   "entry_terms": []
+  },
+  {
+   "ui": "D010300",
+   "heading": "Parkinson Disease",
+   "trees": [
+    "C10.228.140.079.862.500",
+    "C10.228.662.600.400",
+    "C10.574.928.750"
+   ],
+   "entry_terms": [
+    "Idiopathic Parkinson Disease",
+    "Idiopathic Parkinson's Disease",
+    "Lewy Body Parkinson Disease",
+    "Lewy Body Parkinson's Disease",
+    "Paralysis Agitans",
+    "Parkinson Disease, Idiopathic",
+    "Parkinson's Disease",
+    "Parkinson's Disease, Idiopathic",
+    "Parkinson's Disease, Lewy Body",
+    "Primary Parkinsonism"
+   ]
+  },
+  {
+   "ui": "D010359",
+   "heading": "Patient Readmission",
+   "trees": [
+    "E02.760.400.620",
+    "N02.421.585.400.620"
+   ],
+   "entry_terms": [
+    "30 Day Readmission",
+    "Hospital Readmission",
+    "Readmission, Hospital",
+    "Readmissions, Hospital",
+    "Rehospitalization",
+    "Unplanned Hospital Readmissions",
+    "Unplanned Readmission"
+   ]
+  },
+  {
+   "ui": "D017060",
+   "heading": "Patient Satisfaction",
+   "trees": [
+    "F01.100.150.750.625",
+    "F01.145.488.887.625",
+    "N04.452.822.700",
+    "N05.300.150.800.625",
+    "N05.715.360.600"
+   ],
+   "entry_terms": []
+  },
+  {
+   "ui": "D062645",
+   "heading": "Percutaneous Coronary Intervention",
+   "trees": [
+    "E04.100.814.529.968",
+    "E04.502.382.968"
+   ],
+   "entry_terms": [
+    "Percutaneous Coronary Revascularization"
+   ]
+  },
+  {
+   "ui": "D010518",
+   "heading": "Periodontitis",
+   "trees": [
+    "C07.465.714.533"
+   ],
+   "entry_terms": []
+  },
+  {
+   "ui": "D026741",
+   "heading": "Physical Therapy Modalities",
+   "trees": [
+    "E02.779",
+    "E02.831.535"
+   ],
+   "entry_terms": [
+    "Neurophysiotherapy",
+    "Physical Therapy Techniques",
+    "Physiotherapy (Techniques)"
+   ]
+  },
+  {
+   "ui": "D010820",
+   "heading": "Physicians",
+   "trees": [
+    "M01.526.485.810",
+    "N02.360.810"
+   ],
+   "entry_terms": []
+  },
+  {
+   "ui": "D011014",
+   "heading": "Pneumonia",
+   "trees": [
+    "C01.748.610",
+    "C08.381.677",
+    "C08.730.610"
+   ],
+   "entry_terms": [
+    "Lung Inflammation",
+    "Pneumonia, Lobar",
+    "Pulmonary Inflammation"
+   ]
+  },
+  {
+   "ui": "D011085",
+   "heading": "Polycystic Ovary Syndrome",
+   "trees": [
+    "C04.182.612.765",
+    "C12.050.351.500.056.630.580.765",
+    "C12.100.250.056.630.580.765",
+    "C19.391.630.580.765"
+   ],
+   "entry_terms": [
+    "Polycystic Ovarian Syndrome",
+    "Polycystic Ovary Syndrome 1",
+    "Sclerocystic Ovarian Degeneration",
+    "Sclerocystic Ovary Syndrome",
+    "Stein-Leventhal Syndrome"
+   ]
+  },
+  {
+   "ui": "D011225",
+   "heading": "Pre-Eclampsia",
+   "trees": [
+    "C12.050.703.395.249"
+   ],
+   "entry_terms": [
+    "Edema-Proteinuria-Hypertension Gestosis",
+    "EPH Complex",
+    "EPH Gestosis",
+    "EPH Toxemias",
+    "Gestosis, EPH",
+    "Hypertension-Edema-Proteinuria Gestosis",
+    "Preeclampsia",
+    "Pregnancy Toxemias",
+    "Proteinuria-Edema-Hypertension Gestosis",
+    "Toxemia Of Pregnancy",
+    "Toxemias, Pregnancy"
+   ]
+  },
+  {
+   "ui": "D011247",
+   "heading": "Pregnancy",
+   "trees": [
+    "G08.686.784.769"
+   ],
+   "entry_terms": [
+    "Gestation"
+   ]
+  },
+  {
+   "ui": "D037841",
+   "heading": "Pregnant People",
+   "trees": [
+    "M01.975.807"
+   ],
+   "entry_terms": [
+    "Pregnant Person",
+    "Women, Pregnant"
+   ]
+  },
+  {
+   "ui": "D047928",
+   "heading": "Premature Birth",
+   "trees": [
+    "C12.050.703.420.491.500"
+   ],
+   "entry_terms": [
+    "Preterm Birth"
+   ]
+  },
+  {
+   "ui": "D015995",
+   "heading": "Prevalence",
+   "trees": [
+    "E05.318.308.985.525.750",
+    "N01.224.935.597.750",
+    "N06.850.505.400.975.525.750",
+    "N06.850.520.308.985.525.750"
+   ],
+   "entry_terms": []
+  },
+  {
+   "ui": "D011320",
+   "heading": "Primary Health Care",
+   "trees": [
+    "N04.590.233.727"
+   ],
+   "entry_terms": [
+    "Primary Care",
+    "Primary Healthcare"
+   ]
+  },
+  {
+   "ui": "D019936",
+   "heading": "Probiotics",
+   "trees": [
+    "G07.203.300.456.500",
+    "J02.500.456.500"
+   ],
+   "entry_terms": [
+    "Probiotic"
+   ]
+  },
+  {
+   "ui": "D011379",
+   "heading": "Prognosis",
+   "trees": [
+    "E01.789"
+   ],
+   "entry_terms": [
+    "Prognostic Factor"
+   ]
+  },
+  {
+   "ui": "D011471",
+   "heading": "Prostatic Neoplasms",
+   "trees": [
+    "C04.588.945.440.770",
+    "C12.100.500.260.750",
+    "C12.100.500.565.625",
+    "C12.200.294.260.750",
+    "C12.200.294.565.625",
+    "C12.200.758.409.750",
+    "C12.900.619.750"
+   ],
+   "entry_terms": [
+    "Cancer of Prostate",
+    "Cancer of the Prostate",
+    "Neoplasms, Prostate",
+    "Neoplasms, Prostatic",
+    "Prostate Neoplasms",
+    "Prostatic Cancer"
+   ]
+  },
+  {
+   "ui": "D011565",
+   "heading": "Psoriasis",
+   "trees": [
+    "C17.800.859.675"
+   ],
+   "entry_terms": [
+    "Palmoplantaris Pustulosis",
+    "Pustular Psoriasis of Palms and Soles",
+    "Pustulosis Palmaris et Plantaris"
+   ]
+  },
+  {
+   "ui": "D011613",
+   "heading": "Psychotherapy",
+   "trees": [
+    "F04.754"
+   ],
+   "entry_terms": []
+  },
+  {
+   "ui": "D029424",
+   "heading": "Pulmonary Disease, Chronic Obstructive",
+   "trees": [
+    "C08.381.495.389",
+    "C23.550.291.500.875"
+   ],
+   "entry_terms": [
+    "Chronic Airflow Obstruction",
+    "Chronic Obstructive Airway Disease",
+    "Chronic Obstructive Lung Disease",
+    "Chronic Obstructive Pulmonary Disease",
+    "Chronic Obstructive Pulmonary Diseases",
+    "COAD",
+    "COPD"
+   ]
+  },
+  {
+   "ui": "D011655",
+   "heading": "Pulmonary Embolism",
+   "trees": [
+    "C08.381.746",
+    "C14.907.355.350.700"
+   ],
+   "entry_terms": [
+    "Embolism, Pulmonary",
+    "Embolisms, Pulmonary",
+    "Pulmonary Embolisms",
+    "Pulmonary Thromboembolism",
+    "Thromboembolism, Pulmonary",
+    "Thromboembolisms, Pulmonary"
+   ]
+  },
+  {
+   "ui": "D036301",
+   "heading": "Qualitative Research",
+   "trees": [
+    "H01.770.644.241.850"
+   ],
+   "entry_terms": []
+  },
+  {
+   "ui": "D011788",
+   "heading": "Quality of Life",
+   "trees": [
+    "I01.800",
+    "K01.752.400.750",
+    "N06.850.505.400.425.837"
+   ],
+   "entry_terms": [
+    "HRQOL",
+    "Life Quality"
+   ]
+  },
+  {
+   "ui": "D011878",
+   "heading": "Radiotherapy",
+   "trees": [
+    "E02.815"
+   ],
+   "entry_terms": [
+    "Radiation Therapy",
+    "Radiation Therapy, Targeted",
+    "Radiation Treatment",
+    "Targeted Radiation Therapy",
+    "Targeted Radiotherapy"
+   ]
+  },
+  {
+   "ui": "D016032",
+   "heading": "Randomized Controlled Trials as Topic",
+   "trees": [
+    "E05.318.372.250.250.365.500",
+    "N05.715.360.330.250.250.365.500",
+    "N06.850.520.450.250.250.365.500"
+   ],
+   "entry_terms": [
+    "Trials, Randomized Clinical"
+   ]
+  },
+  {
+   "ui": "D012008",
+   "heading": "Recurrence",
+   "trees": [
+    "C23.550.291.937"
+   ],
+   "entry_terms": []
+  },
+  {
+   "ui": "D012046",
+   "heading": "Rehabilitation",
+   "trees": [
+    "E02.760.169.063.500",
+    "E02.831",
+    "H02.403.680.600",
+    "N02.421.784"
+   ],
+   "entry_terms": []
+  },
+  {
+   "ui": "D012074",
+   "heading": "Remission Induction",
+   "trees": [
+    "E02.860"
+   ],
+   "entry_terms": [
+    "Induction of Remission"
+   ]
+  },
+  {
+   "ui": "D051436",
+   "heading": "Renal Insufficiency, Chronic",
+   "trees": [
+    "C12.050.351.968.419.780.750",
+    "C12.200.777.419.780.750",
+    "C12.950.419.780.750",
+    "C23.550.291.500.906"
+   ],
+   "entry_terms": [
+    "Chronic Kidney Insufficiency",
+    "Chronic Renal Diseases",
+    "Chronic Renal Insufficiency",
+    "Kidney Insufficiency, Chronic"
+   ]
+  },
+  {
+   "ui": "D012121",
+   "heading": "Respiration, Artificial",
+   "trees": [
+    "E02.041.625",
+    "E02.365.647.729",
+    "E02.880.820"
+   ],
+   "entry_terms": [
+    "Mechanical Ventilation"
+   ]
+  },
+  {
+   "ui": "D012307",
+   "heading": "Risk Factors",
+   "trees": [
+    "E05.318.740.600.800.725",
+    "N05.715.350.200.700",
+    "N05.715.360.750.625.700.700",
+    "N06.850.490.625.750",
+    "N06.850.520.830.600.800.725"
+   ],
+   "entry_terms": [
+    "Populations at Risk",
+    "Risk Factor Scores"
+   ]
+  },
+  {
+   "ui": "D012424",
+   "heading": "Rural Population",
+   "trees": [
+    "N01.600.725"
+   ],
+   "entry_terms": []
+  },
+  {
+   "ui": "D055948",
+   "heading": "Sarcopenia",
+   "trees": [
+    "C10.597.613.612.500",
+    "C23.300.070.500.500",
+    "C23.888.592.608.612.500"
+   ],
+   "entry_terms": []
+  },
+  {
+   "ui": "D012559",
+   "heading": "Schizophrenia",
+   "trees": [
+    "F03.700.750"
+   ],
+   "entry_terms": [
+    "Dementia Praecox",
+    "Schizophrenic Disorders"
+   ]
+  },
+  {
+   "ui": "D017367",
+   "heading": "Selective Serotonin Reuptake Inhibitors",
+   "trees": [
+    "D27.505.519.562.437.850",
+    "D27.505.519.625.600.850",
+    "D27.505.519.625.850.900",
+    "D27.505.696.577.600.850",
+    "D27.505.696.577.850.900"
+   ],
+   "entry_terms": [
+    "5-HT Uptake Inhibitor",
+    "5-HT Uptake Inhibitors",
+    "5-Hydroxytryptamine Uptake Inhibitor",
+    "5-Hydroxytryptamine Uptake Inhibitors",
+    "Inhibitors, 5-HT Uptake",
+    "Inhibitors, 5-Hydroxytryptamine Uptake",
+    "Inhibitors, Serotonin Reuptake",
+    "Inhibitors, Serotonin Uptake",
+    "Reuptake Inhibitors, Serotonin",
+    "Selective Serotonin Reuptake Inhibitor",
+    "Serotonin Reuptake Inhibitor",
+    "Serotonin Reuptake Inhibitors",
+    "Serotonin Uptake Inhibitor",
+    "SSRIs",
+    "Uptake Inhibitors, 5-HT",
+    "Uptake Inhibitors, 5-Hydroxytryptamine",
+    "Uptake Inhibitors, Serotonin"
+   ]
+  },
+  {
+   "ui": "D018805",
+   "heading": "Sepsis",
+   "trees": [
+    "C01.757",
+    "C23.550.470.790.500"
+   ],
+   "entry_terms": [
+    "Blood Poisoning",
+    "Bloodstream Infection",
+    "Poisoning, Blood",
+    "Pyaemia",
+    "Pyohemia"
+   ]
+  },
+  {
+   "ui": "D007319",
+   "heading": "Sleep Initiation and Maintenance Disorders",
+   "trees": [
+    "C10.886.425.800.800",
+    "F03.870.400.800.800"
+   ],
+   "entry_terms": [
+    "DIMS (Disorders of Initiating and Maintaining Sleep)",
+    "Disorders of Initiating and Maintaining Sleep",
+    "Insomnia",
+    "Insomnia Disorder"
+   ]
+  },
+  {
+   "ui": "D012907",
+   "heading": "Smoking",
+   "trees": [
+    "F01.145.805"
+   ],
+   "entry_terms": []
+  },
+  {
+   "ui": "D016540",
+   "heading": "Smoking Cessation",
+   "trees": [
+    "F01.145.488.732"
+   ],
+   "entry_terms": [
+    "Giving Up Smoking",
+    "Quitting Smoking",
+    "Stopping Smoking"
+   ]
+  },
+  {
+   "ui": "D013119",
+   "heading": "Spinal Cord Injuries",
+   "trees": [
+    "C10.228.854.763",
+    "C10.900.850",
+    "C26.819"
+   ],
+   "entry_terms": [
+    "Injuries, Spinal Cord",
+    "Myelopathy, Traumatic",
+    "Spinal Cord Trauma"
+   ]
+  },
+  {
+   "ui": "D013234",
+   "heading": "Stem Cells",
+   "trees": [
+    "A11.872"
+   ],
+   "entry_terms": [
+    "Colony-Forming Units",
+    "Mother Cells",
+    "Progenitor Cells"
+   ]
+  },
+  {
+   "ui": "D015607",
+   "heading": "Stents",
+   "trees": [
+    "E07.695.750"
+   ],
+   "entry_terms": []
+  },
+  {
+   "ui": "D013313",
+   "heading": "Stress Disorders, Post-Traumatic",
+   "trees": [
+    "F03.950.750.500"
+   ],
+   "entry_terms": [
+    "Neuroses, Post-Traumatic",
+    "Neuroses, Posttraumatic",
+    "Post Traumatic Stress Disorder",
+    "Post-Traumatic Stress Disorders",
+    "Posttraumatic Stress Disorders",
+    "PTSD",
+    "Stress Disorder, Post Traumatic",
+    "Stress Disorders, Posttraumatic"
+   ]
+  },
+  {
+   "ui": "D013315",
+   "heading": "Stress, Psychological",
+   "trees": [
+    "F01.145.126.990",
+    "F02.830.900"
+   ],
+   "entry_terms": [
+    "Life Stress",
+    "Psychological Cumulative Stress",
+    "Psychological Stress",
+    "Psychological Stress Experience",
+    "Psychological Stress Overload",
+    "Psychologically Stressful Conditions",
+    "Stress, Emotional",
+    "Stress, Psychologic",
+    "Stressor, Psychological"
+   ]
+  },
+  {
+   "ui": "D020521",
+   "heading": "Stroke",
+   "trees": [
+    "C10.228.140.300.775",
+    "C14.907.253.855"
+   ],
+   "entry_terms": [
+    "Apoplexy",
+    "Cerebral Stroke",
+    "Cerebrovascular Accident",
+    "Cerebrovascular Accident, Acute",
+    "Cerebrovascular Apoplexy",
+    "Cerebrovascular Stroke",
+    "CVA (Cerebrovascular Accident)",
+    "Vascular Accident, Brain"
+   ]
+  },
+  {
+   "ui": "D013334",
+   "heading": "Students",
+   "trees": [
+    "M01.848"
+   ],
+   "entry_terms": []
+  },
+  {
+   "ui": "D019966",
+   "heading": "Substance-Related Disorders",
+   "trees": [
+    "C25.775",
+    "F03.900"
+   ],
+   "entry_terms": [
+    "Chemical Dependence",
+    "Drug Addiction",
+    "Drug Use Disorder",
+    "Substance Addiction",
+    "Substance Related Disorder",
+    "Substance Use Disorder"
+   ]
+  },
+  {
+   "ui": "D013405",
+   "heading": "Suicide",
+   "trees": [
+    "F01.145.126.980.875",
+    "I01.880.735.856"
+   ],
+   "entry_terms": []
+  },
+  {
+   "ui": "D013514",
+   "heading": "Surgical Procedures, Operative",
+   "trees": [
+    "E04"
+   ],
+   "entry_terms": [
+    "Ghost Surgery",
+    "Operative Procedures",
+    "Operative Surgical Procedure",
+    "Operative Surgical Procedures",
+    "Procedure, Operative Surgical",
+    "Procedures, Operative Surgical",
+    "Surgical Procedure, Operative",
+    "Surgical Procedures"
+   ]
+  },
+  {
+   "ui": "D011795",
+   "heading": "Surveys and Questionnaires",
+   "trees": [
+    "E05.318.308.980",
+    "N05.715.360.300.800",
+    "N06.850.520.308.980"
+   ],
+   "entry_terms": [
+    "Community Survey",
+    "Methodology, Survey",
+    "Nonrespondent",
+    "Questionnaire",
+    "Respondent",
+    "Survey",
+    "Survey Method",
+    "Survey Methodology"
+   ]
+  },
+  {
+   "ui": "D013534",
+   "heading": "Survival",
+   "trees": [
+    "I03.784"
+   ],
+   "entry_terms": []
+  },
+  {
+   "ui": "D000078202",
+   "heading": "Systematic Reviews as Topic",
+   "trees": [
+    "L01.462.500.682.759.575"
+   ],
+   "entry_terms": [
+    "Reviews Systematic as Topic",
+    "Systematic Literature Reviews as Topic",
+    "Systematic Review as Topic"
+   ]
+  },
+  {
+   "ui": "D017216",
+   "heading": "Telemedicine",
+   "trees": [
+    "H02.403.840",
+    "L01.462.500.847.652",
+    "N04.590.374.800"
+   ],
+   "entry_terms": [
+    "eHealth",
+    "mHealth",
+    "Tele-Care",
+    "Tele-ICU",
+    "Tele-Referral",
+    "Virtual Medicine"
+   ]
+  },
+  {
+   "ui": "D014057",
+   "heading": "Tomography, X-Ray Computed",
+   "trees": [
+    "E01.370.350.350.810",
+    "E01.370.350.600.350.700.810",
+    "E01.370.350.700.700.810",
+    "E01.370.350.700.810.810",
+    "E01.370.350.825.810.810"
+   ],
+   "entry_terms": [
+    "CAT Scan, X Ray",
+    "CAT Scan, X-Ray",
+    "Computed Tomography, X-Ray",
+    "Computed X Ray Tomography",
+    "Computerized Tomography, X Ray",
+    "Computerized Tomography, X-Ray",
+    "CT Scan, X-Ray",
+    "CT X Ray",
+    "Electron Beam Tomography",
+    "Tomodensitometry",
+    "Tomography, Transmission Computed",
+    "Tomography, X Ray Computed",
+    "Tomography, X-Ray Computer Assisted",
+    "Tomography, X-Ray Computerized",
+    "Tomography, Xray Computed",
+    "X Ray Computerized Tomography",
+    "X Ray Tomography, Computed",
+    "X-Ray Computer Assisted Tomography",
+    "X-Ray Computerized Axial Tomography",
+    "X-Ray Tomography, Computed"
+   ]
+  },
+  {
+   "ui": "D016896",
+   "heading": "Treatment Outcome",
+   "trees": [
+    "E01.789.800",
+    "N04.761.559.590.800",
+    "N05.715.360.575.575.800"
+   ],
+   "entry_terms": [
+    "Clinical Efficacy",
+    "Treatment Effectiveness"
+   ]
+  },
+  {
+   "ui": "D014376",
+   "heading": "Tuberculosis",
+   "trees": [
+    "C01.150.252.410.040.552.846"
+   ],
+   "entry_terms": [
+    "Koch's Disease",
+    "Kochs Disease",
+    "Mycobacterium tuberculosis Infection"
+   ]
+  },
+  {
+   "ui": "D014505",
+   "heading": "Urban Population",
+   "trees": [
+    "N01.600.900"
+   ],
+   "entry_terms": []
+  },
+  {
+   "ui": "D014552",
+   "heading": "Urinary Tract Infections",
+   "trees": [
+    "C01.915",
+    "C12.050.351.968.892",
+    "C12.200.777.892",
+    "C12.950.892"
+   ],
+   "entry_terms": []
+  },
+  {
+   "ui": "D014611",
+   "heading": "Vaccination",
+   "trees": [
+    "E02.095.465.425.400.530.890",
+    "E05.478.550.600.890",
+    "N02.421.726.758.310.890",
+    "N06.850.780.200.425.900",
+    "N06.850.780.680.310.890"
+   ],
+   "entry_terms": [
+    "Immunization, Active"
+   ]
+  },
+  {
+   "ui": "D014612",
+   "heading": "Vaccines",
+   "trees": [
+    "D20.215.894"
+   ],
+   "entry_terms": [
+    "Vaccine"
+   ]
+  },
+  {
+   "ui": "D054556",
+   "heading": "Venous Thromboembolism",
+   "trees": [
+    "C14.907.355.590.700"
+   ],
+   "entry_terms": [
+    "Thromboembolism, Venous"
+   ]
+  },
+  {
+   "ui": "D014728",
+   "heading": "Veterans",
+   "trees": [
+    "M01.930"
+   ],
+   "entry_terms": []
+  },
+  {
+   "ui": "D014807",
+   "heading": "Vitamin D",
+   "trees": [
+    "D04.210.500.812.768"
+   ],
+   "entry_terms": []
+  },
+  {
+   "ui": "D014859",
+   "heading": "Warfarin",
+   "trees": [
+    "D03.383.663.283.446.520.914",
+    "D03.633.100.150.446.520.914"
+   ],
+   "entry_terms": [
+    "4-Hydroxy-3-(3-oxo-1-phenylbutyl)-2H-1-benzopyran-2-one",
+    "Marevan"
+   ]
+  },
+  {
+   "ui": "D015431",
+   "heading": "Weight Loss",
+   "trees": [
+    "C23.888.144.243.963",
+    "G07.345.249.314.120.200.963"
+   ],
+   "entry_terms": [
+    "Weight Reduction"
+   ]
+  },
+  {
+   "ui": "D000073336",
+   "heading": "Whole Genome Sequencing",
+   "trees": [
+    "E05.393.760.700.825"
+   ],
+   "entry_terms": [
+    "Complete Genome Sequencing"
+   ]
+  },
+  {
+   "ui": "D014930",
+   "heading": "Women",
+   "trees": [
+    "M01.975"
+   ],
+   "entry_terms": [
+    "Girls",
+    "Woman"
+   ]
+  },
+  {
+   "ui": "D014947",
+   "heading": "Wounds and Injuries",
+   "trees": [
+    "C26"
+   ],
+   "entry_terms": [
+    "Injuries and Wounds",
+    "Injuries, Wounds",
+    "Trauma",
+    "Wounds and Injury",
+    "Wounds, Injury"
+   ]
+  },
+  {
+   "ui": "D015013",
+   "heading": "Yoga",
+   "trees": [
+    "E02.190.525.937",
+    "E02.190.901.984",
+    "E02.779.474.937",
+    "K01.844.799.867"
+   ],
+   "entry_terms": []
+  },
+  {
+   "ui": "D055815",
+   "heading": "Young Adult",
+   "trees": [
+    "M01.060.116.815"
+   ],
+   "entry_terms": []
+  }
+ ]
+}

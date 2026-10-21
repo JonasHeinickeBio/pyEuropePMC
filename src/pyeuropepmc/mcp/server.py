@@ -59,6 +59,8 @@ Tools:
         get_paper_data_links  — Datasets, accessions and database records linked to a paper
         get_paper_lab_links   — Links to a paper from third-party providers (BioStudies, ...)
         enrich_paper          — Impact, funding, affiliations, open access, retractions of a paper
+        pico_decompose        — Question to PICO/PICOS/PICOT/SPIDER elements and a checked query
+        mesh_expand           — MeSH headings, tree numbers and entry terms for search terms
 
     Screening & review:
         paper_screening       — PRISMA-compliant automated screening
@@ -88,6 +90,7 @@ import os
 import re
 import sys
 import threading
+import time
 from typing import Annotated, Any, Generic, Literal, TypeVar, cast
 
 import anyio
@@ -113,7 +116,9 @@ from pyeuropepmc.mcp import (
     _export as ex,
     _fulltext as ft,
     _links as lk,
+    _mesh as mm,
     _openaccess as oa,
+    _pico as pc,
     _query as qm,
     _status as st,
 )
@@ -2337,6 +2342,242 @@ async def enrich_paper(
         "complete": en.completeness(report),
         "time_budget_seconds": time_budget,
     }
+
+
+# ---------------------------------------------------------------------------
+# Question decomposition and MeSH
+# ---------------------------------------------------------------------------
+
+
+def _checked(query: str) -> dict[str, Any]:
+    """The linter's verdict on a query this server generated."""
+    result = qm.lint(query)
+    return {
+        "valid": not result.errors,
+        "problems": [i.to_dict() for i in result.errors],
+        "warnings": [i.to_dict() for i in result.warnings],
+    }
+
+
+@mcp.tool(annotations=_ro("Decompose a research question", local=True))
+async def pico_decompose(
+    question: Annotated[str, Field(description="The research or clinical question", min_length=3)],
+    framework: Annotated[
+        str,
+        Field(
+            description="PICO, PICOS (adds study design), PICOT (adds time frame) or SPIDER "
+            "(qualitative questions: sample, phenomenon of interest, design, evaluation, "
+            "research type)"
+        ),
+    ] = "PICO",
+    query_elements: Annotated[
+        list[str] | None,
+        Field(
+            description="Elements to build the query from. Default: population and "
+            "intervention (sample and phenomenon_of_interest for SPIDER); outcome terms are "
+            "rarely indexed and cut recall."
+        ),
+    ] = None,
+    mesh: Annotated[
+        bool,
+        Field(
+            description="Expand each term with MeSH headings and entry terms from the bundled "
+            "snapshot (offline). Terms it does not know stay as written."
+        ),
+    ] = False,
+) -> dict[str, Any]:
+    """Split a research question into PICO, PICOS, PICOT or SPIDER elements and build a Europe
+    PMC query from them. Rule-based and offline: no model, no key, no request. Every element
+    is a verbatim piece of the question, given with its position; an element the question does
+    not state is listed in `missing`, never filled in. The rules cover the usual clinical
+    phrasings ("In P, does I reduce O compared with C?", "What is the effect of I on O in P?",
+    "Is I more effective than C for O?", "Is I associated with O?", "Effectiveness of I for O
+    in P", "P treated with I"). A question phrased differently is only partly understood:
+    check `elements` and `missing` before using the query, and ask for clarification when the
+    question is incomplete. The query is checked with the same linter as `validate_query`."""
+    try:
+        parsed = pc.decompose(question, framework)
+    except ValueError as exc:
+        raise ToolError(str(exc)) from exc
+    wanted = (
+        tuple(query_elements)
+        if query_elements
+        else (
+            ("sample", "phenomenon_of_interest")
+            if parsed.framework == "SPIDER"
+            else pc.DEFAULT_QUERY_ELEMENTS
+        )
+    )
+    unknown = [name for name in wanted if name not in pc.ELEMENTS[parsed.framework]]
+    if unknown:
+        raise ToolError(
+            f"unknown element(s) {unknown} for {parsed.framework}; valid: "
+            f"{list(pc.ELEMENTS[parsed.framework])}"
+        )
+    snapshot = mm.snapshot() if mesh else None
+
+    def expand(term: str) -> str | None:
+        assert snapshot is not None
+        match = snapshot.lookup(term)
+        return mm.fragment(match) if match.descriptor else None
+
+    query, used = pc.build_query(parsed, wanted, expand if mesh else None)
+    return {
+        "framework": parsed.framework,
+        "complete": parsed.complete,
+        "elements": {name: span.to_dict() for name, span in parsed.elements.items()},
+        "missing": parsed.missing,
+        "optional_missing": parsed.optional_missing,
+        "relation": parsed.relation.to_dict() if parsed.relation else None,
+        "notes": parsed.notes,
+        "query": query,
+        "query_built_from": used,
+        "query_check": _checked(query) if query else None,
+        "method": "rules",
+    }
+
+
+def _nlm_get(url: str, params: dict[str, Any], timeout: float) -> Any:
+    response = requests.get(
+        url, params=params, timeout=timeout, headers={"User-Agent": "pyeuropepmc-mcp"}
+    )
+    response.raise_for_status()
+    return response.json()
+
+
+_now = time.monotonic
+
+
+class _BudgetExhausted(Exception):
+    """The time budget of a ``mesh_expand`` call with ``use_api`` ran out."""
+
+
+def _expand_terms(
+    terms: list[str], use_api: bool, max_entry_terms: int, deadline: float | None = None
+) -> list[dict[str, Any]]:
+    """One entry per term. With ``use_api`` no request starts after ``deadline`` and none may
+    run past it; the terms still waiting are reported as skipped, not dropped."""
+    out: list[dict[str, Any]] = []
+    snapshot = None if use_api else mm.snapshot()
+
+    def fetch(url: str, params: dict[str, Any], timeout: float) -> Any:
+        if deadline is None:
+            return _nlm_get(url, params, timeout)
+        remaining = deadline - _now()
+        if remaining <= 0:
+            raise _BudgetExhausted
+        return _nlm_get(url, params, min(timeout, remaining))
+
+    for term in terms:
+        try:
+            if use_api:
+                match = mm.lookup_api(term, fetch)
+            else:
+                assert snapshot is not None
+                match = snapshot.lookup(term)
+        except _BudgetExhausted:
+            out.append(
+                {
+                    "term": term,
+                    "matched": False,
+                    "error": "skipped: time budget exhausted",
+                    "fragment": mm.fragment(mm.Match(term, None)),
+                }
+            )
+            continue
+        except (requests.RequestException, ValueError, KeyError, IndexError) as exc:
+            out.append(
+                {
+                    "term": term,
+                    "matched": False,
+                    "error": f"{type(exc).__name__}: {exc}"[:200],
+                    "fragment": mm.fragment(mm.Match(term, None)),
+                }
+            )
+            continue
+        item: dict[str, Any] = {
+            "term": term,
+            "matched": match.descriptor is not None,
+            "source": match.source,
+            "fragment": mm.fragment(match, max_entry_terms),
+        }
+        if match.descriptor is not None:
+            item["matched_on"] = match.matched_on
+            item["descriptor"] = match.descriptor.to_dict()
+            if match.also:
+                item["also_matches"] = match.also
+        if match.suggestions:
+            item["suggestions"] = match.suggestions
+        out.append(item)
+    return out
+
+
+@mcp.tool(annotations=_ro("Expand terms with MeSH"))
+async def mesh_expand(
+    terms: Annotated[
+        list[str],
+        Field(
+            description="Search terms to expand, e.g. ['type 2 diabetes', 'metformin']",
+            min_length=1,
+            max_length=mm.MAX_TERMS,
+        ),
+    ],
+    use_api: Annotated[
+        bool,
+        Field(
+            description="Ask the NLM MeSH service (id.nlm.nih.gov, a network request, "
+            "up to four per term) instead of the bundled snapshot. Default: offline."
+        ),
+    ] = False,
+    combine: Annotated[
+        str,
+        Field(
+            description="How the terms' fragments are joined into `query`: 'and' (one "
+            "concept per term, the usual structure) or 'or'"
+        ),
+    ] = "and",
+    max_entry_terms: Annotated[
+        int, Field(description="Entry terms added to each fragment", ge=0, le=20)
+    ] = mm.DEFAULT_ENTRY_TERMS,
+    time_budget: Annotated[
+        float,
+        Field(
+            description="With use_api: seconds for all lookups together; terms not reached "
+            "are reported as skipped. Ignored offline.",
+            ge=2,
+            le=120,
+        ),
+    ] = 30,
+) -> dict[str, Any]:
+    """MeSH headings for search terms: the descriptor (ID, heading, tree numbers), its entry
+    terms and a ready Europe PMC fragment `(MESH:"Heading" OR "entry term" OR ...)` for each
+    term, and the fragments joined into one query that is checked like `validate_query`. By
+    default it works offline from a bundled snapshot of 244 common clinical headings taken
+    from NLM's published MeSH (heading, entry terms and tree numbers as published): a term
+    that is not in it comes back with `matched: false` and is searched as written, never
+    guessed. `use_api` asks NLM instead, which covers all of MeSH and needs the network (the
+    terms are sent to id.nlm.nih.gov); a failed or skipped request is reported for that term
+    and does not fail the call, and `time_budget` bounds the whole call."""
+    joiner = combine.strip().lower()
+    if joiner not in ("and", "or"):
+        raise ToolError("combine must be 'and' or 'or'")
+    cleaned = [t.strip() for t in terms if t.strip()]
+    if not cleaned:
+        raise ToolError("at least one non-empty term is required")
+    deadline = _now() + float(time_budget) if use_api else None
+    items = await _run_blocking(_expand_terms, cleaned, use_api, max_entry_terms, deadline)
+    query = f" {joiner.upper()} ".join(item["fragment"] for item in items)
+    result: dict[str, Any] = {
+        "source": "nlm" if use_api else "snapshot",
+        "terms": items,
+        "unmatched": [item["term"] for item in items if not item["matched"]],
+        "query": query,
+        "query_check": _checked(query),
+    }
+    if not use_api:
+        snap = mm.snapshot()
+        result["snapshot"] = {"built": snap.built, "headings": len(snap.descriptors)}
+    return result
 
 
 # ---------------------------------------------------------------------------
