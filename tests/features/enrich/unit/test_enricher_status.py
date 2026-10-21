@@ -128,6 +128,49 @@ class TestTimeBudget:
         assert result["source_status"]["crossref"]["status"] == "ok"
 
 
+class TestBoundedWorkers:
+    """A source that misses the budget keeps its worker; repeated calls must not pile up threads."""
+
+    def test_slow_sources_cannot_start_more_threads_than_the_cap(self):
+        release = threading.Event()
+        slow = FakeClient(OK, wait=release)
+        enricher = _enricher(openalex=slow)
+        enricher._max_workers = 2
+        try:
+            statuses = [
+                enricher.enrich_paper("10.1234/test", time_budget=0.2)["source_status"]["openalex"]
+                for _ in range(6)
+            ]
+            assert len(enricher._get_pool()._threads) <= 2  # this enricher's own threads
+            assert len(slow.calls) <= 2  # the other four never got a worker
+            assert [s["status"] for s in statuses] == ["timeout"] * 6
+            assert any("not started" in s.get("reason", "") for s in statuses[2:])
+        finally:
+            release.set()
+
+    def test_workers_are_free_again_once_the_slow_requests_end(self):
+        release = threading.Event()
+        slow = FakeClient(OK, wait=release)
+        enricher = _enricher(openalex=slow)
+        enricher._max_workers = 1
+        enricher.enrich_paper("10.1234/test", time_budget=0.2)
+        release.set()
+        result = enricher.enrich_paper("10.1234/test", time_budget=5)
+        assert result["source_status"]["openalex"]["status"] == "ok"
+
+    def test_the_default_cap_scales_with_the_number_of_sources(self):
+        enricher = _enricher(a=FakeClient(OK), b=FakeClient(OK))
+        assert enricher._get_pool()._max_workers == 8
+        enricher.close()
+
+    def test_enriching_after_close_works(self):
+        enricher = _enricher(crossref=FakeClient(OK))
+        enricher.enrich_paper("10.1234/test")
+        enricher.close()
+        enricher.clients = {"crossref": FakeClient(OK)}
+        assert enricher.enrich_paper("10.1234/test")["source_status"]["crossref"]["status"] == "ok"
+
+
 class TestSavingStaysOptIn:
     def test_nothing_is_written_by_default(self, tmp_path, monkeypatch):
         monkeypatch.chdir(tmp_path)
@@ -141,6 +184,84 @@ class TestSavingStaysOptIn:
         names = sorted(p.name for p in tmp_path.iterdir())
         assert not any("source_status" in n for n in names)
         assert any(n.startswith("raw_crossref") for n in names)
+
+
+class FakeRor:
+    def __init__(self, delay: float = 0.0, fail: bool = False):
+        self.delay, self.fail, self.calls = delay, fail, []
+
+    def _normalize_ror_id(self, value: str) -> str:
+        return value.rsplit("/", 1)[-1]
+
+    def enrich(self, identifier: str, **kwargs: Any) -> Any:
+        self.calls.append(identifier)
+        time.sleep(self.delay)
+        if self.fail:
+            raise RuntimeError("ROR down")
+        return {"source": "ror", "ror_id": identifier, "city": "London"}
+
+    def close(self) -> None:
+        pass
+
+
+def _with_ror(ror: FakeRor, institutions: int = 3) -> PaperEnricher:
+    openalex = FakeSource_with_institutions(institutions)
+    enricher = _enricher(openalex=openalex)
+    enricher.config.enable_ror = True
+    enricher.clients["ror"] = ror
+    return enricher
+
+
+def FakeSource_with_institutions(count: int) -> FakeClient:
+    authors = [
+        {
+            "display_name": "A",
+            "institutions": [
+                {"display_name": f"I{n}", "ror_id": f"https://ror.org/0abc{n}"}
+                for n in range(count)
+            ],
+        }
+    ]
+    return FakeClient({"source": "openalex", "title": "T", "authors": authors})
+
+
+class TestRorStatus:
+    def test_ror_reports_ok_with_counts(self):
+        ror = FakeRor()
+        status = _with_ror(ror).enrich_paper("10.1234/test")["source_status"]["ror"]
+        assert status["status"] == "ok"
+        assert (status["done"], status["total"]) == (3, 3)
+        assert len(ror.calls) == 3
+
+    def test_ror_stops_at_the_time_budget_and_says_how_far_it_got(self):
+        ror = FakeRor(delay=0.25)
+        result = _with_ror(ror, institutions=8).enrich_paper("10.1234/test", time_budget=0.6)
+        status = result["source_status"]["ror"]
+        assert status["status"] == "timeout"
+        assert 0 < status["done"] < status["total"] == 8
+        assert len(ror.calls) == status["done"]
+
+    def test_a_failing_ror_client_is_an_error_status_not_an_exception(self):
+        result = _with_ror(FakeRor(fail=True)).enrich_paper("10.1234/test")
+        assert result["merged"]["title"] == "T"
+        assert result["source_status"]["ror"]["status"] in ("empty", "error")
+
+    def test_without_ror_there_is_no_ror_status(self):
+        result = _enricher(openalex=FakeSource_with_institutions(2)).enrich_paper("10.1/x")
+        assert "ror" not in result["source_status"]
+
+
+class TestRorIsLookedUpOnce:
+    @pytest.mark.parametrize("enabled", [True, False])
+    def test_openalex_never_fetches_ror_itself(self, enabled):
+        """The enricher's own ROR step (deduplicated, budgeted) is the only lookup."""
+        enricher = PaperEnricher(EnrichmentConfig(enable_ror=enabled))
+        try:
+            assert enricher.clients["openalex"].enable_ror_enrichment is False
+            assert enricher.clients["openalex"].ror_client is None
+            assert ("ror" in enricher.clients) is enabled
+        finally:
+            enricher.close()
 
 
 CROSSREF_UPDATES = {

@@ -104,13 +104,27 @@ def _funding(merged: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def _institution(inst: dict[str, Any]) -> dict[str, Any]:
+    """Name, country and ROR ID; with ROR details (``ror_enriched``) also place and website."""
+    out = {
+        "name": inst.get("display_name"),
+        "country": inst.get("country"),
+        "ror": inst.get("ror_id"),
+    }
+    if inst.get("ror_enriched"):
+        out.update(
+            city=inst.get("city"),
+            country_code=inst.get("country_code"),
+            website=inst.get("website"),
+            latitude=inst.get("latitude"),
+            longitude=inst.get("longitude"),
+        )
+    return out
+
+
 def _author(author: dict[str, Any]) -> dict[str, Any]:
     institutions = [
-        {
-            "name": i.get("display_name"),
-            "country": i.get("country"),
-            "ror": i.get("ror_id"),
-        }
+        _institution(i)
         for i in _clip(author.get("institutions"), MAX_PER_AUTHOR)
         if isinstance(i, dict)
     ]
@@ -177,7 +191,8 @@ def source_report(
 
     ``status`` is ``ok`` (data), ``empty`` (the source answered without data for this paper),
     ``error``, ``timeout`` (still running when the time budget ended), ``unavailable`` (the
-    server cannot use the source: a missing extra or e-mail address) or ``skipped``.
+    server cannot use the source: a missing extra or e-mail address) or ``skipped``. For ROR,
+    ``timeout`` also gives ``done`` and ``total`` institutions.
     """
     reported = _obj(results.get("source_status"))
     out: dict[str, dict[str, Any]] = {}
@@ -186,6 +201,8 @@ def source_report(
             out[name] = {"status": "unavailable", "reason": unavailable_reason(name)}
         elif isinstance(reported.get(name), dict):
             out[name] = {k: v for k, v in reported[name].items() if v is not None}
+        elif name == "ror":
+            out[name] = {"status": "skipped", "reason": "no institution with a ROR ID to look up"}
         else:
             out[name] = {"status": "skipped", "reason": "no usable identifier"}
     return out
@@ -194,6 +211,7 @@ def source_report(
 def unavailable_reason(name: str) -> str:
     return {
         "unpaywall": "set UNPAYWALL_EMAIL in the server's environment",
+        "ror": "the ROR client could not be started",
         "semantic_scholar": (
             "install the semanticscholar extra: pip install pyeuropepmc[semanticscholar]"
         ),
@@ -202,4 +220,8 @@ def unavailable_reason(name: str) -> str:
 
 def completeness(report: dict[str, dict[str, Any]]) -> bool:
     """True when every source answered (with data or an honest empty answer)."""
-    return all(entry.get("status") in ("ok", "empty") for entry in report.values())
+    return all(
+        entry.get("status") in ("ok", "empty")
+        or (name == "ror" and entry.get("status") == "skipped")  # nothing to look up
+        for name, entry in report.items()
+    )

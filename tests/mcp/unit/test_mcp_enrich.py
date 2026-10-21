@@ -35,8 +35,10 @@ def _run(coro):
 @pytest.fixture(autouse=True)
 def _reset():
     srv._enricher_cache.reset()
+    srv._enricher_ror_cache.reset()
     yield
     srv._enricher_cache.reset()
+    srv._enricher_ror_cache.reset()
 
 
 def _mock_enricher(results: dict[str, Any], clients=SOURCES + ("europepmc",)) -> MagicMock:
@@ -301,6 +303,100 @@ class TestWithARealEnricher:
         assert result["found"] is True and result["complete"] is False
 
 
+ROR_INSTITUTION = {
+    "id": "https://openalex.org/I2801138448",
+    "display_name": "The Royal Free Hospital",
+    "country": "United Kingdom",
+    "type": "healthcare",
+    "ror_id": "https://ror.org/01ge67z96",
+    "ror_enriched": True,
+    "country_code": "GB",
+    "city": "London",
+    "latitude": 51.50853,
+    "longitude": -0.12574,
+    "website": "https://www.royalfree.nhs.uk",
+    "established": 1828,
+    "relationships": [{"id": "x"}] * 40,
+}
+
+
+class TestRorDetails:
+    def _results(self, institution: dict[str, Any]) -> dict[str, Any]:
+        return {"merged": {"authors": [{"name": "A", "institutions": [institution]}]}}
+
+    def test_ror_fields_appear_only_for_ror_enriched_institutions(self):
+        plain = {k: v for k, v in ROR_INSTITUTION.items() if k != "ror_enriched"}
+        shaped = en.shape(self._results(plain), ("affiliations",))
+        assert shaped["affiliations"]["authors"][0]["institutions"] == [
+            {
+                "name": "The Royal Free Hospital",
+                "country": "United Kingdom",
+                "ror": plain["ror_id"],
+            }
+        ]
+        shaped = en.shape(self._results(ROR_INSTITUTION), ("affiliations",))
+        institution = shaped["affiliations"]["authors"][0]["institutions"][0]
+        assert institution["city"] == "London" and institution["country_code"] == "GB"
+        assert institution["website"] == "https://www.royalfree.nhs.uk"
+        assert (institution["latitude"], institution["longitude"]) == (51.50853, -0.12574)
+        assert "relationships" not in institution  # large and not asked for
+
+    def test_default_uses_the_enricher_without_ror(self):
+        plain, with_ror = _mock_enricher(RETRACTED), MagicMock()
+        srv._enricher_ror_cache.set(with_ror)
+        _run(srv.enrich_paper(pmid="9500320"))
+        plain.enrich_paper.assert_called_once()
+        with_ror.enrich_paper.assert_not_called()
+
+    def test_ror_details_uses_the_enricher_with_ror_and_reports_its_status(self):
+        results = copy.deepcopy(RETRACTED)
+        results["source_status"]["ror"] = {"status": "ok", "seconds": 3.1, "total": 13, "done": 13}
+        with_ror = _mock_enricher(results, clients=SOURCES + ("europepmc", "ror"))
+        srv._enricher_ror_cache.set(with_ror)
+        plain = MagicMock()
+        srv._enricher_cache.set(plain)
+        result = _run(srv.enrich_paper(pmid="9500320", ror_details=True))
+        plain.enrich_paper.assert_not_called()
+        assert result["sources"]["ror"] == {
+            "status": "ok",
+            "seconds": 3.1,
+            "total": 13,
+            "done": 13,
+        }
+
+    def test_ror_that_ran_out_of_budget_is_a_timeout_with_progress(self):
+        results = copy.deepcopy(RETRACTED)
+        results["source_status"]["ror"] = {
+            "status": "timeout",
+            "seconds": 28.0,
+            "done": 4,
+            "total": 13,
+        }
+        srv._enricher_ror_cache.set(
+            _mock_enricher(results, clients=SOURCES + ("europepmc", "ror"))
+        )
+        result = _run(srv.enrich_paper(pmid="9500320", ror_details=True))
+        assert result["sources"]["ror"]["status"] == "timeout"
+        assert (result["sources"]["ror"]["done"], result["sources"]["ror"]["total"]) == (4, 13)
+        assert result["complete"] is False
+
+    def test_nothing_to_look_up_is_not_incomplete(self):
+        srv._enricher_ror_cache.set(
+            _mock_enricher(RETRACTED, clients=SOURCES + ("europepmc", "ror"))
+        )
+        result = _run(srv.enrich_paper(pmid="9500320", ror_details=True))
+        assert result["sources"]["ror"]["status"] == "skipped"
+        assert result["complete"] is True
+
+    def test_ror_is_not_fetched_when_affiliations_are_not_asked_for(self):
+        plain, with_ror = _mock_enricher(RETRACTED), MagicMock()
+        srv._enricher_ror_cache.set(with_ror)
+        result = _run(srv.enrich_paper(pmid="9500320", ror_details=True, include=["impact"]))
+        with_ror.enrich_paper.assert_not_called()
+        plain.enrich_paper.assert_called_once()
+        assert "ror" not in result["sources"]
+
+
 class TestMakeEnricher:
     def test_configured_from_the_environment(self, monkeypatch):
         for name in ("UNPAYWALL_EMAIL", "CROSSREF_EMAIL", "OPENALEX_EMAIL"):
@@ -311,6 +407,14 @@ class TestMakeEnricher:
             assert "unpaywall" not in enricher.clients
             assert "ror" not in enricher.clients
             assert enricher.config.semantic_scholar_api_key == "k"
+        finally:
+            enricher.close()
+
+    def test_the_ror_enricher_has_ror_everywhere(self):
+        enricher = srv._make_enricher(ror=True)
+        try:
+            assert "ror" in enricher.clients
+            assert enricher.clients["openalex"].enable_ror_enrichment is False
         finally:
             enricher.close()
 

@@ -309,13 +309,15 @@ def _make_unpaywall_client() -> Any:
 _unpaywall_client_cache: _Lazy[Any] = _Lazy(_make_unpaywall_client)
 
 
-def _make_enricher() -> Any:
+def _make_enricher(ror: bool = False) -> Any:
     """A ``PaperEnricher`` for read-only use, configured from the server's environment.
 
     Sources that need no credentials are on; Unpaywall only with ``UNPAYWALL_EMAIL`` (or
-    ``CROSSREF_EMAIL``). ROR is off: it adds one request per institution for little the
-    other sources do not already say. A source whose client cannot start (for example
-    ``semanticscholar`` is not installed) is left out by the enricher and reported by the tool.
+    ``CROSSREF_EMAIL``). ROR is on only when asked for (``ror_details``): it adds one
+    request per institution (city, country code, website and coordinates) and, because the
+    OpenAlex client follows the same setting, one more per institution inside OpenAlex's own
+    call. A source whose client cannot start (for example ``semanticscholar`` is not
+    installed) is left out by the enricher and reported by the tool.
     """
     from pyeuropepmc.features.enrich import EnrichmentConfig, PaperEnricher
 
@@ -330,7 +332,7 @@ def _make_enricher() -> Any:
         enable_semantic_scholar=True,
         enable_icite=True,
         enable_unpaywall=bool(unpaywall_email),
-        enable_ror=False,
+        enable_ror=ror,
         unpaywall_email=unpaywall_email,
         crossref_email=env("CROSSREF_EMAIL"),
         openalex_email=env("OPENALEX_EMAIL"),
@@ -341,6 +343,7 @@ def _make_enricher() -> Any:
 
 
 _enricher_cache: _Lazy[Any] = _Lazy(_make_enricher)
+_enricher_ror_cache: _Lazy[Any] = _Lazy(lambda: _make_enricher(ror=True))
 _annotations_client_cache: _Lazy[AnnotationsClient] = _Lazy(
     lambda: AnnotationsClient(cache_config=CacheConfig(enabled=True))
 )
@@ -2267,6 +2270,14 @@ async def enrich_paper(
             le=120,
         ),
     ] = 30,
+    ror_details: Annotated[
+        bool,
+        Field(
+            description="Add city, country code, website and coordinates of each institution "
+            "from ROR (needs the affiliations group). One more request per institution, so "
+            "slower; the time budget covers it."
+        ),
+    ] = False,
 ) -> dict[str, Any]:
     """One compact record for a paper from Europe PMC, Crossref, OpenAlex, Semantic Scholar,
     iCite and Unpaywall, merged: citation impact, funders and grants, authors with their
@@ -2274,11 +2285,14 @@ async def enrich_paper(
     sources are asked at the same time; `sources` in the answer says for each whether it
     answered (ok), had nothing (empty), failed (error, with the reason), or was still running
     when `time_budget` ended (timeout). A failed source gives a partial record, not an error.
+    Institutions come with name, country and ROR ID; `ror_details` adds their place and website.
     Nothing is written to disk."""
     identifier = _enrichment_identifier(pmcid, pmid, doi)
     try:
         groups = en.validate_choice(include, en.GROUPS, "field group")
-        enricher = _enricher_cache.get()
+        # ROR details only show in the affiliations group; do not fetch them for nothing.
+        use_ror = ror_details and "affiliations" in groups
+        enricher = (_enricher_ror_cache if use_ror else _enricher_cache).get()
         wanted = (
             en.validate_choice(sources, en.SOURCES, "source")
             if sources
@@ -2295,7 +2309,8 @@ async def enrich_paper(
         only_sources=("europepmc", *wanted),
         time_budget=float(time_budget),
     )
-    report = en.source_report(results, wanted, set(enricher.clients))
+    asked = (*wanted, "ror") if use_ror else wanted
+    report = en.source_report(results, asked, set(enricher.clients))
     answered = [name for name, entry in report.items() if entry.get("status") == "ok"]
     record = en.shape(results, groups)
     return {
