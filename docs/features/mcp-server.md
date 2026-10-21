@@ -26,6 +26,7 @@ Two tools need configuration. `find_open_access` reads `UNPAYWALL_EMAIL` (Unpayw
 | Test a query against papers you already know | `evaluate_query` |
 | Search | `search_papers` (Europe PMC), `unified_search` (several sources, duplicates merged), `search_authors` |
 | Look up papers you have identifiers for | `get_paper_details` (one), `get_papers_batch` (up to 100) |
+| See impact, funders, institutions and retractions of one paper | `enrich_paper` |
 | Read a paper | `get_paper_fulltext`, `get_papers_fulltext_batch`, `paper_figures` |
 | Find a free copy of a paper that is not open access in Europe PMC | `find_open_access` |
 | Find genes, chemicals, diseases | `get_paper_annotations`, `find_papers_by_entity` |
@@ -70,6 +71,17 @@ get_paper_fulltext       pmcid="PMC5321187", format="sections", sections=["Metho
 
 Europe PMC serves full-text XML only for papers in its open-access set. For any other paper, `find_open_access` asks Unpaywall where a free copy is (publisher, repository or preprint) and returns the best link, the licence and a few alternatives.
 
+### Impact, funding and retractions
+
+```text
+enrich_paper  doi="10.1016/S0140-6736(97)11096-0", include=["updates", "impact"]
+enrich_paper  pmid="26017442", sources=["crossref", "openalex"], time_budget=20
+```
+
+`enrich_paper` asks Europe PMC, Crossref, OpenAlex, Semantic Scholar and iCite (and Unpaywall once `UNPAYWALL_EMAIL` is set) at the same time and merges their answers into one record of a few kilobytes. `include` picks the groups: `impact`, `funding`, `affiliations`, `oa` and `updates`. `updates` lists correction and retraction notices from Crossref and Europe PMC and sets `is_retracted`; it means that no retraction notice was found there, not that none exists anywhere.
+
+Look at `sources` before trusting a gap. Each source is `ok`, `empty` (it answered without data), `error` (with the reason, for example a Semantic Scholar rate limit), `timeout` (still running when `time_budget` ended, 30 seconds by default) or `unavailable` (the extra or e-mail address it needs is missing). `complete` is true only when every source answered. A failed source gives a partial record, never an error.
+
 ### Entities, data and supplements
 
 ```text
@@ -111,6 +123,7 @@ A failed call comes back with `isError: true` and a message that names the cause
 | `get_papers_batch` | 100 identifiers per call, looked up 50 at a time |
 | `get_papers_fulltext_batch` | 20 papers, within `max_chars_per_paper` and `max_total_chars` |
 | `evaluate_query` | 200 included and 200 excluded PMIDs |
+| `enrich_paper` | `time_budget` 2 to 120 seconds; at most 30 authors, 20 funders and 20 notices in the answer |
 | `export_papers` | 1,000 records per call; continue with `skip` or the `remaining` ids |
 | `find_papers_by_entity` | 1 to 8 articles per page, continued with `cursor` |
 | `get_paper_fulltext` | `max_chars` up to 500,000 |

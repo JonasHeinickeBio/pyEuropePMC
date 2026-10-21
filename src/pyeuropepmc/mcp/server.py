@@ -58,6 +58,7 @@ Tools:
         find_papers_by_entity — Papers in which an entity (gene, chemical, ...) is mentioned
         get_paper_data_links  — Datasets, accessions and database records linked to a paper
         get_paper_lab_links   — Links to a paper from third-party providers (BioStudies, ...)
+        enrich_paper          — Impact, funding, affiliations, open access, retractions of a paper
 
     Screening & review:
         paper_screening       — PRISMA-compliant automated screening
@@ -110,6 +111,7 @@ from pyeuropepmc.features.literature.article import ArticleClient
 from pyeuropepmc.mcp import (
     _annotations as ann,
     _batch as bm,
+    _enrich as en,
     _export as ex,
     _fulltext as ft,
     _links as lk,
@@ -305,6 +307,40 @@ def _make_unpaywall_client() -> Any:
 
 
 _unpaywall_client_cache: _Lazy[Any] = _Lazy(_make_unpaywall_client)
+
+
+def _make_enricher() -> Any:
+    """A ``PaperEnricher`` for read-only use, configured from the server's environment.
+
+    Sources that need no credentials are on; Unpaywall only with ``UNPAYWALL_EMAIL`` (or
+    ``CROSSREF_EMAIL``). ROR is off: it adds one request per institution for little the
+    other sources do not already say. A source whose client cannot start (for example
+    ``semanticscholar`` is not installed) is left out by the enricher and reported by the tool.
+    """
+    from pyeuropepmc.features.enrich import EnrichmentConfig, PaperEnricher
+
+    def env(name: str) -> str | None:
+        return (os.environ.get(name) or "").strip() or None
+
+    unpaywall_email = env("UNPAYWALL_EMAIL") or env("CROSSREF_EMAIL")
+    config = EnrichmentConfig(
+        enable_europepmc=True,
+        enable_crossref=True,
+        enable_openalex=True,
+        enable_semantic_scholar=True,
+        enable_icite=True,
+        enable_unpaywall=bool(unpaywall_email),
+        enable_ror=False,
+        unpaywall_email=unpaywall_email,
+        crossref_email=env("CROSSREF_EMAIL"),
+        openalex_email=env("OPENALEX_EMAIL"),
+        semantic_scholar_api_key=env("SEMANTIC_SCHOLAR_API_KEY"),
+        rate_limit_delay=0.3,
+    )
+    return PaperEnricher(config)
+
+
+_enricher_cache: _Lazy[Any] = _Lazy(_make_enricher)
 _annotations_client_cache: _Lazy[AnnotationsClient] = _Lazy(
     lambda: AnnotationsClient(cache_config=CacheConfig(enabled=True))
 )
@@ -2166,6 +2202,108 @@ async def get_paper_lab_links(
         "available_providers": [p["provider"] for p in everything],
         "link_count": sum(len(p["links"]) for p in providers),
         "providers": providers,
+    }
+
+
+# ---------------------------------------------------------------------------
+# Multi-source enrichment
+# ---------------------------------------------------------------------------
+
+
+def _enrichment_identifier(pmcid: str, pmid: str, doi: str) -> str:
+    """The identifier string ``PaperEnricher`` takes, checked before any request is sent."""
+    if pmcid.strip():
+        match = _PMC_ID_RE.match(pmcid.strip())
+        if not match:
+            raise ToolError(f"pmcid must look like PMC1234567, got {pmcid!r}")
+        return f"PMC{match.group(1)}"
+    if pmid.strip():
+        if not pmid.strip().isdigit():
+            raise ToolError(f"pmid must be digits only, got {pmid!r}")
+        return pmid.strip()
+    if doi.strip():
+        cleaned = oa.clean_doi(doi)
+        if not cleaned:
+            raise ToolError(
+                f"doi must look like 10.1234/abcd (a doi.org URL is fine), got {doi!r}"
+            )
+        return cleaned
+    raise ToolError("One of pmcid, pmid, or doi is required")
+
+
+def _default_sources(enricher: Any) -> tuple[str, ...]:
+    """Every source that needs no credentials, plus Unpaywall once it has an e-mail address."""
+    return tuple(
+        name for name in en.SOURCES if name != "unpaywall" or "unpaywall" in enricher.clients
+    )
+
+
+@mcp.tool(annotations=_ro("Enrich a paper from several sources"))
+async def enrich_paper(
+    pmcid: Annotated[str, Field(description="PMC ID of the article, e.g. PMC1234567")] = "",
+    pmid: Annotated[str, Field(description="PubMed ID (alternative to pmcid)")] = "",
+    doi: Annotated[str, Field(description="DOI or doi.org URL (alternative to pmcid)")] = "",
+    sources: Annotated[
+        list[str] | None,
+        Field(
+            description="Only these sources besides Europe PMC: crossref, openalex, "
+            "semantic_scholar, icite, unpaywall. Default: all that need no credentials "
+            "(Unpaywall once UNPAYWALL_EMAIL is set)."
+        ),
+    ] = None,
+    include: Annotated[
+        list[str] | None,
+        Field(
+            description="Only these field groups: impact, funding, affiliations, oa, updates. "
+            "Default: all."
+        ),
+    ] = None,
+    time_budget: Annotated[
+        float,
+        Field(
+            description="Seconds to wait for the sources together; one that is still running "
+            "is reported as a timeout and left out",
+            ge=2,
+            le=120,
+        ),
+    ] = 30,
+) -> dict[str, Any]:
+    """One compact record for a paper from Europe PMC, Crossref, OpenAlex, Semantic Scholar,
+    iCite and Unpaywall, merged: citation impact, funders and grants, authors with their
+    institutions, open-access status and licence, and corrections and retractions. The
+    sources are asked at the same time; `sources` in the answer says for each whether it
+    answered (ok), had nothing (empty), failed (error, with the reason), or was still running
+    when `time_budget` ended (timeout). A failed source gives a partial record, not an error.
+    Nothing is written to disk."""
+    identifier = _enrichment_identifier(pmcid, pmid, doi)
+    try:
+        groups = en.validate_choice(include, en.GROUPS, "field group")
+        enricher = _enricher_cache.get()
+        wanted = (
+            en.validate_choice(sources, en.SOURCES, "source")
+            if sources
+            else _default_sources(enricher)
+        )
+    except ValueError as exc:
+        raise ToolError(str(exc)) from exc
+
+    # Always read-only: no save_responses, no save_dir.
+    results = await _run_blocking(
+        enricher.enrich_paper,
+        identifier,
+        save_responses=False,
+        only_sources=("europepmc", *wanted),
+        time_budget=float(time_budget),
+    )
+    report = en.source_report(results, wanted, set(enricher.clients))
+    answered = [name for name, entry in report.items() if entry.get("status") == "ok"]
+    record = en.shape(results, groups)
+    return {
+        "found": bool(answered),
+        **record,
+        "sources": report,
+        "complete": en.completeness(report),
+        "time_budget_seconds": time_budget,
     }
 
 

@@ -5,11 +5,13 @@ This module provides a high-level interface for enriching paper metadata
 using multiple external APIs (CrossRef, Unpaywall, Semantic Scholar, OpenAlex).
 """
 
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from collections.abc import Iterable
+from concurrent.futures import ThreadPoolExecutor, TimeoutError as FuturesTimeout, as_completed
 import json
 import logging
 from pathlib import Path
 import re
+import time
 from typing import Any, cast
 from urllib.parse import urlparse
 
@@ -184,6 +186,9 @@ class PaperEnricher:
         identifier: str | None = None,
         save_responses: bool = False,
         save_dir: str | Path | None = None,
+        *,
+        only_sources: Iterable[str] | None = None,
+        time_budget: float | None = None,
         **kwargs: Any,
     ) -> dict[str, Any]:
         """
@@ -201,13 +206,23 @@ class PaperEnricher:
             Write raw + merged JSON to ``save_dir`` (default: ``False``).
         save_dir : str or Path, optional
             Directory for response files (default: the current working dir).
+        only_sources : iterable of str, optional
+            Query only these configured sources (default: all of them). ROR is
+            not affected; it follows ``EnrichmentConfig.enable_ror``.
+        time_budget : float, optional
+            Seconds to wait for the sources together (default: no limit). A source
+            that has not answered by then is reported as ``timeout`` and left out
+            of the merge; its request is not cancelled and ends on its own.
         **kwargs
             Additional parameters passed through to each source's ``enrich()``.
 
         Returns
         -------
         dict
-            ``{identifier, doi, pmid, sources: [...], <source>: <data>, merged: {...}}``.
+            ``{identifier, doi, pmid, sources: [...], source_status: {...},
+            <source>: <data>, merged: {...}}``. ``source_status`` has an entry per
+            configured source: ``{"status": "ok" | "empty" | "error" | "timeout" |
+            "skipped", "seconds": float, "error": str}``.
 
         Raises
         ------
@@ -243,27 +258,54 @@ class PaperEnricher:
             if name != "ror"
         }
         runnable = {n: t for n, t in targets.items() if t}
+        wanted = None if only_sources is None else set(only_sources)
+        status: dict[str, dict[str, Any]] = {}
+        for name in targets:
+            if name not in runnable:
+                status[name] = {"status": "skipped", "reason": "no usable identifier"}
+            elif wanted is not None and name not in wanted:
+                status[name] = {"status": "skipped", "reason": "not requested"}
+                del runnable[name]
+        results["source_status"] = status
 
-        def _one(name: str) -> tuple[str, Any]:
+        def _one(name: str) -> tuple[str, Any, float]:
+            started = time.monotonic()
             client = self.clients[name]
-            return name, client.enrich(identifier=runnable[name], **kwargs)
+            data = client.enrich(identifier=runnable[name], **kwargs)
+            return name, data, time.monotonic() - started
 
         if runnable:
-            with ThreadPoolExecutor(max_workers=len(runnable)) as pool:
-                futures = {pool.submit(_one, n): n for n in runnable}
-                for fut in as_completed(futures):
+            pool = ThreadPoolExecutor(max_workers=len(runnable))
+            futures = {pool.submit(_one, n): n for n in runnable}
+            started_all = time.monotonic()
+            try:
+                for fut in as_completed(futures, timeout=time_budget):
                     name = futures[fut]
                     try:
-                        _, data = fut.result()
+                        _, data, seconds = fut.result()
                     except Exception as e:  # noqa: BLE001 - per-source, keep going
                         logger.error("Error enriching from %s: %s", name, e, exc_info=True)
+                        status[name] = {"status": "error", "error": self._describe_error(e)}
                         continue
+                    status[name] = {
+                        "status": "ok" if data else "empty",
+                        "seconds": round(seconds, 2),
+                    }
                     if data:
                         results[name] = data
                         results["sources"].append(name)
                         logger.info("Enriched from %s", name)
                     else:
                         logger.debug("No data from %s", name)
+            except FuturesTimeout:
+                waited = round(time.monotonic() - started_all, 2)
+                for name in runnable:
+                    if name not in status:
+                        status[name] = {"status": "timeout", "seconds": waited}
+                        logger.warning("%s did not answer within %ss", name, time_budget)
+            finally:
+                # Do not wait for a source that missed the budget: its thread ends on its own.
+                pool.shutdown(wait=False, cancel_futures=True)
 
         # Merge results
         if results["sources"]:
@@ -298,6 +340,12 @@ class PaperEnricher:
 
         return results
 
+    @staticmethod
+    def _describe_error(exc: Exception) -> str:
+        """``ClassName: message`` for a source status, short and without line breaks."""
+        message = " ".join(str(exc).split())
+        return f"{type(exc).__name__}: {message}"[:200]
+
     def _save_responses(self, results: dict[str, Any], save_dir: str | Path | None) -> None:
         """
         Save raw API responses and merged result to JSON files.
@@ -324,7 +372,7 @@ class PaperEnricher:
         # Save raw responses for each source
         for source in results:
             if (
-                source not in ["identifier", "doi", "pmid", "sources", "merged"]
+                source not in ["identifier", "doi", "pmid", "sources", "source_status", "merged"]
                 and results.get(source) is not None
             ):
                 filename = save_dir / f"raw_{source}_{safe_doi}.json"

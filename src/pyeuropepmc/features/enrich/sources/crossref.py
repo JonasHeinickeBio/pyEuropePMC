@@ -164,6 +164,7 @@ class CrossRefClient(BaseEnrichmentClient):
         references_count = message.get("references-count", 0)
         license_info = self._extract_license(message)
         funders = self._extract_funders(message)
+        updates = self._extract_updates(message)
 
         # Extract bibliographic information
         biblio = {
@@ -188,6 +189,7 @@ class CrossRefClient(BaseEnrichmentClient):
             "references_count": references_count,
             "license": license_info,
             "funders": funders if funders else None,
+            "updates": updates or None,
             **biblio,
         }
 
@@ -273,6 +275,31 @@ class CrossRefClient(BaseEnrichmentClient):
                 "delay_in_days": licenses[0].get("delay-in-days"),
             }
         return None
+
+    @staticmethod
+    def _extract_updates(message: dict[str, Any]) -> list[dict[str, Any]]:
+        """Corrections, retractions and other notices that touch this work.
+
+        ``updated-by`` lists notices about this work (a retraction, a correction);
+        ``update-to`` lists the works this one is a notice for.
+        """
+        updates = []
+        for field, direction in (("updated-by", "updated_by"), ("update-to", "update_to")):
+            for entry in message.get(field) or []:
+                if not isinstance(entry, dict):
+                    continue
+                updated = entry.get("updated")
+                updates.append(
+                    {
+                        "direction": direction,
+                        "type": entry.get("type"),
+                        "label": entry.get("label"),
+                        "doi": entry.get("DOI"),
+                        "date": updated.get("date-time") if isinstance(updated, dict) else None,
+                        "source": entry.get("source"),
+                    }
+                )
+        return updates
 
     def _extract_funders(self, message: dict[str, Any]) -> list[dict[str, Any]]:
         """Extract funder information."""

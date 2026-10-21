@@ -347,6 +347,7 @@ class TestToolRegistry:
         "find_papers_by_entity",
         "get_paper_data_links",
         "get_paper_lab_links",
+        "enrich_paper",
         "analyze_citations",
         "compare_citations",
         "summarize_citations",

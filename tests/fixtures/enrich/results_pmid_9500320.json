@@ -1,0 +1,782 @@
+{
+ "identifier": "9500320",
+ "doi": "10.1016/s0140-6736(97)11096-0",
+ "pmid": "9500320",
+ "sources": [
+  "crossref",
+  "europepmc",
+  "semantic_scholar",
+  "icite",
+  "openalex"
+ ],
+ "source_status": {
+  "crossref": {
+   "status": "ok",
+   "seconds": 0.65
+  },
+  "europepmc": {
+   "status": "ok",
+   "seconds": 0.74
+  },
+  "semantic_scholar": {
+   "status": "ok",
+   "seconds": 0.76
+  },
+  "icite": {
+   "status": "ok",
+   "seconds": 0.75
+  },
+  "openalex": {
+   "status": "ok",
+   "seconds": 37.53
+  }
+ },
+ "europepmc": {
+  "source": "europepmc",
+  "id": "9500320",
+  "source_db": "MED",
+  "doi": "10.1016/s0140-6736(97)11096-0",
+  "pmid": "9500320",
+  "pmcid": null,
+  "title": "Ileal-lymphoid-nodular hyperplasia, non-specific colitis, and pervasive developmental disorder in children.",
+  "abstract": "<h4>Background</h4>We investigated a consecutive series of children with chronic enterocolitis and regressive developmental disorder.<h4>Methods</h4>12 children (mean age 6 years [range 3-10], 11 boys",
+  "author_string": "Wakefield AJ, Murch SH, Anthony A, Linnell J, Casson DM, Malik M, Berelowitz M, Dhillon AP, Thomson MA, Harvey P, Valentine A, Davies SE, Walker-Smith JA.",
+  "journal": "Lancet (London, England)",
+  "publication_year": 1998,
+  "publication_type": [
+   "Retracted Publication",
+   "Research Support, Non-U.S. Gov't",
+   "Journal Article"
+  ],
+  "citation_count": 1210,
+  "is_open_access": false,
+  "in_epmc": false,
+  "in_pmc": false,
+  "has_pdf": false,
+  "has_fulltext_xml": true,
+  "mesh_terms": [
+   "Ileum",
+   "Lymphoid Tissue",
+   "Humans",
+   "Measles",
+   "Enterocolitis",
+   "Otitis Media",
+   "Hyperplasia",
+   "Vaccines, Combined",
+   "Measles-Mumps-Rubella Vaccine",
+   "Measles Vaccine",
+   "Mumps Vaccine",
+   "Rubella Vaccine",
+   "Developmental Disabilities",
+   "Child",
+   "Child, Preschool",
+   "Female",
+   "Male"
+  ],
+  "grants": null,
+  "full_text_urls": [
+   "https://doi.org/10.1016/s0140-6736(97)11096-0"
+  ],
+  "corrections": [
+   {
+    "type": "Retraction in",
+    "source": "MED",
+    "id": "15016483",
+    "reference": "Lancet. 2004 Mar 6;363(9411):750. doi: 10.1016/S0140-6736(04)15715-2"
+   },
+   {
+    "type": "Retraction in",
+    "source": "MED",
+    "id": "20137807",
+    "reference": "Lancet. 2010 Feb 6;375(9713):445. doi: 10.1016/S0140-6736(10)60175-4"
+   },
+   {
+    "type": "Expression of concern in",
+    "source": "MED",
+    "id": "21971344",
+    "reference": "Eur J Gastroenterol Hepatol. 2011 Nov;23(11):1082. doi: 10.1097/MEG.0b013e328349d184"
+   }
+  ],
+  "is_retracted": true
+ },
+ "crossref": {
+  "source": "crossref",
+  "title": "RETRACTED: Ileal-lymphoid-nodular hyperplasia, non-specific colitis, and pervasive developmental disorder in children",
+  "authors": [
+   {
+    "name": "AJ Wakefield",
+    "given": "AJ",
+    "family": "Wakefield",
+    "affiliation": [],
+    "sequence": "first"
+   },
+   {
+    "name": "SH Murch",
+    "given": "SH",
+    "family": "Murch",
+    "affiliation": [],
+    "sequence": "additional"
+   },
+   {
+    "name": "A Anthony",
+    "given": "A",
+    "family": "Anthony",
+    "affiliation": [],
+    "sequence": "additional"
+   },
+   {
+    "name": "J Linnell",
+    "given": "J",
+    "family": "Linnell",
+    "affiliation": [],
+    "sequence": "additional"
+   },
+   {
+    "name": "DM Casson",
+    "given": "DM",
+    "family": "Casson",
+    "affiliation": [],
+    "sequence": "additional"
+   },
+   {
+    "name": "M Malik",
+    "given": "M",
+    "family": "Malik",
+    "affiliation": [],
+    "sequence": "additional"
+   },
+   {
+    "name": "M Berelowitz",
+    "given": "M",
+    "family": "Berelowitz",
+    "affiliation": [],
+    "sequence": "additional"
+   },
+   {
+    "name": "AP Dhillon",
+    "given": "AP",
+    "family": "Dhillon",
+    "affiliation": [],
+    "sequence": "additional"
+   },
+   {
+    "name": "MA Thomson",
+    "given": "MA",
+    "family": "Thomson",
+    "affiliation": [],
+    "sequence": "additional"
+   },
+   {
+    "name": "P Harvey",
+    "given": "P",
+    "family": "Harvey",
+    "affiliation": [],
+    "sequence": "additional"
+   },
+   {
+    "name": "A Valentine",
+    "given": "A",
+    "family": "Valentine",
+    "affiliation": [],
+    "sequence": "additional"
+   },
+   {
+    "name": "SE Davies",
+    "given": "SE",
+    "family": "Davies",
+    "affiliation": [],
+    "sequence": "additional"
+   },
+   {
+    "name": "JA Walker-Smith",
+    "given": "JA",
+    "family": "Walker-Smith",
+    "affiliation": [],
+    "sequence": "additional"
+   }
+  ],
+  "abstract": null,
+  "journal": "The Lancet",
+  "publication_date": "1998-02",
+  "citation_count": 2043,
+  "references_count": 26,
+  "license": {
+   "url": "https://www.elsevier.com/tdm/userlicense/1.0/",
+   "start": "1998-02-01T00:00:00Z",
+   "delay_in_days": 0
+  },
+  "funders": null,
+  "updates": [
+   {
+    "direction": "updated_by",
+    "type": "correction",
+    "label": "Correction",
+    "doi": "10.1016/s0140-6736(04)15715-2",
+    "date": "2004-03-06T00:00:00Z",
+    "source": "retraction-watch"
+   },
+   {
+    "direction": "updated_by",
+    "type": "retraction",
+    "label": "Retraction",
+    "doi": "10.1016/s0140-6736(10)60175-4",
+    "date": "2010-02-06T00:00:00Z",
+    "source": "retraction-watch"
+   }
+  ],
+  "type": "journal-article",
+  "issn": [
+   "0140-6736"
+  ],
+  "volume": "351",
+  "issue": "9103",
+  "page": "637-641",
+  "publisher": "Elsevier BV"
+ },
+ "icite": {
+  "pmid": "9500320",
+  "rcr": 41.072944062908576,
+  "percentile": 99.8,
+  "nih_percentile": 99.8,
+  "citation_count": 1420,
+  "citations_per_year": 50.714285714285715,
+  "expected_citations": 1.234737048228395,
+  "field_citation_ratio": null,
+  "is_research_article": false,
+  "provisional": false,
+  "year": 1998
+ },
+ "merged": {
+  "title": "Ileal-lymphoid-nodular hyperplasia, non-specific colitis, and pervasive developmental disorder in children.",
+  "authors": [
+   {
+    "name": "MA Thomson",
+    "given_name": "MA",
+    "family_name": "Thomson",
+    "orcid": null,
+    "affiliations": [],
+    "sequence": "additional",
+    "sources": [
+     "crossref",
+     "openalex"
+    ],
+    "openalex_id": null,
+    "institutions": [
+     {
+      "id": "https://openalex.org/I2801138448",
+      "display_name": "The Royal Free Hospital",
+      "country": "United Kingdom",
+      "type": "healthcare",
+      "ror_id": "https://ror.org/01ge67z96"
+     }
+    ],
+    "position": "middle"
+   },
+   {
+    "name": "P Harvey",
+    "given_name": "P",
+    "family_name": "Harvey",
+    "orcid": null,
+    "affiliations": [],
+    "sequence": "additional",
+    "sources": [
+     "crossref",
+     "openalex"
+    ],
+    "openalex_id": null,
+    "institutions": [
+     {
+      "id": "https://openalex.org/I2801138448",
+      "display_name": "The Royal Free Hospital",
+      "country": "United Kingdom",
+      "type": "healthcare",
+      "ror_id": "https://ror.org/01ge67z96"
+     }
+    ],
+    "position": "middle"
+   },
+   {
+    "name": "AJ Wakefield",
+    "given_name": "AJ",
+    "family_name": "Wakefield",
+    "orcid": null,
+    "affiliations": [],
+    "sequence": "first",
+    "sources": [
+     "crossref"
+    ]
+   },
+   {
+    "name": "SH Murch",
+    "given_name": "SH",
+    "family_name": "Murch",
+    "orcid": null,
+    "affiliations": [],
+    "sequence": "additional",
+    "sources": [
+     "crossref"
+    ]
+   },
+   {
+    "name": "A Anthony",
+    "given_name": "A",
+    "family_name": "Anthony",
+    "orcid": null,
+    "affiliations": [],
+    "sequence": "additional",
+    "sources": [
+     "crossref"
+    ]
+   },
+   {
+    "name": "J Linnell",
+    "given_name": "J",
+    "family_name": "Linnell",
+    "orcid": null,
+    "affiliations": [],
+    "sequence": "additional",
+    "sources": [
+     "crossref"
+    ]
+   },
+   {
+    "name": "DM Casson",
+    "given_name": "DM",
+    "family_name": "Casson",
+    "orcid": null,
+    "affiliations": [],
+    "sequence": "additional",
+    "sources": [
+     "crossref"
+    ]
+   },
+   {
+    "name": "M Malik",
+    "given_name": "M",
+    "family_name": "Malik",
+    "orcid": null,
+    "affiliations": [],
+    "sequence": "additional",
+    "sources": [
+     "crossref"
+    ]
+   },
+   {
+    "name": "M Berelowitz",
+    "given_name": "M",
+    "family_name": "Berelowitz",
+    "orcid": null,
+    "affiliations": [],
+    "sequence": "additional",
+    "sources": [
+     "crossref"
+    ]
+   },
+   {
+    "name": "AP Dhillon",
+    "given_name": "AP",
+    "family_name": "Dhillon",
+    "orcid": null,
+    "affiliations": [],
+    "sequence": "additional",
+    "sources": [
+     "crossref"
+    ]
+   },
+   {
+    "name": "A Valentine",
+    "given_name": "A",
+    "family_name": "Valentine",
+    "orcid": null,
+    "affiliations": [],
+    "sequence": "additional",
+    "sources": [
+     "crossref"
+    ]
+   },
+   {
+    "name": "SE Davies",
+    "given_name": "SE",
+    "family_name": "Davies",
+    "orcid": null,
+    "affiliations": [],
+    "sequence": "additional",
+    "sources": [
+     "crossref"
+    ]
+   },
+   {
+    "name": "JA Walker-Smith",
+    "given_name": "JA",
+    "family_name": "Walker-Smith",
+    "orcid": null,
+    "affiliations": [],
+    "sequence": "additional",
+    "sources": [
+     "crossref"
+    ]
+   },
+   {
+    "name": "Andrew J. Wakefield",
+    "orcid": null,
+    "openalex_id": "https://openalex.org/A5110236514",
+    "institutions": [
+     {
+      "id": "https://openalex.org/I2801138448",
+      "display_name": "The Royal Free Hospital",
+      "country": "United Kingdom",
+      "type": "healthcare",
+      "ror_id": "https://ror.org/01ge67z96"
+     }
+    ],
+    "position": "first",
+    "sources": [
+     "openalex"
+    ]
+   },
+   {
+    "name": "SIMON H MURCH",
+    "orcid": "https://orcid.org/0000-0002-3870-8229",
+    "openalex_id": "https://openalex.org/A5082281633",
+    "institutions": [
+     {
+      "id": "https://openalex.org/I2801138448",
+      "display_name": "The Royal Free Hospital",
+      "country": "United Kingdom",
+      "type": "healthcare",
+      "ror_id": "https://ror.org/01ge67z96"
+     }
+    ],
+    "position": "middle",
+    "sources": [
+     "openalex"
+    ]
+   },
+   {
+    "name": "Andrew Anthony",
+    "orcid": "https://orcid.org/0000-0003-4303-3796",
+    "openalex_id": "https://openalex.org/A5103525153",
+    "institutions": [
+     {
+      "id": "https://openalex.org/I2801138448",
+      "display_name": "The Royal Free Hospital",
+      "country": "United Kingdom",
+      "type": "healthcare",
+      "ror_id": "https://ror.org/01ge67z96"
+     }
+    ],
+    "position": "middle",
+    "sources": [
+     "openalex"
+    ]
+   },
+   {
+    "name": "John C. Linnell",
+    "orcid": null,
+    "openalex_id": "https://openalex.org/A5113668959",
+    "institutions": [
+     {
+      "id": "https://openalex.org/I2801138448",
+      "display_name": "The Royal Free Hospital",
+      "country": "United Kingdom",
+      "type": "healthcare",
+      "ror_id": "https://ror.org/01ge67z96"
+     }
+    ],
+    "position": "middle",
+    "sources": [
+     "openalex"
+    ]
+   },
+   {
+    "name": "David H. Casson",
+    "orcid": null,
+    "openalex_id": "https://openalex.org/A5109158713",
+    "institutions": [
+     {
+      "id": "https://openalex.org/I2801138448",
+      "display_name": "The Royal Free Hospital",
+      "country": "United Kingdom",
+      "type": "healthcare",
+      "ror_id": "https://ror.org/01ge67z96"
+     }
+    ],
+    "position": "middle",
+    "sources": [
+     "openalex"
+    ]
+   },
+   {
+    "name": "Mohammad Malik",
+    "orcid": null,
+    "openalex_id": "https://openalex.org/A5109169291",
+    "institutions": [
+     {
+      "id": "https://openalex.org/I2801138448",
+      "display_name": "The Royal Free Hospital",
+      "country": "United Kingdom",
+      "type": "healthcare",
+      "ror_id": "https://ror.org/01ge67z96"
+     }
+    ],
+    "position": "middle",
+    "sources": [
+     "openalex"
+    ]
+   },
+   {
+    "name": "Mark Berelowitz",
+    "orcid": null,
+    "openalex_id": "https://openalex.org/A5037267967",
+    "institutions": [
+     {
+      "id": "https://openalex.org/I2801138448",
+      "display_name": "The Royal Free Hospital",
+      "country": "United Kingdom",
+      "type": "healthcare",
+      "ror_id": "https://ror.org/01ge67z96"
+     }
+    ],
+    "position": "middle",
+    "sources": [
+     "openalex"
+    ]
+   },
+   {
+    "name": "Amar Paul Dhillon",
+    "orcid": "https://orcid.org/0000-0003-3308-1129",
+    "openalex_id": "https://openalex.org/A5106822771",
+    "institutions": [
+     {
+      "id": "https://openalex.org/I2801138448",
+      "display_name": "The Royal Free Hospital",
+      "country": "United Kingdom",
+      "type": "healthcare",
+      "ror_id": "https://ror.org/01ge67z96"
+     }
+    ],
+    "position": "middle",
+    "sources": [
+     "openalex"
+    ]
+   },
+   {
+    "name": "Alan R. Valentine",
+    "orcid": "https://orcid.org/0009-0002-4748-3735",
+    "openalex_id": "https://openalex.org/A5110348938",
+    "institutions": [
+     {
+      "id": "https://openalex.org/I2801138448",
+      "display_name": "The Royal Free Hospital",
+      "country": "United Kingdom",
+      "type": "healthcare",
+      "ror_id": "https://ror.org/01ge67z96"
+     }
+    ],
+    "position": "middle",
+    "sources": [
+     "openalex"
+    ]
+   },
+   {
+    "name": "Susan E. Davies",
+    "orcid": "https://orcid.org/0000-0003-1613-8656",
+    "openalex_id": "https://openalex.org/A5103542889",
+    "institutions": [
+     {
+      "id": "https://openalex.org/I2801138448",
+      "display_name": "The Royal Free Hospital",
+      "country": "United Kingdom",
+      "type": "healthcare",
+      "ror_id": "https://ror.org/01ge67z96"
+     }
+    ],
+    "position": "middle",
+    "sources": [
+     "openalex"
+    ]
+   },
+   {
+    "name": "JA Walker‐Smith",
+    "orcid": null,
+    "openalex_id": "https://openalex.org/A5113704147",
+    "institutions": [
+     {
+      "id": "https://openalex.org/I2801138448",
+      "display_name": "The Royal Free Hospital",
+      "country": "United Kingdom",
+      "type": "healthcare",
+      "ror_id": "https://ror.org/01ge67z96"
+     }
+    ],
+    "position": "last",
+    "sources": [
+     "openalex"
+    ]
+   }
+  ],
+  "abstract": "<h4>Background</h4>We investigated a consecutive series of children with chronic enterocolitis and regressive developmental disorder.<h4>Methods</h4>12 children (mean age 6 years [range 3-10], 11 boys",
+  "journal": "Lancet (London, England)",
+  "publication_year": 1998,
+  "citation_counts": [
+   {
+    "source": "europepmc",
+    "count": 1210
+   },
+   {
+    "source": "icite",
+    "count": 1420
+   },
+   {
+    "source": "crossref",
+    "count": 2043
+   },
+   {
+    "source": "semantic_scholar",
+    "count": 1929
+   },
+   {
+    "source": "openalex",
+    "count": 3009
+   }
+  ],
+  "citation_count": 3009,
+  "icite": {
+   "rcr": 41.072944062908576,
+   "percentile": 99.8,
+   "nih_percentile": 99.8
+  },
+  "is_oa": false,
+  "oa_status": "closed",
+  "oa_url": null,
+  "influential_citation_count": 36,
+  "fields_of_study": [
+   "Medicine"
+  ],
+  "topics": [
+   {
+    "id": "https://openalex.org/T10106",
+    "display_name": "Autism Spectrum Disorder Research",
+    "score": 0.4032999873161316
+   },
+   {
+    "id": "https://openalex.org/T10134",
+    "display_name": "Inflammatory Bowel Disease",
+    "score": 0.09350000321865082
+   },
+   {
+    "id": "https://openalex.org/T11855",
+    "display_name": "Gastrointestinal disorders and treatments",
+    "score": 0.03970000147819519
+   }
+  ],
+  "license": {
+   "url": "https://www.elsevier.com/tdm/userlicense/1.0/",
+   "start": "1998-02-01T00:00:00Z",
+   "delay_in_days": 0
+  },
+  "external_ids": {
+   "semantic_scholar_corpus_id": 439791,
+   "pmid": "9500320",
+   "openalex_id": "https://openalex.org/W2117847125",
+   "doi": "10.1016/s0140-6736(97)11096-0"
+  },
+  "biblio": {
+   "volume": "351",
+   "issue": "9103",
+   "pages": "637-641",
+   "publisher": "Elsevier BV",
+   "issn": [
+    "0140-6736"
+   ],
+   "type": "journal-article",
+   "first_page": "637",
+   "last_page": "641"
+  },
+  "references": {
+   "count": 30,
+   "cited_by_count": 3009,
+   "related_works": [
+    "https://openalex.org/W4242086627",
+    "https://openalex.org/W4280602684",
+    "https://openalex.org/W2037790826",
+    "https://openalex.org/W2078273246",
+    "https://openalex.org/W2017221278",
+    "https://openalex.org/W2069605278",
+    "https://openalex.org/W1997714374",
+    "https://openalex.org/W2068892162",
+    "https://openalex.org/W2071639186",
+    "https://openalex.org/W2144446993"
+   ]
+  },
+  "mesh_terms": [
+   "Ileum",
+   "Lymphoid Tissue",
+   "Humans",
+   "Measles",
+   "Enterocolitis",
+   "Otitis Media",
+   "Hyperplasia",
+   "Vaccines, Combined",
+   "Measles-Mumps-Rubella Vaccine",
+   "Measles Vaccine",
+   "Mumps Vaccine",
+   "Rubella Vaccine",
+   "Developmental Disabilities",
+   "Child",
+   "Child, Preschool",
+   "Female",
+   "Male"
+  ],
+  "full_text_urls": [
+   "https://doi.org/10.1016/s0140-6736(97)11096-0"
+  ],
+  "publication_type": [
+   "Retracted Publication",
+   "Research Support, Non-U.S. Gov't",
+   "Journal Article"
+  ],
+  "is_retracted": true,
+  "updates": [
+   {
+    "direction": "updated_by",
+    "type": "correction",
+    "label": "Correction",
+    "doi": "10.1016/s0140-6736(04)15715-2",
+    "date": "2004-03-06T00:00:00Z",
+    "source": "retraction-watch",
+    "from": "crossref"
+   },
+   {
+    "direction": "updated_by",
+    "type": "retraction",
+    "label": "Retraction",
+    "doi": "10.1016/s0140-6736(10)60175-4",
+    "date": "2010-02-06T00:00:00Z",
+    "source": "retraction-watch",
+    "from": "crossref"
+   },
+   {
+    "type": "Retraction in",
+    "source": "MED",
+    "id": "15016483",
+    "reference": "Lancet. 2004 Mar 6;363(9411):750. doi: 10.1016/S0140-6736(04)15715-2",
+    "from": "europepmc"
+   },
+   {
+    "type": "Retraction in",
+    "source": "MED",
+    "id": "20137807",
+    "reference": "Lancet. 2010 Feb 6;375(9713):445. doi: 10.1016/S0140-6736(10)60175-4",
+    "from": "europepmc"
+   },
+   {
+    "type": "Expression of concern in",
+    "source": "MED",
+    "id": "21971344",
+    "reference": "Eur J Gastroenterol Hepatol. 2011 Nov;23(11):1082. doi: 10.1097/MEG.0b013e328349d184",
+    "from": "europepmc"
+   }
+  ]
+ }
+}
