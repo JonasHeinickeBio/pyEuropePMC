@@ -3,7 +3,7 @@
 Every source alone, all sources together, and all sources with ROR details, for a few
 papers, several times each, one call at a time. Prints a table of medians and ranges.
 
-    python benchmarks/benchmark_enrich_paper.py            # 3 papers x 3 repeats, ~5 minutes
+    python benchmarks/benchmark_enrich_paper.py            # 3 papers x 3 repeats, 10 to 15 minutes
     python benchmarks/benchmark_enrich_paper.py --repeats 5 --budget 60
 
 Needs network access and no credentials. The numbers depend on the machine, the network
