@@ -42,7 +42,7 @@ python -m pyeuropepmc.mcp.server --help      # full CLI reference
 | `--transport` | `PYEUROPEPMC_MCP_TRANSPORT` | `stdio` | `stdio`, `sse`, or `streamable-http` |
 | `--host` | `PYEUROPEPMC_MCP_HOST` | `127.0.0.1` | bind host for `sse`/`streamable-http` |
 | `--port` | `PYEUROPEPMC_MCP_PORT` | `8000` | bind port for `sse`/`streamable-http` |
-| `--allowed-host` | `PYEUROPEPMC_MCP_ALLOWED_HOSTS` | none | `Host` header names to accept on `sse`/`streamable-http`; repeatable, comma separated in the variable. SDK 2.x only (see below) |
+| `--allowed-host` | `PYEUROPEPMC_MCP_ALLOWED_HOSTS` | none | bare host names to accept on `sse`/`streamable-http` as `Host` and as `http`/`https` `Origin`; repeatable, comma separated in the variable (spaces are ignored). SDK 2.x only (see below) |
 | `--log-level` | `PYEUROPEPMC_MCP_LOG_LEVEL` | `INFO` | written to stderr, never stdout |
 
 `stdio` is what process-managed clients like Claude Desktop expect. Use
@@ -83,7 +83,7 @@ itself does not implement auth) and point any MCP HTTP client at
 MCP SDK 2.x checks the `Host` header on the loopback addresses (DNS-rebinding
 protection) and answers HTTP 421 to a name it does not know, so a reverse proxy that
 forwards `Host: mcp.example.org` to `127.0.0.1:8000` needs
-`--allowed-host mcp.example.org` (loopback names stay allowed). SDK 1.x has no such
+`--allowed-host mcp.example.org` (loopback names and origins stay allowed; a browser client's `Origin` for that name is accepted too). SDK 1.x has no such
 option; there, run behind a proxy that rewrites the header.
 
 ## Tools

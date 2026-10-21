@@ -469,6 +469,21 @@ class TestMainEntry:
             "proxy.internal",
             "proxy.internal:*",
         ]
+        # The SDK's own loopback origins are kept, and each host is an origin over http and
+        # https: a browser client sends an Origin that is checked against this list.
+        assert security.allowed_origins == [
+            "http://127.0.0.1:*",
+            "http://localhost:*",
+            "http://[::1]:*",
+            "http://mcp.example.org",
+            "http://mcp.example.org:*",
+            "https://mcp.example.org",
+            "https://mcp.example.org:*",
+            "http://proxy.internal",
+            "http://proxy.internal:*",
+            "https://proxy.internal",
+            "https://proxy.internal:*",
+        ]
 
     @pytest.mark.skipif(not srv._MCP_SDK_2, reason="host rules are an SDK 2.x feature")
     def test_allowed_hosts_can_come_from_the_environment(self, run, monkeypatch):
@@ -488,3 +503,33 @@ class TestMainEntry:
         srv._main_entry(["--allowed-host", "mcp.example.org"])
 
         run.assert_called_once_with(transport="stdio")
+
+
+class TestAllowedHostValues:
+    """Parsing of ``--allowed-host`` and ``PYEUROPEPMC_MCP_ALLOWED_HOSTS`` (no SDK needed)."""
+
+    def test_spaces_around_entries_of_the_variable_are_ignored(self, monkeypatch):
+        monkeypatch.setenv("PYEUROPEPMC_MCP_ALLOWED_HOSTS", " a.example.org , b.example.org ,, ")
+        args = srv._build_arg_parser().parse_args([])
+        assert args.allowed_host == ["a.example.org", "b.example.org"]
+
+    def test_flag_values_are_trimmed_and_added_to_the_variable(self, monkeypatch):
+        monkeypatch.setenv("PYEUROPEPMC_MCP_ALLOWED_HOSTS", "a.example.org")
+        args = srv._build_arg_parser().parse_args(["--allowed-host", " b.example.org "])
+        assert args.allowed_host == ["a.example.org", "b.example.org"]
+
+    @pytest.mark.parametrize(
+        "value", ["https://mcp.example.org", "mcp.example.org:8000", "mcp.example.org/mcp", " "]
+    )
+    def test_a_url_or_a_port_is_refused_with_an_explanation(self, value, capsys):
+        with pytest.raises(SystemExit):
+            srv._build_arg_parser().parse_args(["--allowed-host", value])
+        assert "not a host name" in capsys.readouterr().err
+
+    def test_a_bad_value_in_the_variable_is_refused_at_startup(self, monkeypatch):
+        monkeypatch.setenv("PYEUROPEPMC_MCP_ALLOWED_HOSTS", "https://mcp.example.org")
+        with pytest.raises(SystemExit, match="PYEUROPEPMC_MCP_ALLOWED_HOSTS"):
+            srv._build_arg_parser()
+
+    def test_the_ipv6_loopback_is_a_valid_name(self):
+        assert srv._host_name("[::1]") == "[::1]"

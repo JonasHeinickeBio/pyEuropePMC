@@ -2689,7 +2689,8 @@ def _build_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--allowed-host",
         action="append",
-        default=[h for h in os.environ.get("PYEUROPEPMC_MCP_ALLOWED_HOSTS", "").split(",") if h],
+        type=_host_name,
+        default=_hosts_from_env(os.environ.get("PYEUROPEPMC_MCP_ALLOWED_HOSTS", "")),
         metavar="HOST",
         help="Host name a client may send in its Host header, for the sse/streamable-http "
         "transports behind a reverse proxy (repeatable; also PYEUROPEPMC_MCP_ALLOWED_HOSTS, "
@@ -2704,21 +2705,48 @@ def _build_arg_parser() -> argparse.ArgumentParser:
     return parser
 
 
+def _host_name(value: str) -> str:
+    """A bare host name for ``--allowed-host``: trimmed, without scheme, path or port."""
+    host = value.strip()
+    if not host or "://" in host or "/" in host or ":" in host.replace("[::1]", ""):
+        raise argparse.ArgumentTypeError(
+            f"{value!r} is not a host name: give it without scheme, port or path, "
+            "e.g. mcp.example.org"
+        )
+    return host
+
+
+def _hosts_from_env(raw: str) -> list[str]:
+    """``PYEUROPEPMC_MCP_ALLOWED_HOSTS``: comma separated, spaces around entries ignored."""
+    try:
+        return [_host_name(part) for part in raw.split(",") if part.strip()]
+    except argparse.ArgumentTypeError as exc:
+        raise SystemExit(f"PYEUROPEPMC_MCP_ALLOWED_HOSTS: {exc}") from exc
+
+
 def _transport_security(allowed_hosts: list[str]) -> Any:
-    """Host-header rules for the HTTP transports, or ``None`` for the SDK's defaults.
+    """Host and Origin rules for the HTTP transports, or ``None`` for the SDK's defaults.
 
     MCP SDK 2.x turns DNS-rebinding protection on for the loopback bind addresses and
     answers HTTP 421 to any other ``Host`` header, so a reverse proxy that forwards the
-    public name needs that name allowed. Loopback stays allowed.
+    public name needs that name allowed. A browser client also sends an ``Origin``, which
+    the SDK checks against its own list: giving the SDK a list replaces its loopback
+    defaults, so they are repeated here, and each allowed host is allowed as an origin over
+    http and https.
     """
     if not allowed_hosts:
         return None
     from mcp.server.transport_security import TransportSecuritySettings
 
     hosts = ["127.0.0.1:*", "localhost:*", "[::1]:*"]
+    origins = ["http://127.0.0.1:*", "http://localhost:*", "http://[::1]:*"]
     for host in allowed_hosts:
         hosts += [host, f"{host}:*"]
-    return TransportSecuritySettings(enable_dns_rebinding_protection=True, allowed_hosts=hosts)
+        for scheme in ("http", "https"):
+            origins += [f"{scheme}://{host}", f"{scheme}://{host}:*"]
+    return TransportSecuritySettings(
+        enable_dns_rebinding_protection=True, allowed_hosts=hosts, allowed_origins=origins
+    )
 
 
 def _serve(args: argparse.Namespace) -> None:

@@ -13,7 +13,9 @@ All notable changes to PyEuropePMC are documented here.
   longer ignores major `mcp` updates. A CI job runs the MCP unit tests against the newest 1.x.
 - New `--allowed-host` option (`PYEUROPEPMC_MCP_ALLOWED_HOSTS`) for the HTTP transports: SDK
   2.x answers HTTP 421 to a `Host` header it does not know, which breaks a reverse proxy that
-  forwards its public name. Loopback names stay allowed. Not available on SDK 1.x.
+  forwards its public name. Loopback names and origins stay allowed, and each name is also
+  accepted as a browser `Origin` over http and https. Values are trimmed and a URL or port is
+  refused. Not available on SDK 1.x.
 
 ## [3.9.0] - 2026-10-21
 
