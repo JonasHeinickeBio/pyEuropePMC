@@ -1,9 +1,12 @@
 # pyeuropepmc MCP Server
 
 A [Model Context Protocol](https://modelcontextprotocol.io/) server that exposes
-Europe PMC (and related literature-search) functionality — search, citation graph
-traversal, open-access full text, clinical trials, full-text indexing, figure extraction, bibliography
-tooling, and optional LLM-powered analysis — as tools for AI agents.
+Europe PMC (and related literature-search) functionality as tools for AI agents:
+search with a query linter, open-access full text, text-mined annotations, data
+links, citation graph traversal, BibTeX/RIS/CSV export, clinical trials, full-text
+indexing, figure extraction, bibliography tooling, service diagnostics and optional
+LLM-powered analysis. This page is the reference; the
+[MCP server guide](../../../docs/features/mcp-server.md) shows the workflows.
 
 Built on the official [MCP Python SDK](https://github.com/modelcontextprotocol/python-sdk)
 (`FastMCP`), not a hand-rolled JSON-RPC loop, so it gets spec-compliant error
@@ -115,8 +118,10 @@ itself does not implement auth) and point any MCP HTTP client at
 
 Run `pyeuropepmc-mcp` and call `tools/list` (or open it in any MCP client) for
 the full, current input schema of each tool — schemas are generated directly
-from the tool functions' type hints, so this table and the server can never
-drift apart.
+from the tool functions' type hints. This table is written by hand;
+`tests/mcp/unit/test_mcp_docs.py` fails when a tool is missing from it.
+For workflows and the Europe PMC behaviours the tools work around, see the
+[MCP server guide](../../../docs/features/mcp-server.md).
 
 ### Tool availability
 
