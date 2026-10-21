@@ -636,3 +636,64 @@ class TestMCPEnrichAgainstRealSources:
         async with _server_session() as (session, _init_result):
             result = await session.call_tool("enrich_paper", {"pmid": "abc"})
             assert is_error(result) is True
+
+
+@pytest.mark.network
+class TestMCPPicoAndMeshAgainstRealServices:
+    QUESTION = (
+        "In adults with type 2 diabetes, does metformin reduce cardiovascular mortality "
+        "compared with placebo?"
+    )
+
+    async def test_the_generated_query_finds_papers(self):
+        async with _server_session() as (session, _init_result):
+            result = await session.call_tool("pico_decompose", {"question": self.QUESTION})
+            data = structured(result)
+            assert is_error(result) is False
+            assert data["complete"] is True and data["missing"] == []
+            assert data["elements"]["intervention"]["text"] == "metformin"
+            assert data["query_check"]["valid"] is True
+
+            counted = await session.call_tool("count_papers", {"query": data["query"]})
+            assert structured(counted)["hit_count"] > 1000
+
+    async def test_the_mesh_expanded_query_finds_papers(self):
+        async with _server_session() as (session, _init_result):
+            result = await session.call_tool(
+                "pico_decompose", {"question": self.QUESTION, "mesh": True}
+            )
+            data = structured(result)
+            assert 'MESH:"Diabetes Mellitus, Type 2"' in data["query"]
+            counted = await session.call_tool("count_papers", {"query": data["query"]})
+            assert structured(counted)["hit_count"] > 1000
+
+    async def test_an_incomplete_question_makes_no_request_and_no_query(self):
+        async with _server_session() as (session, _init_result):
+            result = await session.call_tool(
+                "pico_decompose", {"question": "What is the best programming language?"}
+            )
+            data = structured(result)
+            assert data["complete"] is False and data["query"] == ""
+            assert data["missing"] == ["population", "intervention", "outcome"]
+
+    async def test_offline_mesh_fragments_find_papers(self):
+        async with _server_session() as (session, _init_result):
+            result = await session.call_tool("mesh_expand", {"terms": ["heart attack", "aspirin"]})
+            data = structured(result)
+            assert data["source"] == "snapshot" and data["unmatched"] == []
+            assert data["query_check"]["valid"] is True
+            counted = await session.call_tool("count_papers", {"query": data["query"]})
+            assert structured(counted)["hit_count"] > 1000
+
+    async def test_the_nlm_service_covers_a_heading_the_snapshot_lacks(self):
+        async with _server_session() as (session, _init_result):
+            result = await session.call_tool(
+                "mesh_expand", {"terms": ["Sarcoidosis", "heart attack"], "use_api": True}
+            )
+            data = structured(result)
+            assert is_error(result) is False and data["source"] == "nlm"
+            sarcoidosis, heart_attack = data["terms"]
+            assert sarcoidosis["matched"] is True
+            assert sarcoidosis["descriptor"]["ui"] == "D012507"
+            assert any(t.startswith("C") for t in sarcoidosis["descriptor"]["tree_numbers"])
+            assert heart_attack["descriptor"]["heading"] == "Myocardial Infarction"

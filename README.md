@@ -110,12 +110,13 @@ pyeuropepmc benchmark list-datasets
 
 ## 🤖 MCP server
 
-`pyeuropepmc-mcp` serves 43 tools over the [Model Context Protocol](https://modelcontextprotocol.io/), so an AI agent can search the literature, read papers and export references. The server is part of the core install.
+`pyeuropepmc-mcp` serves 45 tools over the [Model Context Protocol](https://modelcontextprotocol.io/), so an AI agent can search the literature, read papers and export references. The server is part of the core install.
 
 | Job | What the tools do |
 |---|---|
 | **Search** | Europe PMC and ten more sources with duplicates merged, hit counts, author search, ClinicalTrials.gov |
 | **Check a query** | A linter for the mistakes Europe PMC silently accepts (it answers a different query instead of an error), a query builder, a PubMed translator, and a recall check against papers you already know |
+| **Plan a search** | A research question split into PICO, PICOS, PICOT or SPIDER elements (verbatim, missing ones reported, never invented) with a checked query, and MeSH headings, tree numbers and entry terms for search terms, offline from a bundled snapshot or from NLM on request |
 | **Look up papers** | Metadata for up to 100 papers by PMID, PMCID or DOI in one call; enrich one paper with citation impact, funders, institutions, open-access status and retractions from Europe PMC, Crossref, OpenAlex, Semantic Scholar and iCite |
 | **Read** | Open-access full text as Markdown or typed sections, with a section filter and a size cap; figures, tables and supplementary files; free copies of other papers through Unpaywall |
 | **Entities and data** | Genes, chemicals and diseases text-mined from a paper, papers that mention an entity, and the data a paper links to (accession numbers, BioStudies, model-organism databases) |

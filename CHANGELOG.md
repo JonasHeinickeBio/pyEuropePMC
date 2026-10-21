@@ -4,6 +4,24 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
+### ✨ Features
+
+- New MCP tool `pico_decompose`: a research question split into PICO, PICOS, PICOT or SPIDER
+  elements, offline and without a model. Each element is a verbatim span of the question with its
+  position; elements the question does not state are reported in `missing` and
+  `optional_missing`, never filled in. It builds a Europe PMC query (population condition AND
+  intervention by default; `query_elements` and `mesh` change it) and checks it with the
+  `validate_query` linter. The existing `PICOParser` takes the rest of the sentence for each
+  element and found 5 of 106 stated elements on 36 gold questions, so the tool uses its own
+  rules: 39 of 39 on the 12 questions used while writing them, 39 of 39 on 12 written
+  beforehand, 11 of 28 on 12 phrased outside the patterns (`benchmarks/evaluate_pico_parser.py`),
+  and nothing invented.
+- New MCP tool `mesh_expand`: MeSH descriptor, tree numbers, entry terms and a Europe PMC
+  fragment for each term, joined with AND or OR into a checked query. Offline by default from a
+  bundled snapshot of 244 common clinical headings taken from NLM's published MeSH
+  (`scripts/build_mesh_snapshot.py`); terms outside it are reported unmatched, not guessed.
+  `use_api=true` asks the NLM MeSH service and covers all of MeSH.
+
 ### 🔧 Changed
 
 - The MCP server runs on MCP Python SDK 2.x as well as 1.x (`mcp>=1.20.0,<3.0.0`; the lock file

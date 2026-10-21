@@ -22,6 +22,7 @@ Two tools need configuration. `find_open_access` reads `UNPAYWALL_EMAIL` (Unpayw
 |---|---|
 | Check a query before running it | `validate_query`, then `count_papers` |
 | Write a query from parts | `build_query` |
+| Turn a research question into a query | `pico_decompose` (PICO, PICOS, PICOT, SPIDER), then `mesh_expand` |
 | Run the same search on PubMed or another database | `translate_query` |
 | Test a query against papers you already know | `evaluate_query` |
 | Search | `search_papers` (Europe PMC), `unified_search` (several sources, duplicates merged), `search_authors` |
@@ -48,6 +49,36 @@ search_papers    query="CRISPR AND TITLE:\"base editing\"", limit=25, sort="cite
 ```
 
 For a systematic review, give `evaluate_query` the PMIDs of papers that must be found and, optionally, papers that must not. It returns the recall, the PMIDs the query misses, and the excluded papers it still finds. `translate_query` rewrites the final query for PubMed and reports what it could not translate.
+
+### From a question to a search
+
+```text
+pico_decompose  question="In adults with type 2 diabetes, does metformin reduce cardiovascular mortality compared with placebo?"
+mesh_expand     terms=["type 2 diabetes", "metformin"]
+```
+
+`pico_decompose` splits a question into PICO, PICOS, PICOT or SPIDER elements and builds a query from them, with no model, key or request. Each element is a verbatim piece of the question with its position (`start`, `end`), so you can check it; an element the question does not state is listed in `missing` (required for the framework) or `optional_missing`, never filled in. The query is an AND of one group per element and is checked with the same linter as `validate_query` (`query_check`). By default it uses the population (the condition, not the demographics: `adults with type 2 diabetes` becomes `"type 2 diabetes"`) and the intervention, because outcome and comparison terms are rarely indexed and cut recall; `query_elements` chooses others, and `mesh=true` replaces the terms it knows with MeSH groups.
+
+| Framework | Complete when it has |
+|---|---|
+| `PICO` | population, intervention, outcome (comparison is optional) |
+| `PICOS` | those and a study design |
+| `PICOT` | those and a time frame |
+| `SPIDER` | sample, phenomenon of interest, evaluation (design and research type are optional) |
+
+The rules know the usual clinical phrasings: `In P, does I reduce O compared with C?`, `What is the effect of I on O in P?`, `Is I more effective than C for O?`, `Is I associated with O?`, `Effectiveness of I for O in P` and `P treated with I`. A question phrased another way is understood only in part, and the answer says so in `notes` and `missing`: ask the user to restate it before relying on the query. `Is I effective for X?` reads X as the outcome; if X is the condition treated, it belongs to the population.
+
+Measured on 36 gold questions (`tests/fixtures/pico`, `benchmarks/evaluate_pico_parser.py`), counting only elements the question states:
+
+| Question set | Rules, found exactly | Older parser (`features.review.pico`), found exactly |
+|---|---|---|
+| 12 questions used while writing the rules | 39 of 39 | 2 of 39 |
+| 12 questions written before the rules and run once afterwards | 39 of 39 | 2 of 39 |
+| 12 questions phrased outside the patterns | 11 of 28 | 1 of 28 |
+
+The rules never extracted text that is not in the question and never filled an element the question leaves out (0 of 46 unstated elements on the three sets). The second set was written by the same person as the rules, so it shows that the patterns are not fitted to the first set, not how it fares on questions from elsewhere; the third set is the realistic warning: outside the known phrasings fewer than half of the elements are found. The older parser takes the rest of the sentence for each element, so its elements overlap and its query contains words such as `does` and `with`; the MCP tool does not use it.
+
+`mesh_expand` returns, for each term, the MeSH descriptor (ID, heading, tree numbers), its entry terms and a ready fragment such as `(MESH:"Diabetes Mellitus, Type 2" OR "Diabetes Mellitus, Type 2" OR "type 2 diabetes" OR "NIDDM" ...)`, and joins the fragments with AND (or OR, `combine="or"`) into a query that is checked like `validate_query`. By default it works offline from a snapshot of 244 common clinical headings (conditions, drugs, interventions, populations, outcomes and study designs) taken from NLM's published MeSH, with entry terms and tree numbers as NLM lists them. A term that is not in the snapshot comes back with `matched: false` and is searched as written; nothing is guessed. `use_api=true` asks the NLM MeSH service instead (up to four requests per term, so it needs the network and takes longer) and covers all of MeSH; a request that fails is reported for that term and does not fail the call. Europe PMC's `MESH:` field is much narrower than PubMed's MeSH index (3,477 hits for `MESH:"Diabetes Mellitus, Type 2"` against 561,715 for the phrase `"type 2 diabetes"`), which is why each fragment also searches the heading and the entry terms as phrases. `scripts/build_mesh_snapshot.py` rebuilds the snapshot from the NLM service.
 
 ### Search to reference manager
 
@@ -141,7 +172,7 @@ The sources run at the same time, so asking for all of them costs about as much 
 
 **ROR details cost about 0.3 s per distinct institution.** For the three papers the median call went from about 2 s to 3.6, 4.0 and 5.4 s. A later single pass (one call per paper) gave 8.5 s as the median with ROR, with the ROR step between 0.3 and 6.7 s, so expect a few seconds with a wide spread. The lookup runs once, after the merge, and each institution is fetched once however many authors share it (the retracted paper has 13 author-institution pairs but one institution, so one request). An earlier version fetched every institution twice, once inside the OpenAlex client and once in the enricher, and once per author-institution pair inside OpenAlex: 14 ROR requests for the retracted paper instead of 1, 29 instead of 12 for the open-access paper, and a median of 8.4 s instead of 5.3 s with ROR on.
 
-**Slow outliers.** 4 of the 72 calls (the 63 of the first pass and 9 repeats of the ROR row after the change) had a source wait 30 to 36 s before it answered: OpenAlex in all four and, in one of them, Europe PMC, Crossref and iCite as well (74 s in all). Because that call stalled several sources at once, it looks like a network stall on the measuring machine, not a slow source. With the default `time_budget` of 30 s such a call is reported as `timeout` for the sources still waiting, and the rest of the record is returned. Raise `time_budget` (up to 120) if you would rather wait for a slow source than get a partial record.
+**Slow outliers.** 4 of the 72 calls (the 63 of the first pass and 9 repeats of the ROR row after the change) had a source wait 30 to 36 s before it answered: OpenAlex in all four and, in one of them, Europe PMC, Crossref and iCite as well (74 s in all). The cause is the measuring machine, not the services: it has no working IPv6 route, and a Python client tries the IPv6 address of a host first and waits for it to time out before it tries IPv4 (Python waited 61 s for NLM's service, forcing IPv4 made the same request take 1.1 s, and `curl` falls back at once and took 0.6 s). It hits any host that has an IPv6 address, which is why it showed up for OpenAlex and not for Europe PMC. If your network behaves like this, expect `timeout` entries and raise `time_budget` or fix the IPv6 route. With the default `time_budget` of 30 s such a call is reported as `timeout` for the sources still waiting, and the rest of the record is returned. Raise `time_budget` (up to 120) if you would rather wait for a slow source than get a partial record.
 
 **Failures.** Semantic Scholar did not know the DOI-only paper and answered "not found" in all 9 calls for it, which shows up as `error` in `sources` and does not affect the rest. No rate limit (HTTP 429) occurred in these calls without an API key; if one does, the source shows `error` with the reason and the record is partial.
 
@@ -160,6 +191,8 @@ A failed call comes back with `isError: true` and a message that names the cause
 | `get_papers_batch` | 100 identifiers per call, looked up 50 at a time |
 | `get_papers_fulltext_batch` | 20 papers, within `max_chars_per_paper` and `max_total_chars` |
 | `evaluate_query` | 200 included and 200 excluded PMIDs |
+| `pico_decompose` | questions up to 2,000 characters; offline |
+| `mesh_expand` | 20 terms per call; offline unless `use_api` is set |
 | `enrich_paper` | `time_budget` 2 to 120 seconds (30 by default); at most 30 authors, 20 funders and 20 notices in the answer; at most four requests per source in flight |
 | `export_papers` | 1,000 records per call; continue with `skip` or the `remaining` ids |
 | `find_papers_by_entity` | 1 to 8 articles per page, continued with `cursor` |
