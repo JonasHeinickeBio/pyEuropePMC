@@ -4,6 +4,12 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
+## [3.9.0] - 2026-10-21
+
+> MCP release: enrichment. `enrich_paper` merges Europe PMC, Crossref, OpenAlex, Semantic Scholar and
+> iCite into one compact record with impact, funding, institutions, open access and retractions,
+> and says for every source whether it answered. The server now has 43 tools.
+
 ### ✨ Features
 
 - New MCP tool `enrich_paper`: one compact record for a paper (PMCID, PMID, DOI or doi.org URL)
