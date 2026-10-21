@@ -4,6 +4,12 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
+## [4.1.0] - 2026-10-22
+
+> MCP release: sentence roles. `tag_paper_sentences` groups the body sentences of a paper by what
+> they do (method, result, limitation, ...), whatever its headings are called. The server now has
+> 46 tools.
+
 ### ✨ Features
 
 - New MCP tool `tag_paper_sentences`: the sentences of an open-access paper's body grouped by
