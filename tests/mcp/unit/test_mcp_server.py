@@ -350,6 +350,7 @@ class TestToolRegistry:
         "get_paper_lab_links",
         "enrich_paper",
         "pico_decompose",
+        "tag_paper_sentences",
         "mesh_expand",
         "analyze_citations",
         "compare_citations",

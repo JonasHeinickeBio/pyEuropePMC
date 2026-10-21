@@ -4,6 +4,23 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
+### ✨ Features
+
+- New MCP tool `tag_paper_sentences`: the sentences of an open-access paper's body grouped by
+  rhetorical role (`background`, `motivation`, `method`, `result`, `claim`, `limitation`,
+  `conclusion`, or `unknown`). Front matter, references, captions and administrative sections
+  (acknowledgments, funding, conflicts, ethics and consent statements) are excluded; `roles`,
+  `sections`, `min_confidence` and `max_chars` filter, sentences are never cut and `truncated`
+  says whether some were left out. It reuses the full-text download and cached XML of
+  `get_paper_fulltext`. The rules use the section a sentence is in plus cues in the sentence;
+  the older `RhetoricalHighlighter` (keywords for computer-science papers) labelled 13 of 93
+  hand-labelled biomedical sentences correctly, the tool's rules 82 (precision 0.92 to 1.00 per
+  role; 43 of 46 on the sentences used while writing them, 22 of 23 on a paper labelled
+  beforehand, 17 of 24 on a harder sample). Without recognisable headings only background,
+  method and conclusion are returned. A scientific sentence splitter (abbreviations, `et al.`,
+  genus initials, numbers) is included. `use_llm` asks the configured LLM about up to 40
+  `unknown` sentences; that path is tested with a fake client only.
+
 ## [4.0.1] - 2026-10-21
 
 > Patch release: connections no longer stall for 30 to 60 seconds on a network with an IPv6

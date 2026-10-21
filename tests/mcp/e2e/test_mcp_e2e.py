@@ -288,7 +288,7 @@ class TestMCPOpenAccess:
             assert data["best_location"]["url"]
             assert data["europepmc_fulltext"] is True
 
-            by_pmid = await session.call_tool("find_open_access", {"pmid": "16004729"})
+            by_pmid = await session.call_tool("find_open_access", {"pmid": "26017442"})
             assert structured(by_pmid)["doi"] == "10.1186/1479-7364-2-2-138"
 
             unknown = await session.call_tool(
@@ -697,3 +697,54 @@ class TestMCPPicoAndMeshAgainstRealServices:
             assert sarcoidosis["descriptor"]["ui"] == "D012507"
             assert any(t.startswith("C") for t in sarcoidosis["descriptor"]["tree_numbers"])
             assert heart_attack["descriptor"]["heading"] == "Myocardial Infarction"
+
+
+@pytest.mark.network
+class TestMCPSentenceRolesAgainstARealPaper:
+    PMCID = (
+        "PMC8658482"  # Efficacy of Exercise on Postneedling Soreness: a randomized trial (CC BY)
+    )
+
+    async def test_methods_and_results_are_returned_and_the_roles_filter_works(self):
+        async with _server_session() as (session, _init_result):
+            everything = await session.call_tool(
+                "tag_paper_sentences", {"pmcid": self.PMCID, "max_chars": 200000}
+            )
+            data = structured(everything)
+            assert is_error(everything) is False
+            assert data["pmcid"] == self.PMCID and data["method"] == "rules"
+            roles = data["roles"]
+            assert len(roles["method"]) >= 20 and len(roles["result"]) >= 10
+            assert {"background", "conclusion"} <= set(roles)
+            assert data["statistics"]["sentences"] > 100 and data["truncated"] is False
+            assert all("Materials and Methods" in m["section"] for m in roles["method"][:10])
+            assert any("randomized" in m["text"].lower() for m in roles["method"])
+            assert any("p <" in r["text"] or "p =" in r["text"] for r in roles["result"])
+            # administrative sections and the reference list are not tagged
+            joined = " ".join(s["text"] for group in roles.values() for s in group)
+            assert "Informed consent was obtained from all subjects" not in joined
+
+            only = await session.call_tool(
+                "tag_paper_sentences", {"pmcid": self.PMCID, "roles": ["limitation", "conclusion"]}
+            )
+            filtered = structured(only)
+            assert set(filtered["roles"]) <= {"limitation", "conclusion"} and filtered["roles"]
+            assert filtered["statistics"] == data["statistics"]  # counts cover the whole body
+
+            section = await session.call_tool(
+                "tag_paper_sentences",
+                {"pmcid": self.PMCID, "sections": ["Methods"], "roles": ["method"]},
+            )
+            assert {
+                x["section"].split("/")[0] for x in structured(section)["roles"]["method"]
+            } == {"2. Materials and Methods"}
+
+    async def test_truncation_and_a_paper_that_is_not_open_access(self):
+        async with _server_session() as (session, _init_result):
+            short = await session.call_tool(
+                "tag_paper_sentences", {"pmcid": self.PMCID, "max_chars": 1000}
+            )
+            data = structured(short)
+            assert data["truncated"] is True and data["returned_chars"] <= 1000 + 400
+            closed = await session.call_tool("tag_paper_sentences", {"pmid": "26017442"})
+            assert is_error(closed) is True
