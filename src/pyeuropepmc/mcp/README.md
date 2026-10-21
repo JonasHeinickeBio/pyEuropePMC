@@ -9,7 +9,7 @@ LLM-powered analysis. This page is the reference; the
 [MCP server guide](../../../docs/features/mcp-server.md) shows the workflows.
 
 Built on the official [MCP Python SDK](https://github.com/modelcontextprotocol/python-sdk)
-(`FastMCP`), not a hand-rolled JSON-RPC loop, so it gets spec-compliant error
+(`MCPServer` in SDK 2.x, `FastMCP` in 1.x; both are supported), not a hand-rolled JSON-RPC loop, so it gets spec-compliant error
 semantics, concurrent async tool execution (blocking network/disk calls are
 offloaded to a thread pool, so one slow request never stalls the others), and a
 choice of transports out of the box.
@@ -42,6 +42,7 @@ python -m pyeuropepmc.mcp.server --help      # full CLI reference
 | `--transport` | `PYEUROPEPMC_MCP_TRANSPORT` | `stdio` | `stdio`, `sse`, or `streamable-http` |
 | `--host` | `PYEUROPEPMC_MCP_HOST` | `127.0.0.1` | bind host for `sse`/`streamable-http` |
 | `--port` | `PYEUROPEPMC_MCP_PORT` | `8000` | bind port for `sse`/`streamable-http` |
+| `--allowed-host` | `PYEUROPEPMC_MCP_ALLOWED_HOSTS` | none | `Host` header names to accept on `sse`/`streamable-http`; repeatable, comma separated in the variable. SDK 2.x only (see below) |
 | `--log-level` | `PYEUROPEPMC_MCP_LOG_LEVEL` | `INFO` | written to stderr, never stdout |
 
 `stdio` is what process-managed clients like Claude Desktop expect. Use
@@ -78,6 +79,12 @@ Start the server with `--transport streamable-http --host 0.0.0.0 --port 8000`
 (behind whatever auth/TLS termination your deployment requires — the server
 itself does not implement auth) and point any MCP HTTP client at
 `http://<host>:<port>/mcp`.
+
+MCP SDK 2.x checks the `Host` header on the loopback addresses (DNS-rebinding
+protection) and answers HTTP 421 to a name it does not know, so a reverse proxy that
+forwards `Host: mcp.example.org` to `127.0.0.1:8000` needs
+`--allowed-host mcp.example.org` (loopback names stay allowed). SDK 1.x has no such
+option; there, run behind a proxy that rewrites the header.
 
 ## Tools
 
@@ -155,8 +162,9 @@ silently.
   reset its own internal rate limiter, and a fresh LLM agent per call would
   never hit its own analysis cache.
 - **Errors.** A tool signals failure by raising (typically
-  `mcp.server.fastmcp.exceptions.ToolError` for an expected/user-facing
-  condition, e.g. a missing identifier). The SDK turns that into a spec-
+  `ToolError` for an expected/user-facing
+  condition, e.g. a missing identifier; imported from `mcp.server.mcpserver.exceptions`
+  in SDK 2.x and `mcp.server.fastmcp.exceptions` in 1.x). The SDK turns that into a spec-
   compliant `CallToolResult` with `isError: true` — callers can reliably tell
   success from failure without string-sniffing the response text.
 - **Structured content.** Tools return typed Python values (`dict`, `list`,

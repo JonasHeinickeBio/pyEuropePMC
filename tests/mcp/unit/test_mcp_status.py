@@ -14,7 +14,7 @@ import re
 import threading
 from unittest.mock import MagicMock
 
-from mcp.server.fastmcp.exceptions import ToolError  # noqa: F401 - kept for symmetry
+from mcp_wire import hint, schema_of
 import pytest
 
 from pyeuropepmc.mcp import _fulltext as ft, _status as st, server as srv
@@ -310,8 +310,8 @@ class TestEpmcStatusTool:
     def test_the_tool_reads_from_the_network_and_is_read_only(self):
         tools = {t.name: t for t in asyncio.run(srv.mcp.list_tools())}
         ann = tools["epmc_status"].annotations
-        assert ann.readOnlyHint is True
-        assert ann.openWorldHint is True
+        assert hint(ann, "readOnlyHint") is True
+        assert hint(ann, "openWorldHint") is True
 
 
 class TestXmlCacheStats:
@@ -404,22 +404,22 @@ class TestCacheStatusTool:
 
     def test_the_tool_is_local_and_read_only(self):
         tools = {t.name: t for t in asyncio.run(srv.mcp.list_tools())}
-        assert tools["cache_status"].annotations.readOnlyHint is True
-        assert tools["cache_status"].annotations.openWorldHint is False
+        assert hint(tools["cache_status"].annotations, "readOnlyHint") is True
+        assert hint(tools["cache_status"].annotations, "openWorldHint") is False
 
 
 class TestClearCacheTool:
     def test_it_is_not_read_only_and_says_so(self):
         tools = {t.name: t for t in asyncio.run(srv.mcp.list_tools())}
         ann = tools["clear_cache"].annotations
-        assert ann.readOnlyHint is False
-        assert ann.destructiveHint is False
-        assert ann.idempotentHint is True
-        assert ann.openWorldHint is False
+        assert hint(ann, "readOnlyHint") is False
+        assert hint(ann, "destructiveHint") is False
+        assert hint(ann, "idempotentHint") is True
+        assert hint(ann, "openWorldHint") is False
 
     def test_the_scopes_are_a_closed_set(self):
         tools = {t.name: t for t in asyncio.run(srv.mcp.list_tools())}
-        schema = tools["clear_cache"].inputSchema["properties"]["scope"]
+        schema = schema_of(tools["clear_cache"])["properties"]["scope"]
         assert schema["enum"] == ["search", "article", "annotations", "xml", "all"]
 
     @pytest.mark.parametrize(

@@ -4,6 +4,17 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
+### 🔧 Changed
+
+- The MCP server runs on MCP Python SDK 2.x as well as 1.x (`mcp>=1.20.0,<3.0.0`; the lock file
+  now pins 2.3.0). SDK 2.x renamed `FastMCP` to `MCPServer`, moved `ToolError` and `Context`,
+  and moved the HTTP settings from the server object to `run()`; the server imports whichever
+  exists and tool behaviour, names, schemas and `server.json` are unchanged. Dependabot no
+  longer ignores major `mcp` updates. A CI job runs the MCP unit tests against the newest 1.x.
+- New `--allowed-host` option (`PYEUROPEPMC_MCP_ALLOWED_HOSTS`) for the HTTP transports: SDK
+  2.x answers HTTP 421 to a `Host` header it does not know, which breaks a reverse proxy that
+  forwards its public name. Loopback names stay allowed. Not available on SDK 1.x.
+
 ## [3.9.0] - 2026-10-21
 
 > MCP release: enrichment. `enrich_paper` merges Europe PMC, Crossref, OpenAlex, Semantic Scholar and

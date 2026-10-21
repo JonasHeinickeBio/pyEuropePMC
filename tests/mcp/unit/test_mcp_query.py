@@ -12,12 +12,13 @@ import asyncio
 import re
 from unittest.mock import MagicMock
 
-from mcp.server.fastmcp.exceptions import ToolError
+from mcp_wire import hint, schema_of
 import pytest
 
 from pyeuropepmc.core.error_codes import ErrorCodes
 from pyeuropepmc.core.exceptions import APIClientError
 from pyeuropepmc.mcp import _query as qm, server as srv
+from pyeuropepmc.mcp.server import ToolError
 
 
 def _run(coro):
@@ -490,8 +491,8 @@ class TestBuildQueryTool:
     def test_the_tool_is_local_and_read_only(self):
         tools = {t.name: t for t in asyncio.run(srv.mcp.list_tools())}
         for name in ("validate_query", "build_query", "translate_query"):
-            assert tools[name].annotations.readOnlyHint is True
-            assert tools[name].annotations.openWorldHint is False
+            assert hint(tools[name].annotations, "readOnlyHint") is True
+            assert hint(tools[name].annotations, "openWorldHint") is False
 
 
 class TestTranslateQueryTool:
@@ -626,7 +627,7 @@ class TestEvaluateQueryTool:
 
     def test_the_seed_lists_are_bounded_in_the_schema(self):
         tools = {t.name: t for t in asyncio.run(srv.mcp.list_tools())}
-        props = tools["evaluate_query"].inputSchema["properties"]
+        props = schema_of(tools["evaluate_query"])["properties"]
         assert (props["included_pmids"]["minItems"], props["included_pmids"]["maxItems"]) == (
             1,
             200,

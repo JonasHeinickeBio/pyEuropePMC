@@ -68,3 +68,35 @@ jobs:
         # Default addopts (pyproject.toml) already exclude slow/functional/
         # network/benchmark/e2e and disable sockets; keep it simple here.
         run: poetry run pytest -q
+
+  # ---------------------------------------------------------------------------
+  # The server supports MCP Python SDK 1.x and 2.x (see the import shim in
+  # pyeuropepmc/mcp/server.py). The lock file pins 2.x, so every other job tests
+  # 2.x; this one swaps in the newest 1.x and runs the MCP unit tests, so the 1.x
+  # path cannot rot unnoticed.
+  # ---------------------------------------------------------------------------
+  mcp-sdk-1x:
+    name: MCP tests (SDK 1.x)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          lfs: true
+          persist-credentials: false
+
+      - name: Set up Python + Poetry
+        uses: $/.github/actions/setup-python-env
+        with:
+          python-version: '3.10'
+          extras: none
+
+      - name: Replace the locked MCP SDK with the newest 1.x
+        run: |
+          uv pip install --python "$(poetry run which python)" "mcp>=1.20.0,<2.0.0"
+          poetry run python -c "import importlib.metadata as m; v = m.version('mcp'); print('mcp', v); assert v.startswith('1.'), v"
+
+      - name: Run the MCP unit tests
+        run: poetry run pytest tests/mcp/unit -q

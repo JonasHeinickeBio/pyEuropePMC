@@ -10,12 +10,13 @@ from __future__ import annotations
 import asyncio
 from unittest.mock import MagicMock
 
-from mcp.server.fastmcp.exceptions import ToolError
+from mcp_wire import schema_of
 import pytest
 
 from pyeuropepmc.core.error_codes import ErrorCodes
 from pyeuropepmc.core.exceptions import FullTextError
 from pyeuropepmc.mcp import _fulltext as ft, server as srv
+from pyeuropepmc.mcp.server import ToolError
 
 JATS = """<?xml version="1.0"?>
 <article xmlns:xlink="http://www.w3.org/1999/xlink" article-type="research-article"><front>
@@ -403,7 +404,7 @@ class TestGetPaperFulltext:
     @pytest.mark.parametrize("size", [999, 500001])
     def test_max_chars_bounds_are_in_the_schema(self, size):
         tools = {t.name: t for t in asyncio.run(srv.mcp.list_tools())}
-        schema = tools["get_paper_fulltext"].inputSchema["properties"]["max_chars"]
+        schema = schema_of(tools["get_paper_fulltext"])["properties"]["max_chars"]
         assert schema["minimum"] == 1000
         assert schema["maximum"] == 500000
         assert not (schema["minimum"] <= size <= schema["maximum"])

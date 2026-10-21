@@ -12,10 +12,10 @@ from __future__ import annotations
 import asyncio
 from unittest.mock import AsyncMock, MagicMock
 
-from mcp.server.fastmcp.exceptions import ToolError
 import pytest
 
 from pyeuropepmc.mcp import server as srv
+from pyeuropepmc.mcp.server import ToolError
 
 ALL_CACHES = [
     srv._client_cache,
@@ -50,7 +50,7 @@ def _run(coro):
 
 
 def _fake_ctx() -> MagicMock:
-    """A truthy stand-in for mcp.server.fastmcp.Context with an awaitable .info()."""
+    """A truthy stand-in for the MCP SDK Context with an awaitable .info()."""
     ctx = MagicMock()
     ctx.info = AsyncMock()
     return ctx

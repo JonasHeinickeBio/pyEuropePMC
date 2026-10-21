@@ -152,7 +152,7 @@ claude mcp add pyeuropepmc -- uvx pyeuropepmc mcp
 
 Cursor (`.cursor/mcp.json`) and VS Code (`.vscode/mcp.json`, under `"servers"` instead of `"mcpServers"`) take the same `command` and `args`.
 
-The server has no authentication of its own, so keep the HTTP transport on 127.0.0.1 or put an authenticating proxy in front of it. The [MCP server guide](https://github.com/JonasHeinickeBio/pyEuropePMC/blob/main/docs/features/mcp-server.md) walks through the common workflows, and the [tool reference](https://github.com/JonasHeinickeBio/pyEuropePMC/blob/main/src/pyeuropepmc/mcp/README.md) lists every tool. The server is listed in the [MCP Registry](https://registry.modelcontextprotocol.io/) as `io.github.JonasHeinickeBio/pyeuropepmc`.
+The server has no authentication of its own, so keep the HTTP transport on 127.0.0.1 or put an authenticating proxy in front of it; behind a proxy that forwards its public host name, add `--allowed-host mcp.example.org`. The [MCP server guide](https://github.com/JonasHeinickeBio/pyEuropePMC/blob/main/docs/features/mcp-server.md) walks through the common workflows, and the [tool reference](https://github.com/JonasHeinickeBio/pyEuropePMC/blob/main/src/pyeuropepmc/mcp/README.md) lists every tool. The server is listed in the [MCP Registry](https://registry.modelcontextprotocol.io/) as `io.github.JonasHeinickeBio/pyeuropepmc`.
 
 <!-- The MCP Registry confirms this PyPI package belongs to the server by finding the next line in its README. Keep it. -->
 <!-- mcp-name: io.github.JonasHeinickeBio/pyeuropepmc -->

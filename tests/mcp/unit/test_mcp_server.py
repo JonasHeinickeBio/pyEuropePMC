@@ -13,10 +13,11 @@ from importlib.metadata import PackageNotFoundError
 import logging
 from unittest.mock import MagicMock
 
-from mcp.server.fastmcp.exceptions import ToolError
+from mcp_wire import hint, schema_of
 import pytest
 
 from pyeuropepmc.mcp import server as srv
+from pyeuropepmc.mcp.server import ToolError
 
 ALL_CACHES = [
     srv._client_cache,
@@ -303,17 +304,17 @@ class TestToolAnnotationsHelper:
     def test_read_only_open_world_by_default(self):
         ann = srv._ro("Title")
         assert ann.title == "Title"
-        assert ann.readOnlyHint is True
-        assert ann.openWorldHint is True
-        assert ann.idempotentHint is True
+        assert hint(ann, "readOnlyHint") is True
+        assert hint(ann, "openWorldHint") is True
+        assert hint(ann, "idempotentHint") is True
 
     def test_local_flag_flips_open_world(self):
         ann = srv._ro("Title", local=True)
-        assert ann.openWorldHint is False
+        assert hint(ann, "openWorldHint") is False
 
     def test_idempotent_override(self):
         ann = srv._ro("Title", idempotent=False)
-        assert ann.idempotentHint is False
+        assert hint(ann, "idempotentHint") is False
 
 
 class TestToolRegistry:
@@ -374,11 +375,11 @@ class TestToolRegistry:
         tools = asyncio.run(srv.mcp.list_tools())
         for tool in tools:
             assert tool.description
-            assert tool.inputSchema["type"] == "object"
+            assert schema_of(tool)["type"] == "object"
 
     def test_context_parameter_is_hidden_from_schema(self):
         tools = {t.name: t for t in asyncio.run(srv.mcp.list_tools())}
-        assert "ctx" not in tools["unified_search"].inputSchema.get("properties", {})
+        assert "ctx" not in schema_of(tools["unified_search"]).get("properties", {})
 
     def test_unknown_tool_raises(self):
         with pytest.raises(ToolError, match="Unknown tool"):
@@ -392,33 +393,98 @@ class TestToolRegistry:
 
 
 class TestMainEntry:
+    """Flag plumbing to ``mcp.run``. The SDK moved the HTTP settings from the server object
+    (1.x) to ``run()`` (2.x); the server code supports both, and so do these tests."""
+
     @pytest.fixture(autouse=True)
     def _no_real_logging_setup(self, monkeypatch):
         # _configure_logging mutates the root logger (see TestConfigureLogging,
         # which is careful to save/restore it); these tests are only about
         # argument-parsing/flag-plumbing to mcp.run, so skip that side effect.
         monkeypatch.setattr(srv, "_configure_logging", MagicMock())
-        # srv.mcp is a module-level singleton reused for the whole test
-        # session; restore its mutable settings so these tests don't leak
-        # into whatever runs after them.
+        if srv._MCP_SDK_2:
+            yield
+            return
+        # SDK 1.x: srv.mcp is a module-level singleton reused for the whole test
+        # session; restore its mutable settings so these tests don't leak.
         previous_host, previous_port = srv.mcp.settings.host, srv.mcp.settings.port
         yield
         srv.mcp.settings.host, srv.mcp.settings.port = previous_host, previous_port
 
-    def test_applies_flags_and_runs_requested_transport(self, monkeypatch):
+    @pytest.fixture
+    def run(self, monkeypatch):
         run = MagicMock()
         monkeypatch.setattr(srv.mcp, "run", run)
+        return run
 
+    def test_http_transport_gets_host_and_port(self, run):
         srv._main_entry(["--transport", "streamable-http", "--host", "0.0.0.0", "--port", "9000"])
 
-        assert srv.mcp.settings.host == "0.0.0.0"
-        assert srv.mcp.settings.port == 9000
-        run.assert_called_once_with(transport="streamable-http")
+        if srv._MCP_SDK_2:
+            run.assert_called_once_with(
+                transport="streamable-http", host="0.0.0.0", port=9000, transport_security=None
+            )
+        else:
+            assert srv.mcp.settings.host == "0.0.0.0"
+            assert srv.mcp.settings.port == 9000
+            run.assert_called_once_with(transport="streamable-http")
 
-    def test_defaults_to_stdio(self, monkeypatch):
-        run = MagicMock()
-        monkeypatch.setattr(srv.mcp, "run", run)
+    def test_sse_transport_gets_host_and_port(self, run):
+        srv._main_entry(["--transport", "sse", "--port", "9001"])
 
+        if srv._MCP_SDK_2:
+            run.assert_called_once_with(
+                transport="sse", host="127.0.0.1", port=9001, transport_security=None
+            )
+        else:
+            assert srv.mcp.settings.port == 9001
+            run.assert_called_once_with(transport="sse")
+
+    def test_defaults_to_stdio_without_http_options(self, run):
         srv._main_entry([])
+
+        run.assert_called_once_with(transport="stdio")
+
+    @pytest.mark.skipif(not srv._MCP_SDK_2, reason="host rules are an SDK 2.x feature")
+    def test_allowed_hosts_become_transport_security(self, run):
+        srv._main_entry(
+            [
+                "--transport",
+                "streamable-http",
+                "--allowed-host",
+                "mcp.example.org",
+                "--allowed-host",
+                "proxy.internal",
+            ]
+        )
+
+        security = run.call_args.kwargs["transport_security"]
+        assert security.enable_dns_rebinding_protection is True
+        assert security.allowed_hosts == [
+            "127.0.0.1:*",
+            "localhost:*",
+            "[::1]:*",
+            "mcp.example.org",
+            "mcp.example.org:*",
+            "proxy.internal",
+            "proxy.internal:*",
+        ]
+
+    @pytest.mark.skipif(not srv._MCP_SDK_2, reason="host rules are an SDK 2.x feature")
+    def test_allowed_hosts_can_come_from_the_environment(self, run, monkeypatch):
+        monkeypatch.setenv("PYEUROPEPMC_MCP_ALLOWED_HOSTS", "a.example.org,b.example.org")
+
+        srv._main_entry(["--transport", "sse"])
+
+        assert "b.example.org:*" in run.call_args.kwargs["transport_security"].allowed_hosts
+
+    @pytest.mark.skipif(srv._MCP_SDK_2, reason="SDK 1.x has no host rules to set")
+    def test_allowed_host_is_refused_on_sdk_1(self, run):
+        with pytest.raises(SystemExit, match="SDK 2.x"):
+            srv._main_entry(["--transport", "sse", "--allowed-host", "mcp.example.org"])
+        run.assert_not_called()
+
+    def test_stdio_ignores_allowed_hosts(self, run):
+        srv._main_entry(["--allowed-host", "mcp.example.org"])
 
         run.assert_called_once_with(transport="stdio")
