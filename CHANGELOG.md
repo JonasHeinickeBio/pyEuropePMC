@@ -4,6 +4,13 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
+## [4.2.0] - 2026-10-22
+
+> MCP release: search analytics, resources and prompts. `analyze_search` summarises a search
+> without returning its records and labels every metric `exact` or `sample`; papers are
+> attachable as `epmc://paper/...` resources, and three prompts encode literature workflows. The
+> server now has 47 tools.
+
 ### ✨ Features
 
 - MCP resources and prompts (#319). Resource templates `epmc://paper/{pmcid}` (Markdown full
