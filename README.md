@@ -123,6 +123,7 @@ pyeuropepmc benchmark list-datasets
 | **Entities and data** | Genes, chemicals and diseases text-mined from a paper, papers that mention an entity, and the data a paper links to (accession numbers, BioStudies, model-organism databases) |
 | **Citations** | Citing papers, references and citation-graph walking |
 | **Export** | BibTeX, RIS, CSL-JSON, CSV, JSON or Markdown for a search or a list of papers |
+| **Resources and prompts** | `epmc://paper/{pmcid}` (full text), `/references` and `/outline` as attachable resources, and ready workflows for a literature review, a critical appraisal and a citation trace |
 | **Diagnose** | A service-status probe and cache controls |
 | **Local and LLM tools** | A local full-text index, bibliography conversion, and LLM-powered analysis |
 

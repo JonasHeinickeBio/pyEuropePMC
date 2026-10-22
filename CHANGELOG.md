@@ -6,6 +6,19 @@ All notable changes to PyEuropePMC are documented here.
 
 ### ✨ Features
 
+- MCP resources and prompts (#319). Resource templates `epmc://paper/{pmcid}` (Markdown full
+  text), `epmc://paper/{pmcid}/references` (parsed references as JSON, cut at an entry after
+  100,000 characters) and `epmc://paper/{pmcid}/outline` (section titles, block counts and
+  sizes). They run the code of `get_paper_fulltext`, so the open-access check, the XML cache,
+  the 30,000-character limit and the error messages are the tool's; a failure reaches the client
+  with its reason under both SDK generations (2.x shows a client only the message of a
+  `ResourceError`, so the tool's `ToolError` is converted). Prompts `literature_review(topic,
+  years, max_papers)`, `critical_appraisal(pmcid)` and `citation_trace(pmid, direction)` spell out
+  sequences of this server's tools; a test reads every tool and parameter out of the prompt texts
+  and checks them against `list_tools()`. The optional `epmc://search/{query}` resource is not
+  offered: queries contain characters clients encode inconsistently, and `search_papers` takes
+  them as a typed argument.
+
 - New MCP tool `analyze_search` (#316): aggregate statistics about a search without returning its
   records. `by_year` (one `FIRST_PDATE:[Y TO Y]` count per year, at most 60 years plus one
   `before` bucket, with `undated` so that the parts add up to `hit_count`), `open_access` and the

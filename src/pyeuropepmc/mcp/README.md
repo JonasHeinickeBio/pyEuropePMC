@@ -135,6 +135,28 @@ from the tool functions' type hints. This table is written by hand;
 For workflows and the Europe PMC behaviours the tools work around, see the
 [MCP server guide](../../../docs/features/mcp-server.md).
 
+## Resources and prompts
+
+Tools stay the main interface. The server also offers three resource templates and three prompts for clients that support them.
+
+| Resource | Content |
+|---|---|
+| `epmc://paper/{pmcid}` | Markdown full text of an open-access paper, with the same size limit as `get_paper_fulltext` (30,000 characters); a cut text ends with how to get the rest |
+| `epmc://paper/{pmcid}/references` | The parsed reference list as JSON (`reference_count`, `returned`, `truncated`, `references`); cut at an entry after 100,000 characters |
+| `epmc://paper/{pmcid}/outline` | Section titles, block counts and sizes in characters as JSON |
+
+Example: `epmc://paper/PMC3525259`. A resource runs the code of the tool behind it, so it has the same open-access check, XML cache and error messages: a paper that is not open access fails with "PMC... is not Open Access" and a malformed id with "pmcid must look like PMC1234567". They are templates, so `resources/templates/list` shows them and `resources/list` is empty. They go through the same transport as the tools, so whatever protects an HTTP deployment protects them too.
+
+There is no `epmc://search/{query}` resource: a query contains slashes, quotes, brackets and spaces, clients disagree on how to encode them into a URI, and `search_papers` already does the job with a proper schema.
+
+| Prompt | Arguments | Workflow |
+|---|---|---|
+| `literature_review` | `topic`, `years` (`2020` or `2019-2024`, default any), `max_papers` (1 to 100, default 20) | `count_papers`, `search_papers`, screen, `get_paper_fulltext`, a cited review with the counts |
+| `critical_appraisal` | `pmcid` | `get_paper_fulltext` (outline, methods, results), `tag_paper_sentences` for limitations, `enrich_paper`, a verdict on design, sample, bias and limitations |
+| `citation_trace` | `pmid`, `direction` (`both`, `forward` or `backward`, default `both`) | `get_paper_details`, `get_paper_references`, `get_paper_citations`, the most cited neighbours, `citation_snowball` for `both` |
+
+A test reads every tool and parameter out of the prompt texts and checks them against `list_tools()`, so a renamed tool or parameter fails the build instead of the model.
+
 ### Tool availability
 
 A tool whose feature module isn't importable, or whose optional runtime

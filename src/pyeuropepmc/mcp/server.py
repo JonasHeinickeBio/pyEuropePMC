@@ -19,6 +19,15 @@ Environment variables (fallbacks for the CLI flags below):
     PYEUROPEPMC_MCP_PORT        bind port for sse/streamable-http (default: 8000)
     PYEUROPEPMC_MCP_LOG_LEVEL   DEBUG | INFO | WARNING | ERROR (default: INFO)
 
+Resources (templates; a client attaches them without a tool call):
+        epmc://paper/{pmcid}             — Markdown full text, same limits as get_paper_fulltext
+        epmc://paper/{pmcid}/references  — Parsed reference list as JSON
+        epmc://paper/{pmcid}/outline     — Section titles, block counts and sizes as JSON
+
+Prompts (workflows that name this server's own tools):
+        literature_review(topic, years, max_papers)   critical_appraisal(pmcid)
+        citation_trace(pmid, direction)
+
 Tools:
     Core:
         unified_search       — Search across PubMed, arXiv, Semantic Scholar, OpenAlex,
@@ -83,9 +92,9 @@ from __future__ import annotations
 import argparse
 import asyncio
 from collections import Counter
-from collections.abc import Callable
+from collections.abc import Awaitable, Callable
 import datetime
-from functools import partial
+from functools import partial, wraps
 from importlib.metadata import PackageNotFoundError, version as _pkg_version
 from importlib.util import find_spec
 import json
@@ -125,6 +134,7 @@ from pyeuropepmc.mcp import (
     _mesh as mm,
     _openaccess as oa,
     _pico as pc,
+    _prompts as pr,
     _query as qm,
     _rhetoric as rh,
     _status as st,
@@ -217,8 +227,10 @@ logger.addHandler(logging.NullHandler())
 # ``mcp.server.mcpserver``; 1.x has ``mcp.server.fastmcp``. Both are supported: only the
 # imports, the way the version is set and the way the HTTP transports are configured differ.
 try:
+    from mcp import MCPError
     from mcp.server.mcpserver import Context, MCPServer
-    from mcp.server.mcpserver.exceptions import ToolError
+    from mcp.server.mcpserver.exceptions import ResourceError, ToolError
+    from mcp.types import INVALID_PARAMS
 
     _MCP_SDK_2 = True
 except ImportError:  # pragma: no cover - exercised by the "mcp 1.x" CI job
@@ -226,7 +238,10 @@ except ImportError:  # pragma: no cover - exercised by the "mcp 1.x" CI job
         Context,
         FastMCP as MCPServer,
     )
-    from mcp.server.fastmcp.exceptions import ToolError  # type: ignore[no-redef]
+    from mcp.server.fastmcp.exceptions import (  # type: ignore[no-redef]
+        ResourceError,
+        ToolError,
+    )
 
     _MCP_SDK_2 = False
 
@@ -2887,6 +2902,166 @@ async def analyze_search(
         response["sample_note"] = an.sample_note(len(records), total, sort)
     response["metrics"] = {m: results[m] for m in chosen}
     return response
+
+
+# ---------------------------------------------------------------------------
+# Resources and prompts
+# ---------------------------------------------------------------------------
+#
+# Tools stay the primary interface. A resource is a paper a client can attach by URI without
+# a model-generated tool call; it runs the same code as the tool behind it, so it has the same
+# open-access check, XML cache, size limit and error messages. A prompt is a template for a
+# workflow whose steps are this server's own tools (see ``_prompts``). Both go through the
+# same transport as the tools, so whatever protects an HTTP deployment protects them too.
+
+#: References are returned whole up to this many characters of JSON, then cut at an entry.
+RESOURCE_REFERENCES_MAX_CHARS = 100_000
+
+
+def _resource_errors(
+    read: Callable[..., Awaitable[str]],
+) -> Callable[..., Awaitable[str]]:
+    """Let a resource fail with the message of the tool operation behind it.
+
+    The SDK hands a client the text of a ``ResourceError`` only; any other exception, a
+    ``ToolError`` included, reaches it as a generic "error reading resource". The decorated
+    function keeps its signature, which is how the SDK finds the URI template's parameters.
+    """
+
+    @wraps(read)
+    async def wrapper(*args: Any, **kwargs: Any) -> str:
+        try:
+            return await read(*args, **kwargs)
+        except ToolError as exc:
+            raise ResourceError(str(exc)) from exc
+
+    return wrapper
+
+
+def _resource_pmcid(pmcid: str) -> str:
+    match = _PMC_ID_RE.match(pmcid.strip())
+    if not match:
+        raise ToolError(f"pmcid must look like PMC1234567, got {pmcid!r}")
+    return f"PMC{match.group(1)}"
+
+
+@mcp.resource(
+    "epmc://paper/{pmcid}",
+    name="paper_fulltext",
+    title="Paper full text",
+    description="Markdown full text of an open-access paper, cut at 30,000 characters like "
+    "get_paper_fulltext; the end of a cut text says how to get the rest.",
+    mime_type="text/markdown",
+)
+@_resource_errors
+async def paper_fulltext_resource(pmcid: str) -> str:
+    ident = _resource_pmcid(pmcid)
+    paper = await get_paper_fulltext(pmcid=ident)
+    title = paper.get("title") or ident
+    text = f"# {title}\n\n{paper['content']}"
+    if paper["truncated"]:
+        text += (
+            f"\n\n---\nShown {paper['returned_chars']} of {paper['total_chars']} characters. "
+            f'Call `get_paper_fulltext(pmcid="{ident}", sections=["..."])` for a section.'
+        )
+    return text
+
+
+@mcp.resource(
+    "epmc://paper/{pmcid}/references",
+    name="paper_references",
+    title="Paper references",
+    description="The parsed reference list of an open-access paper as JSON (DOI and PMID per "
+    "entry where the paper gives them).",
+    mime_type="application/json",
+)
+@_resource_errors
+async def paper_references_resource(pmcid: str) -> str:
+    ident = _resource_pmcid(pmcid)
+    _require_available(FULLTEXT_AVAILABLE, "FullTextXMLParser")
+    resolved, _record = await _locate_fulltext(ident)
+    xml = await _fulltext_xml(resolved)
+
+    def _build() -> str:
+        refs = [_to_serializable(r) for r in FullTextXMLParser(xml).extract_references()]
+        kept, truncated = ft.take_references(refs, RESOURCE_REFERENCES_MAX_CHARS)
+        return json.dumps(
+            {
+                "pmcid": resolved,
+                "reference_count": len(refs),
+                "returned": len(kept),
+                "truncated": truncated,
+                "references": kept,
+            },
+            ensure_ascii=False,
+        )
+
+    try:
+        return await _run_blocking(_build)
+    except ParsingError as exc:
+        raise ToolError(str(exc)) from exc
+
+
+@mcp.resource(
+    "epmc://paper/{pmcid}/outline",
+    name="paper_outline",
+    title="Paper outline",
+    description="Section titles, block counts and sizes in characters of an open-access paper "
+    "as JSON: enough to choose which sections to read.",
+    mime_type="application/json",
+)
+@_resource_errors
+async def paper_outline_resource(pmcid: str) -> str:
+    paper = await get_paper_fulltext(pmcid=_resource_pmcid(pmcid), format="outline")
+    return json.dumps(
+        {
+            "pmcid": paper["pmcid"],
+            "title": paper["title"],
+            "total_chars": sum(section["chars"] for section in paper["content"]),
+            "sections": paper["content"],
+        },
+        ensure_ascii=False,
+    )
+
+
+def _prompt_text(build: Callable[[], str]) -> str:
+    """The prompt's text; an argument that does not fit is reported with its reason (SDK 2.x
+    shows a client only the message of an ``MCPError``, SDK 1.x that of any exception)."""
+    try:
+        return build()
+    except ValueError as exc:
+        if _MCP_SDK_2:
+            raise MCPError(code=INVALID_PARAMS, message=str(exc)) from exc
+        raise
+
+
+@mcp.prompt(
+    name="literature_review",
+    title="Literature review",
+    description="Size a topic, search it, screen the results, read the selected papers and "
+    "write a cited review.",
+)
+def literature_review_prompt(topic: str, years: str = "", max_papers: int = 20) -> str:
+    return _prompt_text(lambda: pr.literature_review(topic, years, max_papers))
+
+
+@mcp.prompt(
+    name="critical_appraisal",
+    title="Critical appraisal",
+    description="Appraise the design, sample, bias and limitations of one open-access paper.",
+)
+def critical_appraisal_prompt(pmcid: str) -> str:
+    return _prompt_text(lambda: pr.critical_appraisal(pmcid))
+
+
+@mcp.prompt(
+    name="citation_trace",
+    title="Citation trace",
+    description="Follow the references and citations of a paper and inspect its most cited "
+    "neighbours (direction: both, forward or backward).",
+)
+def citation_trace_prompt(pmid: str, direction: str = "both") -> str:
+    return _prompt_text(lambda: pr.citation_trace(pmid, direction))
 
 
 # ---------------------------------------------------------------------------
