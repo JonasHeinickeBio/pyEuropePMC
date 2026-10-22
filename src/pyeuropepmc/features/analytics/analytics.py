@@ -899,7 +899,9 @@ def _normalize_country(country: str) -> str:
     if not country:
         return ""
 
-    country = country.strip().title()
+    # The country is the last comma-separated part of an affiliation, which ends in a full stop
+    # ("Ethiopia.", "U.S.A."): without the dots "USA" and "Usa." would be different countries.
+    country = country.replace(".", "").strip().title()
 
     # Common country name mappings
     country_mappings = {

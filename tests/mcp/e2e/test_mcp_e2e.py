@@ -106,6 +106,35 @@ class TestMCPToolsAgainstRealEuropePMC:
             assert len(structured(found)["result"]) == 2
             assert structured(counted)["hit_count"] > 2
 
+    async def test_analyze_search_year_counts_equal_the_count_papers_total(self):
+        async with _server_session() as (session, _init_result):
+            args = {"query": "malaria", "date_from": "2019", "date_to": "2021", "source": "MED"}
+            counted = await session.call_tool("count_papers", args)
+            analysed = await session.call_tool(
+                "analyze_search",
+                {**args, "metrics": ["by_year", "open_access", "journals"], "limit": 5},
+            )
+            assert is_error(counted) is False
+            assert is_error(analysed) is False
+            total = structured(counted)["hit_count"]
+            data = structured(analysed)
+            assert data["hit_count"] == total
+            assert (data["limit"], data["records_read"]) == (5, 5)
+
+            years = data["metrics"]["by_year"]
+            assert years["basis"] == "exact"
+            assert [y["year"] for y in years["years"]] == [2019, 2020, 2021]
+            assert sum(y["count"] for y in years["years"]) + years["undated"] == total
+            assert years["undated"] == 0 and years["before"] is None
+
+            oa = data["metrics"]["open_access"]
+            assert oa["basis"] == "exact"
+            assert oa["open_access"] + oa["not_open_access"] == total
+
+            # five records of thousands: a sample, and it says so
+            assert data["metrics"]["journals"]["basis"] == "sample"
+            assert f"first 5 of {total}" in data["sample_note"]
+
     async def test_get_paper_citations_and_references(self):
         async with _server_session() as (session, _init_result):
             cited = await session.call_tool(

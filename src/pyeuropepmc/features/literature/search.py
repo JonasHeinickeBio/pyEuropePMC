@@ -23,6 +23,10 @@ class SearchClient(BaseAPIClient):
     Supports optional response caching to improve performance and reduce API load.
     """
 
+    # The MCP server shares one instance between concurrent tool calls (and ``analyze_search``
+    # issues one count per year from several threads), so its requests do not overlap.
+    serialize_requests = True
+
     def __init__(
         self,
         rate_limit_delay: float = 1.0,

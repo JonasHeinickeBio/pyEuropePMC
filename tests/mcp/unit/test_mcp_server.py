@@ -324,6 +324,7 @@ class TestToolRegistry:
         "unified_search",
         "search_papers",
         "count_papers",
+        "analyze_search",
         "get_paper_details",
         "search_authors",
         "get_paper_citations",
