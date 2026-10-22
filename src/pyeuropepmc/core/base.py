@@ -1,4 +1,6 @@
+import contextlib
 import logging
+import threading
 import time
 from typing import Any
 
@@ -75,10 +77,16 @@ _retry_on_transport_error = backoff.on_exception(
 class BaseAPIClient:
     BASE_URL: str = "https://www.ebi.ac.uk/europepmc/webservices/rest/"
     DEFAULT_TIMEOUT: int = 15
+    #: One GET exchange at a time per client. ``requests.Session`` is not documented as safe for
+    #: concurrent use (cookie jar, redirect cache), so a client that several threads share, as
+    #: the MCP server's search client is, sets this. The politeness delay after a request stays
+    #: outside the lock, so waiting overlaps between threads.
+    serialize_requests: bool = False
     logger = logging.getLogger(__name__)
 
     def __init__(self, rate_limit_delay: float = 1.0) -> None:
         self.rate_limit_delay: float = rate_limit_delay
+        self._request_lock = threading.Lock()
         self.session: requests.Session | None = network.new_session()
 
         self.session.headers.update({"User-Agent": get_user_agent()})
@@ -108,9 +116,11 @@ class BaseAPIClient:
         exceptions, so the translation into :class:`APIClientError` has to
         happen in the caller.
         """
-        response: requests.Response = session.get(
-            url, params=params, timeout=timeout, stream=stream
-        )
+        guard = self._request_lock if self.serialize_requests else contextlib.nullcontext()
+        with guard:
+            response: requests.Response = session.get(
+                url, params=params, timeout=timeout, stream=stream
+            )
         response.raise_for_status()
         return response
 

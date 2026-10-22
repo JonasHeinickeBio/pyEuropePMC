@@ -21,6 +21,10 @@ All notable changes to PyEuropePMC are documented here.
 
 ### 🐛 Bug Fixes
 
+- `SearchClient` sends one request at a time (`serialize_requests`): its `requests.Session` is
+  shared by the MCP server's concurrent tool calls and by the per-year counts of
+  `analyze_search`, and a session is not documented as safe for concurrent use. The delay after
+  a request stays outside the lock, so waiting still overlaps (10 yearly counts: 6.8 s live).
 - `geographic_analysis`: a country written with full stops (`USA.`, `U.S.A.`, `U.K.`) was counted
   as a country of its own and never reached the name mapping, so `Usa.` and `United States`
   were two countries. The dots are dropped before the name is mapped.
