@@ -1075,3 +1075,15 @@ class TestFulltextAvailabilityListBranch:
         assert result["total_papers"] == 3
         # hasFullText='Y' should count as fulltext available even without hasPDF/inPMC/inEPMC
         assert result["has_fulltext_api_count"] == 2
+
+
+class TestNormalizeCountry:
+    @pytest.mark.parametrize(
+        ("written", "country"),
+        [("USA.", "United States"), ("U.S.A.", "United States"), ("U.K.", "United Kingdom"),
+         ("Ethiopia.", "Ethiopia"), ("Uk", "United Kingdom")],
+    )  # fmt: skip
+    def test_a_full_stop_does_not_make_a_new_country(self, written, country):
+        from pyeuropepmc.features.analytics.analytics import _normalize_country
+
+        assert _normalize_country(written) == country

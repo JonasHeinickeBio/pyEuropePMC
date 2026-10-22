@@ -25,6 +25,8 @@ Tools:
                                 ClinicalTrials.gov (auto-deduped)
         search_papers        — [Legacy] single-source Europe PMC search
         count_papers         — Hit count for a query (with the same filters)
+        analyze_search       — Years, citations, journals, authors, types, countries, open access,
+                                funders of a search, each labelled exact or sample
         get_paper_details    — Paper metadata by ID (via Europe PMC)
         search_authors       — Author search (via Europe PMC)
 
@@ -85,6 +87,7 @@ from collections.abc import Callable
 import datetime
 from functools import partial
 from importlib.metadata import PackageNotFoundError, version as _pkg_version
+from importlib.util import find_spec
 import json
 import logging
 import os
@@ -112,6 +115,7 @@ from pyeuropepmc.core.exceptions import (
 from pyeuropepmc.features.literature.annotations import AnnotationsClient
 from pyeuropepmc.features.literature.article import ArticleClient
 from pyeuropepmc.mcp import (
+    _analytics as an,
     _annotations as ann,
     _batch as bm,
     _enrich as en,
@@ -174,6 +178,10 @@ try:
     FIGURE_EXTRACTOR_AVAILABLE = True
 except ImportError:
     FIGURE_EXTRACTOR_AVAILABLE = False
+
+# analyze_search computes most of its metrics with pandas and numpy (the `analytics` extra); the
+# counted ones (by_year, open_access, citation thresholds) need neither.
+ANALYTICS_AVAILABLE = find_spec("pandas") is not None and find_spec("numpy") is not None
 
 # LLM tools: need the `agentic` extra. Without LangChain the client imports,
 # disables itself and the tools returned empty analyses instead of an error.
@@ -2728,6 +2736,157 @@ async def mesh_expand(
         snap = mm.snapshot()
         result["snapshot"] = {"built": snap.built, "headings": len(snap.descriptors)}
     return result
+
+
+# ---------------------------------------------------------------------------
+# Aggregate analytics
+# ---------------------------------------------------------------------------
+
+
+def _search_edge(client: SearchClient) -> an.Edge:
+    """The first publication year of the oldest or newest record of a query."""
+
+    def edge(query: str, order: str) -> int | None:
+        rows = client.search_all(
+            query,
+            page_size=1,
+            max_results=1,
+            resultType="lite",
+            sort=f"FIRST_PDATE_D {order}",
+        )
+        return an.year_of(_as_dict(rows[0])) if rows else None
+
+    return edge
+
+
+def _counted_metrics(
+    chosen: list[str], query: str, total: int, client: SearchClient
+) -> dict[str, dict[str, Any]]:
+    """The metrics Europe PMC counts for us: exact whatever the size of the result set."""
+    count = client.get_hit_count
+    out: dict[str, dict[str, Any]] = {}
+    if "by_year" in chosen:
+        out["by_year"] = an.year_counts(query, total, count, _search_edge(client))
+    if "open_access" in chosen:
+        out["open_access"] = an.open_access_counts(query, total, count)
+    return out
+
+
+def _record_metrics(
+    chosen: list[str],
+    records: list[dict[str, Any]],
+    total: int,
+    top_n: int,
+    query: str,
+    client: SearchClient,
+) -> dict[str, dict[str, Any]]:
+    """The metrics read off fetched records: ``sample`` unless the records are the whole result."""
+    complete = len(records) >= total
+    out: dict[str, dict[str, Any]] = {}
+    for metric in (m for m in chosen if m in an.FROM_RECORDS):
+        entry: dict[str, Any] = {
+            "basis": "exact" if complete else "sample",
+            "records": len(records),
+            **an.summarise(metric, records, top_n),
+        }
+        if metric == "citations":
+            entry["thresholds"] = an.citation_thresholds(query, total, client.get_hit_count)
+        out[metric] = entry
+    return out
+
+
+@mcp.tool(annotations=_ro("Analyze a search"))
+async def analyze_search(
+    query: Annotated[str, Field(description="Search query")],
+    metrics: Annotated[
+        list[str] | None,
+        Field(
+            description="What to compute, any of: by_year, citations, journals, authors, types, "
+            "countries, open_access, funders. Default: all of them."
+        ),
+    ] = None,
+    limit: Annotated[
+        int,
+        Field(
+            description="Records read for the metrics that cannot be counted "
+            "(citations statistics, journals, authors, types, countries, funders)",
+            ge=1,
+            le=1000,
+        ),
+    ] = 500,
+    top_n: Annotated[
+        int, Field(description="Entries in each ranking (journals, authors, ...)", ge=1, le=100)
+    ] = 10,
+    sort: Annotated[
+        str, Field(description="Order of the records read, e.g. 'CITED desc' (default: relevance)")
+    ] = "",
+    date_from: Annotated[
+        str, Field(description="First publication date, from (YYYY, YYYY-MM or YYYY-MM-DD)")
+    ] = "",
+    date_to: Annotated[
+        str, Field(description="First publication date, to (YYYY, YYYY-MM or YYYY-MM-DD)")
+    ] = "",
+    open_access: Annotated[bool, Field(description="Only open-access articles")] = False,
+    has_fulltext: Annotated[bool, Field(description="Only articles with full text")] = False,
+    source: Annotated[
+        str, Field(description="Restrict to one source, e.g. MED, PMC or PPR (preprints)")
+    ] = "",
+) -> dict[str, Any]:
+    """Aggregate statistics about a search without returning its records. Every metric says
+    where it comes from in `basis`: `exact` is counted by Europe PMC over all `hit_count`
+    records (`by_year`: one count per year; `open_access`; the `thresholds` of `citations`),
+    `sample` is computed from the first `limit` records of the search and describes only those
+    (`journals`, `authors`, `types`, `countries`, `funders` and the `citations` statistics).
+    When `limit` covers the whole result, those are `exact` too. The sample metrics need
+    `pip install pyeuropepmc[analytics]`."""
+    try:
+        chosen = an.check_metrics(metrics)
+    except ValueError as exc:
+        raise ToolError(str(exc)) from exc
+    from_records = [m for m in chosen if m in an.FROM_RECORDS]
+    if from_records:
+        _require_available(ANALYTICS_AVAILABLE, "Analytics", "analytics")
+    client = _get_client()
+    full_query = _with_filters(
+        query,
+        date_from=date_from,
+        date_to=date_to,
+        open_access=open_access,
+        has_fulltext=has_fulltext,
+        source=source,
+    )
+    try:
+        total = await _run_blocking(client.get_hit_count, full_query)
+        records: list[dict[str, Any]] = []
+        if from_records and total:
+            kwargs: dict[str, Any] = {
+                "page_size": min(limit, 1000),
+                "max_results": limit,
+                "resultType": "core" if an.NEEDS_CORE & set(chosen) else "lite",
+            }
+            if sort:
+                kwargs["sort"] = sort
+            fetched = await _run_blocking(client.search_all, full_query, **kwargs)
+            records = [_as_dict(r) for r in fetched]
+        results = await _run_blocking(_counted_metrics, chosen, full_query, total, client)
+        if from_records:
+            results.update(
+                await _run_blocking(
+                    _record_metrics, chosen, records, total, top_n, full_query, client
+                )
+            )
+    except EuropePMCError as exc:
+        raise ToolError(str(exc)) from exc
+    response: dict[str, Any] = {
+        "query": full_query,
+        "hit_count": total,
+        "limit": limit,
+        "records_read": len(records),
+    }
+    if from_records and len(records) < total:
+        response["sample_note"] = an.sample_note(len(records), total, sort)
+    response["metrics"] = {m: results[m] for m in chosen}
+    return response
 
 
 # ---------------------------------------------------------------------------

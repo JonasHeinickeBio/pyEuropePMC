@@ -4,6 +4,27 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
+### ✨ Features
+
+- New MCP tool `analyze_search` (#316): aggregate statistics about a search without returning its
+  records. `by_year` (one `FIRST_PDATE:[Y TO Y]` count per year, at most 60 years plus one
+  `before` bucket, with `undated` so that the parts add up to `hit_count`), `open_access` and the
+  citation `thresholds` (`CITED:[n TO *]`) are counted by Europe PMC over the whole result set and
+  labelled `basis: exact`. `journals`, `authors`, `types`, `countries`, `funders` and the
+  `citations` statistics are computed from the first `limit` records (default 500, at most 1,000;
+  `sort` sets the order) with the library's analytics functions and labelled `basis: sample`
+  with a `sample_note`; they are `exact` only when `limit` covers the whole result. The response
+  always carries `hit_count`, `limit` and `records_read`, and holds plain JSON, never a pandas
+  object. The sample metrics need the `analytics` extra and say so before any request is made;
+  the counted ones work in a core install. It takes the filters of `count_papers`. The server now
+  has 47 tools.
+
+### 🐛 Bug Fixes
+
+- `geographic_analysis`: a country written with full stops (`USA.`, `U.S.A.`, `U.K.`) was counted
+  as a country of its own and never reached the name mapping, so `Usa.` and `United States`
+  were two countries. The dots are dropped before the name is mapped.
+
 ## [4.1.0] - 2026-10-22
 
 > MCP release: sentence roles. `tag_paper_sentences` groups the body sentences of a paper by what

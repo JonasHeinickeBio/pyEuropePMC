@@ -23,6 +23,7 @@ Two tools need configuration. `find_open_access` reads `UNPAYWALL_EMAIL` (Unpayw
 | Check a query before running it | `validate_query`, then `count_papers` |
 | Write a query from parts | `build_query` |
 | Turn a research question into a query | `pico_decompose` (PICO, PICOS, PICOT, SPIDER), then `mesh_expand` |
+| See how a search is distributed over years, journals, authors, countries, funders and open access | `analyze_search` (exact counts where Europe PMC can count, a labelled sample otherwise) |
 | Run the same search on PubMed or another database | `translate_query` |
 | Test a query against papers you already know | `evaluate_query` |
 | Search | `search_papers` (Europe PMC), `unified_search` (several sources, duplicates merged), `search_authors` |
@@ -80,6 +81,27 @@ Measured on 36 gold questions (`tests/fixtures/pico`, `benchmarks/evaluate_pico_
 The rules never extracted text that is not in the question and never filled an element the question leaves out (0 of 46 unstated elements on the three sets). The second set was written by the same person as the rules, so it shows that the patterns are not fitted to the first set, not how it fares on questions from elsewhere; the third set is the realistic warning: outside the known phrasings fewer than half of the elements are found. The older parser takes the rest of the sentence for each element, so its elements overlap and its query contains words such as `does` and `with`; the MCP tool does not use it.
 
 `mesh_expand` returns, for each term, the MeSH descriptor (ID, heading, tree numbers), its entry terms and a ready fragment such as `(MESH:"Diabetes Mellitus, Type 2" OR "Diabetes Mellitus, Type 2" OR "type 2 diabetes" OR "NIDDM" ...)`, and joins the fragments with AND (or OR, `combine="or"`) into a query that is checked like `validate_query`. By default it works offline from a snapshot of 244 common clinical headings (conditions, drugs, interventions, populations, outcomes and study designs) taken from NLM's published MeSH, with entry terms and tree numbers as NLM lists them. A term that is not in the snapshot comes back with `matched: false` and is searched as written; nothing is guessed. `use_api=true` asks the NLM MeSH service instead (up to four requests per term, so it needs the network and takes longer) and covers all of MeSH; a request that fails, or a term not reached within `time_budget` (30 seconds for the whole call, 2 to 120), is reported for that term and does not fail the call. Europe PMC's `MESH:` field is much narrower than PubMed's MeSH index (3,477 hits for `MESH:"Diabetes Mellitus, Type 2"` against 561,715 for the phrase `"type 2 diabetes"`), which is why each fragment also searches the heading and the entry terms as phrases. `scripts/build_mesh_snapshot.py` rebuilds the snapshot from the NLM service.
+
+### Aggregates over a search
+
+```text
+analyze_search  query="malaria", date_from="2015", date_to="2024"
+analyze_search  query="CRISPR AND TITLE:therapy", metrics=["by_year", "open_access"]
+analyze_search  query="malaria", metrics=["journals", "funders"], limit=1000, sort="CITED desc"
+```
+
+`analyze_search` answers "how is this search distributed?" without returning thousands of records. Every metric says in `basis` where its numbers come from, because Europe PMC can count some things over the whole result set and the rest has to be read off records:
+
+| Metric | `basis` | How |
+|---|---|---|
+| `by_year` | `exact` | One count per first-publication year (`FIRST_PDATE:[Y TO Y]`), from the oldest to the newest record. A span of more than 60 years is counted for its latest 60 years plus one `before` bucket. `undated` is what the years do not account for, so years + `before` + `undated` is `hit_count` |
+| `open_access` | `exact` | Open-access and other records, and the share |
+| `citations` `thresholds` | `exact` | Records cited at least 1, 10, 100 and 1,000 times (`CITED:[n TO *]`) |
+| `citations` `statistics`, `journals`, `authors`, `types`, `countries`, `funders` | `sample` | Computed with the library's analytics functions from the first `limit` records of the search, in relevance order or the order `sort` gives. They describe those records only: the journals of the first 500 hits are not the journals of 120,000 |
+
+When `limit` is at least `hit_count` the records are the whole result and the sample metrics are `exact` too. Otherwise the response has a `sample_note` that says how many records of how many were read. On a live search for `malaria` from 2015 to 2024 (22 October 2026), `hit_count` was 123,390, `by_year` summed to exactly 123,390 and 89,994 records were open access, while the sample of 200 records had 42 articles in *Malaria Journal*: a statement about those 200 records, not about the decade.
+
+The sample metrics need `pip install "pyeuropepmc[analytics]"` (pandas and numpy); without it the call fails before any request and says so, while `by_year` and `open_access` work in a core install. `countries` takes the last comma-separated part of each affiliation, so a record without an affiliation is not counted and a few countries may be misread; `types` counts a record once per type it has, and Europe PMC types a record differently by source (`Journal Article` for MEDLINE records, `research-article` for PMC ones). `lite` records are read unless `countries` or `funders` is asked for, which need `core` records.
 
 ### Search to reference manager
 
@@ -216,6 +238,7 @@ A failed call comes back with `isError: true` and a message that names the cause
 
 | Tool | Limit |
 |---|---|
+| `analyze_search` | `limit` 1 to 1,000 records (500 by default) for the sample metrics; `top_n` 1 to 100; one count request per year for `by_year`, at most 61 |
 | `get_papers_batch` | 100 identifiers per call, looked up 50 at a time |
 | `get_papers_fulltext_batch` | 20 papers, within `max_chars_per_paper` and `max_total_chars` |
 | `evaluate_query` | 200 included and 200 excluded PMIDs |
