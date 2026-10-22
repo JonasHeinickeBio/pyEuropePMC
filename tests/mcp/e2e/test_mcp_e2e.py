@@ -224,6 +224,106 @@ class TestMCPFullTextAgainstRealEuropePMC:
             assert structured(figures)["figure_count"] >= 3
 
 
+class TestMCPResourcesAndPromptsOverStdio:
+    PMCID = "PMC3525259"
+
+    @staticmethod
+    def _text(result) -> str:
+        return "".join(c.get("text", "") for c in wire(result)["contents"])
+
+    @staticmethod
+    def _prompt(result) -> str:
+        return "\n".join(m["content"]["text"] for m in wire(result)["messages"])
+
+    async def test_the_paper_templates_are_listed(self):
+        async with _server_session() as (session, _init_result):
+            templates = wire(await session.list_resource_templates())["resourceTemplates"]
+            assert {t["uriTemplate"] for t in templates} == {
+                "epmc://paper/{pmcid}",
+                "epmc://paper/{pmcid}/references",
+                "epmc://paper/{pmcid}/outline",
+            }
+            assert wire(await session.list_resources())["resources"] == []
+
+    async def test_reading_the_three_resources_matches_the_tool(self):
+        async with _server_session() as (session, _init_result):
+            tool = structured(await session.call_tool("get_paper_fulltext", {"pmcid": self.PMCID}))
+            full = await session.read_resource(f"epmc://paper/{self.PMCID}")
+            assert wire(full)["contents"][0]["mimeType"] == "text/markdown"
+            text = self._text(full)
+            assert text.startswith("# ") and tool["content"] in text
+            assert len(text) < 31_000  # the tool's default limit holds for the resource
+
+            outline = json.loads(
+                self._text(await session.read_resource(f"epmc://paper/{self.PMCID}/outline"))
+            )
+            assert "Conclusions" in [s["title"] for s in outline["sections"]]
+
+            refs_result = await session.read_resource(f"epmc://paper/{self.PMCID}/references")
+            assert wire(refs_result)["contents"][0]["mimeType"] == "application/json"
+            refs = json.loads(self._text(refs_result))
+            assert refs["reference_count"] == tool["reference_count"] > 0
+            assert refs["returned"] == len(refs["references"]) and refs["truncated"] is False
+
+    async def test_a_paper_without_open_access_fails_with_the_tools_reason(self):
+        async with _server_session() as (session, _init_result):
+            with pytest.raises(Exception, match="not Open Access"):
+                await session.read_resource("epmc://paper/PMC6999107")
+            with pytest.raises(Exception, match="pmcid must look like"):
+                await session.read_resource("epmc://paper/notanid/outline")
+
+    async def test_the_prompts_render_with_and_without_optional_arguments(self):
+        async with _server_session() as (session, _init_result):
+            names = {p["name"] for p in wire(await session.list_prompts())["prompts"]}
+            assert names == {"literature_review", "critical_appraisal", "citation_trace"}
+
+            plain = self._prompt(
+                await session.get_prompt("literature_review", {"topic": "long covid"})
+            )
+            assert "any year" in plain and "at most 20 papers" in plain
+            narrowed = self._prompt(
+                await session.get_prompt(
+                    "literature_review",
+                    {"topic": "long covid", "years": "2021-2024", "max_papers": "8"},
+                )
+            )
+            assert (
+                'date_from="2021", date_to="2024"' in narrowed and "at most 8 papers" in narrowed
+            )
+
+            appraisal = self._prompt(
+                await session.get_prompt("critical_appraisal", {"pmcid": self.PMCID})
+            )
+            assert f'pmcid="{self.PMCID}"' in appraisal
+            forward = self._prompt(
+                await session.get_prompt(
+                    "citation_trace", {"pmid": "22745249", "direction": "forward"}
+                )
+            )
+            assert "get_paper_citations(" in forward and "get_paper_references(" not in forward
+
+            with pytest.raises(Exception, match="direction must be one of"):
+                await session.get_prompt("citation_trace", {"pmid": "1", "direction": "up"})
+
+    async def test_every_tool_a_prompt_names_is_served(self):
+        from pyeuropepmc.mcp import _prompts
+
+        async with _server_session() as (session, _init_result):
+            schemas = {
+                t.name: set(schema_of(t)["properties"]) for t in (await session.list_tools()).tools
+            }
+            rendered = [
+                await session.get_prompt("literature_review", {"topic": "x", "years": "2020"}),
+                await session.get_prompt("critical_appraisal", {"pmcid": self.PMCID}),
+                await session.get_prompt("citation_trace", {"pmid": "22745249"}),
+            ]
+            for result in rendered:
+                calls = _prompts.tool_calls(self._prompt(result))
+                assert calls
+                for tool, params in calls:
+                    assert tool in schemas and set(params) <= schemas[tool], (tool, params)
+
+
 @pytest.mark.network
 class TestMCPAnnotationsAgainstRealEuropePMC:
     PMID = "16004729"  # a review with several hundred text-mined mentions

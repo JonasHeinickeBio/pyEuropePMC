@@ -179,6 +179,20 @@ paper_figures           pmcid="PMC5321187"
 
 `citation_snowball` walks the citation graph forwards, backwards or both from one paper, with limits per level and a minimum citation count. `get_paper_citations` and `get_paper_references` return one step.
 
+## Resources and prompts
+
+Clients that support MCP resources can attach a paper without asking the model to call a tool: `epmc://paper/PMC3525259` is its Markdown full text, `epmc://paper/PMC3525259/outline` its sections with sizes and `epmc://paper/PMC3525259/references` its parsed reference list. Each runs the same code as `get_paper_fulltext`, so an article that is not open access fails with the same "not Open Access" message, and the text is cut at the same 30,000 characters (the end of a cut text names the call that returns a section). They are URI templates: a client lists them with `resources/templates/list`. A search as a resource (`epmc://search/{query}`) is deliberately not offered; `search_papers` takes the query as a typed argument instead of encoding it into a URI.
+
+Three prompts encode workflows that would otherwise be improvised. They name only tools of this server, and a test checks every tool and parameter they mention against the live tool list.
+
+```text
+literature_review  topic="statins and dementia", years="2018-2024", max_papers=15
+critical_appraisal pmcid="PMC3525259"
+citation_trace     pmid="22745249", direction="backward"
+```
+
+`literature_review` sizes the topic with `count_papers`, searches, screens by title and abstract with the dropped papers listed, reads the selected papers with `get_paper_fulltext`, and writes a review that cites every claim and ends with the counts. `critical_appraisal` reads the outline, methods and results of one open-access paper, collects the limitations its authors state with `tag_paper_sentences`, checks funders and retractions with `enrich_paper`, and ends with a verdict. `citation_trace` follows the references and citations of a PMID and inspects the most cited neighbours.
+
 ## What Europe PMC does that the tools work around
 
 These were measured against the live service in October 2026. The tools handle them for you; they are listed so that the results make sense.

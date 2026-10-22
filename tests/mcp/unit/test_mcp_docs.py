@@ -52,7 +52,8 @@ def test_the_guide_names_only_real_tools(tool_names):
     text = _read(GUIDE)
     called = set(re.findall(r"^\s*([a-z][a-z0-9_]+)\s{2,}\w+=", text, re.MULTILINE))
     assert called, "the guide lost its example calls"
-    assert called <= tool_names
+    prompts = {p.name for p in asyncio.run(srv.mcp.list_prompts())}
+    assert called <= tool_names | prompts
 
 
 def test_the_tool_count_in_the_docs_is_current(tool_names):
@@ -65,3 +66,22 @@ def test_the_guide_is_linked_from_the_indexes():
     assert "features/mcp-server.md" in _read(SUMMARY)
     assert "mcp-server.md" in _read(FEATURES)
     assert "docs/features/mcp-server.md" in _read(README)
+
+
+def test_the_docs_name_every_resource_and_prompt():
+    templates = asyncio.run(srv.mcp.list_resource_templates())
+    uris = [getattr(t, "uriTemplate", None) or t.uri_template for t in templates]
+    prompts = [p.name for p in asyncio.run(srv.mcp.list_prompts())]
+    assert uris and prompts
+    docstring = srv.__doc__ or ""
+    assert all(u in docstring for u in uris)
+    assert all(p in docstring for p in prompts)
+    for doc in (MCP_README, GUIDE):
+        text = _read(doc)
+        for uri in uris:  # the guide writes a real id (PMC3525259) where the template has {pmcid}
+            shape = re.escape(uri).replace(r"\{pmcid\}", r"(?:\{pmcid\}|PMC\d+)")
+            assert re.search(shape + r"(?![\w/])", text), f"{doc.name} lacks {uri}"
+        for name in prompts:
+            assert re.search(rf"`{name}`|^{name}\s", text, re.MULTILINE), (
+                f"{doc.name} lacks {name}"
+            )

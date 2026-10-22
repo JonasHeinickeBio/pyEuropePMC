@@ -321,3 +321,16 @@ def outline(sections: list[dict[str, Any]]) -> list[dict[str, Any]]:
             }
         )
     return result
+
+
+def take_references(references: list[Any], max_chars: int) -> tuple[list[Any], bool]:
+    """The leading references whose JSON fits in ``max_chars``, and whether some were left out."""
+    kept: list[Any] = []
+    used = 0
+    for reference in references:
+        size = len(json.dumps(reference, ensure_ascii=False, separators=(",", ":"))) + 1
+        if used + size > max_chars:
+            return kept, True
+        kept.append(reference)
+        used += size
+    return kept, False
