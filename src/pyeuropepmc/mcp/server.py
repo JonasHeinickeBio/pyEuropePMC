@@ -94,7 +94,8 @@ from __future__ import annotations
 import argparse
 import asyncio
 from collections import Counter
-from collections.abc import Awaitable, Callable
+from collections.abc import Awaitable, Callable, Iterator
+import contextlib
 import datetime
 from functools import partial, wraps
 from importlib.metadata import PackageNotFoundError, version as _pkg_version
@@ -2795,16 +2796,49 @@ def _search_edge(client: SearchClient) -> an.Edge:
     return edge
 
 
+def _new_counting_client() -> SearchClient:
+    """A search client of its own, for one worker thread of a parallel count."""
+    return SearchClient(cache_config=CacheConfig(enabled=False))
+
+
+@contextlib.contextmanager
+def _parallel_counter() -> Iterator[Callable[[str], int]]:
+    """A ``count(query)`` that is safe to call from several threads at once.
+
+    The server's shared search client sends one request at a time (its session is shared), which
+    made 60 yearly counts take about 40 s. Each thread here counts through a client of its own,
+    so the waits of different threads overlap; the clients are closed on exit.
+    """
+    local = threading.local()
+    made: list[SearchClient] = []
+    guard = threading.Lock()
+
+    def count(query: str) -> int:
+        client = getattr(local, "client", None)
+        if client is None:
+            client = local.client = _new_counting_client()
+            with guard:
+                made.append(client)
+        return int(client.get_hit_count(query))
+
+    try:
+        yield count
+    finally:
+        for client in made:
+            with contextlib.suppress(Exception):
+                client.close()
+
+
 def _counted_metrics(
     chosen: list[str], query: str, total: int, client: SearchClient
 ) -> dict[str, dict[str, Any]]:
     """The metrics Europe PMC counts for us: exact whatever the size of the result set."""
-    count = client.get_hit_count
     out: dict[str, dict[str, Any]] = {}
-    if "by_year" in chosen:
-        out["by_year"] = an.year_counts(query, total, count, _search_edge(client))
-    if "open_access" in chosen:
-        out["open_access"] = an.open_access_counts(query, total, count)
+    with _parallel_counter() as count:
+        if "by_year" in chosen:
+            out["by_year"] = an.year_counts(query, total, count, _search_edge(client))
+        if "open_access" in chosen:
+            out["open_access"] = an.open_access_counts(query, total, count)
     return out
 
 
@@ -2826,7 +2860,8 @@ def _record_metrics(
             **an.summarise(metric, records, top_n),
         }
         if metric == "citations":
-            entry["thresholds"] = an.citation_thresholds(query, total, client.get_hit_count)
+            with _parallel_counter() as count:
+                entry["thresholds"] = an.citation_thresholds(query, total, count)
         out[metric] = entry
     return out
 
@@ -2880,8 +2915,14 @@ async def analyze_search(
     except ValueError as exc:
         raise ToolError(str(exc)) from exc
     from_records = [m for m in chosen if m in an.FROM_RECORDS]
-    if from_records:
-        _require_available(ANALYTICS_AVAILABLE, "Analytics", "analytics")
+    withheld: dict[str, dict[str, Any]] = {}
+    if from_records and not ANALYTICS_AVAILABLE:
+        if metrics:  # asked for by name: say what to install
+            _require_available(ANALYTICS_AVAILABLE, "Analytics", "analytics")
+        # no choice made, so the default set: give the counted metrics, say what is missing
+        note = "needs pip install pyeuropepmc[analytics] (pandas and numpy)"
+        withheld = {m: {"basis": "unavailable", "error": note} for m in from_records}
+        from_records = []
     client = _get_client()
     full_query = _with_filters(
         query,
@@ -2921,6 +2962,7 @@ async def analyze_search(
     }
     if from_records and len(records) < total:
         response["sample_note"] = an.sample_note(len(records), total, sort)
+    results.update(withheld)
     response["metrics"] = {m: results[m] for m in chosen}
     return response
 

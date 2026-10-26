@@ -22,6 +22,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor
+import datetime
 import re
 from typing import Any
 
@@ -82,28 +83,46 @@ def _within(base: str, clause: str) -> str:
 # ---------------------------------------------------------------------------
 
 
-def year_counts(base: str, total: int, count: Count, edge: Edge) -> dict[str, Any]:
+def year_counts(
+    base: str, total: int, count: Count, edge: Edge, this_year: int | None = None
+) -> dict[str, Any]:
     """Records per first-publication year, one count request per year.
 
-    ``years`` lists the years counted; when the result set spans more than ``MAX_YEARS`` the
-    older ones are one ``before`` bucket. ``undated`` is whatever the years do not account for
-    (records without a first publication date), so ``sum(years) + before + undated == total``.
+    ``years`` lists the years counted, ending with ``this_year``: Europe PMC holds records dated
+    far into the future (2096 on a live search for ``cancer``), which would otherwise push the
+    window of ``MAX_YEARS`` years out of the range anyone publishes in. Those are one ``after``
+    bucket. When the result set spans more than ``MAX_YEARS`` the older records are one
+    ``before`` bucket. ``undated`` is whatever the rest does not account for (records without a
+    first publication date), so ``sum(years) + before + after + undated == total``.
     """
+    today = this_year or datetime.date.today().year
     first, last = edge(base, "asc"), edge(base, "desc")
-    out: dict[str, Any] = {"basis": "exact", "years": [], "before": None, "undated": total}
+    out: dict[str, Any] = {
+        "basis": "exact",
+        "years": [],
+        "before": None,
+        "after": None,
+        "undated": total,
+    }
     if first is None or last is None or total == 0:
         return out
-    start = max(first, last - MAX_YEARS + 1)
-    years = list(range(start, last + 1))
+    end = min(last, today)
+    start = max(min(first, end), end - MAX_YEARS + 1)
+    years = list(range(start, end + 1)) if first <= today else []
     queries = [_within(base, f"FIRST_PDATE:[{y} TO {y}]") for y in years]
-    older = start > first
+    older = first < start
+    later = last > today
     if older:
         queries.append(_within(base, f"FIRST_PDATE:[* TO {start - 1}]"))
+    if later:
+        queries.append(_within(base, f"FIRST_PDATE:[{today + 1} TO *]"))
     counts = _count_all(queries, count)
+    if later:
+        out["after"] = {"year": today + 1, "count": counts.pop()}
     if older:
         out["before"] = {"year": start - 1, "count": counts.pop()}
     out["years"] = [{"year": y, "count": n} for y, n in zip(years, counts, strict=True) if n]
-    counted = sum(counts) + (out["before"]["count"] if older else 0)
+    counted = sum(counts) + sum(out[k]["count"] for k in ("before", "after") if out[k])
     out["undated"] = max(0, total - counted)
     out["counted"] = counted
     out["first_year"], out["last_year"] = first, last

@@ -4,6 +4,22 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
+### 🐛 Bug Fixes
+
+- `analyze_search`, found by running it against the live Europe PMC. (1) Records dated in the
+  future (2096 on a search for `cancer`) pushed the window of 60 years out of range, so 5.6 million
+  records fell into one `before` bucket and `by_year` showed one meaningless year: the years now
+  end with the current year and later-dated records are one `after` bucket (`years` + `before` +
+  `after` + `undated` is still `hit_count`). (2) Without pandas, which is what `uvx pyeuropepmc mcp`
+  installs, the default call (no `metrics`) failed outright because the default set includes the
+  sample metrics; it now returns the counted metrics and marks the others `basis: unavailable`
+  with the install hint, while naming a sample metric still fails with that hint. (3) The 60
+  yearly counts took about 40 s because the shared client sends one request at a time; each
+  worker thread now counts through a client of its own (about 24 s for `cancer`).
+- Real-world tests (`tests/mcp/e2e/test_mcp_real_world.py`): the exact numbers of `analyze_search`
+  against independent `count_papers` counts, the paper resources against the tool on real articles,
+  and the bearer token on a real socket with a session id.
+
 ## [4.4.0] - 2026-10-26
 
 > Multi-source search: where results came from. `UnifiedSearch.search(diagnostics=True)` and the MCP
