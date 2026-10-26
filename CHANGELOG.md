@@ -4,6 +4,23 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
+### ✨ Features
+
+- Opt-in bearer-token authentication for the MCP HTTP transports (#288). With a token
+  (`PYEUROPEPMC_MCP_AUTH_TOKEN`, comma separated, or `--auth-token-file` /
+  `PYEUROPEPMC_MCP_AUTH_TOKEN_FILE`, one per line) every request to the streamable-HTTP and SSE
+  transports needs `Authorization: Bearer <token>`; anything else gets HTTP 401 with
+  `WWW-Authenticate: Bearer` before the MCP server sees it. It is a plain ASGI middleware, so it
+  works under MCP SDK 1.x and 2.x, and resources and prompts are covered like tools. Tokens are
+  compared in constant time, need 16 or more printable characters, are never logged, and are never
+  taken from the command line (`--auth-token VALUE` is refused without echoing the value); a
+  variable or file that is set but empty stops the server instead of leaving it open. Several
+  tokens allow rotation, `pyeuropepmc-mcp --generate-token` prints a new one, and binding to a
+  non-loopback address without a token logs a warning. stdio and the default (no token)
+  behaviour are unchanged. The MCP server guide has a section on the threat model, proxy
+  deployment, rotation and what the token does not do (no per-user identity, no OAuth, TLS is
+  the proxy's job).
+
 ## [4.2.0] - 2026-10-22
 
 > MCP release: search analytics, resources and prompts. `analyze_search` summarises a search
