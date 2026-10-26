@@ -324,6 +324,109 @@ class TestMCPResourcesAndPromptsOverStdio:
                     assert tool in schemas and set(params) <= schemas[tool], (tool, params)
 
 
+class TestMCPHttpAuthentication:
+    """The real server on a loopback port with a token: what a network client would see."""
+
+    TOKEN = "e2e-" + "t" * 28
+    INITIALIZE = {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "method": "initialize",
+        "params": {
+            "protocolVersion": "2025-03-26",
+            "capabilities": {},
+            "clientInfo": {"name": "auth-test", "version": "0"},
+        },
+    }
+    HEADERS = {"Content-Type": "application/json", "Accept": "application/json, text/event-stream"}
+
+    @staticmethod
+    def _free_port() -> int:
+        import socket
+
+        with socket.socket() as sock:
+            sock.bind(("127.0.0.1", 0))
+            return int(sock.getsockname()[1])
+
+    @pytest.fixture
+    def server(self, tmp_path):
+        import subprocess
+        import time
+
+        import requests
+
+        port = self._free_port()
+        token_file = tmp_path / "tokens"
+        token_file.write_text(f"# rotation: old then new\n{self.TOKEN}\n", encoding="utf-8")
+        env = {k: v for k, v in os.environ.items() if not k.startswith("PYEUROPEPMC_MCP_AUTH")}
+        process = subprocess.Popen(
+            [
+                sys.executable,
+                "-m",
+                "pyeuropepmc.mcp.server",
+                "--transport",
+                "streamable-http",
+                "--port",
+                str(port),
+                "--auth-token-file",
+                str(token_file),
+            ],
+            env=env,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+        url = f"http://127.0.0.1:{port}/mcp"
+        try:
+            for _ in range(100):
+                try:
+                    requests.post(url, json={}, timeout=1)
+                    break
+                except requests.ConnectionError:
+                    assert process.poll() is None, "the server exited"
+                    time.sleep(0.2)
+            yield url
+        finally:
+            process.terminate()
+            process.wait(timeout=10)
+
+    def test_requests_need_the_token(self, server):
+        import requests
+
+        none = requests.post(server, json=self.INITIALIZE, headers=self.HEADERS, timeout=10)
+        wrong = requests.post(
+            server,
+            json=self.INITIALIZE,
+            headers={**self.HEADERS, "Authorization": "Bearer " + "x" * 32},
+            timeout=10,
+        )
+        assert (none.status_code, wrong.status_code) == (401, 401)
+        assert none.headers["WWW-Authenticate"].startswith("Bearer")
+        assert none.json()["error"] == "unauthorized"
+        assert self.TOKEN not in none.text + wrong.text
+
+        ok = requests.post(
+            server,
+            json=self.INITIALIZE,
+            headers={**self.HEADERS, "Authorization": f"Bearer {self.TOKEN}"},
+            timeout=10,
+        )
+        assert ok.status_code == 200
+        assert "pyeuropepmc-mcp" in ok.text
+
+    def test_a_bad_token_configuration_exits_with_a_message(self, tmp_path):
+        import subprocess
+
+        result = subprocess.run(
+            [sys.executable, "-m", "pyeuropepmc.mcp.server", "--transport", "streamable-http"],
+            env={**os.environ, "PYEUROPEPMC_MCP_AUTH_TOKEN": "short"},
+            capture_output=True,
+            text=True,
+            timeout=60,
+        )
+        assert result.returncode != 0
+        assert "at least 16 characters" in result.stderr and "short" not in result.stdout
+
+
 @pytest.mark.network
 class TestMCPAnnotationsAgainstRealEuropePMC:
     PMID = "16004729"  # a review with several hundred text-mined mentions

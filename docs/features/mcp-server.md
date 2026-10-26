@@ -193,6 +193,28 @@ citation_trace     pmid="22745249", direction="backward"
 
 `literature_review` sizes the topic with `count_papers`, searches, screens by title and abstract with the dropped papers listed, reads the selected papers with `get_paper_fulltext`, and writes a review that cites every claim and ends with the counts. `critical_appraisal` reads the outline, methods and results of one open-access paper, collects the limitations its authors state with `tag_paper_sentences`, checks funders and retractions with `enrich_paper`, and ends with a verdict. `citation_trace` follows the references and citations of a PMID and inspects the most cited neighbours.
 
+## Running it as a network service
+
+stdio, the default, needs no protection: the client starts the process and owns its pipes. The `streamable-http` and `sse` transports open a port, and then anyone who can reach it can call every tool, which means spending your Europe PMC, Crossref and OpenAlex quota, filling the server's caches, and (with `OPENAI_API_KEY` set) running the LLM tools on your key. The tools themselves are read-only and write nothing on the server's disk except the caches.
+
+**Safe defaults.** The server binds to `127.0.0.1` and has no token until you set one. If you bind to another address without a token it logs a warning at startup. stdio ignores tokens.
+
+**Bearer token.** Authentication is a bearer token checked on every HTTP request, before the MCP server sees it:
+
+```bash
+pyeuropepmc-mcp --generate-token > /etc/pyeuropepmc/mcp.token     # 256 random bits
+chmod 600 /etc/pyeuropepmc/mcp.token
+pyeuropepmc-mcp --transport streamable-http --host 0.0.0.0 --auth-token-file /etc/pyeuropepmc/mcp.token
+```
+
+A client sends `Authorization: Bearer <token>`; any other request, including a missing, malformed or wrong header, gets HTTP 401 with `WWW-Authenticate: Bearer` and the same body whatever the reason. The server logs the refused method and path, never a token. Tokens are compared in constant time. The token goes in a file (`--auth-token-file`, one token per line, `#` comments) or in `PYEUROPEPMC_MCP_AUTH_TOKEN` (comma separated); there is no command-line value because `ps` shows it to every user. A token must be at least 16 printable characters without spaces, and a variable or file that is set but empty is an error: a typo cannot turn into an open server.
+
+**Rotation.** Several tokens are accepted at once. Add the new token on a second line, restart, move the clients over, then remove the old one and restart.
+
+**Behind a proxy.** Terminate TLS in the proxy (the server speaks plain HTTP), forward to `127.0.0.1:8000`, and add `--allowed-host mcp.example.org` for the public name (SDK 2.x). With the token on, the proxy can pass the `Authorization` header through unchanged; if the proxy authenticates users itself (OAuth, mTLS, an identity-aware proxy) you can leave the token off and keep the server on loopback.
+
+**What this does not do.** It is one shared secret, not per-user identity: every holder has the same access, nothing is rate limited per client, and a token sent over plain HTTP can be read on the wire, so use TLS. It is not OAuth; clients that insist on an OAuth flow need a proxy that provides it. Resources and prompts go through the same checks as the tools.
+
 ## What Europe PMC does that the tools work around
 
 These were measured against the live service in October 2026. The tools handle them for you; they are listed so that the results make sense.

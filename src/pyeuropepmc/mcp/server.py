@@ -18,6 +18,8 @@ Environment variables (fallbacks for the CLI flags below):
     PYEUROPEPMC_MCP_HOST        bind host for sse/streamable-http (default: 127.0.0.1)
     PYEUROPEPMC_MCP_PORT        bind port for sse/streamable-http (default: 8000)
     PYEUROPEPMC_MCP_LOG_LEVEL   DEBUG | INFO | WARNING | ERROR (default: INFO)
+    PYEUROPEPMC_MCP_AUTH_TOKEN  bearer token(s) the HTTP transports require, comma separated
+    PYEUROPEPMC_MCP_AUTH_TOKEN_FILE  file with one token per line (same as --auth-token-file)
 
 Resources (templates; a client attaches them without a tool call):
         epmc://paper/{pmcid}             — Markdown full text, same limits as get_paper_fulltext
@@ -126,6 +128,7 @@ from pyeuropepmc.features.literature.article import ArticleClient
 from pyeuropepmc.mcp import (
     _analytics as an,
     _annotations as ann,
+    _auth as au,
     _batch as bm,
     _enrich as en,
     _export as ex,
@@ -3387,6 +3390,19 @@ def _configure_logging(level: str) -> None:
     )
 
 
+class _RefuseTokenValue(argparse.Action):
+    """``--auth-token VALUE`` is refused, without repeating the value: argparse would otherwise
+    take it for an abbreviation of ``--auth-token-file`` and print it in an error message."""
+
+    def __call__(
+        self, parser: Any, namespace: Any, values: Any, option_string: Any = None
+    ) -> None:
+        parser.error(
+            "a token cannot be given on the command line (other users of the machine can read "
+            f"it in the process list): set {au.ENV_TOKEN} or use --auth-token-file"
+        )
+
+
 def _build_arg_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="pyeuropepmc-mcp",
@@ -3420,6 +3436,28 @@ def _build_arg_parser() -> argparse.ArgumentParser:
         help="Host name a client may send in its Host header, for the sse/streamable-http "
         "transports behind a reverse proxy (repeatable; also PYEUROPEPMC_MCP_ALLOWED_HOSTS, "
         "comma separated). Needs MCP Python SDK 2.x, which answers HTTP 421 to unknown hosts",
+    )
+    parser.add_argument(
+        "--auth-token-file",
+        default="",
+        metavar="PATH",
+        help="File with the bearer tokens the sse/streamable-http transports accept, one per "
+        "line (also PYEUROPEPMC_MCP_AUTH_TOKEN_FILE; tokens can instead be set in "
+        "PYEUROPEPMC_MCP_AUTH_TOKEN, comma separated). With a token every HTTP request needs "
+        "'Authorization: Bearer <token>'; without one the HTTP transports are open. stdio "
+        "is unaffected. A token is never taken from the command line, where other users "
+        "of the machine could read it",
+    )
+    parser.add_argument(
+        "--auth-token",
+        action=_RefuseTokenValue,
+        nargs="?",
+        help=argparse.SUPPRESS,
+    )
+    parser.add_argument(
+        "--generate-token",
+        action="store_true",
+        help="Print a new random bearer token and exit",
     )
     parser.add_argument(
         "--log-level",
@@ -3474,14 +3512,57 @@ def _transport_security(allowed_hosts: list[str]) -> Any:
     )
 
 
+def _auth_tokens(args: argparse.Namespace) -> list[str]:
+    try:
+        return au.load_tokens(args.auth_token_file)
+    except au.AuthConfigError as exc:
+        raise SystemExit(f"authentication: {exc}") from exc
+
+
+def _http_app(args: argparse.Namespace) -> Any:
+    """The ASGI app of the chosen HTTP transport, built the way ``mcp.run`` builds it."""
+    sse = args.transport == "sse"
+    if not _MCP_SDK_2:  # pragma: no cover - exercised by the "mcp 1.x" CI job
+        mcp.settings.host = args.host  # type: ignore[attr-defined]
+        mcp.settings.port = args.port  # type: ignore[attr-defined]
+        return mcp.sse_app() if sse else mcp.streamable_http_app()
+    security = _transport_security(args.allowed_host)
+    build = mcp.sse_app if sse else mcp.streamable_http_app
+    return build(host=args.host, transport_security=security)
+
+
+def _serve_authenticated(args: argparse.Namespace, tokens: list[str]) -> None:
+    """Serve the HTTP transport behind the bearer-token check (the SDK's ``run`` has no hook
+    for a middleware, so the app is built and handed to uvicorn here, as ``run`` does)."""
+    import uvicorn
+
+    app = au.BearerAuthMiddleware(_http_app(args), tokens)
+    logger.info("bearer authentication is on (%d token(s))", len(tokens))
+    config = uvicorn.Config(app, host=args.host, port=args.port, log_level=args.log_level.lower())
+    uvicorn.Server(config).run()
+
+
 def _serve(args: argparse.Namespace) -> None:
     """Run the server on the chosen transport with the SDK's own configuration style."""
+    tokens = _auth_tokens(args)
     if args.transport == "stdio":
+        if tokens:
+            logger.warning("authentication tokens are ignored: stdio has no HTTP requests")
         mcp.run(transport="stdio")
         return
+    if args.allowed_host and not _MCP_SDK_2:  # pragma: no cover - the "mcp 1.x" CI job
+        raise SystemExit("--allowed-host needs the MCP Python SDK 2.x (pip install -U mcp)")
+    if tokens:
+        _serve_authenticated(args, tokens)
+        return
+    if not au.is_loopback(args.host):
+        logger.warning(
+            "listening on %s without authentication: anyone who can reach the port can use "
+            "every tool. Set %s (or --auth-token-file) or put an authenticating proxy in front",
+            args.host,
+            au.ENV_TOKEN,
+        )
     if not _MCP_SDK_2:  # pragma: no cover - exercised by the "mcp 1.x" CI job
-        if args.allowed_host:
-            raise SystemExit("--allowed-host needs the MCP Python SDK 2.x (pip install -U mcp)")
         mcp.settings.host = args.host  # type: ignore[attr-defined]
         mcp.settings.port = args.port  # type: ignore[attr-defined]
         mcp.run(transport=args.transport)
@@ -3500,6 +3581,9 @@ def _serve(args: argparse.Namespace) -> None:
 
 def _main_entry(argv: list[str] | None = None) -> None:
     args = _build_arg_parser().parse_args(argv)
+    if args.generate_token:
+        print(au.generate_token())
+        return
     _configure_logging(args.log_level)
     logger.info("pyeuropepmc-mcp v%s starting (transport=%s)", _server_version(), args.transport)
     _serve(args)

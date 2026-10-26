@@ -76,9 +76,26 @@ take `"command": "uvx"` and `"args": ["pyeuropepmc", "mcp"]`.
 ### Remote / HTTP agents
 
 Start the server with `--transport streamable-http --host 0.0.0.0 --port 8000`
-(behind whatever auth/TLS termination your deployment requires — the server
-itself does not implement auth) and point any MCP HTTP client at
-`http://<host>:<port>/mcp`.
+and point any MCP HTTP client at `http://<host>:<port>/mcp`. The server speaks plain
+HTTP, so put TLS termination in front of it for anything beyond a trusted network.
+
+**Authentication is opt-in.** With no token the HTTP transports accept every request (the
+server logs a warning when it listens on a non-loopback address without one). To require a
+bearer token:
+
+```bash
+pyeuropepmc-mcp --generate-token > mcp.token && chmod 600 mcp.token
+pyeuropepmc-mcp --transport streamable-http --host 0.0.0.0 --auth-token-file mcp.token
+# client: Authorization: Bearer <the token>
+```
+
+The token can also come from `PYEUROPEPMC_MCP_AUTH_TOKEN` (comma separated for several) or
+`PYEUROPEPMC_MCP_AUTH_TOKEN_FILE`. There is deliberately no `--auth-token VALUE`: a command line
+is readable by every user of the machine. Tokens need at least 16 printable characters; a
+variable that is set but empty stops the server instead of opening it. Requests without a valid
+token get HTTP 401 before the MCP server sees them; stdio is never checked. See the
+[guide](../../../docs/features/mcp-server.md#running-it-as-a-network-service) for the threat
+model and token rotation.
 
 MCP SDK 2.x checks the `Host` header on the loopback addresses (DNS-rebinding
 protection) and answers HTTP 421 to a name it does not know, so a reverse proxy that
