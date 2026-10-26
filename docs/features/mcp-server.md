@@ -202,8 +202,7 @@ stdio, the default, needs no protection: the client starts the process and owns 
 **Bearer token.** Authentication is a bearer token checked on every HTTP request, before the MCP server sees it:
 
 ```bash
-pyeuropepmc-mcp --generate-token > /etc/pyeuropepmc/mcp.token     # 256 random bits
-chmod 600 /etc/pyeuropepmc/mcp.token
+( umask 077; pyeuropepmc-mcp --generate-token > /etc/pyeuropepmc/mcp.token )   # 256 random bits, never world-readable
 pyeuropepmc-mcp --transport streamable-http --host 0.0.0.0 --auth-token-file /etc/pyeuropepmc/mcp.token
 ```
 

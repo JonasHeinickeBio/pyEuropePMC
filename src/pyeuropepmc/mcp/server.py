@@ -3544,12 +3544,17 @@ def _serve_authenticated(args: argparse.Namespace, tokens: list[str]) -> None:
 
 def _serve(args: argparse.Namespace) -> None:
     """Run the server on the chosen transport with the SDK's own configuration style."""
-    tokens = _auth_tokens(args)
     if args.transport == "stdio":
-        if tokens:
+        # Not loaded or validated: a stale variable must not stop a client from starting stdio.
+        if (
+            args.auth_token_file
+            or os.environ.get(au.ENV_TOKEN) is not None
+            or os.environ.get(au.ENV_TOKEN_FILE)
+        ):
             logger.warning("authentication tokens are ignored: stdio has no HTTP requests")
         mcp.run(transport="stdio")
         return
+    tokens = _auth_tokens(args)
     if args.allowed_host and not _MCP_SDK_2:  # pragma: no cover - the "mcp 1.x" CI job
         raise SystemExit("--allowed-host needs the MCP Python SDK 2.x (pip install -U mcp)")
     if tokens:

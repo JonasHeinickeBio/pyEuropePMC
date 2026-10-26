@@ -102,10 +102,10 @@ class TestLoadTokens:
             au.load_tokens(str(empty), environ={})
 
     def test_the_error_never_contains_the_token(self):
-        secret = "x y secret value"
+        token = "xysec"
         with pytest.raises(au.AuthConfigError) as caught:
-            au.load_tokens(environ={au.ENV_TOKEN: secret.replace(" ", "")[:5]})
-        assert "secret" not in str(caught.value)
+            au.load_tokens(environ={au.ENV_TOKEN: token})
+        assert token not in str(caught.value)
 
     def test_generated_tokens_are_strong_and_accepted(self):
         first, second = au.generate_token(), au.generate_token()
@@ -171,7 +171,7 @@ class TestMiddleware:
     def test_a_refusal_is_logged_without_the_token(self, caplog):
         caplog.set_level(logging.WARNING, logger="pyeuropepmc.mcp")
         _run(_call(au.BearerAuthMiddleware(_Downstream(), [GOOD]), _bearer(OTHER)))
-        assert "refused POST /mcp" in caplog.text
+        assert "refused POST '/mcp'" in caplog.text
         assert OTHER not in caplog.text and GOOD not in caplog.text
 
     def test_it_cannot_be_built_without_a_token(self):
@@ -255,6 +255,38 @@ class TestServing:
         path.write_text(GOOD, encoding="utf-8")
         srv._serve(self._args("--transport", "streamable-http", "--auth-token-file", str(path)))
         assert isinstance(started["config"].app, au.BearerAuthMiddleware)
+
+    @pytest.mark.parametrize(
+        ("variable", "value"),
+        [(au.ENV_TOKEN, "short"), (au.ENV_TOKEN, ""), (au.ENV_TOKEN_FILE, "/no/such/file")],
+    )
+    def test_stdio_starts_even_with_a_broken_token_setting(
+        self, started, monkeypatch, caplog, variable, value
+    ):
+        monkeypatch.setenv(variable, value)
+        caplog.set_level(logging.WARNING, logger="pyeuropepmc.mcp")
+        srv._serve(self._args())
+        assert started["run"] == {"transport": "stdio"}
+        assert "ignored" in caplog.text
+
+    def test_a_forged_path_cannot_write_a_log_line(self, caplog):
+        caplog.set_level(logging.WARNING, logger="pyeuropepmc.mcp")
+        app = au.BearerAuthMiddleware(_Downstream(), [GOOD])
+        scope = {
+            "type": "http",
+            "method": "POST",
+            "path": "/mcp\nERROR forged line",
+            "headers": [],
+        }
+
+        async def send(_message):
+            return None
+
+        async def receive():
+            return {}
+
+        _run(app(scope, receive, send))
+        assert "\n" not in caplog.records[0].getMessage()
 
     def test_stdio_ignores_tokens_and_says_so(self, started, monkeypatch, caplog):
         monkeypatch.setenv(au.ENV_TOKEN, GOOD)

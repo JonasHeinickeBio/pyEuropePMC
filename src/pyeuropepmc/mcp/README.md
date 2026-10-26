@@ -84,7 +84,7 @@ server logs a warning when it listens on a non-loopback address without one). To
 bearer token:
 
 ```bash
-pyeuropepmc-mcp --generate-token > mcp.token && chmod 600 mcp.token
+( umask 077; pyeuropepmc-mcp --generate-token > mcp.token )
 pyeuropepmc-mcp --transport streamable-http --host 0.0.0.0 --auth-token-file mcp.token
 # client: Authorization: Bearer <the token>
 ```

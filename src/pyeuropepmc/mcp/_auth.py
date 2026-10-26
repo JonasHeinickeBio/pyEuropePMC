@@ -143,7 +143,7 @@ class BearerAuthMiddleware:
             await self.app(scope, receive, send)
         elif scope["type"] == "http":
             logger.warning(
-                "refused %s %s: missing or invalid bearer token",
+                "refused %s %r: missing or invalid bearer token",
                 scope.get("method", "?"),
                 scope.get("path", "?"),
             )
