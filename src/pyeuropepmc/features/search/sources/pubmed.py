@@ -348,6 +348,7 @@ class PubMedClient(BaseLiteratureClient):
         data = {"cit": cit_string}
 
         try:
+            self._wait_turn()
             response = self.session.post(
                 f"{self.BASE_URL}/ecitmatch.cgi",
                 params=params,

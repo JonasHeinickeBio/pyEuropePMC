@@ -186,6 +186,7 @@ class BaseLiteratureClient(BaseHTTPClient, ABC):
                 logger.debug(
                     "GET %s params=%s attempt=%d/%d", url, params, attempt + 1, max_retries
                 )
+                self._wait_turn()
                 response = self.session.get(
                     url, params=params, headers=request_headers, timeout=self.timeout
                 )
@@ -277,6 +278,7 @@ class BaseLiteratureClient(BaseHTTPClient, ABC):
             except ValueError as e:
                 # JSON decode failure
                 logger.error("Invalid JSON response from %s: %s", url, e)
+                self.last_error = e  # lets UnifiedSearch tell a failure from "no results"
                 return None
 
             time.sleep(self.rate_limit_delay)

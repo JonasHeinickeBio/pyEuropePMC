@@ -18,6 +18,28 @@ All notable changes to PyEuropePMC are documented here.
   concurrency (`max_workers` for the sources of one search, `source_concurrency` across searches)
   and safe defaults for repeated and large searches.
 
+### 🐛 Bug Fixes
+
+- `rate_limit_delay` was never applied to a successful request by the HTTP source clients (arXiv,
+  PubMed, DOAJ, CORE, HAL, Zenodo, DBLP, ClinicalTrials.gov): the sleep sat at the end of the retry
+  loop, which a successful request leaves by returning. Found by measuring real requests to arXiv,
+  which arrived 0.3 s apart with a 3 s delay set. Each client now reserves a start slot under a
+  lock before every request (`BaseHTTPClient._wait_turn`), so requests of one client, from any
+  number of threads, start at least `rate_limit_delay` apart; arXiv now sees exactly 3.0 s. Searches
+  across these sources are correspondingly slower, as the delays always intended.
+- `UnifiedSearch.search(sources=[...])` could not use a source outside the set the object was
+  built with: the source was skipped without a word, so the MCP tool `unified_search` with
+  `sources=["openalex", ...]` returned only Europe PMC and PubMed results. Any registered source
+  may now be named in a call; its client is created on first use, one that cannot be created is
+  `unavailable` with the real reason, and an unknown name raises `ValueError`.
+
+- A source whose client swallowed a failure (Semantic Scholar answering HTTP 403, OpenAlex and the
+  Europe PMC adapter on any request error, DBLP answering a bot-check page instead of JSON) was
+  reported as `empty`, which reads as "no results". These clients now record the error in
+  `last_error` and `UnifiedSearch` raises it when the answer is empty, so the source is `error`
+  (or `rate_limited`) with the real message, in `source_errors` and in the diagnostics. Found by
+  running ten live sources through `unified_search(diagnostics=true)`.
+
 ### 🔄 Changed
 
 - Without an explicit `rate_limit_delay`, arXiv, DBLP and Zenodo are now paced at 3 seconds instead

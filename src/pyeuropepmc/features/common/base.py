@@ -10,6 +10,8 @@ For Europe PMC internal services, use `pyeuropepmc.core.base.BaseAPIClient` inst
 """
 
 import logging
+import threading
+import time
 from typing import Any
 
 import requests
@@ -80,6 +82,8 @@ class BaseHTTPClient:
         self.rate_limit_delay = rate_limit_delay
         self.timeout = timeout
         self.api_key_missing = api_key_missing
+        self._throttle_lock = threading.Lock()
+        self._next_request_at = 0.0
         self.session = requests.Session()
 
         # Set default user agent
@@ -117,6 +121,20 @@ class BaseHTTPClient:
             self.__class__.__name__,
             "enabled" if cache_config.enabled else "disabled",
         )
+
+    def _wait_turn(self) -> None:
+        """Block until ``rate_limit_delay`` seconds have passed since the previous request of
+        this client started, whichever thread made it.
+
+        Each caller reserves the next free slot under a lock, so requests from several threads
+        leave ``rate_limit_delay`` apart instead of together. The first request does not wait.
+        """
+        with self._throttle_lock:
+            now = time.monotonic()
+            start = max(now, self._next_request_at)
+            self._next_request_at = start + max(0.0, self.rate_limit_delay)
+        if start > now:
+            time.sleep(start - now)
 
     def _set_email_header(self, email: str, header: str = "mailto") -> None:
         """

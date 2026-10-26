@@ -75,6 +75,10 @@ A failing source does not stop the others. `report` is a [`MergeReport`](dedup.m
 | `sources_used` | The sources queried |
 | `primary_source`, `primary_records`, `added_by_source` | With a primary source: its name, how many merged records match one of its records, and how many new records each other source added |
 
+### Sources named in a call
+
+`search(query, sources=[...])` may name any registered source, not only the ones the object was built with. A source that is not yet in use gets its client on first use, with the same credentials, timeout and delay as the others and one slot of concurrency, and a source that cannot be created (a missing optional package) is reported as `unavailable` with the reason instead of silently contributing nothing. An unknown name raises `ValueError` before any request.
+
 ### Source status and provenance
 
 `report.metadata` always says how many records each source returned (`source_counts`) and which sources raised (`source_errors`). It does not say why a source returned nothing, or whether it was asked at all. With `diagnostics=True` the result keeps its shape and gains two things:
@@ -91,7 +95,7 @@ print(results[0].source, results[0].matched_sources)  # europepmc ['europepmc', 
 
 | Field | Content |
 |---|---|
-| `status` | `ok`: records came back. `empty`: the source answered with none. `error`: the request raised. `rate_limited`: it raised HTTP 429 or a rate-limit message. `unavailable`: the client could not be created (a missing optional package, for instance), so no request was made |
+| `status` | `ok`: records came back. `empty`: the source answered with none; a client that caught its own failure and returned nothing (an HTTP 403, a page that is not JSON) is `error` instead, not `empty`. `error`: the request raised. `rate_limited`: it raised HTTP 429 or a rate-limit message. `unavailable`: the client could not be created (a missing optional package, for instance), so no request was made |
 | `records` | Records returned, before deduplication |
 | `seconds` | Seconds from the start of the parallel requests until the source finished; `null` for `unavailable` |
 | `limit` | Records asked for (the primary source is asked for `limit × primary_limit_factor`) |
@@ -200,7 +204,7 @@ print(searcher.limits)
 # {'europepmc': {'rate_limit_delay': 1.2, 'max_concurrency': 1}, 'pubmed': {...}, ...}
 ```
 
-**Concurrency has two levels.** `max_workers` is how many sources one `search()` queries at once (default: all of them). `source_concurrency` is how many calls one source gets at the same time from every thread that shares the `UnifiedSearch` object (default 1 for each source). A single `search()` makes one call per source, so the second level only matters when searches overlap, as they do in a server where several agents share one object; the later calls wait for the earlier ones instead of hitting the provider together. `waited_seconds` in the [diagnostics](#source-status-and-provenance) shows how long a call waited. The delay is the client's own pause after each request, so a source with `source_concurrency` above 1 can see requests closer together than its delay; keep it at 1 for providers with a strict limit.
+**Concurrency has two levels.** `max_workers` is how many sources one `search()` queries at once (default: all of them). `source_concurrency` is how many calls one source gets at the same time from every thread that shares the `UnifiedSearch` object (default 1 for each source). A single `search()` makes one call per source, so the second level only matters when searches overlap, as they do in a server where several agents share one object; the later calls wait for the earlier ones instead of hitting the provider together. `waited_seconds` in the [diagnostics](#source-status-and-provenance) shows how long a call waited. The delay is enforced by the source's client: each HTTP request starts at least that long after the previous one of the same client, whichever thread made it (measured against arXiv with three overlapping searches: requests exactly 3.0 s apart). So the delay holds even with `source_concurrency` above 1; the cap only decides how many calls may be in flight and queue.
 
 **The effective limits are in every result.** `report.metadata["effective_limits"]` maps each queried source to its `rate_limit_delay` and `max_concurrency`, so the limits that applied are recorded with the data; the diagnostics rows repeat them next to the error and `Retry-After` of a source that was rate limited.
 

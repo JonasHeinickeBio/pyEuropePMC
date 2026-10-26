@@ -300,6 +300,7 @@ class UnifiedSearch:
             self.credentials["api_key"] = api_key
         self._clients: dict[str, Any] | None = None
         self._init_errors: dict[str, str] = {}
+        self._init_lock = threading.RLock()
 
     @staticmethod
     def _checked_limits(
@@ -342,10 +343,23 @@ class UnifiedSearch:
     def limits(self) -> dict[str, dict[str, float | int]]:
         """The effective limits per source: ``rate_limit_delay`` (seconds between requests) and
         ``max_concurrency`` (simultaneous calls)."""
+        return {s: self._limits_of(s) for s in self.sources}
+
+    def _limits_of(self, source: str) -> dict[str, float | int]:
         return {
-            s: {"rate_limit_delay": self.delay_for(s), "max_concurrency": self.max_concurrency[s]}
-            for s in self.sources
+            "rate_limit_delay": self.delay_for(source),
+            "max_concurrency": self.max_concurrency.get(source, 1),
         }
+
+    def _checked_sources(self, sources: list[str] | None) -> list[str]:
+        """The sources of one call: those given, which may be any registered source and not only
+        the ones this object was built with, else the configured ones."""
+        chosen = list(dict.fromkeys(sources)) if sources else self.sources
+        known = set(registry.available_sources())
+        unknown = [s for s in chosen if s not in known]
+        if unknown:
+            raise ValueError(f"Unknown source(s) {unknown}. Available: {sorted(known)}")
+        return chosen
 
     def _limits_for(self, sources: list[str], limit: int) -> dict[str, int]:
         """Per-source result cap — the primary source gets ``limit × factor``."""
@@ -412,8 +426,8 @@ class UnifiedSearch:
             records anchored on the primary) and ``added_by_source`` (net-new
             records each satellite contributed).
         """
-        clients = self._get_or_init_clients()
-        sources = sources or self.sources
+        sources = self._checked_sources(sources)
+        clients = self._get_or_init_clients(sources)
         limits = self._limits_for(sources, limit)
 
         status: dict[str, dict[str, Any]] | None = {} if diagnostics else None
@@ -440,7 +454,7 @@ class UnifiedSearch:
                 source_errors=source_errors,
                 sources_used=sources,
                 source_counts=source_counts,
-                effective_limits={s: self.limits[s] for s in sources if s in self.limits},
+                effective_limits={s: self._limits_of(s) for s in sources},
             )
             if status is not None:
                 report.metadata["source_status"] = status
@@ -453,7 +467,7 @@ class UnifiedSearch:
             source_errors=source_errors,
             sources_used=sources,
             source_counts=source_counts,
-            effective_limits={s: self.limits[s] for s in sources if s in self.limits},
+            effective_limits={s: self._limits_of(s) for s in sources},
         )
 
         merged = [LiteratureResult.model_validate(d) for d in merged_dicts if d is not None]
@@ -530,7 +544,7 @@ class UnifiedSearch:
 
         Returns ``(per_source_results, per_source_errors)``.
         """
-        clients = self._get_or_init_clients()
+        clients = self._get_or_init_clients(self.sources)
         limits = self._limits_for(self.sources, limit)
         per_source, _, errors = self._run_sources(
             clients, self.sources, query, limits, None, translate=self.translate, **kwargs
@@ -596,13 +610,11 @@ class UnifiedSearch:
             for key, value in (*pairs, *kwargs.items()):
                 if accepted is None or key in accepted:
                     call[key] = value
-            gate = self._gates.get(source_name)
-            if gate is None:  # a source added after construction: not limited
-                return list(client.search(**call))
+            gate = self._gate(source_name)
             queued = time.monotonic()
             with gate:
                 sent[source_name]["waited"] = time.monotonic() - queued
-                return list(client.search(**call))
+                return self._search_checked(client, call)
 
         if not runnable:
             return per_source, source_times, source_errors
@@ -668,28 +680,56 @@ class UnifiedSearch:
     # Client lifecycle
     # ------------------------------------------------------------------
 
-    def _get_or_init_clients(self) -> dict[str, Any]:
-        if self._clients is not None:
+    @staticmethod
+    def _search_checked(client: Any, call: dict[str, Any]) -> list[LiteratureResult]:
+        """Run ``client.search``. An empty answer that the client reached by swallowing an error
+        (it records the error in ``last_error``) is raised, so it counts as a failure and is not
+        mistaken for "no results"."""
+        client.last_error = None
+        results = list(client.search(**call))
+        error = getattr(client, "last_error", None)
+        if error is not None and not results:
+            raise error
+        return results
+
+    def _gate(self, source: str) -> threading.BoundedSemaphore:
+        """The concurrency gate of a source, made on first use for one named only in a call."""
+        with self._init_lock:
+            if source not in self._gates:
+                self._gates[source] = threading.BoundedSemaphore(
+                    self.max_concurrency.get(source, 1)
+                )
+            return self._gates[source]
+
+    def _get_or_init_clients(self, sources: list[str] | None = None) -> dict[str, Any]:
+        """The clients of ``sources`` (default: the configured ones), each created on first use.
+
+        A source that cannot be created (a missing optional package, say) is kept as ``None``
+        and its reason in ``_init_errors``, so it is reported rather than retried on every call.
+        """
+        with self._init_lock:
+            if self._clients is None:
+                self._clients = {}
+            for source_name in sources or self.sources:
+                if source_name not in self._clients:
+                    self._clients[source_name] = self._create_client(source_name)
             return self._clients
 
-        self._clients = {}
-        for source_name in self.sources:
-            spec = registry.get_source_spec(source_name)
-            kwargs: dict[str, Any] = {
-                "rate_limit_delay": self.delay_for(source_name),
-                "timeout": self.timeout,
-            }
-            for cred in spec.credential_kwargs:
-                if self.credentials.get(cred) is not None:
-                    kwargs[cred] = self.credentials[cred]
-            try:
-                self._clients[source_name] = registry.load_source(source_name, **kwargs)
-            except Exception as exc:  # noqa: BLE001 - missing dep / init failure
-                logger.warning("Failed to init source '%s': %s", source_name, exc)
-                self._init_errors[source_name] = f"{type(exc).__name__}: {exc}"
-                self._clients[source_name] = None
-
-        return self._clients
+    def _create_client(self, source_name: str) -> Any:
+        spec = registry.get_source_spec(source_name)
+        kwargs: dict[str, Any] = {
+            "rate_limit_delay": self.delay_for(source_name),
+            "timeout": self.timeout,
+        }
+        for cred in spec.credential_kwargs:
+            if self.credentials.get(cred) is not None:
+                kwargs[cred] = self.credentials[cred]
+        try:
+            return registry.load_source(source_name, **kwargs)
+        except Exception as exc:  # noqa: BLE001 - missing dep / init failure
+            logger.warning("Failed to init source '%s': %s", source_name, exc)
+            self._init_errors[source_name] = f"{type(exc).__name__}: {exc}"
+            return None
 
     def close(self) -> None:
         """Close all initialised clients."""
