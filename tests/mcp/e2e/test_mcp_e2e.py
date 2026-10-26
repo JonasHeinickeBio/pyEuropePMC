@@ -135,6 +135,24 @@ class TestMCPToolsAgainstRealEuropePMC:
             assert data["metrics"]["journals"]["basis"] == "sample"
             assert f"first 5 of {total}" in data["sample_note"]
 
+    async def test_unified_search_diagnostics_report_every_source(self):
+        async with _server_session() as (session, _init_result):
+            args = {"query": "malaria vaccine", "sources": ["europepmc", "pubmed"], "limit": 3}
+            plain = await session.call_tool("unified_search", args)
+            rich = await session.call_tool("unified_search", {**args, "diagnostics": True})
+            assert is_error(plain) is False and is_error(rich) is False
+            assert set(structured(plain)) == {"results", "dedup"}
+
+            data = structured(rich)
+            assert set(data["sources"]) == {"europepmc", "pubmed"}
+            for row in data["sources"].values():
+                assert row["status"] in {"ok", "rate_limited"}, row
+                assert row["query"] and row["seconds"] >= 0
+            assert data["sources"]["europepmc"]["status"] == "ok"
+            for record in data["results"]:
+                assert record["source"] in record["matched_sources"]
+                assert set(record["matched_sources"]) <= {"europepmc", "pubmed"}
+
     async def test_get_paper_citations_and_references(self):
         async with _server_session() as (session, _init_result):
             cited = await session.call_tool(

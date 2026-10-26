@@ -23,6 +23,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 import contextlib
 import inspect
 import logging
+import re
 import time
 from typing import Any
 
@@ -120,6 +121,64 @@ def _translate_sort(sort: str | None, source: str) -> tuple[bool, str | None]:
     return True, value
 
 
+_RATE_LIMITED = re.compile(r"rate.?limit|too many requests|\b429\b", re.IGNORECASE)
+
+
+def _http_status(exc: BaseException) -> int | None:
+    """The HTTP status an exception (or one it was raised from) carries, if any."""
+    seen = 0
+    err: BaseException | None = exc
+    while err is not None and seen < 5:
+        response = getattr(err, "response", None)
+        status = getattr(response, "status_code", None)
+        if status is None:
+            context = getattr(err, "context", None)
+            status = context.get("status_code") if isinstance(context, dict) else None
+        if isinstance(status, int):
+            return status
+        err, seen = err.__cause__ or err.__context__, seen + 1
+    return None
+
+
+def _retry_after(exc: BaseException) -> float | None:
+    """Seconds a server asked to wait (``Retry-After``), when the error carries a response."""
+    headers = getattr(getattr(exc, "response", None), "headers", None) or {}
+    value = headers.get("Retry-After")
+    try:
+        return float(value) if value is not None else None
+    except (TypeError, ValueError):
+        return None
+
+
+def _failure(exc: BaseException) -> dict[str, Any]:
+    """Status record of a source that raised: ``rate_limited`` for HTTP 429 or a rate-limit
+    message, otherwise ``error``."""
+    status = _http_status(exc)
+    message = str(exc)
+    limited = status == 429 or bool(_RATE_LIMITED.search(message))
+    return {
+        "status": "rate_limited" if limited else "error",
+        "error": {"type": type(exc).__name__, "message": message, "http_status": status},
+        "retry_after": _retry_after(exc) if limited else None,
+    }
+
+
+def _record_keys(rec: Any) -> set[str]:
+    """Identity keys of a record (DOI, PMID, title prefix), for matching across sources."""
+    g = getattr(rec, "get", None)
+    doi = (g("doi") if g else getattr(rec, "doi", None)) or None
+    pmid = (g("pmid") if g else getattr(rec, "pmid", None)) or None
+    title = (g("title") if g else getattr(rec, "title", None)) or None
+    out = set()
+    if doi:
+        out.add(f"doi:{str(doi).lower()}")
+    if pmid:
+        out.add(f"pmid:{pmid}")
+    if title:
+        out.add(f"title:{str(title).lower().strip()[:80]}")
+    return out
+
+
 def _accepted_params(func: Any) -> set[str] | None:
     """Names ``func`` accepts as keyword args, or ``None`` if it takes ``**kwargs``."""
     try:
@@ -209,6 +268,7 @@ class UnifiedSearch:
         if api_key and "api_key" not in self.credentials:
             self.credentials["api_key"] = api_key
         self._clients: dict[str, Any] | None = None
+        self._init_errors: dict[str, str] = {}
 
     def _limits_for(self, sources: list[str], limit: int) -> dict[str, int]:
         """Per-source result cap — the primary source gets ``limit × factor``."""
@@ -233,6 +293,7 @@ class UnifiedSearch:
         limit: int = 25,
         sort: str | None = None,
         sources: list[str] | None = None,
+        diagnostics: bool = False,
         **kwargs: Any,
     ) -> tuple[list[LiteratureResult], MergeReport]:
         """
@@ -256,6 +317,13 @@ class UnifiedSearch:
             still works when you search that source alone.
         sources : list[str], optional
             Restrict this one call to a subset of the configured sources.
+        diagnostics : bool, optional
+            Off by default, so the result keeps its shape.  When ``True``,
+            ``report.metadata["source_status"]`` holds one record per queried
+            source (``status`` is ``ok``, ``empty``, ``error``, ``rate_limited`` or
+            ``unavailable``, with the record count, seconds, limit, the query and
+            sort sent, and the error when there is one), and every merged record
+            gets ``matched_sources``: the sources that returned that paper.
 
         Returns
         -------
@@ -271,8 +339,16 @@ class UnifiedSearch:
         sources = sources or self.sources
         limits = self._limits_for(sources, limit)
 
+        status: dict[str, dict[str, Any]] | None = {} if diagnostics else None
         per_source, source_times, source_errors = self._run_sources(
-            clients, sources, query, limits, sort, translate=self.translate, **kwargs
+            clients,
+            sources,
+            query,
+            limits,
+            sort,
+            translate=self.translate,
+            status=status,
+            **kwargs,
         )
         source_counts = {s: len(r) for s, r in per_source.items()}
 
@@ -288,6 +364,8 @@ class UnifiedSearch:
                 sources_used=sources,
                 source_counts=source_counts,
             )
+            if status is not None:
+                report.metadata["source_status"] = status
             return [], report
 
         merger = LiteratureMerger(config=self._dedup_config())
@@ -301,6 +379,9 @@ class UnifiedSearch:
 
         merged = [LiteratureResult.model_validate(d) for d in merged_dicts if d is not None]
         self._annotate_provenance(merged, report, per_source)
+        if status is not None:
+            report.metadata["source_status"] = status
+            self._annotate_matches(merged, per_source, sources)
 
         total_in = sum(len(r) for r in all_results)
         logger.info(
@@ -323,20 +404,7 @@ class UnifiedSearch:
         if self.primary is None:
             return
 
-        def _keys(rec: Any) -> set[str]:
-            g = getattr(rec, "get", None)
-            doi = (g("doi") if g else getattr(rec, "doi", None)) or None
-            pmid = (g("pmid") if g else getattr(rec, "pmid", None)) or None
-            title = (g("title") if g else getattr(rec, "title", None)) or None
-            out = set()
-            if doi:
-                out.add(f"doi:{str(doi).lower()}")
-            if pmid:
-                out.add(f"pmid:{pmid}")
-            if title:
-                out.add(f"title:{str(title).lower().strip()[:80]}")
-            return out
-
+        _keys = _record_keys
         primary_keys: set[str] = set()
         for rec in per_source.get(self.primary, []):
             primary_keys |= _keys(rec)
@@ -352,6 +420,26 @@ class UnifiedSearch:
         report.metadata["primary_source"] = self.primary
         report.metadata["primary_records"] = primary_records
         report.metadata["added_by_source"] = added_by_source
+
+    @staticmethod
+    def _annotate_matches(
+        merged: list[LiteratureResult],
+        per_source: dict[str, list[LiteratureResult]],
+        order: list[str],
+    ) -> None:
+        """Set ``matched_sources`` on each merged record: every source that returned it, found
+        by the DOI, PMID or title the records share, in the order the sources were asked."""
+        index: dict[str, set[str]] = {}
+        for name, records in per_source.items():
+            for rec in records:
+                for key in _record_keys(rec):
+                    index.setdefault(key, set()).add(name)
+        rank = {name: i for i, name in enumerate(order)}
+        for rec in merged:
+            found = {rec.source}
+            for key in _record_keys(rec):
+                found |= index.get(key, set())
+            rec.matched_sources = sorted(found, key=lambda n: (rank.get(n, len(rank)), n))  # type: ignore[attr-defined]
 
     def search_all(
         self,
@@ -383,10 +471,27 @@ class UnifiedSearch:
         sort: str | None,
         *,
         translate: bool,
+        status: dict[str, dict[str, Any]] | None = None,
         **kwargs: Any,
     ) -> tuple[dict[str, list[LiteratureResult]], dict[str, float], dict[str, str]]:
+        """Fan out to the sources. ``status``, when given, is filled with one record per source."""
         active = [(s, clients.get(s)) for s in sources]
         runnable = [(s, c) for s, c in active if c is not None]
+        sent: dict[str, dict[str, Any]] = {}
+        if status is not None:
+            for s, c in active:
+                if c is None:
+                    message = self._init_errors.get(s, "the client could not be created")
+                    status[s] = {
+                        "status": "unavailable",
+                        "records": 0,
+                        "seconds": None,
+                        "limit": limits.get(s, 25),
+                        "query": None,
+                        "sort": None,
+                        "error": {"type": "ClientUnavailable", "message": message},
+                        "retry_after": None,
+                    }
 
         per_source: dict[str, list[LiteratureResult]] = {}
         source_times: dict[str, float] = {}
@@ -404,6 +509,7 @@ class UnifiedSearch:
             call: dict[str, Any] = {"query": q, "limit": limits.get(source_name, 25)}
             accepted = _accepted_params(client.search)
             send_sort, sort_value = _translate_sort(sort, source_name)
+            sent[source_name] = {"query": q, "sort": sort_value if send_sort else None}
             pairs = [("sort", sort_value)] if send_sort else []
             for key, value in (*pairs, *kwargs.items()):
                 if accepted is None or key in accepted:
@@ -424,6 +530,10 @@ class UnifiedSearch:
                 try:
                     results = fut.result()
                     per_source[source_name] = results
+                    if status is not None:
+                        status[source_name] = self._status_row(
+                            source_name, limits, sent, elapsed, len(results)
+                        )
                     logger.info(
                         "Source '%s' returned %d results in %.2fs",
                         source_name,
@@ -433,8 +543,35 @@ class UnifiedSearch:
                 except Exception as exc:  # noqa: BLE001 - report, don't abort the batch
                     source_errors[source_name] = f"{type(exc).__name__}: {exc}"
                     logger.error("Source '%s' failed: %s", source_name, exc)
+                    if status is not None:
+                        status[source_name] = self._status_row(
+                            source_name, limits, sent, elapsed, 0, exc
+                        )
 
         return per_source, source_times, source_errors
+
+    @staticmethod
+    def _status_row(
+        source: str,
+        limits: dict[str, int],
+        sent: dict[str, dict[str, Any]],
+        elapsed: float,
+        records: int,
+        exc: BaseException | None = None,
+    ) -> dict[str, Any]:
+        row: dict[str, Any] = {
+            "status": "ok" if records else "empty",
+            "records": records,
+            "seconds": round(elapsed, 3),
+            "limit": limits.get(source, 25),
+            "query": sent.get(source, {}).get("query"),
+            "sort": sent.get(source, {}).get("sort"),
+            "error": None,
+            "retry_after": None,
+        }
+        if exc is not None:
+            row.update(_failure(exc))
+        return row
 
     # ------------------------------------------------------------------
     # Client lifecycle
@@ -458,6 +595,7 @@ class UnifiedSearch:
                 self._clients[source_name] = registry.load_source(source_name, **kwargs)
             except Exception as exc:  # noqa: BLE001 - missing dep / init failure
                 logger.warning("Failed to init source '%s': %s", source_name, exc)
+                self._init_errors[source_name] = f"{type(exc).__name__}: {exc}"
                 self._clients[source_name] = None
 
         return self._clients

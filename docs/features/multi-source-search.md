@@ -40,7 +40,7 @@ Clients are created at the first search. Use `UnifiedSearch` as a context manage
 
 ### search
 
-`search(query, limit=25, sort=None, sources=None, **kwargs) -> tuple[list[LiteratureResult], MergeReport]`
+`search(query, limit=25, sort=None, sources=None, diagnostics=False, **kwargs) -> tuple[list[LiteratureResult], MergeReport]`
 
 | Parameter | Type | Default | Description |
 |---|---|---|---|
@@ -48,6 +48,7 @@ Clients are created at the first search. Use `UnifiedSearch` as a context manage
 | `limit` | `int` | `25` | Records requested from each source; the primary source is asked for `limit × primary_limit_factor` |
 | `sort` | `str` or `None` | `None` | `"relevance"`, `"date"` or `"citations"`, translated into each source's own sort vocabulary; see below |
 | `sources` | `list[str]` or `None` | `None` | Query only these configured sources |
+| `diagnostics` | `bool` | `False` | Add a status record per source to `report.metadata["source_status"]` and `matched_sources` to every record; see [Source status and provenance](#source-status-and-provenance) |
 | `**kwargs` | | | Passed to the sources whose `search()` accepts them |
 
 `sort` takes one of three canonical values, which `UnifiedSearch` rewrites into what each source expects:
@@ -66,9 +67,36 @@ A failing source does not stop the others. `report` is a [`MergeReport`](dedup.m
 |---|---|
 | `source_counts` | Records each source returned, before deduplication |
 | `source_errors` | `{source: message}` for sources that failed, including `"client not initialised"` |
+| `source_status` | With `diagnostics=True`: the status record of each source; see [Source status and provenance](#source-status-and-provenance) |
 | `source_times` | Seconds from the start of the parallel requests until each source finished |
 | `sources_used` | The sources queried |
 | `primary_source`, `primary_records`, `added_by_source` | With a primary source: its name, how many merged records match one of its records, and how many new records each other source added |
+
+### Source status and provenance
+
+`report.metadata` always says how many records each source returned (`source_counts`) and which sources raised (`source_errors`). It does not say why a source returned nothing, or whether it was asked at all. With `diagnostics=True` the result keeps its shape and gains two things:
+
+- `report.metadata["source_status"]`: one record per source you queried.
+- `matched_sources` on every merged record: the sources that returned that paper, in the order the sources were asked, found by the DOI, PMID or title they share. `record.source` is the source whose version of the record won the merge and is always in the list. It is an extra field of the record, so `record.model_dump()` has it too.
+
+```python
+results, report = searcher.search("chronic fatigue syndrome", limit=10, diagnostics=True)
+for name, row in report.metadata["source_status"].items():
+    print(name, row["status"], row["records"], row["error"])
+print(results[0].source, results[0].matched_sources)  # europepmc ['europepmc', 'pubmed']
+```
+
+| Field | Content |
+|---|---|
+| `status` | `ok`: records came back. `empty`: the source answered with none. `error`: the request raised. `rate_limited`: it raised HTTP 429 or a rate-limit message. `unavailable`: the client could not be created (a missing optional package, for instance), so no request was made |
+| `records` | Records returned, before deduplication |
+| `seconds` | Seconds from the start of the parallel requests until the source finished; `null` for `unavailable` |
+| `limit` | Records asked for (the primary source is asked for `limit × primary_limit_factor`) |
+| `query`, `sort` | The query after [translation](#query-translation) and the sort value actually sent (`null` when the source cannot sort that way); `null` for `unavailable` |
+| `error` | `null`, or `{"type", "message", "http_status"}`; for `unavailable` the message is why the client could not be created |
+| `retry_after` | Seconds from the server's `Retry-After` header for a `rate_limited` source, when it sent a number |
+
+The rows are plain JSON. A failing or unavailable source never stops the others, with or without `diagnostics`; `search_all` does not take the option.
 
 ### search_all
 
