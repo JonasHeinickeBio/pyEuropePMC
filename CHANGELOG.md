@@ -4,6 +4,12 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
+## [4.3.0] - 2026-10-26
+
+> MCP release: authentication. The streamable-HTTP and SSE transports can now require a bearer
+> token, so the server can be run as a network service without a proxy in front. Nothing changes
+> without a token, and stdio is never checked.
+
 ### ✨ Features
 
 - Opt-in bearer-token authentication for the MCP HTTP transports (#288). With a token

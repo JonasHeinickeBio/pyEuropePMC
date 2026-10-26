@@ -2,20 +2,20 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.JonasHeinickeBio/pyeuropepmc",
   "title": "PyEuropePMC",
-  "description": "Europe PMC search, search analytics, full text, enrichment, PICO, MeSH, data links, export",
+  "description": "Europe PMC search, search analytics, full text, enrichment, PICO, MeSH, data links, export, auth",
   "repository": {
     "url": "https://github.com/JonasHeinickeBio/pyEuropePMC",
     "source": "github",
     "id": "999512652"
   },
-  "version": "4.2.0",
+  "version": "4.3.0",
   "websiteUrl": "https://jonasheinickebio.github.io/pyEuropePMC/",
   "packages": [
     {
       "registryType": "pypi",
       "registryBaseUrl": "https://pypi.org",
       "identifier": "pyeuropepmc",
-      "version": "4.2.0",
+      "version": "4.3.0",
       "runtimeHint": "uvx",
       "packageArguments": [
         {
