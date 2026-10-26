@@ -43,8 +43,16 @@ def pauses(monkeypatch):
     return slept
 
 
+class _Enrichment:
+    """Stands in for the enrichment client, which needs the optional ``semanticscholar`` package."""
+
+    api_key = None
+    rate_limit_delay = 0.0
+    timeout = 5
+
+
 def _adapter(session: Session) -> SemanticScholarLiteratureAdapter:
-    adapter = SemanticScholarLiteratureAdapter()
+    adapter = SemanticScholarLiteratureAdapter(enrichment_client=_Enrichment())  # type: ignore[arg-type]
     adapter._http.session = session  # type: ignore[assignment]
     return adapter
 
@@ -98,3 +106,39 @@ def test_the_longest_total_pause_is_bounded():
     cls = SemanticScholarLiteratureAdapter
     assert (cls.RATE_LIMIT_ATTEMPTS - 1) * cls.RATE_LIMIT_MAX_WAIT <= 30
     assert time.sleep is not None
+
+
+class TestRetryAfter:
+    def _wait(self, header: str | None, attempt: int = 0) -> float:
+        return SemanticScholarLiteratureAdapter._retry_wait(_response(429, header), attempt)
+
+    def test_seconds(self):
+        assert self._wait("4") == 4.0 and self._wait("0") == 0.0 and self._wait("2.5") == 2.5
+
+    def test_an_http_date_in_the_future_is_honoured(self):
+        import datetime
+        import email.utils
+
+        due = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(seconds=7)
+        assert 5.5 <= self._wait(email.utils.format_datetime(due, usegmt=True)) <= 7.5
+
+    @pytest.mark.parametrize(
+        "header", ["-3", "nan", "inf", "-inf", "soon", "", None, "Wed, 21 Oct 2015 07:28:00 GMT"]
+    )
+    def test_anything_unusable_falls_back_to_the_backoff(self, header):
+        assert self._wait(header, attempt=0) == 1.5
+        assert self._wait(header, attempt=2) == 6.0
+
+    def test_a_nan_header_cannot_crash_the_search(self, pauses):
+        session = Session(_response(429, "nan"), _response(200, body=PAGE))
+        assert len(_adapter(session).search("x", limit=1)) == 1
+        assert pauses == [1.5]
+
+
+def test_every_attempt_keeps_the_clients_pace(pauses):
+    session = Session(_response(429), _response(429), _response(200, body=PAGE))
+    adapter = _adapter(session)
+    turns: list[int] = []
+    adapter._http._wait_turn = lambda: turns.append(session.calls)  # type: ignore[method-assign]
+    adapter.search("x", limit=1)
+    assert turns == [0, 1, 2]  # asked for before each of the three requests

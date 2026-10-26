@@ -15,7 +15,10 @@ Adapters convert:
 from __future__ import annotations
 
 import contextlib
+import datetime
+import email.utils
 import logging
+import math
 import time
 from typing import Any
 
@@ -61,7 +64,8 @@ class SemanticScholarLiteratureAdapter:
 
     #: Semantic Scholar paper-search endpoint (Graph API).
     SEARCH_URL = "https://api.semanticscholar.org/graph/v1/paper/search"
-    #: A search is asked this many times in all when Semantic Scholar answers HTTP 429.
+    #: Requests made for one search in all, the first included, while Semantic Scholar answers
+    #: HTTP 429 (so at most three retries).
     RATE_LIMIT_ATTEMPTS = 4
     #: The longest pause between two of them, whatever ``Retry-After`` says (seconds).
     RATE_LIMIT_MAX_WAIT = 10.0
@@ -102,11 +106,32 @@ class SemanticScholarLiteratureAdapter:
         # ``x-api-key`` header) instead of a bare ``requests.get``.
         self._http = BaseHTTPClient(
             base_url="https://api.semanticscholar.org/graph/v1",
-            rate_limit_delay=self.enrichment_client.rate_limit_delay,
+            rate_limit_delay=float(self.enrichment_client.rate_limit_delay),
             timeout=self.enrichment_client.timeout,
         )
         if self.enrichment_client.api_key:
             self._http.session.headers.update({"x-api-key": self.enrichment_client.api_key})
+
+    @staticmethod
+    def _retry_wait(response: requests.Response, attempt: int) -> float:
+        """Seconds to wait before asking again: ``Retry-After`` as a number of seconds or as an
+        HTTP date, else a backoff of 1.5 s, 3 s, 6 s. A header that is negative, not a number or
+        a date already past counts as absent."""
+        backoff = 1.5 * (1 << attempt)
+        header = (response.headers.get("Retry-After") or "").strip()
+        if not header:
+            return backoff
+        try:
+            seconds = float(header)
+        except ValueError:
+            try:
+                due = email.utils.parsedate_to_datetime(header)
+            except (TypeError, ValueError):
+                return backoff
+            if due.tzinfo is None:
+                due = due.replace(tzinfo=datetime.timezone.utc)
+            seconds = (due - datetime.datetime.now(datetime.timezone.utc)).total_seconds()
+        return seconds if math.isfinite(seconds) and seconds >= 0 else backoff
 
     def _search_http(self, params: dict[str, Any]) -> dict[str, Any]:
         """
@@ -128,6 +153,7 @@ class SemanticScholarLiteratureAdapter:
             If the API returns a non-2xx status.
         """
         for attempt in range(self.RATE_LIMIT_ATTEMPTS):
+            self._http._wait_turn()  # every attempt, the first included, keeps the pace
             response = self._http.session.get(
                 self.SEARCH_URL,
                 params=params,
@@ -137,11 +163,7 @@ class SemanticScholarLiteratureAdapter:
                 break
             # Semantic Scholar answers 429 to most requests even with a key (measured: 5 of 6
             # calls two seconds apart). Wait as it asks, else back off, and ask again.
-            try:
-                wait = float(response.headers.get("Retry-After", ""))
-            except ValueError:
-                wait = 1.5 * (2**attempt)
-            time.sleep(min(wait, self.RATE_LIMIT_MAX_WAIT))
+            time.sleep(min(self._retry_wait(response, attempt), self.RATE_LIMIT_MAX_WAIT))
         response.raise_for_status()
         return response.json()  # type: ignore[no-any-return]
 

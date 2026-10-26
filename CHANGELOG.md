@@ -7,7 +7,8 @@ All notable changes to PyEuropePMC are documented here.
 ### 🐛 Bug Fixes
 
 - The Semantic Scholar search asks again when it is answered with HTTP 429 (up to four attempts,
-  waiting as `Retry-After` says or backing off 1.5 s, 3 s, never more than 10 s). Semantic
+  each paced by the client's delay; it waits as `Retry-After` says, in seconds or as a date, else
+  backs off 1.5 s, 3 s, 6 s, never more than 10 s). Semantic
   Scholar answers 429 to most requests even with an API key; measured live with a valid key, 1 of 6
   searches two seconds apart got through before this, 6 of 6 after. A search that is still limited
   after the last attempt is `rate_limited` in the diagnostics, as before.
