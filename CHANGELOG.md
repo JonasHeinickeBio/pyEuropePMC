@@ -4,6 +4,18 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
+### 🐛 Bug Fixes
+
+- The Semantic Scholar search asks again when it is answered with HTTP 429 (up to four attempts,
+  waiting as `Retry-After` says or backing off 1.5 s, 3 s, never more than 10 s). Semantic
+  Scholar answers 429 to most requests even with an API key; measured live with a valid key, 1 of 6
+  searches two seconds apart got through before this, 6 of 6 after. A search that is still limited
+  after the last attempt is `rate_limited` in the diagnostics, as before.
+- Real-world tests that need credentials (`tests/integration/test_real_world_credentials.py`,
+  `--run-integration`, skipped without `SEMANTIC_SCHOLAR_API_KEY` and `UNPAYWALL_EMAIL`, which are
+  read from the environment or a `.env` file and never printed): Semantic Scholar with a key,
+  `find_open_access` against Unpaywall, and `enrich_paper` reaching all six sources.
+
 ### ✨ Features
 
 - Per-source rate limits and concurrency for `UnifiedSearch` (#373). `rate_limits={"arxiv": 5.0}`

@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import contextlib
 import logging
+import time
 from typing import Any
 
 import requests
@@ -60,6 +61,10 @@ class SemanticScholarLiteratureAdapter:
 
     #: Semantic Scholar paper-search endpoint (Graph API).
     SEARCH_URL = "https://api.semanticscholar.org/graph/v1/paper/search"
+    #: A search is asked this many times in all when Semantic Scholar answers HTTP 429.
+    RATE_LIMIT_ATTEMPTS = 4
+    #: The longest pause between two of them, whatever ``Retry-After`` says (seconds).
+    RATE_LIMIT_MAX_WAIT = 10.0
 
     def __init__(
         self,
@@ -122,11 +127,21 @@ class SemanticScholarLiteratureAdapter:
         requests.HTTPError
             If the API returns a non-2xx status.
         """
-        response = self._http.session.get(
-            self.SEARCH_URL,
-            params=params,
-            timeout=self._http.timeout,
-        )
+        for attempt in range(self.RATE_LIMIT_ATTEMPTS):
+            response = self._http.session.get(
+                self.SEARCH_URL,
+                params=params,
+                timeout=self._http.timeout,
+            )
+            if response.status_code != 429 or attempt == self.RATE_LIMIT_ATTEMPTS - 1:
+                break
+            # Semantic Scholar answers 429 to most requests even with a key (measured: 5 of 6
+            # calls two seconds apart). Wait as it asks, else back off, and ask again.
+            try:
+                wait = float(response.headers.get("Retry-After", ""))
+            except ValueError:
+                wait = 1.5 * (2**attempt)
+            time.sleep(min(wait, self.RATE_LIMIT_MAX_WAIT))
         response.raise_for_status()
         return response.json()  # type: ignore[no-any-return]
 
