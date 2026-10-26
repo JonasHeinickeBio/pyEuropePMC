@@ -1,6 +1,6 @@
 [project]
 name = "pyeuropepmc"
-version = "4.3.0"
+version = "4.4.0"
 description = "Europe PMC API client and MCP server: search literature, read open-access full text, trace citations, build bibliographies."
 license = "MIT"
 readme = "README.md"
