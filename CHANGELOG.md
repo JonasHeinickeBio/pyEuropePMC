@@ -4,6 +4,19 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
+### ✨ Features
+
+- `UnifiedSearch.search(..., diagnostics=True)` and the MCP tool `unified_search(diagnostics=true)`
+  say where each result came from and what each source did (#289). Opt-in, so the default result
+  keeps its shape: `report.metadata["source_status"]` has one record per queried source
+  (`status` is `ok`, `empty`, `error`, `rate_limited` for HTTP 429 or a rate-limit message, or
+  `unavailable` when the client could not be created, with the reason; plus record count, seconds,
+  limit, the query and sort actually sent, the error type, message and HTTP status, and a numeric
+  `Retry-After`), and every merged record gets `matched_sources`, the sources that returned that
+  paper. An empty source and an unavailable one are now distinguishable. The MCP tool returns the
+  records and a `sources` object. Documented in the multi-source search guide and the API
+  reference.
+
 ## [4.3.0] - 2026-10-26
 
 > MCP release: authentication. The streamable-HTTP and SSE transports can now require a bearer

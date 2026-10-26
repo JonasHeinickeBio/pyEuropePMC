@@ -711,25 +711,43 @@ async def unified_search(
         ),
     ] = None,
     limit: Annotated[int, Field(description="Max results per source", ge=1, le=200)] = 25,
+    diagnostics: Annotated[
+        bool,
+        Field(
+            description="Also return `sources`: for each queried source whether it answered "
+            "(`ok`), found nothing (`empty`), failed (`error`), was rate limited "
+            "(`rate_limited`) or could not be created (`unavailable`), with its record count, "
+            "seconds, the query sent and the error; and `matched_sources` on every record, "
+            "the sources that returned that paper"
+        ),
+    ] = False,
     ctx: Context | None = None,
 ) -> dict[str, Any]:
     """Search across multiple literature sources (PubMed, arXiv, Semantic Scholar, OpenAlex,
-    ClinicalTrials.gov) in parallel, with automatic cross-source deduplication."""
+    ClinicalTrials.gov) in parallel, with automatic cross-source deduplication. A source that
+    fails does not fail the call; set `diagnostics` to see which one did and why, and to tell
+    an empty source from an unavailable one."""
     _require_available(UNIFIED_AVAILABLE, "UnifiedSearch")
     unified = _get_unified()
     assert unified is not None  # guaranteed by _require_available above
 
     if ctx:
         await ctx.info(f"Searching {sources or 'default sources'} for {query!r}")
-    results, report = await _run_blocking(unified.search, query, sources=sources, limit=limit)
+    extra: dict[str, Any] = {"diagnostics": True} if diagnostics else {}
+    results, report = await _run_blocking(
+        unified.search, query, sources=sources, limit=limit, **extra
+    )
     if ctx:
         await ctx.info(
             f"{report.total_output} results after removing {report.duplicates_removed} duplicates"
         )
-    return {
+    response: dict[str, Any] = {
         "results": [_to_serializable(r) for r in results],
         "dedup": _dedup_report(report),
     }
+    if diagnostics:
+        response["sources"] = _to_serializable(report.metadata.get("source_status", {}))
+    return response
 
 
 @mcp.tool(

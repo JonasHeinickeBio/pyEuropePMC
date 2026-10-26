@@ -26,7 +26,7 @@ Two tools need configuration. `find_open_access` reads `UNPAYWALL_EMAIL` (Unpayw
 | See how a search is distributed over years, journals, authors, countries, funders and open access | `analyze_search` (exact counts where Europe PMC can count, a labelled sample otherwise) |
 | Run the same search on PubMed or another database | `translate_query` |
 | Test a query against papers you already know | `evaluate_query` |
-| Search | `search_papers` (Europe PMC), `unified_search` (several sources, duplicates merged), `search_authors` |
+| Search | `search_papers` (Europe PMC), `unified_search` (several sources, duplicates merged; `diagnostics` shows which source failed, was rate limited or found nothing), `search_authors` |
 | Look up papers you have identifiers for | `get_paper_details` (one), `get_papers_batch` (up to 100) |
 | See impact, funders, institutions and retractions of one paper | `enrich_paper` |
 | Read a paper | `get_paper_fulltext`, `get_papers_fulltext_batch`, `paper_figures` |
