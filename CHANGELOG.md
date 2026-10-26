@@ -4,18 +4,15 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
-### 🐛 Bug Fixes
+## [4.5.0] - 2026-10-26
 
-- The Semantic Scholar search asks again when it is answered with HTTP 429 (up to four attempts,
-  each paced by the client's delay; it waits as `Retry-After` says, in seconds or as a date, else
-  backs off 1.5 s, 3 s, 6 s, never more than 10 s). Semantic
-  Scholar answers 429 to most requests even with an API key; measured live with a valid key, 1 of 6
-  searches two seconds apart got through before this, 6 of 6 after. A search that is still limited
-  after the last attempt is `rate_limited` in the diagnostics, as before.
-- Real-world tests that need credentials (`tests/integration/test_real_world_credentials.py`,
-  `--run-integration`, skipped without `SEMANTIC_SCHOLAR_API_KEY` and `UNPAYWALL_EMAIL`, which are
-  read from the environment or a `.env` file and never printed): Semantic Scholar with a key,
-  `find_open_access` against Unpaywall, and `enrich_paper` reaching all six sources.
+> Live-tested release. Running the 4.4.0 features against the real services (Europe PMC, PubMed,
+> arXiv, ten more sources, a Semantic Scholar key, Unpaywall, a real HTTP client) found six
+> defects, all fixed here: delays that were never applied, sources that were silently skipped,
+> failures reported as "no results", a year window broken by records dated 2096, a default call
+> that failed without pandas, and a Semantic Scholar that was rate limited five times in six.
+> `UnifiedSearch` also gets per-source rate limits and concurrency. One default changes: arXiv,
+> DBLP and Zenodo are paced at 3 seconds.
 
 ### ✨ Features
 
@@ -64,6 +61,16 @@ All notable changes to PyEuropePMC are documented here.
 - Real-world tests (`tests/mcp/e2e/test_mcp_real_world.py`): the exact numbers of `analyze_search`
   against independent `count_papers` counts, the paper resources against the tool on real articles,
   and the bearer token on a real socket with a session id.
+- The Semantic Scholar search asks again when it is answered with HTTP 429 (up to four attempts,
+  each paced by the client's delay; it waits as `Retry-After` says, in seconds or as a date, else
+  backs off 1.5 s, 3 s, 6 s, never more than 10 s). Semantic
+  Scholar answers 429 to most requests even with an API key; measured live with a valid key, 1 of 6
+  searches two seconds apart got through before this, 6 of 6 after. A search that is still limited
+  after the last attempt is `rate_limited` in the diagnostics, as before.
+- Real-world tests that need credentials (`tests/integration/test_real_world_credentials.py`,
+  `--run-integration`, skipped without `SEMANTIC_SCHOLAR_API_KEY` and `UNPAYWALL_EMAIL`, which are
+  read from the environment or a `.env` file and never printed): Semantic Scholar with a key,
+  `find_open_access` against Unpaywall, and `enrich_paper` reaching all six sources.
 
 ### 🔄 Changed
 
