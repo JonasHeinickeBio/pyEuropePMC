@@ -274,7 +274,7 @@ works = openalex.search("CRISPR", limit=10, sort="citation_count")
 print(len(papers), len(works))
 ```
 
-`SemanticScholarLiteratureAdapter(enrichment_client=None, api_key=None, rate_limit_delay=1.2, timeout=15)` passes `sort` to Semantic Scholar as given. `OpenAlexLiteratureAdapter(enrichment_client=None, rate_limit_delay=1.0, timeout=15, cache_config=None)` accepts `sort` values `"citation_count"`, `"date"` and `"relevance"`. Both classes are also exported by `pyeuropepmc.features.literature`.
+`SemanticScholarLiteratureAdapter(enrichment_client=None, api_key=None, rate_limit_delay=1.2, timeout=15)` passes `sort` to Semantic Scholar as given. `OpenAlexLiteratureAdapter(enrichment_client=None, rate_limit_delay=1.0, timeout=15, cache_config=None)` accepts `sort` values `"citation_count"`, `"date"` and `"relevance"`. Both classes are also exported by `pyeuropepmc.features.literature`. Semantic Scholar answers HTTP 429 to most requests, with a key as well as without one, so a search is made in up to four attempts (the first plus three retries, each paced by the client's delay, waiting as `Retry-After` says as seconds or as a date, else 1.5 s, 3 s, 6 s, never more than 10 s) before it is reported as `rate_limited`; the key is read from `SEMANTIC_SCHOLAR_API_KEY` when `api_key` is not passed, and a key the service does not accept is an HTTP 403 `error`, not an empty source.
 
 ### Zenodo, DOAJ, DBLP, HAL and CORE
 
