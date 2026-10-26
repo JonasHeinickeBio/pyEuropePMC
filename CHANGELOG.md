@@ -4,6 +4,13 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
+## [4.4.0] - 2026-10-26
+
+> Multi-source search: where results came from. `UnifiedSearch.search(diagnostics=True)` and the MCP
+> tool `unified_search(diagnostics=true)` report what each source did (answered, found nothing,
+> failed, was rate limited, or could not be created) and which sources returned each record.
+> Opt-in; the default result is unchanged.
+
 ### ✨ Features
 
 - `UnifiedSearch.search(..., diagnostics=True)` and the MCP tool `unified_search(diagnostics=true)`
