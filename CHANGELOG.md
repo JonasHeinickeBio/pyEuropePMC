@@ -4,29 +4,6 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
-### 🐛 Bug Fixes
-
-- `analyze_search`, found by running it against the live Europe PMC. (1) Records dated in the
-  future (2096 on a search for `cancer`) pushed the window of 60 years out of range, so 5.6 million
-  records fell into one `before` bucket and `by_year` showed one meaningless year: the years now
-  end with the current year and later-dated records are one `after` bucket (`years` + `before` +
-  `after` + `undated` is still `hit_count`). (2) Without pandas, which is what `uvx pyeuropepmc mcp`
-  installs, the default call (no `metrics`) failed outright because the default set includes the
-  sample metrics; it now returns the counted metrics and marks the others `basis: unavailable`
-  with the install hint, while naming a sample metric still fails with that hint. (3) The 60
-  yearly counts took about 40 s because the shared client sends one request at a time; each
-  worker thread now counts through a client of its own (about 24 s for `cancer`).
-- Real-world tests (`tests/mcp/e2e/test_mcp_real_world.py`): the exact numbers of `analyze_search`
-  against independent `count_papers` counts, the paper resources against the tool on real articles,
-  and the bearer token on a real socket with a session id.
-
-## [4.4.0] - 2026-10-26
-
-> Multi-source search: where results came from. `UnifiedSearch.search(diagnostics=True)` and the MCP
-> tool `unified_search(diagnostics=true)` report what each source did (answered, found nothing,
-> failed, was rate limited, or could not be created) and which sources returned each record.
-> Opt-in; the default result is unchanged.
-
 ### ✨ Features
 
 - Per-source rate limits and concurrency for `UnifiedSearch` (#373). `rate_limits={"arxiv": 5.0}`
@@ -55,13 +32,25 @@ All notable changes to PyEuropePMC are documented here.
   `sources=["openalex", ...]` returned only Europe PMC and PubMed results. Any registered source
   may now be named in a call; its client is created on first use, one that cannot be created is
   `unavailable` with the real reason, and an unknown name raises `ValueError`.
-
 - A source whose client swallowed a failure (Semantic Scholar answering HTTP 403, OpenAlex and the
   Europe PMC adapter on any request error, DBLP answering a bot-check page instead of JSON) was
   reported as `empty`, which reads as "no results". These clients now record the error in
   `last_error` and `UnifiedSearch` raises it when the answer is empty, so the source is `error`
   (or `rate_limited`) with the real message, in `source_errors` and in the diagnostics. Found by
   running ten live sources through `unified_search(diagnostics=true)`.
+- `analyze_search`, found by running it against the live Europe PMC. (1) Records dated in the
+  future (2096 on a search for `cancer`) pushed the window of 60 years out of range, so 5.6 million
+  records fell into one `before` bucket and `by_year` showed one meaningless year: the years now
+  end with the current year and later-dated records are one `after` bucket (`years` + `before` +
+  `after` + `undated` is still `hit_count`). (2) Without pandas, which is what `uvx pyeuropepmc mcp`
+  installs, the default call (no `metrics`) failed outright because the default set includes the
+  sample metrics; it now returns the counted metrics and marks the others `basis: unavailable`
+  with the install hint, while naming a sample metric still fails with that hint. (3) The 60
+  yearly counts took about 40 s because the shared client sends one request at a time; each
+  worker thread now counts through a client of its own (about 24 s for `cancer`).
+- Real-world tests (`tests/mcp/e2e/test_mcp_real_world.py`): the exact numbers of `analyze_search`
+  against independent `count_papers` counts, the paper resources against the tool on real articles,
+  and the bearer token on a real socket with a session id.
 
 ### 🔄 Changed
 
@@ -69,6 +58,13 @@ All notable changes to PyEuropePMC are documented here.
   of the 1.2 seconds every source used to get. arXiv asks for one request every three seconds;
   these three clients already defaulted to 3 s on their own, and `UnifiedSearch` had overridden
   that. Passing `rate_limit_delay` or `rate_limits` still decides the delay, as before.
+
+## [4.4.0] - 2026-10-26
+
+> Multi-source search: where results came from. `UnifiedSearch.search(diagnostics=True)` and the MCP
+> tool `unified_search(diagnostics=true)` report what each source did (answered, found nothing,
+> failed, was rate limited, or could not be created) and which sources returned each record.
+> Opt-in; the default result is unchanged.
 
 ### ✨ Features
 
