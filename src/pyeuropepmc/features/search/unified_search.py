@@ -24,6 +24,7 @@ import contextlib
 import inspect
 import logging
 import re
+import threading
 import time
 from typing import Any
 
@@ -44,6 +45,14 @@ __all__ = ["UnifiedSearch"]
 
 _DEFAULT_SOURCES = ["europepmc", "pubmed", "arxiv"]
 _DEFAULT_PRIMARY = "europepmc"
+
+#: Delay between requests when ``rate_limit_delay`` is not given (chosen for Semantic Scholar's
+#: 1 request per second without a key).
+DEFAULT_RATE_LIMIT_DELAY = 1.2
+#: Sources whose own client waits longer by default, because the provider asks for it (arXiv: one
+#: request every 3 seconds). Without an explicit ``rate_limit_delay`` or ``rate_limits`` entry a
+#: source is never paced faster than this.
+SOURCE_MIN_DELAY: dict[str, float] = {"arxiv": 3.0, "dblp": 3.0, "zenodo": 3.0}
 
 
 class _Unset:
@@ -209,10 +218,22 @@ class UnifiedSearch:
     timeout : int, optional
         Per-source request timeout in seconds (default: 30).
     rate_limit_delay : float, optional
-        Delay between requests for each source client (default: 1.2 s, chosen
-        for Semantic Scholar's 1 req/s unauthenticated limit).
+        Delay between requests for every source client, replacing each client's
+        own default. Left out, it is 1.2 s (Semantic Scholar's 1 req/s
+        unauthenticated limit), and a source whose provider asks for more
+        (``SOURCE_MIN_DELAY``: arXiv, DBLP and Zenodo, 3 s) keeps that.
+    rate_limits : dict[str, float] | None, optional
+        Delay in seconds per source; wins over ``rate_limit_delay`` for the
+        sources it names, e.g. ``{"arxiv": 5.0, "openalex": 0.2}``.
+    source_concurrency : int | dict[str, int], optional
+        How many calls to one source may run at the same time, across every
+        thread that shares this object (default: 1). One ``search()`` makes one
+        call per source, so this matters when several searches run at once, as
+        in a server. An ``int`` applies to every source; a dict names sources
+        and leaves the others at 1.
     max_workers : int | None, optional
-        Thread-pool size for the parallel fan-out (default: one per source).
+        Thread-pool size for the parallel fan-out, i.e. how many sources one
+        ``search()`` queries at once (default: one per source).
     translate : bool, optional
         Translate the query into each source's dialect (default: ``True``).
     credentials : dict[str, Any] | None, optional
@@ -236,13 +257,15 @@ class UnifiedSearch:
         sources: list[str] | None = None,
         dedup_mode: DedupMode = DedupMode.BALANCED,
         timeout: int = 30,
-        rate_limit_delay: float = 1.2,
+        rate_limit_delay: float | None = None,
         api_key: str | None = None,
         max_workers: int | None = None,
         translate: bool = True,
         credentials: dict[str, Any] | None = None,
         primary: str | None | _Unset = _UNSET,
         primary_limit_factor: float = 2.0,
+        rate_limits: dict[str, float] | None = None,
+        source_concurrency: int | dict[str, int] = 1,
     ) -> None:
         sources = sources or list(_DEFAULT_SOURCES)
 
@@ -261,7 +284,15 @@ class UnifiedSearch:
         self.primary_limit_factor = max(1.0, primary_limit_factor)
         self.dedup_mode = dedup_mode
         self.timeout = timeout
-        self.rate_limit_delay = rate_limit_delay
+        self._explicit_delay = rate_limit_delay is not None
+        self.rate_limit_delay = (
+            DEFAULT_RATE_LIMIT_DELAY if rate_limit_delay is None else rate_limit_delay
+        )
+        self.rate_limits = self._checked_limits(rate_limits, sources)
+        self.max_concurrency = self._checked_concurrency(source_concurrency, sources)
+        self._gates = {s: threading.BoundedSemaphore(self.max_concurrency[s]) for s in sources}
+        if self.rate_limit_delay < 0:
+            raise ValueError(f"rate_limit_delay must not be negative, got {rate_limit_delay}")
         self.max_workers = max_workers
         self.translate = translate
         self.credentials: dict[str, Any] = dict(credentials or {})
@@ -269,6 +300,66 @@ class UnifiedSearch:
             self.credentials["api_key"] = api_key
         self._clients: dict[str, Any] | None = None
         self._init_errors: dict[str, str] = {}
+        self._init_lock = threading.RLock()
+
+    @staticmethod
+    def _checked_limits(
+        rate_limits: dict[str, float] | None, sources: list[str]
+    ) -> dict[str, float]:
+        given = dict(rate_limits or {})
+        stray = [s for s in given if s not in sources]
+        if stray:
+            raise ValueError(f"rate_limits names {stray}, which are not in sources {sources}")
+        negative = {s: v for s, v in given.items() if v < 0}
+        if negative:
+            raise ValueError(f"rate_limits must not be negative, got {negative}")
+        return {s: float(v) for s, v in given.items()}
+
+    @staticmethod
+    def _checked_concurrency(value: int | dict[str, int], sources: list[str]) -> dict[str, int]:
+        if isinstance(value, dict):
+            stray = [s for s in value if s not in sources]
+            if stray:
+                raise ValueError(f"source_concurrency names {stray}, not in sources {sources}")
+            chosen = {s: value.get(s, 1) for s in sources}
+        else:
+            chosen = dict.fromkeys(sources, value)
+        bad = {s: v for s, v in chosen.items() if not isinstance(v, int) or v < 1}
+        if bad:
+            raise ValueError(f"source_concurrency must be a whole number of at least 1, got {bad}")
+        return chosen
+
+    def delay_for(self, source: str) -> float:
+        """Seconds the client of ``source`` waits between its requests: its ``rate_limits``
+        entry, else ``rate_limit_delay`` when that was given, else 1.2 s or the provider's
+        minimum (``SOURCE_MIN_DELAY``), whichever is longer."""
+        if source in self.rate_limits:
+            return self.rate_limits[source]
+        if self._explicit_delay:
+            return self.rate_limit_delay
+        return max(self.rate_limit_delay, SOURCE_MIN_DELAY.get(source, 0.0))
+
+    @property
+    def limits(self) -> dict[str, dict[str, float | int]]:
+        """The effective limits per source: ``rate_limit_delay`` (seconds between requests) and
+        ``max_concurrency`` (simultaneous calls)."""
+        return {s: self._limits_of(s) for s in self.sources}
+
+    def _limits_of(self, source: str) -> dict[str, float | int]:
+        return {
+            "rate_limit_delay": self.delay_for(source),
+            "max_concurrency": self.max_concurrency.get(source, 1),
+        }
+
+    def _checked_sources(self, sources: list[str] | None) -> list[str]:
+        """The sources of one call: those given, which may be any registered source and not only
+        the ones this object was built with, else the configured ones."""
+        chosen = list(dict.fromkeys(sources)) if sources else self.sources
+        known = set(registry.available_sources())
+        unknown = [s for s in chosen if s not in known]
+        if unknown:
+            raise ValueError(f"Unknown source(s) {unknown}. Available: {sorted(known)}")
+        return chosen
 
     def _limits_for(self, sources: list[str], limit: int) -> dict[str, int]:
         """Per-source result cap — the primary source gets ``limit × factor``."""
@@ -335,8 +426,8 @@ class UnifiedSearch:
             records anchored on the primary) and ``added_by_source`` (net-new
             records each satellite contributed).
         """
-        clients = self._get_or_init_clients()
-        sources = sources or self.sources
+        sources = self._checked_sources(sources)
+        clients = self._get_or_init_clients(sources)
         limits = self._limits_for(sources, limit)
 
         status: dict[str, dict[str, Any]] | None = {} if diagnostics else None
@@ -363,6 +454,7 @@ class UnifiedSearch:
                 source_errors=source_errors,
                 sources_used=sources,
                 source_counts=source_counts,
+                effective_limits={s: self._limits_of(s) for s in sources},
             )
             if status is not None:
                 report.metadata["source_status"] = status
@@ -375,6 +467,7 @@ class UnifiedSearch:
             source_errors=source_errors,
             sources_used=sources,
             source_counts=source_counts,
+            effective_limits={s: self._limits_of(s) for s in sources},
         )
 
         merged = [LiteratureResult.model_validate(d) for d in merged_dicts if d is not None]
@@ -451,7 +544,7 @@ class UnifiedSearch:
 
         Returns ``(per_source_results, per_source_errors)``.
         """
-        clients = self._get_or_init_clients()
+        clients = self._get_or_init_clients(self.sources)
         limits = self._limits_for(self.sources, limit)
         per_source, _, errors = self._run_sources(
             clients, self.sources, query, limits, None, translate=self.translate, **kwargs
@@ -491,6 +584,9 @@ class UnifiedSearch:
                         "sort": None,
                         "error": {"type": "ClientUnavailable", "message": message},
                         "retry_after": None,
+                        "rate_limit_delay": self.delay_for(s),
+                        "max_concurrency": self.max_concurrency.get(s),
+                        "waited_seconds": 0.0,
                     }
 
         per_source: dict[str, list[LiteratureResult]] = {}
@@ -514,7 +610,11 @@ class UnifiedSearch:
             for key, value in (*pairs, *kwargs.items()):
                 if accepted is None or key in accepted:
                     call[key] = value
-            return list(client.search(**call))
+            gate = self._gate(source_name)
+            queued = time.monotonic()
+            with gate:
+                sent[source_name]["waited"] = time.monotonic() - queued
+                return self._search_checked(client, call)
 
         if not runnable:
             return per_source, source_times, source_errors
@@ -550,8 +650,8 @@ class UnifiedSearch:
 
         return per_source, source_times, source_errors
 
-    @staticmethod
     def _status_row(
+        self,
         source: str,
         limits: dict[str, int],
         sent: dict[str, dict[str, Any]],
@@ -568,6 +668,9 @@ class UnifiedSearch:
             "sort": sent.get(source, {}).get("sort"),
             "error": None,
             "retry_after": None,
+            "rate_limit_delay": self.delay_for(source),
+            "max_concurrency": self.max_concurrency.get(source),
+            "waited_seconds": round(sent.get(source, {}).get("waited", 0.0), 3),
         }
         if exc is not None:
             row.update(_failure(exc))
@@ -577,28 +680,56 @@ class UnifiedSearch:
     # Client lifecycle
     # ------------------------------------------------------------------
 
-    def _get_or_init_clients(self) -> dict[str, Any]:
-        if self._clients is not None:
+    @staticmethod
+    def _search_checked(client: Any, call: dict[str, Any]) -> list[LiteratureResult]:
+        """Run ``client.search``. An empty answer that the client reached by swallowing an error
+        (it records the error in ``last_error``) is raised, so it counts as a failure and is not
+        mistaken for "no results"."""
+        client.last_error = None
+        results = list(client.search(**call))
+        error = getattr(client, "last_error", None)
+        if error is not None and not results:
+            raise error
+        return results
+
+    def _gate(self, source: str) -> threading.BoundedSemaphore:
+        """The concurrency gate of a source, made on first use for one named only in a call."""
+        with self._init_lock:
+            if source not in self._gates:
+                self._gates[source] = threading.BoundedSemaphore(
+                    self.max_concurrency.get(source, 1)
+                )
+            return self._gates[source]
+
+    def _get_or_init_clients(self, sources: list[str] | None = None) -> dict[str, Any]:
+        """The clients of ``sources`` (default: the configured ones), each created on first use.
+
+        A source that cannot be created (a missing optional package, say) is kept as ``None``
+        and its reason in ``_init_errors``, so it is reported rather than retried on every call.
+        """
+        with self._init_lock:
+            if self._clients is None:
+                self._clients = {}
+            for source_name in sources or self.sources:
+                if source_name not in self._clients:
+                    self._clients[source_name] = self._create_client(source_name)
             return self._clients
 
-        self._clients = {}
-        for source_name in self.sources:
-            spec = registry.get_source_spec(source_name)
-            kwargs: dict[str, Any] = {
-                "rate_limit_delay": self.rate_limit_delay,
-                "timeout": self.timeout,
-            }
-            for cred in spec.credential_kwargs:
-                if self.credentials.get(cred) is not None:
-                    kwargs[cred] = self.credentials[cred]
-            try:
-                self._clients[source_name] = registry.load_source(source_name, **kwargs)
-            except Exception as exc:  # noqa: BLE001 - missing dep / init failure
-                logger.warning("Failed to init source '%s': %s", source_name, exc)
-                self._init_errors[source_name] = f"{type(exc).__name__}: {exc}"
-                self._clients[source_name] = None
-
-        return self._clients
+    def _create_client(self, source_name: str) -> Any:
+        spec = registry.get_source_spec(source_name)
+        kwargs: dict[str, Any] = {
+            "rate_limit_delay": self.delay_for(source_name),
+            "timeout": self.timeout,
+        }
+        for cred in spec.credential_kwargs:
+            if self.credentials.get(cred) is not None:
+                kwargs[cred] = self.credentials[cred]
+        try:
+            return registry.load_source(source_name, **kwargs)
+        except Exception as exc:  # noqa: BLE001 - missing dep / init failure
+            logger.warning("Failed to init source '%s': %s", source_name, exc)
+            self._init_errors[source_name] = f"{type(exc).__name__}: {exc}"
+            return None
 
     def close(self) -> None:
         """Close all initialised clients."""

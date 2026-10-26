@@ -224,3 +224,85 @@ class TestClassification:
     def test_retry_after_only_when_it_is_a_number_of_seconds(self, value, seconds):
         assert _retry_after(_http_error(429, value)) == seconds
         assert _retry_after(ValueError("x")) is None
+
+
+class Swallowing(Fake):
+    """A client that, like the Semantic Scholar, OpenAlex and DBLP clients, catches its own
+    failure, records it in ``last_error`` and returns no records."""
+
+    def __init__(self, error: Exception, records: list[LiteratureResult] | None = None):
+        super().__init__(records)
+        self.swallowed = error
+
+    def search(self, query: str, limit: int = 25, sort: str | None = None):
+        self.last_error = self.swallowed
+        return list(self.records)
+
+
+class TestSwallowedFailures:
+    def test_a_failure_the_client_swallowed_is_an_error_not_an_empty_source(self):
+        searcher = _searcher(
+            {
+                "pubmed": Fake([_rec("pubmed", "1", *SAME)]),
+                "semantic_scholar": Swallowing(_http_error(403)),
+            }
+        )
+        _, report = searcher.search("x", diagnostics=True)
+        row = report.metadata["source_status"]["semantic_scholar"]
+        assert row["status"] == "error" and row["error"]["http_status"] == 403
+        assert "semantic_scholar" in report.metadata["source_errors"]
+
+    def test_a_swallowed_rate_limit_is_reported_as_one(self):
+        searcher = _searcher({"openalex": Swallowing(_http_error(429, "12"))})
+        _, report = searcher.search("x", diagnostics=True)
+        row = report.metadata["source_status"]["openalex"]
+        assert (row["status"], row["retry_after"]) == ("rate_limited", 12.0)
+
+    def test_a_decoding_failure_is_an_error(self):
+        searcher = _searcher({"dblp": Swallowing(ValueError("Expecting value: line 1 column 1"))})
+        _, report = searcher.search("x", diagnostics=True)
+        assert report.metadata["source_status"]["dblp"]["error"]["type"] == "ValueError"
+
+    def test_records_that_arrived_are_kept_even_if_the_client_noted_an_error(self):
+        partial = Swallowing(RuntimeError("page 2 failed"), [_rec("pubmed", "1", *SAME)])
+        results, report = _searcher({"pubmed": partial}).search("x", diagnostics=True)
+        assert len(results) == 1 and report.metadata["source_status"]["pubmed"]["status"] == "ok"
+
+    def test_a_source_that_really_found_nothing_stays_empty(self):
+        _, report = _searcher({"arxiv": Fake([])}).search("x", diagnostics=True)
+        assert report.metadata["source_status"]["arxiv"]["status"] == "empty"
+
+    def test_the_error_of_an_earlier_call_does_not_leak_into_the_next(self):
+        client = Fake([])
+        client.last_error = RuntimeError("an old failure")
+        _, report = _searcher({"arxiv": client}).search("x", diagnostics=True)
+        assert report.metadata["source_status"]["arxiv"]["status"] == "empty"
+
+    def test_the_http_clients_record_a_body_that_is_not_json(self):
+        import requests as rq
+
+        from pyeuropepmc.features.search.base import BaseLiteratureClient
+
+        class Page(BaseLiteratureClient):
+            def search(self, query, limit=25, **kwargs):  # pragma: no cover
+                return []
+
+            def get_paper(self, identifier):  # pragma: no cover
+                return None
+
+            def _normalize_result(self, raw):  # pragma: no cover
+                raise NotImplementedError
+
+        class Session:
+            headers: dict[str, str] = {}
+
+            def get(self, url, **kwargs):
+                response = rq.Response()
+                response.status_code = 200
+                response._content = b"<html>Making sure you're not a bot</html>"
+                return response
+
+        client = Page(base_url="https://example.org", rate_limit_delay=0)
+        client.session = Session()  # type: ignore[assignment]
+        assert client._make_request("x", use_cache=False) is None
+        assert isinstance(client.last_error, ValueError)

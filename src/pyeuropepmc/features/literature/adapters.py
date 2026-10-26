@@ -195,8 +195,9 @@ class SemanticScholarLiteratureAdapter:
 
         try:
             data = self._search_http(params)
-        except requests.RequestException:
+        except requests.RequestException as exc:
             logger.exception("Semantic Scholar search failed for query=%r", query)
+            self.last_error = exc  # lets UnifiedSearch tell a failure from "no results"
             return []
 
         papers = data.get("data", [])
@@ -478,8 +479,9 @@ class OpenAlexLiteratureAdapter:
 
         try:
             data = self._search_http(params)
-        except requests.RequestException:
+        except requests.RequestException as exc:
             logger.exception("OpenAlex search failed for query=%r", query)
+            self.last_error = exc
             return []
 
         papers = data.get("results", [])
@@ -661,8 +663,9 @@ class EuropePMCLiteratureAdapter:
 
         try:
             records = self.search_client.search_and_parse(query, format="json", **params)
-        except Exception:
+        except Exception as exc:
             logger.exception("Europe PMC search failed for query=%r", query)
+            self.last_error = exc
             return []
 
         results: list[LiteratureResult] = []

@@ -4,8 +4,40 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
+### ✨ Features
+
+- Per-source rate limits and concurrency for `UnifiedSearch` (#373). `rate_limits={"arxiv": 5.0}`
+  sets the delay between requests per source (it wins over `rate_limit_delay`, which still sets one
+  delay for all), and `source_concurrency` (an `int`, or `{source: n}`) caps how many calls one
+  source gets at the same time across all threads that share the object, 1 by default, so several
+  overlapping searches, as in a server, queue up instead of hitting a provider together. The limits
+  that applied are in every result, `report.metadata["effective_limits"]`, and with `diagnostics`
+  the status rows also carry `rate_limit_delay`, `max_concurrency` and `waited_seconds`. Bad
+  values (a source that is not in `sources`, a negative delay, a cap below 1) raise `ValueError`.
+  The multi-source search guide documents the order in which a delay is chosen, the two levels of
+  concurrency (`max_workers` for the sources of one search, `source_concurrency` across searches)
+  and safe defaults for repeated and large searches.
+
 ### 🐛 Bug Fixes
 
+- `rate_limit_delay` was never applied to a successful request by the HTTP source clients (arXiv,
+  PubMed, DOAJ, CORE, HAL, Zenodo, DBLP, ClinicalTrials.gov): the sleep sat at the end of the retry
+  loop, which a successful request leaves by returning. Found by measuring real requests to arXiv,
+  which arrived 0.3 s apart with a 3 s delay set. Each client now reserves a start slot under a
+  lock before every request (`BaseHTTPClient._wait_turn`), so requests of one client, from any
+  number of threads, start at least `rate_limit_delay` apart; arXiv now sees exactly 3.0 s. Searches
+  across these sources are correspondingly slower, as the delays always intended.
+- `UnifiedSearch.search(sources=[...])` could not use a source outside the set the object was
+  built with: the source was skipped without a word, so the MCP tool `unified_search` with
+  `sources=["openalex", ...]` returned only Europe PMC and PubMed results. Any registered source
+  may now be named in a call; its client is created on first use, one that cannot be created is
+  `unavailable` with the real reason, and an unknown name raises `ValueError`.
+- A source whose client swallowed a failure (Semantic Scholar answering HTTP 403, OpenAlex and the
+  Europe PMC adapter on any request error, DBLP answering a bot-check page instead of JSON) was
+  reported as `empty`, which reads as "no results". These clients now record the error in
+  `last_error` and `UnifiedSearch` raises it when the answer is empty, so the source is `error`
+  (or `rate_limited`) with the real message, in `source_errors` and in the diagnostics. Found by
+  running ten live sources through `unified_search(diagnostics=true)`.
 - `analyze_search`, found by running it against the live Europe PMC. (1) Records dated in the
   future (2096 on a search for `cancer`) pushed the window of 60 years out of range, so 5.6 million
   records fell into one `before` bucket and `by_year` showed one meaningless year: the years now
@@ -19,6 +51,13 @@ All notable changes to PyEuropePMC are documented here.
 - Real-world tests (`tests/mcp/e2e/test_mcp_real_world.py`): the exact numbers of `analyze_search`
   against independent `count_papers` counts, the paper resources against the tool on real articles,
   and the bearer token on a real socket with a session id.
+
+### 🔄 Changed
+
+- Without an explicit `rate_limit_delay`, arXiv, DBLP and Zenodo are now paced at 3 seconds instead
+  of the 1.2 seconds every source used to get. arXiv asks for one request every three seconds;
+  these three clients already defaulted to 3 s on their own, and `UnifiedSearch` had overridden
+  that. Passing `rate_limit_delay` or `rate_limits` still decides the delay, as before.
 
 ## [4.4.0] - 2026-10-26
 
