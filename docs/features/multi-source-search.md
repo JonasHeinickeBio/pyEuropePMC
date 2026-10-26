@@ -21,20 +21,22 @@ for paper in results[:5]:
 
 ## UnifiedSearch
 
-`UnifiedSearch(sources=None, dedup_mode=DedupMode.BALANCED, timeout=30, rate_limit_delay=1.2, api_key=None, max_workers=None, translate=True, credentials=None, primary=..., primary_limit_factor=2.0)`
+`UnifiedSearch(sources=None, dedup_mode=DedupMode.BALANCED, timeout=30, rate_limit_delay=None, api_key=None, max_workers=None, translate=True, credentials=None, primary=..., primary_limit_factor=2.0, rate_limits=None, source_concurrency=1)`
 
 | Parameter | Type | Default | Description |
 |---|---|---|---|
 | `sources` | `list[str]` or `None` | `None` | Source keys from the [registry](#sources); `None` means `["europepmc", "pubmed", "arxiv"]`. An unknown key raises `ValueError` |
 | `dedup_mode` | `DedupMode` | `DedupMode.BALANCED` | Duplicate matching mode, from `pyeuropepmc.features.enrich.merger`; see [Deduplication](dedup.md) |
 | `timeout` | `int` | `30` | Request timeout in seconds, passed to each client that accepts it |
-| `rate_limit_delay` | `float` | `1.2` | Delay passed to every client, replacing the client's own default |
+| `rate_limit_delay` | `float` or `None` | `None` | Delay passed to every client, replacing the client's own default. `None` means 1.2 seconds, or 3 for arXiv, DBLP and Zenodo; see [Rate limits](#rate-limits) |
 | `api_key` | `str` or `None` | `None` | Shortcut for `credentials={"api_key": ...}` |
-| `max_workers` | `int` or `None` | `None` | Thread-pool size; `None` uses one thread per source |
+| `max_workers` | `int` or `None` | `None` | Thread-pool size: how many sources one `search()` queries at once; `None` uses one thread per source |
 | `translate` | `bool` | `True` | Rewrite the query for each source; see [Query translation](#query-translation) |
 | `credentials` | `dict` or `None` | `None` | Credentials for sources that accept them; see [Credentials](#credentials) |
 | `primary` | `str` or `None` | `"europepmc"` if selected, otherwise `None` | Source whose records anchor the merge and win ties; `None` treats all sources equally |
 | `primary_limit_factor` | `float` | `2.0` | The primary source is asked for `limit` times this many records |
+| `rate_limits` | `dict[str, float]` or `None` | `None` | Delay in seconds per source; wins over `rate_limit_delay` for the sources it names. A name that is not in `sources` raises `ValueError` |
+| `source_concurrency` | `int` or `dict[str, int]` | `1` | How many calls one source may get at the same time from all threads sharing the object; see [Rate limits](#rate-limits) |
 
 Clients are created at the first search. Use `UnifiedSearch` as a context manager or call `close()` to close them.
 
@@ -67,6 +69,7 @@ A failing source does not stop the others. `report` is a [`MergeReport`](dedup.m
 |---|---|
 | `source_counts` | Records each source returned, before deduplication |
 | `source_errors` | `{source: message}` for sources that failed, including `"client not initialised"` |
+| `effective_limits` | `{source: {"rate_limit_delay", "max_concurrency"}}` for the queried sources: the limits that applied to this search |
 | `source_status` | With `diagnostics=True`: the status record of each source; see [Source status and provenance](#source-status-and-provenance) |
 | `source_times` | Seconds from the start of the parallel requests until each source finished |
 | `sources_used` | The sources queried |
@@ -95,6 +98,8 @@ print(results[0].source, results[0].matched_sources)  # europepmc ['europepmc', 
 | `query`, `sort` | The query after [translation](#query-translation) and the sort value actually sent (`null` when the source cannot sort that way); `null` for `unavailable` |
 | `error` | `null`, or `{"type", "message", "http_status"}`; for `unavailable` the message is why the client could not be created |
 | `retry_after` | Seconds from the server's `Retry-After` header for a `rate_limited` source, when it sent a number |
+| `rate_limit_delay`, `max_concurrency` | The [limits](#rate-limits) that applied to the source |
+| `waited_seconds` | How long the call waited for a free slot under `max_concurrency` before it ran |
 
 The rows are plain JSON. A failing or unavailable source never stops the others, with or without `diagnostics`; `search_all` does not take the option.
 
@@ -179,7 +184,27 @@ with UnifiedSearch(
 | `SemanticScholarLiteratureAdapter` | 1.2 |
 | `ArxivClient`, `ZenodoClient`, `DBLPClient` | 3.0 |
 
-`UnifiedSearch` passes its own `rate_limit_delay` (1.2 seconds unless you change it) to every client instead of these defaults. arXiv asks clients to make at most one request every three seconds, so use `UnifiedSearch(rate_limit_delay=3.0)` when arXiv is selected. No client shortens its delay when given an API key.
+`UnifiedSearch` sets each client's delay itself, in this order:
+
+1. `rate_limits[source]`, when you name the source there.
+2. `rate_limit_delay`, when you pass it: the same delay for every source, as before.
+3. Otherwise 1.2 seconds (Semantic Scholar's limit without a key), but never less than the provider asks for: arXiv, DBLP and Zenodo get 3 seconds. Up to 4.4.0 these three were paced at 1.2 seconds too, which is faster than arXiv's published limit of one request every three seconds.
+
+```python
+searcher = UnifiedSearch(
+    sources=["europepmc", "pubmed", "arxiv", "openalex"],
+    rate_limits={"pubmed": 0.4, "openalex": 0.2, "arxiv": 5.0},  # seconds between requests
+    source_concurrency={"pubmed": 2},                          # calls to PubMed at the same time
+)
+print(searcher.limits)
+# {'europepmc': {'rate_limit_delay': 1.2, 'max_concurrency': 1}, 'pubmed': {...}, ...}
+```
+
+**Concurrency has two levels.** `max_workers` is how many sources one `search()` queries at once (default: all of them). `source_concurrency` is how many calls one source gets at the same time from every thread that shares the `UnifiedSearch` object (default 1 for each source). A single `search()` makes one call per source, so the second level only matters when searches overlap, as they do in a server where several agents share one object; the later calls wait for the earlier ones instead of hitting the provider together. `waited_seconds` in the [diagnostics](#source-status-and-provenance) shows how long a call waited. The delay is the client's own pause after each request, so a source with `source_concurrency` above 1 can see requests closer together than its delay; keep it at 1 for providers with a strict limit.
+
+**The effective limits are in every result.** `report.metadata["effective_limits"]` maps each queried source to its `rate_limit_delay` and `max_concurrency`, so the limits that applied are recorded with the data; the diagnostics rows repeat them next to the error and `Retry-After` of a source that was rate limited.
+
+**Safe defaults for repeated and large searches.** Keep `source_concurrency` at 1, keep the default delays or raise them (`rate_limits={"arxiv": 5.0}`), pass `credentials` for the sources that raise their limit with a key or an e-mail address (Semantic Scholar, NCBI, OpenAlex, Unpaywall), request fewer records per source rather than more, and look for `rate_limited` in the diagnostics before retrying. A server that is rate limited keeps its `Retry-After` in `source_status`; waiting that long is the polite response. This is throttling, not retrying: `UnifiedSearch` does not retry a failed source on its own.
 
 ### Missing optional packages
 

@@ -6,6 +6,27 @@ All notable changes to PyEuropePMC are documented here.
 
 ### ✨ Features
 
+- Per-source rate limits and concurrency for `UnifiedSearch` (#373). `rate_limits={"arxiv": 5.0}`
+  sets the delay between requests per source (it wins over `rate_limit_delay`, which still sets one
+  delay for all), and `source_concurrency` (an `int`, or `{source: n}`) caps how many calls one
+  source gets at the same time across all threads that share the object, 1 by default, so several
+  overlapping searches, as in a server, queue up instead of hitting a provider together. The limits
+  that applied are in every result, `report.metadata["effective_limits"]`, and with `diagnostics`
+  the status rows also carry `rate_limit_delay`, `max_concurrency` and `waited_seconds`. Bad
+  values (a source that is not in `sources`, a negative delay, a cap below 1) raise `ValueError`.
+  The multi-source search guide documents the order in which a delay is chosen, the two levels of
+  concurrency (`max_workers` for the sources of one search, `source_concurrency` across searches)
+  and safe defaults for repeated and large searches.
+
+### 🔄 Changed
+
+- Without an explicit `rate_limit_delay`, arXiv, DBLP and Zenodo are now paced at 3 seconds instead
+  of the 1.2 seconds every source used to get. arXiv asks for one request every three seconds;
+  these three clients already defaulted to 3 s on their own, and `UnifiedSearch` had overridden
+  that. Passing `rate_limit_delay` or `rate_limits` still decides the delay, as before.
+
+### ✨ Features
+
 - `UnifiedSearch.search(..., diagnostics=True)` and the MCP tool `unified_search(diagnostics=true)`
   say where each result came from and what each source did (#289). Opt-in, so the default result
   keeps its shape: `report.metadata["source_status"]` has one record per queried source

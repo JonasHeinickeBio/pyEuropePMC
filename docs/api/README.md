@@ -33,7 +33,7 @@ from pyeuropepmc import (
 | `QueryBuilder` | Build query strings | `keyword()`, `field()`, `and_()`, `or_()`, `not_()`, `date_range()`, `citation_count()`, `build()`, `save()`, `translate()` | [QueryBuilder](query-builder.md) |
 | `FullTextXMLParser` | Parse JATS XML | `extract_metadata()`, `extract_tables()`, `extract_references()`, `get_full_text_sections_structured()`, `to_plaintext()`, `to_markdown()` | [XML parser](xml-parser.md) |
 | `EuropePMCParser` | Parse search responses | `parse_json()`, `parse_xml()`, `parse_dc()` | [EuropePMCParser](parser.md) |
-| `UnifiedSearch` | Search several services and merge duplicates; `search(..., diagnostics=True)` adds a status record per source and `matched_sources` per record | `search()`, `search_all()` | [Multi-source search](../features/multi-source-search.md) |
+| `UnifiedSearch` | Search several services and merge duplicates; `search(..., diagnostics=True)` adds a status record per source and `matched_sources` per record; `rate_limits` and `source_concurrency` set per-source pacing and concurrency | `search()`, `search_all()` | [Multi-source search](../features/multi-source-search.md) |
 
 Analytics and plotting functions are described in [Analytics and visualization](analytics-visualization.md).
 
