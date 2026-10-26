@@ -92,6 +92,9 @@ class FakeClient:
         self.counted: list[str] = []
         self.searched: list[tuple[str, dict[str, Any]]] = []
 
+    def close(self) -> None:
+        pass
+
     def get_hit_count(self, query: str, **kwargs: Any) -> int:
         self.counted.append(query)
         return sum(_matches(r, query) for r in self.records)
@@ -117,9 +120,10 @@ def _fresh_client():
 
 
 @pytest.fixture
-def client() -> FakeClient:
+def client(monkeypatch) -> FakeClient:
     fake = FakeClient(RECORDS)
     srv._client_cache.set(fake)
+    monkeypatch.setattr(srv, "_new_counting_client", lambda: fake)  # the workers' clients
     return fake
 
 
@@ -153,7 +157,7 @@ class TestCounting:
             {"year": 2021, "count": 2},
         ]
         assert out["by_year"]["undated"] == 1  # F has no first publication date
-        assert out["by_year"]["before"] is None
+        assert out["by_year"]["before"] is None and out["by_year"]["after"] is None
         assert out["open_access"] == {
             "basis": "exact",
             "open_access": 3,
@@ -184,16 +188,48 @@ class TestCounting:
             asked.append(query)
             return 1
 
-        out = am.year_counts("q", 500, count, lambda _q, order: 1900 if order == "asc" else 2025)
+        out = am.year_counts(
+            "q", 500, count, lambda _q, order: 1900 if order == "asc" else 2025, this_year=2025
+        )
         assert len(out["years"]) == am.MAX_YEARS
         assert out["years"][0]["year"] == 2025 - am.MAX_YEARS + 1
         assert out["before"] == {"year": 2025 - am.MAX_YEARS, "count": 1}
         assert "(q) AND FIRST_PDATE:[* TO 1965]" in asked
         assert out["undated"] == 500 - am.MAX_YEARS - 1
 
+    def test_records_dated_in_the_future_do_not_push_the_window_out_of_range(self):
+        """Live: the newest record of a search for 'cancer' was dated 2096."""
+        asked: list[str] = []
+
+        def count(query: str) -> int:
+            asked.append(query)
+            return 7 if "TO *]" in query and "2027" in query else 1
+
+        out = am.year_counts(
+            "q", 100, count, lambda _q, order: 1900 if order == "asc" else 2096, this_year=2026
+        )
+        assert out["years"][-1]["year"] == 2026 and len(out["years"]) == am.MAX_YEARS
+        assert out["after"] == {"year": 2027, "count": 7}
+        assert "(q) AND FIRST_PDATE:[2027 TO *]" in asked
+        assert not any("2096" in q for q in asked)
+        parts = sum(y["count"] for y in out["years"]) + out["before"]["count"] + 7
+        assert out["undated"] == 100 - parts
+
+    def test_a_result_set_dated_only_in_the_future_is_one_bucket(self):
+        out = am.year_counts("q", 9, lambda _q: 9, lambda _q, _o: 2090, this_year=2026)
+        assert out["years"] == [] and out["after"] == {"year": 2027, "count": 9}
+        assert out["undated"] == 0
+
+    def test_a_young_result_set_has_no_buckets(self):
+        out = am.year_counts(
+            "q", 10, lambda _q: 5, lambda _q, o: 2024 if o == "asc" else 2025, this_year=2026
+        )
+        assert [y["year"] for y in out["years"]] == [2024, 2025]
+        assert out["before"] is None and out["after"] is None
+
     def test_no_records_means_no_years(self):
         out = am.year_counts("q", 0, lambda _q: 0, lambda _q, _o: None)
-        assert out == {"basis": "exact", "years": [], "before": None, "undated": 0}
+        assert out == {"basis": "exact", "years": [], "before": None, "after": None, "undated": 0}
 
     def test_citation_thresholds_are_counted_and_exact(self, client):
         entry = _analyze(metrics=["citations"], limit=5)["metrics"]["citations"]
@@ -347,6 +383,41 @@ class TestToolContract:
             _analyze(metrics=["by_year", "journals"])
         assert not client.counted and not client.searched
 
+    def test_without_the_extra_the_default_set_still_answers_what_it_can(
+        self, client, monkeypatch
+    ):
+        """A plain ``uvx pyeuropepmc mcp`` has no pandas: the call with no ``metrics`` must not fail."""
+        monkeypatch.setattr(srv, "ANALYTICS_AVAILABLE", False)
+        result = _analyze()
+        metrics = result["metrics"]
+        assert (
+            metrics["by_year"]["basis"] == "exact" and metrics["open_access"]["basis"] == "exact"
+        )
+        for name in ("journals", "authors", "types", "countries", "funders", "citations"):
+            assert metrics[name]["basis"] == "unavailable"
+            assert "pip install pyeuropepmc[analytics]" in metrics[name]["error"]
+        assert result["records_read"] == 0 and not client.searched[2:]  # only the year edges
+
+    def test_naming_a_metric_that_needs_the_extra_still_fails_with_the_hint(
+        self, client, monkeypatch
+    ):
+        monkeypatch.setattr(srv, "ANALYTICS_AVAILABLE", False)
+        with pytest.raises(ToolError, match=r"pip install pyeuropepmc\[analytics\]"):
+            _analyze(metrics=["by_year", "journals"])
+
+    def test_the_counts_are_made_by_clients_of_the_workers_own(self, client, monkeypatch):
+        made: list[FakeClient] = []
+
+        def new():
+            fake = FakeClient(RECORDS)
+            made.append(fake)
+            return fake
+
+        monkeypatch.setattr(srv, "_new_counting_client", new)
+        _analyze(metrics=["by_year"])
+        assert 1 <= len(made) <= am.WORKERS
+        assert all(c.counted for c in made)
+
     def test_a_failed_request_is_a_tool_error(self, monkeypatch):
         fake = FakeClient(RECORDS)
 
@@ -355,6 +426,7 @@ class TestToolContract:
 
         monkeypatch.setattr(fake, "get_hit_count", fail)
         srv._client_cache.set(fake)
+        monkeypatch.setattr(srv, "_new_counting_client", lambda: fake)
         with pytest.raises(ToolError):
             _analyze()
 
