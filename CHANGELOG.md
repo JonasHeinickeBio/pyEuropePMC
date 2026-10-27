@@ -4,6 +4,13 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
+### Documentation
+
+- **search:** "When a source fails" in the multi-source guide: what each `source_status` value asks
+  of the caller, what Semantic Scholar (403, 429), DBLP (bot-check page) and OpenAlex did in live
+  tests, and a fallback pattern; the sentence that said `UnifiedSearch` never retries now says what
+  the clients do retry (including the `Retry-After` handling).
+
 ### Changed
 
 - **mcp:** `analyze_search` counts the latest 30 years for `by_year` by default instead of 60
