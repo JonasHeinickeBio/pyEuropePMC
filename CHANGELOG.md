@@ -4,6 +4,13 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
+### CI
+
+- **changelog:** a `CI — Changelog check` workflow (`scripts/check_changelog.py`) fails a pull
+  request whose merged `CHANGELOG.md` has entries under a version main already cut, a removed
+  release, no single first `[Unreleased]`, or a repeated `###` heading in a section. Label a PR
+  `changelog-edit` to correct a released section on purpose.
+
 ### Documentation
 
 - **search:** "When a source fails" in the multi-source guide: what each `source_status` value asks
