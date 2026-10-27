@@ -15,16 +15,14 @@ Adapters convert:
 from __future__ import annotations
 
 import contextlib
-import datetime
-import email.utils
 import logging
-import math
 import time
 from typing import Any
 
 import requests
 
 from pyeuropepmc.cache.cache import CacheConfig
+from pyeuropepmc.core.retry_after import parse_retry_after
 from pyeuropepmc.features.common.base import BaseHTTPClient
 from pyeuropepmc.features.enrich.sources.openalex import OpenAlexClient
 from pyeuropepmc.features.enrich.sources.semantic_scholar import SemanticScholarClient
@@ -117,21 +115,8 @@ class SemanticScholarLiteratureAdapter:
         """Seconds to wait before asking again: ``Retry-After`` as a number of seconds or as an
         HTTP date, else a backoff of 1.5 s, 3 s, 6 s. A header that is negative, not a number or
         a date already past counts as absent."""
-        backoff = 1.5 * (1 << attempt)
-        header = (response.headers.get("Retry-After") or "").strip()
-        if not header:
-            return backoff
-        try:
-            seconds = float(header)
-        except ValueError:
-            try:
-                due = email.utils.parsedate_to_datetime(header)
-            except (TypeError, ValueError):
-                return backoff
-            if due.tzinfo is None:
-                due = due.replace(tzinfo=datetime.timezone.utc)
-            seconds = (due - datetime.datetime.now(datetime.timezone.utc)).total_seconds()
-        return seconds if math.isfinite(seconds) and seconds >= 0 else backoff
+        advised = parse_retry_after(response.headers.get("Retry-After"))
+        return advised if advised is not None else 1.5 * (1 << attempt)
 
     def _search_http(self, params: dict[str, Any]) -> dict[str, Any]:
         """

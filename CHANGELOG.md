@@ -11,6 +11,30 @@ All notable changes to PyEuropePMC are documented here.
   tests, and a fallback pattern; the sentence that said `UnifiedSearch` never retries now says what
   the clients do retry.
 
+### Changed
+
+- **mcp:** `analyze_search` counts the latest 30 years for `by_year` by default instead of 60
+  (new `year_window` argument, 1 to 60). Each year is one count request, so a large search is
+  faster; everything older is still one exact `before` bucket, the totals do not change, and the
+  response now carries `window_years`. Pass `year_window=60` for the old window.
+
+### Bug Fixes
+
+- **fulltext:** reference authors written as "Surname Initials., Surname Initials." in a
+  mixed-citation without a `<person-group>` are read as a whole list. The text pass cut it at the
+  first capitalised word after the first author, so "Mayoral del Moral O., Salvat Salvat I." (PMC8658482)
+  became the author "Mayoral del" with a title that began "Moral O.", and "Zhang J., Wang L." kept
+  only "Zhang J".
+- **core, mcp:** runtime invariants are explicit errors instead of `assert` (#196, #301, #372).
+  Python strips `assert` under `-O`, which removed these checks: the socket check in the
+  connection race now raises `TypeError`, and `unified_search`, `pico_decompose` and
+  `mesh_expand` raise a `ToolError` the client can read instead of a bare `AssertionError`.
+- **core:** `BaseAPIClient` now honours `Retry-After` (#290). A 429/5xx that carries the header
+  (seconds or an HTTP date) is retried after that wait instead of the fixed 1, 2, 4, 8 s steps;
+  a server that asks for more than `RETRY_AFTER_MAX_WAIT` (30 s) is not asked again, and the
+  `APIClientError` carries the advice in `context["retry_after"]`. The header parser is shared
+  (`pyeuropepmc.core.retry_after`); the Semantic Scholar adapter uses it too.
+
 ## [4.5.0] - 2026-10-26
 
 > Live-tested release. Running the 4.4.0 features against the real services (Europe PMC, PubMed,

@@ -189,7 +189,12 @@ class TestCounting:
             return 1
 
         out = am.year_counts(
-            "q", 500, count, lambda _q, order: 1900 if order == "asc" else 2025, this_year=2025
+            "q",
+            500,
+            count,
+            lambda _q, order: 1900 if order == "asc" else 2025,
+            this_year=2025,
+            year_window=am.MAX_YEARS,
         )
         assert len(out["years"]) == am.MAX_YEARS
         assert out["years"][0]["year"] == 2025 - am.MAX_YEARS + 1
@@ -208,12 +213,50 @@ class TestCounting:
         out = am.year_counts(
             "q", 100, count, lambda _q, order: 1900 if order == "asc" else 2096, this_year=2026
         )
-        assert out["years"][-1]["year"] == 2026 and len(out["years"]) == am.MAX_YEARS
+        assert out["years"][-1]["year"] == 2026 and len(out["years"]) == am.DEFAULT_YEARS
         assert out["after"] == {"year": 2027, "count": 7}
         assert "(q) AND FIRST_PDATE:[2027 TO *]" in asked
         assert not any("2096" in q for q in asked)
         parts = sum(y["count"] for y in out["years"]) + out["before"]["count"] + 7
         assert out["undated"] == 100 - parts
+
+    def test_the_window_is_the_years_asked_for_and_older_records_stay_counted(self):
+        asked: list[str] = []
+
+        def count(query: str) -> int:
+            asked.append(query)
+            return 1
+
+        out = am.year_counts(
+            "q",
+            500,
+            count,
+            lambda _q, order: 1900 if order == "asc" else 2025,
+            this_year=2025,
+            year_window=5,
+        )
+        assert [y["year"] for y in out["years"]] == [2021, 2022, 2023, 2024, 2025]
+        assert out["before"] == {"year": 2020, "count": 1}
+        assert out["window_years"] == 5
+        assert len(asked) == 6  # five years and everything before
+
+    @pytest.mark.parametrize(("asked", "used"), [(0, 1), (-3, 1), (500, am.MAX_YEARS)])
+    def test_a_window_outside_the_limits_is_clamped(self, asked, used):
+        out = am.year_counts(
+            "q",
+            9,
+            lambda _q: 1,
+            lambda _q, o: 1900 if o == "asc" else 2025,
+            2025,
+            year_window=asked,
+        )
+        assert out["window_years"] == used
+
+    def test_the_default_window_is_thirty_years(self):
+        out = am.year_counts(
+            "q", 9, lambda _q: 1, lambda _q, o: 1900 if o == "asc" else 2025, this_year=2025
+        )
+        assert out["window_years"] == am.DEFAULT_YEARS == 30
 
     def test_a_result_set_dated_only_in_the_future_is_one_bucket(self):
         out = am.year_counts("q", 9, lambda _q: 9, lambda _q, _o: 2090, this_year=2026)
@@ -229,7 +272,14 @@ class TestCounting:
 
     def test_no_records_means_no_years(self):
         out = am.year_counts("q", 0, lambda _q: 0, lambda _q, _o: None)
-        assert out == {"basis": "exact", "years": [], "before": None, "after": None, "undated": 0}
+        assert out == {
+            "basis": "exact",
+            "years": [],
+            "before": None,
+            "after": None,
+            "undated": 0,
+            "window_years": am.DEFAULT_YEARS,
+        }
 
     def test_citation_thresholds_are_counted_and_exact(self, client):
         entry = _analyze(metrics=["citations"], limit=5)["metrics"]["citations"]
@@ -245,6 +295,13 @@ class TestCounting:
         assert set(out) == {"by_year", "open_access"}
         assert client.searched  # only the two year-edge lookups
         assert all(kw["max_results"] == 1 for _, kw in client.searched)
+
+    def test_the_year_window_reaches_by_year(self, client):
+        wide = _analyze(metrics=["by_year"], year_window=60)["metrics"]["by_year"]
+        narrow = _analyze(metrics=["by_year"], year_window=2)["metrics"]["by_year"]
+        assert (wide["window_years"], narrow["window_years"]) == (60, 2)
+        assert len(narrow["years"]) <= 2
+        assert narrow["counted"] == wide["counted"]  # the older years are one `before` count
 
 
 class TestSampleMetrics:
