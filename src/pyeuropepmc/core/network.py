@@ -165,7 +165,11 @@ class _Race:
         self.errors.append(error)
 
     def _collect(self) -> None:
-        """Take the sockets that are ready: the first without an error wins."""
+        """Take the sockets that are ready: the first without an error wins.
+
+        Raises ``TypeError`` if the selector hands back anything but a socket, which would be a
+        bug in this module (only sockets are registered), not a network failure.
+        """
         for key, _ in self.selector.select(self._wait(self.clock())):
             sock = key.fileobj
             if not isinstance(sock, socket.socket):
