@@ -4,6 +4,13 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
+### Bug Fixes
+
+- **core, mcp:** runtime invariants are explicit errors instead of `assert` (#196, #301, #372).
+  Python strips `assert` under `-O`, which removed these checks: the socket check in the
+  connection race now raises `TypeError`, and `unified_search`, `pico_decompose` and
+  `mesh_expand` raise a `ToolError` the client can read instead of a bare `AssertionError`.
+
 ## [4.5.0] - 2026-10-26
 
 > Live-tested release. Running the 4.4.0 features against the real services (Europe PMC, PubMed,
