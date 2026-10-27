@@ -55,6 +55,12 @@ class TestParseRetryAfter:
     def test_unusable_values_count_as_absent(self, value):
         assert parse_retry_after(value) is None
 
+    def test_more_digits_than_a_float_holds_is_a_very_long_wait_not_no_header(self):
+        huge = "9" * 400
+        assert parse_retry_after(huge) == 365 * 24 * 3600.0
+        assert parse_retry_after("1" + "0" * 20) == 365 * 24 * 3600.0
+        assert parse_retry_after("inf") is None  # not a delay-seconds
+
     def test_a_date_already_past_counts_as_absent(self):
         now = datetime.datetime(2026, 10, 27, 12, 0, 0, tzinfo=datetime.timezone.utc)
         past = email.utils.format_datetime(now - datetime.timedelta(minutes=5), usegmt=True)
@@ -107,6 +113,16 @@ class TestGetHonoursRetryAfter:
             client._get("x")
         assert caught.value.error_code == ErrorCodes.HTTP404
         assert sleeps == []
+
+
+class TestOversizedAdvice:
+    def test_digits_beyond_float_range_stop_the_retries(self, sleeps):
+        client = _client(_response(429, "9" * 400), _response(200))
+        with pytest.raises(APIClientError) as caught:
+            client._get("x")
+        assert caught.value.context["retry_after"] == 365 * 24 * 3600.0
+        assert sleeps == []
+        assert client.session.get.call_count == 1
 
 
 class TestPostHonoursRetryAfter:

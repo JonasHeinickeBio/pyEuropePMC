@@ -5,9 +5,15 @@ from __future__ import annotations
 import datetime
 import email.utils
 import math
+import re
 from typing import Any
 
 __all__ = ["parse_retry_after", "retry_after_of"]
+
+#: Longest advice reported: a year. A ``delay-seconds`` with more digits than a float holds is
+#: still a valid header (RFC 9110) and means "far beyond any wait limit", not "no header".
+_CEILING = 365 * 24 * 3600.0
+_DELAY_SECONDS = re.compile(r"[0-9]+")
 
 
 def parse_retry_after(value: str | None, now: datetime.datetime | None = None) -> float | None:
@@ -17,11 +23,15 @@ def parse_retry_after(value: str | None, now: datetime.datetime | None = None) -
     number or a date, or a date already past counts as absent (``None``), so the caller falls
     back to its own backoff.
     """
-    text = (value or "").strip()
+    if not isinstance(value, str):
+        return None
+    text = value.strip()
     if not text:
         return None
     try:
         seconds = float(text)
+        if _DELAY_SECONDS.fullmatch(text) and not math.isfinite(seconds):
+            seconds = _CEILING  # digits beyond float range
     except ValueError:
         try:
             due = email.utils.parsedate_to_datetime(text)
@@ -31,7 +41,7 @@ def parse_retry_after(value: str | None, now: datetime.datetime | None = None) -
             due = due.replace(tzinfo=datetime.timezone.utc)
         current = now or datetime.datetime.now(datetime.timezone.utc)
         seconds = (due - current).total_seconds()
-    return seconds if math.isfinite(seconds) and seconds >= 0 else None
+    return min(seconds, _CEILING) if math.isfinite(seconds) and seconds >= 0 else None
 
 
 def retry_after_of(exc: BaseException) -> float | None:
