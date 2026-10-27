@@ -1,3 +1,4 @@
+from collections.abc import Generator
 import contextlib
 import logging
 import threading
@@ -12,8 +13,9 @@ from pyeuropepmc._useragent import get_user_agent
 from . import network
 from .error_codes import ErrorCodes, error_code_for_status
 from .exceptions import APIClientError, ValidationError
+from .retry_after import retry_after_of
 
-__all__ = ["BaseAPIClient", "APIClientError", "RETRYABLE_STATUS_CODES"]
+__all__ = ["BaseAPIClient", "APIClientError", "RETRYABLE_STATUS_CODES", "RETRY_AFTER_MAX_WAIT"]
 
 # A library must not configure logging on behalf of the application importing
 # it, so the package logger gets a NullHandler and nothing else. Applications
@@ -25,6 +27,10 @@ logging.getLogger("pyeuropepmc").addHandler(logging.NullHandler())
 # fails the same way however often the request is repeated, so retrying it only
 # delays the error the caller is waiting for.
 RETRYABLE_STATUS_CODES: frozenset[int] = frozenset({408, 425, 429, 500, 502, 503, 504})
+
+#: Longest ``Retry-After`` a request waits out. A server that asks for more is not asked again:
+#: the error is raised with the advice in ``context["retry_after"]`` for the caller to act on.
+RETRY_AFTER_MAX_WAIT: float = 30.0
 
 # Transport failures the backoff decorator retries. They have to escape the
 # decorated function unchanged -- translating them into APIClientError inside it
@@ -39,7 +45,24 @@ def _is_not_retryable(exc: Exception) -> bool:
     response = exc.response
     if response is None:
         return True
-    return response.status_code not in RETRYABLE_STATUS_CODES
+    if response.status_code not in RETRYABLE_STATUS_CODES:
+        return True
+    advised = retry_after_of(exc)
+    return advised is not None and advised > RETRY_AFTER_MAX_WAIT
+
+
+def _retry_delays() -> Generator[float, BaseException | None, None]:
+    """Seconds to wait between attempts: 1, 2, 4, 8 -- or what the server asked for.
+
+    ``backoff`` sends the exception that caused the retry into the generator; a ``Retry-After``
+    on its response replaces the exponential step, since the server knows when it will be ready.
+    """
+    exc = yield 0.0  # advance past backoff's initial send
+    attempt = 0
+    while True:
+        advised = retry_after_of(exc) if exc is not None else None
+        exc = yield advised if advised is not None else float(1 << attempt)
+        attempt += 1
 
 
 def _log_backoff(details: Any) -> None:
@@ -64,7 +87,7 @@ def _log_giveup(details: Any) -> None:
 
 
 _retry_on_transport_error = backoff.on_exception(
-    backoff.expo,
+    _retry_delays,
     _RETRYABLE_EXCEPTIONS,
     max_tries=5,
     jitter=None,
@@ -164,6 +187,7 @@ class BaseAPIClient:
                 "status_code": status_code,
                 "endpoint": endpoint,
             }
+            self._note_retry_after(context, e)
 
             self.logger.error("[BaseAPIClient] GET request failed")
             raise APIClientError(error_code, context) from e
@@ -176,6 +200,13 @@ class BaseAPIClient:
             raise APIClientError(ErrorCodes.NET001, context) from e
         finally:
             time.sleep(self.rate_limit_delay)
+
+    @staticmethod
+    def _note_retry_after(context: dict[str, Any], exc: requests.HTTPError) -> None:
+        """Put the server's ``Retry-After`` (seconds) into an error context, when it sent one."""
+        advised = retry_after_of(exc)
+        if advised is not None:
+            context["retry_after"] = advised
 
     def _get_error_context(self, endpoint: str, status_code: Any) -> str:
         """
@@ -376,6 +407,7 @@ class BaseAPIClient:
                 "endpoint": endpoint,
                 "method": "POST",
             }
+            self._note_retry_after(context, e)
 
             self.logger.error("[BaseAPIClient] POST request failed")
             raise APIClientError(error_code, context) from e

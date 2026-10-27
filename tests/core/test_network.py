@@ -326,3 +326,15 @@ class TestMounting:
 
         adapter = srv._nlm_session_cache.get().get_adapter("https://id.nlm.nih.gov/")
         assert isinstance(adapter, network.HappyEyeballsAdapter)
+
+
+class TestSelectorContract:
+    def test_a_selector_key_that_is_not_a_socket_is_a_type_error(self):
+        from types import SimpleNamespace
+
+        race = network._Race([], None, 0.1, None, None, time.monotonic)
+        race.selector = SimpleNamespace(  # type: ignore[assignment]
+            select=lambda timeout: [(SimpleNamespace(fileobj="not a socket"), 1)]
+        )
+        with pytest.raises(TypeError, match="expected a socket"):
+            race._collect()
