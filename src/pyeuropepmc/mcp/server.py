@@ -730,7 +730,8 @@ async def unified_search(
     an empty source from an unavailable one."""
     _require_available(UNIFIED_AVAILABLE, "UnifiedSearch")
     unified = _get_unified()
-    assert unified is not None  # guaranteed by _require_available above
+    if unified is None:
+        raise ToolError("UnifiedSearch is not available: its client could not be created.")
 
     if ctx:
         await ctx.info(f"Searching {sources or 'default sources'} for {query!r}")
@@ -2608,7 +2609,8 @@ async def pico_decompose(
     snapshot = mm.snapshot() if mesh else None
 
     def expand(term: str) -> str | None:
-        assert snapshot is not None
+        if snapshot is None:
+            raise ToolError("MeSH snapshot is not loaded.")
         match = snapshot.lookup(term)
         return mm.fragment(match) if match.descriptor else None
 
@@ -2668,7 +2670,8 @@ def _expand_terms(
             if use_api:
                 match = mm.lookup_api(term, fetch)
             else:
-                assert snapshot is not None
+                if snapshot is None:
+                    raise ToolError("MeSH snapshot is not loaded.")
                 match = snapshot.lookup(term)
         except _BudgetExhausted:
             out.append(

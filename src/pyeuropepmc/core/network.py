@@ -165,10 +165,16 @@ class _Race:
         self.errors.append(error)
 
     def _collect(self) -> None:
-        """Take the sockets that are ready: the first without an error wins."""
+        """Take the sockets that are ready: the first without an error wins.
+
+        Raises ``TypeError`` if the selector hands back anything but a socket, which would be a
+        bug in this module (only sockets are registered), not a network failure.
+        """
         for key, _ in self.selector.select(self._wait(self.clock())):
             sock = key.fileobj
-            assert isinstance(sock, socket.socket)
+            if not isinstance(sock, socket.socket):
+                # Only sockets are ever registered; stay explicit, ``assert`` vanishes under -O.
+                raise TypeError(f"selector returned {type(sock).__name__}, expected a socket")
             code = sock.getsockopt(socket.SOL_SOCKET, socket.SO_ERROR)
             if code == 0:
                 self.selector.unregister(sock)
