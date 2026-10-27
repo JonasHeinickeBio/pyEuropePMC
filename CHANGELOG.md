@@ -10,6 +10,11 @@ All notable changes to PyEuropePMC are documented here.
   Python strips `assert` under `-O`, which removed these checks: the socket check in the
   connection race now raises `TypeError`, and `unified_search`, `pico_decompose` and
   `mesh_expand` raise a `ToolError` the client can read instead of a bare `AssertionError`.
+- **core:** `BaseAPIClient` now honours `Retry-After` (#290). A 429/5xx that carries the header
+  (seconds or an HTTP date) is retried after that wait instead of the fixed 1, 2, 4, 8 s steps;
+  a server that asks for more than `RETRY_AFTER_MAX_WAIT` (30 s) is not asked again, and the
+  `APIClientError` carries the advice in `context["retry_after"]`. The header parser is shared
+  (`pyeuropepmc.core.retry_after`); the Semantic Scholar adapter uses it too.
 
 ## [4.5.0] - 2026-10-26
 
