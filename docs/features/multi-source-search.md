@@ -208,7 +208,45 @@ print(searcher.limits)
 
 **The effective limits are in every result.** `report.metadata["effective_limits"]` maps each queried source to its `rate_limit_delay` and `max_concurrency`, so the limits that applied are recorded with the data; the diagnostics rows repeat them next to the error and `Retry-After` of a source that was rate limited.
 
-**Safe defaults for repeated and large searches.** Keep `source_concurrency` at 1, keep the default delays or raise them (`rate_limits={"arxiv": 5.0}`), pass `credentials` for the sources that raise their limit with a key or an e-mail address (Semantic Scholar, NCBI, OpenAlex, Unpaywall), request fewer records per source rather than more, and look for `rate_limited` in the diagnostics before retrying. A server that is rate limited keeps its `Retry-After` in `source_status`; waiting that long is the polite response. This is throttling, not retrying: `UnifiedSearch` does not retry a failed source on its own.
+**Safe defaults for repeated and large searches.** Keep `source_concurrency` at 1, keep the default delays or raise them (`rate_limits={"arxiv": 5.0}`), pass `credentials` for the sources that raise their limit with a key or an e-mail address (Semantic Scholar, NCBI, OpenAlex, Unpaywall), request fewer records per source rather than more, and look for `rate_limited` in the diagnostics before retrying. A server that is rate limited keeps its `Retry-After` in `source_status`; waiting that long is the polite response. `UnifiedSearch` does not re-ask a failed source on its own (see [When a source fails](#when-a-source-fails)); the clients retry only what a retry can fix: transport failures and HTTP 408/425/429/5xx, waiting as the server's `Retry-After` says, and the Semantic Scholar adapter asks again up to four times on HTTP 429.
+
+### When a source fails
+
+A source that fails never stops the others, but its records are missing from the merged result. With `diagnostics=True` the `status` of each source says what happened and what helps:
+
+| `status` | Meaning | What to do |
+|---|---|---|
+| `ok` | Records came back | |
+| `empty` | The source answered with no records | The query matched nothing there; try another source or a looser query |
+| `rate_limited` | HTTP 429 or a rate-limit message | Wait `retry_after` seconds if it is given, then ask that source again, with a longer `rate_limits[source]` for repeated searches |
+| `error` | The request failed: a rejected key, a block page, an outage | Read `error["message"]` and `error["http_status"]`; another source is the fallback |
+| `unavailable` | The client could not be created | Install the optional package the message names |
+
+Three failures seen in live tests on 26 October 2026, and the same pattern for other providers:
+
+- **Semantic Scholar** answered HTTP 403 without a key, and also with a key that was wrong (a stale `SEMANTIC_SCHOLAR_API_KEY` in the shell overrode the right one). With a valid key it answered HTTP 429 to most requests; since 4.5.0 the adapter asks again up to four times, which succeeded in 6 of 6 searches. Pass `credentials={"api_key": ...}`.
+- **DBLP** answered with a "making sure you're not a bot" page (HTTP 202, HTML) instead of JSON. That is reported as `error`, not `empty`. It is the provider's decision; retry later, or use another source for computer-science papers.
+- **OpenAlex** is polite-pool only with an `email` in `credentials`.
+
+**A fallback order.** Nothing in the library chooses a replacement for you, so decide the order for your question and add the next source when one failed (the sources that worked are asked again):
+
+```python
+FALLBACK = {                       # who to ask when the first choice failed
+    "semantic_scholar": "openalex",
+    "dblp": "openalex",
+}
+
+results, report = searcher.search(query, sources=["europepmc", "pubmed", "semantic_scholar"],
+                                  diagnostics=True)
+status = report.metadata["source_status"]
+failed = [n for n, row in status.items() if row["status"] in {"error", "rate_limited"}]
+fallbacks = [FALLBACK[n] for n in failed if n in FALLBACK and FALLBACK[n] not in status]
+if fallbacks:                     # one merged result again, with the fallbacks added
+    kept = [n for n in status if n not in failed]
+    results, report = searcher.search(query, sources=kept + fallbacks, diagnostics=True)
+```
+
+Suggested starting points, not measured rankings: for biomedical questions Europe PMC and PubMed first, then OpenAlex for the citation counts and works they miss, then Semantic Scholar when you have a key; for computer science arXiv and OpenAlex first, with DBLP and Semantic Scholar as additions that may be blocked. Over MCP the same applies to `unified_search(diagnostics=True)`: its `sources` field has the status of each source.
 
 ### Missing optional packages
 
