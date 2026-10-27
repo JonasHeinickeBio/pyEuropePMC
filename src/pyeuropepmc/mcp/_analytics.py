@@ -46,6 +46,10 @@ NEEDS_CORE = frozenset({"countries", "funders"})
 CITATION_THRESHOLDS = (1, 10, 100, 1000)
 #: Years counted one by one; a longer span is counted for its latest years plus one bucket
 #: for everything earlier, so that the total is still exact.
+#: Years ``by_year`` counts by default, and at most. Each year is one count request: 60 of them
+#: took about 24 s on a live search with millions of hits (22 Oct 2026); older records are one
+#: ``before`` count.
+DEFAULT_YEARS = 30
 MAX_YEARS = 60
 WORKERS = 6
 DEFAULT_TOP = 10
@@ -84,17 +88,24 @@ def _within(base: str, clause: str) -> str:
 
 
 def year_counts(
-    base: str, total: int, count: Count, edge: Edge, this_year: int | None = None
+    base: str,
+    total: int,
+    count: Count,
+    edge: Edge,
+    this_year: int | None = None,
+    year_window: int = DEFAULT_YEARS,
 ) -> dict[str, Any]:
     """Records per first-publication year, one count request per year.
 
     ``years`` lists the years counted, ending with ``this_year``: Europe PMC holds records dated
     far into the future (2096 on a live search for ``cancer``), which would otherwise push the
-    window of ``MAX_YEARS`` years out of the range anyone publishes in. Those are one ``after``
-    bucket. When the result set spans more than ``MAX_YEARS`` the older records are one
-    ``before`` bucket. ``undated`` is whatever the rest does not account for (records without a
-    first publication date), so ``sum(years) + before + after + undated == total``.
+    window of ``year_window`` years (default ``DEFAULT_YEARS``, at most ``MAX_YEARS``) out of the
+    range anyone publishes in. Those are one ``after`` bucket. When the result set spans more than
+    the window the older records are one ``before`` bucket. ``undated`` is whatever the rest does
+    not account for (records without a first publication date), so
+    ``sum(years) + before + after + undated == total``.
     """
+    window = max(1, min(year_window, MAX_YEARS))
     today = this_year or datetime.date.today().year
     first, last = edge(base, "asc"), edge(base, "desc")
     out: dict[str, Any] = {
@@ -103,11 +114,12 @@ def year_counts(
         "before": None,
         "after": None,
         "undated": total,
+        "window_years": window,
     }
     if first is None or last is None or total == 0:
         return out
     end = min(last, today)
-    start = max(min(first, end), end - MAX_YEARS + 1)
+    start = max(min(first, end), end - window + 1)
     years = list(range(start, end + 1)) if first <= today else []
     queries = [_within(base, f"FIRST_PDATE:[{y} TO {y}]") for y in years]
     older = first < start

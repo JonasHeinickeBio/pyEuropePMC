@@ -94,7 +94,7 @@ analyze_search  query="malaria", metrics=["journals", "funders"], limit=1000, so
 
 | Metric | `basis` | How |
 |---|---|---|
-| `by_year` | `exact` | One count per first-publication year (`FIRST_PDATE:[Y TO Y]`), from the oldest to the newest record. The years end with the current one, because Europe PMC holds records dated far in the future (2096 on a live search for `cancer`); those are one `after` bucket. A span of more than 60 years is counted for its latest 60 years plus one `before` bucket. `undated` is what the rest does not account for, so years + `before` + `after` + `undated` is `hit_count` |
+| `by_year` | `exact` | One count per first-publication year (`FIRST_PDATE:[Y TO Y]`), from the oldest to the newest record. The years end with the current one, because Europe PMC holds records dated far in the future (2096 on a live search for `cancer`); those are one `after` bucket. The latest 30 years are counted by default (`year_window`, 1 to 60) plus one `before` bucket for everything older, so the sum stays exact; each year is one request, and 60 of them took about 24 s on a live search with millions of hits. `undated` is what the rest does not account for, so years + `before` + `after` + `undated` is `hit_count` |
 | `open_access` | `exact` | Open-access and other records, and the share |
 | `citations` `thresholds` | `exact` | Records cited at least 1, 10, 100 and 1,000 times (`CITED:[n TO *]`) |
 | `citations` `statistics`, `journals`, `authors`, `types`, `countries`, `funders` | `sample` | Computed with the library's analytics functions from the first `limit` records of the search, in relevance order or the order `sort` gives. They describe those records only: the journals of the first 500 hits are not the journals of 120,000 |
@@ -273,7 +273,7 @@ A failed call comes back with `isError: true` and a message that names the cause
 
 | Tool | Limit |
 |---|---|
-| `analyze_search` | `limit` 1 to 1,000 records (500 by default) for the sample metrics; `top_n` 1 to 100; one count request per year for `by_year`, at most 61 |
+| `analyze_search` | `limit` 1 to 1,000 records (500 by default) for the sample metrics; `top_n` 1 to 100; `year_window` 1 to 60 (30 by default) for `by_year`, one count request per year plus one for the older records |
 | `get_papers_batch` | 100 identifiers per call, looked up 50 at a time |
 | `get_papers_fulltext_batch` | 20 papers, within `max_chars_per_paper` and `max_total_chars` |
 | `evaluate_query` | 200 included and 200 excluded PMIDs |

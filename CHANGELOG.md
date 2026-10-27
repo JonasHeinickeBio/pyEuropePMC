@@ -4,6 +4,13 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
+### Changed
+
+- **mcp:** `analyze_search` counts the latest 30 years for `by_year` by default instead of 60
+  (new `year_window` argument, 1 to 60). Each year is one count request, so a large search is
+  faster; everything older is still one exact `before` bucket, the totals do not change, and the
+  response now carries `window_years`. Pass `year_window=60` for the old window.
+
 ## [4.5.0] - 2026-10-26
 
 > Live-tested release. Running the 4.4.0 features against the real services (Europe PMC, PubMed,
