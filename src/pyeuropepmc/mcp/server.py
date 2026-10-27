@@ -2833,13 +2833,15 @@ def _parallel_counter() -> Iterator[Callable[[str], int]]:
 
 
 def _counted_metrics(
-    chosen: list[str], query: str, total: int, client: SearchClient
+    chosen: list[str], query: str, total: int, client: SearchClient, year_window: int
 ) -> dict[str, dict[str, Any]]:
     """The metrics Europe PMC counts for us: exact whatever the size of the result set."""
     out: dict[str, dict[str, Any]] = {}
     with _parallel_counter() as count:
         if "by_year" in chosen:
-            out["by_year"] = an.year_counts(query, total, count, _search_edge(client))
+            out["by_year"] = an.year_counts(
+                query, total, count, _search_edge(client), year_window=year_window
+            )
         if "open_access" in chosen:
             out["open_access"] = an.open_access_counts(query, total, count)
     return out
@@ -2905,6 +2907,16 @@ async def analyze_search(
     source: Annotated[
         str, Field(description="Restrict to one source, e.g. MED, PMC or PPR (preprints)")
     ] = "",
+    year_window: Annotated[
+        int,
+        Field(
+            description="Years `by_year` counts, ending with the current one, one request each "
+            "(30 take a few seconds on a large search, 60 about twice that). Older records are "
+            "one `before` bucket, so the total stays exact",
+            ge=1,
+            le=60,
+        ),
+    ] = 30,
 ) -> dict[str, Any]:
     """Aggregate statistics about a search without returning its records. Every metric says
     where it comes from in `basis`: `exact` is counted by Europe PMC over all `hit_count`
@@ -2948,7 +2960,9 @@ async def analyze_search(
                 kwargs["sort"] = sort
             fetched = await _run_blocking(client.search_all, full_query, **kwargs)
             records = [_as_dict(r) for r in fetched]
-        results = await _run_blocking(_counted_metrics, chosen, full_query, total, client)
+        results = await _run_blocking(
+            _counted_metrics, chosen, full_query, total, client, year_window
+        )
         if from_records:
             results.update(
                 await _run_blocking(
