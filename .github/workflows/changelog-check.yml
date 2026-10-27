@@ -1,0 +1,42 @@
+name: CI — Changelog check
+
+# Merging main into a branch that edits CHANGELOG.md can put its entries under a version main has
+# already cut. The check runs on the merged result GitHub builds for the PR (the default
+# `pull_request` checkout), so it sees exactly what would land.
+on:
+  pull_request:
+    paths:
+      - CHANGELOG.md
+      - scripts/check_changelog.py
+
+permissions:
+  contents: read
+
+concurrency:
+  group: changelog-check-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  changelog:
+    name: CHANGELOG keeps entries under Unreleased
+    # A PR that corrects a released section on purpose carries this label.
+    if: ${{ !contains(github.event.pull_request.labels.*.name, 'changelog-edit') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # The base branch's changelog is read from its own ref.
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Check CHANGELOG.md
+        env:
+          # Passed as an environment variable, never interpolated into the script.
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          set -euo pipefail
+          git show "origin/${BASE_REF}:CHANGELOG.md" > "${RUNNER_TEMP}/base-changelog.md"
+          python3 scripts/check_changelog.py CHANGELOG.md --base "${RUNNER_TEMP}/base-changelog.md"
