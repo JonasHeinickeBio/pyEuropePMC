@@ -6,6 +6,11 @@ All notable changes to PyEuropePMC are documented here.
 
 ### Bug Fixes
 
+- **fulltext:** reference authors written as "Surname Initials., Surname Initials." in a
+  mixed-citation without a `<person-group>` are read as a whole list. The text pass cut it at the
+  first capitalised word after the first author, so "Mayoral del Moral O., Salvat Salvat I." (PMC8658482)
+  became the author "Mayoral del" with a title that began "Moral O.", and "Zhang J., Wang L." kept
+  only "Zhang J".
 - **core, mcp:** runtime invariants are explicit errors instead of `assert` (#196, #301, #372).
   Python strips `assert` under `-O`, which removed these checks: the socket check in the
   connection race now raises `TypeError`, and `unified_search`, `pico_decompose` and

@@ -19,6 +19,14 @@ _RE_REF_ID = re.compile(r'<ref[^>]+id="([^"]*)"[^>]*>(.*?)</ref>', re.DOTALL)
 _RE_SUPPLIED_PMID = re.compile(r"<\?supplied-pmid\s+([^?>]+)\?>")
 _RE_AUTHOR_ET_AL = re.compile(r"^(.+?et al\.)\s+")
 _RE_AUTHOR_SINGLE = re.compile(r"^([^.]+?\.)\s+")
+# "Mayoral del Moral O., Salvat I., van der Berg A.-B." -- surnames of any number of words
+# (particles included) followed by dotted initials, as MDPI and many mixed-citations write them.
+# Without it the fallback below cut the list at the first capitalised word after the first
+# author: "Mayoral del" with the rest of the surname starting the title.
+_NAME_WORD = r"[^\W\d_][\w'’\-]*"
+_INITIALS = r"[A-ZÀ-ÖØ-Þ]\.(?:[-\s]?[A-ZÀ-ÖØ-Þ]\.)*"
+_ONE_AUTHOR = rf"{_NAME_WORD}(?:\s+{_NAME_WORD})*?\s+{_INITIALS}"
+_RE_AUTHOR_INITIALS_LIST = re.compile(rf"^({_ONE_AUTHOR}(?:,\s*{_ONE_AUTHOR})*)\s+(?=\S)")
 _RE_AUTHOR_FALLBACK = re.compile(r"^(.+?)\s+([A-Z][a-z]+.*)")
 _RE_ET_AL_CLEANUP = re.compile(r"\s+et\s+al\.?$", re.IGNORECASE)
 _RE_TITLE_SOURCE = re.compile(r"^(.+?)\.\s+([A-Z][^0-9]*?)(?=\.|\d|\s+\d{4}|\s*$)")
@@ -205,6 +213,8 @@ class ReferenceParser(BaseParser):
         """Extract authors from citation text and return remaining text."""
         # First try with et al.
         author_match = _RE_AUTHOR_ET_AL.match(text)
+        if not author_match:
+            author_match = _RE_AUTHOR_INITIALS_LIST.match(text)
         if not author_match:
             # Fallback to single author with period
             author_match = _RE_AUTHOR_SINGLE.match(text)
