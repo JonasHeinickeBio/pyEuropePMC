@@ -79,7 +79,7 @@ requests = ">=2.32.5,<3.0"
 search-query = ">=0.15.0,<0.16"
 tenacity = ">=9.1.4,<10.0"
 tqdm = ">=4.67.1,<5.0"
-typer = ">=0.12.5"
+typer = ">=0.27.3"
 
 # --- optional, each declared exactly ONCE ---------------------------------
 # This single-declaration form is what makes `poetry lock` finish. Repeating a
