@@ -4,6 +4,13 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
+## [4.6.0] - 2026-10-28
+
+> Robustness release: `BaseAPIClient` honours `Retry-After`, runtime checks are explicit errors
+> instead of `assert`, mixed-citation author lists are read whole, and `analyze_search` counts
+> 30 years by default (`year_window`). One default changes: `by_year` no longer counts 60 years
+> unless asked.
+
 ### CI
 
 - **changelog:** a `CI — Changelog check` workflow (`scripts/check_changelog.py`) fails a pull
