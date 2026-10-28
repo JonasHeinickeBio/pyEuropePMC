@@ -34,13 +34,17 @@ class BaseParser:
         self.config = config or ElementPatterns()
         self._helper = XMLHelper
 
-    def _require_root(self) -> None:
-        """Raise an error if no root element is available."""
+    def _require_root(self) -> ET.Element:
+        """Return the root element, or raise an error if none is available.
+
+        An explicit check, not an ``assert``: asserts vanish under ``python -O``.
+        """
         if self.root is None:
             raise ParsingError(
                 ErrorCodes.PARSE003,
                 message="No XML content has been parsed. Call parse() first.",
             )
+        return self.root
 
     def _get_text_content(self, element: ET.Element | None) -> str:
         """Get all text content from an element and its descendants."""

@@ -116,7 +116,7 @@ class MetadataParser(BaseParser):
 
     def _extract_journal_metadata(self) -> dict[str, Any]:
         """Extract journal information including IDs and ISSNs."""
-        assert self.root is not None  # nosec
+        root = self._require_root()
         journal_info: dict[str, Any] = {}
 
         journal_meta_result = self.extract_elements_by_patterns(
@@ -163,7 +163,7 @@ class MetadataParser(BaseParser):
             self._extract_journal_ids(journal_meta, journal_info)
             break
 
-        article_meta = self._own_article_meta(self.root)
+        article_meta = self._own_article_meta(root)
 
         # If journal title not found in journal-meta, look in article-meta
         # using journal patterns - and only there, for the reason given in
@@ -308,66 +308,66 @@ class MetadataParser(BaseParser):
 
     def _extract_extended_metadata(self) -> dict[str, Any]:
         """Extract extended metadata fields."""
-        assert self.root is not None  # nosec
+        root = self._require_root()
         extended: dict[str, Any] = {}
 
         # Conference information
         conf_name = self._extract_with_fallbacks(
-            self.root, self.config.extended_metadata_patterns.get("conf_name", [])
+            root, self.config.extended_metadata_patterns.get("conf_name", [])
         )
         if conf_name:
             extended["conference_name"] = conf_name
 
         conf_date = self._extract_with_fallbacks(
-            self.root, self.config.extended_metadata_patterns.get("conf_date", [])
+            root, self.config.extended_metadata_patterns.get("conf_date", [])
         )
         if conf_date:
             extended["conference_date"] = conf_date
 
         conf_loc = self._extract_with_fallbacks(
-            self.root, self.config.extended_metadata_patterns.get("conf_loc", [])
+            root, self.config.extended_metadata_patterns.get("conf_loc", [])
         )
         if conf_loc:
             extended["conference_location"] = conf_loc
 
         # Article versioning
         article_version = self._extract_with_fallbacks(
-            self.root, self.config.extended_metadata_patterns.get("article_version", [])
+            root, self.config.extended_metadata_patterns.get("article_version", [])
         )
         if article_version:
             extended["article_version"] = article_version
 
         # Alternative titles
         alt_title = self._extract_with_fallbacks(
-            self.root, self.config.extended_metadata_patterns.get("alt_title", [])
+            root, self.config.extended_metadata_patterns.get("alt_title", [])
         )
         if alt_title:
             extended["alternative_title"] = alt_title
 
         # Edition information
         edition = self._extract_with_fallbacks(
-            self.root, self.config.extended_metadata_patterns.get("edition", [])
+            root, self.config.extended_metadata_patterns.get("edition", [])
         )
         if edition:
             extended["edition"] = edition
 
         # Season information
         season = self._extract_with_fallbacks(
-            self.root, self.config.extended_metadata_patterns.get("season", [])
+            root, self.config.extended_metadata_patterns.get("season", [])
         )
         if season:
             extended["season"] = season
 
         # Series information
         series = self._extract_with_fallbacks(
-            self.root, self.config.extended_metadata_patterns.get("series", [])
+            root, self.config.extended_metadata_patterns.get("series", [])
         )
         if series:
             extended["series"] = series
 
         # Free to read status
         free_to_read = self._extract_with_fallbacks(
-            self.root, self.config.extended_metadata_patterns.get("free_to_read", [])
+            root, self.config.extended_metadata_patterns.get("free_to_read", [])
         )
         if free_to_read:
             extended["free_to_read"] = True
@@ -376,14 +376,14 @@ class MetadataParser(BaseParser):
 
     def _extract_copyright(self) -> dict[str, str | None] | None:
         """Extract copyright statement and year from article-meta."""
-        assert self.root is not None  # nosec
+        root = self._require_root()
         copyright_info: dict[str, str | None] = {}
 
-        statement = self._extract_with_fallbacks(self.root, [".//copyright-statement"])
+        statement = self._extract_with_fallbacks(root, [".//copyright-statement"])
         if statement:
             copyright_info["statement"] = statement
 
-        year = self._extract_with_fallbacks(self.root, [".//copyright-year"])
+        year = self._extract_with_fallbacks(root, [".//copyright-year"])
         if year:
             copyright_info["year"] = year
 
@@ -391,11 +391,11 @@ class MetadataParser(BaseParser):
 
     def _extract_history_dates(self) -> list[dict[str, str]] | None:
         """Extract publication history dates (received, accepted, revised)."""
-        assert self.root is not None  # nosec
+        root = self._require_root()
         history_dates: list[dict[str, str]] = []
 
         # Try <history> first (JATS standard)
-        for history_elem in self.root.findall(".//history"):
+        for history_elem in root.findall(".//history"):
             for date_elem in history_elem.findall("date"):
                 date_type = date_elem.get("date-type", "")
                 year = date_elem.findtext("year", "")
@@ -415,7 +415,7 @@ class MetadataParser(BaseParser):
                     )
 
         # Also try <pub-history> (alternative JATS placement)
-        for pub_hist in self.root.findall(".//pub-history"):
+        for pub_hist in root.findall(".//pub-history"):
             for date_elem in pub_hist.findall("date"):
                 date_type = date_elem.get("date-type", "")
                 year = date_elem.findtext("year", "")
@@ -438,10 +438,10 @@ class MetadataParser(BaseParser):
 
     def _extract_corresp(self) -> list[dict[str, str]] | None:
         """Extract correspondence information (email, address)."""
-        assert self.root is not None  # nosec
+        root = self._require_root()
         corresp_entries: list[dict[str, str]] = []
 
-        for corresp_elem in self.root.findall(".//corresp"):
+        for corresp_elem in root.findall(".//corresp"):
             entry: dict[str, str] = {}
             corresp_id = corresp_elem.get("id", "")
             if corresp_id:
@@ -490,7 +490,7 @@ class MetadataParser(BaseParser):
 
     def _extract_counts(self) -> dict[str, int] | None:
         """Extract document structure counts (pages, figures, tables, equations, words)."""
-        assert self.root is not None  # nosec
+        root = self._require_root()
         counts: dict[str, int] = {}
 
         # Map JATS count tag names to our output keys
@@ -503,7 +503,7 @@ class MetadataParser(BaseParser):
         }
 
         for jats_tag, output_key in count_mapping.items():
-            for elem in self.root.findall(f".//{jats_tag}"):
+            for elem in root.findall(f".//{jats_tag}"):
                 count_str = elem.get("count", "")
                 if count_str:
                     with contextlib.suppress(ValueError, TypeError):
