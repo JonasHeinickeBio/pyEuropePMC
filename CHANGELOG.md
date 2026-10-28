@@ -21,12 +21,19 @@ All notable changes to PyEuropePMC are documented here.
 ### Changed
 
 - **mcp:** `analyze_search` counts the latest 30 years for `by_year` by default instead of 60
-  (new `year_window` argument, 1 to 60). Each year is one count request, so a large search is
-  faster; everything older is still one exact `before` bucket, the totals do not change, and the
+  (new `year_window` argument, 1 to 60). Each year is one count request; measured on live
+  searches with millions of hits, 30 years took 14 to 20 s and 60 years 15 to 25 s, a modest
+  saving. Everything older is still one exact `before` bucket, the totals do not change, and the
   response now carries `window_years`. Pass `year_window=60` for the old window.
 
 ### Bug Fixes
 
+- **fulltext:** `MetadataParser` checks for a parsed document with an explicit `ParsingError`
+  instead of six `assert` statements that disappear under `python -O` (same class as #196/#372);
+  `BaseParser._require_root()` now returns the root element.
+- **tests:** a Europe PMC 503 in a `network`- or `integration`-marked live test is reported as a
+  skip, as it already was for `functional` tests (`TestConvertersWithRealAPI` failed the suite
+  whenever Europe PMC was down); assertion failures and other errors still fail.
 - **fulltext:** reference authors written as "Surname Initials., Surname Initials." in a
   mixed-citation without a `<person-group>` are read as a whole list. The text pass cut it at the
   first capitalised word after the first author, so "Mayoral del Moral O., Salvat Salvat I." (PMC8658482)

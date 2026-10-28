@@ -276,27 +276,50 @@ def _infer_markers(item) -> set[str]:
     return inferred
 
 
+# Tests that call a live service on purpose: an outage there is not a bug in the code.
+_OUTAGE_CATEGORIES = {"functional", "network", "integration"}
+
+_OUTAGE_MARKERS = (
+    "NET001",
+    "NET002",
+    # A Europe PMC request reported these as NET001 before they got their own codes.
+    "HTTP502",
+    "HTTP503",
+    "HTTP504",
+    "Read timed out",
+    "Max retries exceeded",
+    "Connection refused",
+    "Temporary failure in name resolution",
+)
+
+
+def _is_upstream_outage(text: str) -> bool:
+    """Whether an exception message says the remote service was unreachable or down."""
+    return any(marker in text for marker in _OUTAGE_MARKERS)
+
+
 @pytest.hookimpl(hookwrapper=True, tryfirst=True)
 def pytest_runtest_makereport(item, call):
     """Report a third-party outage as a skip, not a failure.
 
-    The functional suite calls live services (Europe PMC, Zenodo, DOAJ, DBLP,
-    HAL, CORE, iCite). When one of them is slow or down, the client correctly
-    raises NET001/NET002, or HTTP502/HTTP503/HTTP504 for a gateway or service that
-    is down - that is the client behaving as designed, and says
-    nothing about whether the code under test is correct. Failing the build for
-    it turns someone else's uptime into our red CI: `zenodo.org ... Read timed
-    out. (read timeout=3)` did exactly that.
+    The live-service suites call Europe PMC, Zenodo, DOAJ, DBLP, HAL, CORE, iCite.
+    When one of them is slow or down, the client correctly raises NET001/NET002, or
+    HTTP502/HTTP503/HTTP504 for a gateway or service that is down - that is the client
+    behaving as designed, and says nothing about whether the code under test is
+    correct. Failing the build for it turns someone else's uptime into our red CI:
+    `zenodo.org ... Read timed out. (read timeout=3)` did exactly that, and so did a
+    Europe PMC 503 in ``TestConvertersWithRealAPI`` (``network``, not ``functional``).
 
-    Only ``functional`` tests are affected, and only network error codes - an
-    assertion failure or any other exception still fails normally.
+    Only tests marked ``functional``, ``network`` or ``integration`` are affected, and
+    only network error codes - an assertion failure or any other exception still fails
+    normally.
     """
     outcome = yield
     report = outcome.get_result()
 
     if report.when != "call" or not report.failed:
         return
-    if "functional" not in {m.name for m in item.iter_markers()}:
+    if not _OUTAGE_CATEGORIES & {m.name for m in item.iter_markers()}:
         return
 
     exc = getattr(call, "excinfo", None)
@@ -304,19 +327,7 @@ def pytest_runtest_makereport(item, call):
         return
 
     text = str(exc.value)
-    network = (
-        "NET001" in text
-        or "NET002" in text
-        # A Europe PMC request reported these as NET001 before they got their own codes.
-        or "HTTP502" in text
-        or "HTTP503" in text
-        or "HTTP504" in text
-        or "Read timed out" in text
-        or "Max retries exceeded" in text
-        or "Connection refused" in text
-        or "Temporary failure in name resolution" in text
-    )
-    if not network:
+    if not _is_upstream_outage(text):
         return
 
     report.outcome = "skipped"
