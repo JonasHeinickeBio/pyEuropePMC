@@ -293,8 +293,15 @@ _OUTAGE_MARKERS = (
 )
 
 
-def _is_upstream_outage(text: str) -> bool:
-    """Whether an exception message says the remote service was unreachable or down."""
+def _is_upstream_outage(error: BaseException) -> bool:
+    """Whether an exception says the remote service was unreachable or down.
+
+    A failed assertion is never an outage, even when its message mentions one: a test that
+    asserts on an error code must keep failing when the code is wrong.
+    """
+    if isinstance(error, AssertionError):
+        return False
+    text = str(error)
     return any(marker in text for marker in _OUTAGE_MARKERS)
 
 
@@ -326,9 +333,9 @@ def pytest_runtest_makereport(item, call):
     if exc is None:
         return
 
-    text = str(exc.value)
-    if not _is_upstream_outage(text):
+    if not _is_upstream_outage(exc.value):
         return
+    text = str(exc.value)
 
     report.outcome = "skipped"
     report.longrepr = (

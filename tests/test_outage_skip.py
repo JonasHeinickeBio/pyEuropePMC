@@ -24,7 +24,7 @@ _spec.loader.exec_module(_suite)
     ],
 )
 def test_outage_text_is_recognised(text):
-    assert _suite._is_upstream_outage(text)
+    assert _suite._is_upstream_outage(RuntimeError(text))
 
 
 @pytest.mark.parametrize(
@@ -37,7 +37,13 @@ def test_outage_text_is_recognised(text):
     ],
 )
 def test_other_failures_still_fail(text):
-    assert not _suite._is_upstream_outage(text)
+    assert not _suite._is_upstream_outage(RuntimeError(text))
+
+
+def test_failed_assertion_is_never_an_outage():
+    assert not _suite._is_upstream_outage(
+        AssertionError("HTTP503 response was handled incorrectly")
+    )
 
 
 def test_live_service_markers_are_covered():
