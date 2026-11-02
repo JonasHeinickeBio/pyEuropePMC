@@ -4,6 +4,11 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
+## [4.6.1] - 2026-11-02
+
+> Dependency release: `click` is allowed up to 8.x so downstream locks no longer have to hold
+> `click`, `typer` and `linkml` back. No code changes.
+
 ### Dependencies
 
 - **click:** the upper bound `<8.2` is lifted to `<9.0` (locked 8.1.8 -> 8.5.0). It forced every project that installs
