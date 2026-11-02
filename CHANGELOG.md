@@ -4,6 +4,15 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
+### Dependencies
+
+- **click:** the upper bound `<8.2` is lifted to `<9.0` (locked 8.1.8 -> 8.5.0). It forced every project that installs
+  pyeuropepmc next to a current `typer`, `linkml` or `click` to hold those packages back (a downstream lock of
+  ME-CFS-DETECTIVE downgraded click 8.5.0 -> 8.1.8 and linkml 1.11.1 -> 1.10.0 only because of this bound). The
+  test suite gives the same results on click 8.1.8 and 8.5.0.
+- **lock:** `cachetools` 7.2.3 -> 7.2.8, `pydantic` 2.14.1 -> 2.14.2 (+ `pydantic-core` 2.50.2), `python-dotenv`
+  1.2.3 -> 1.2.4, `tenacity` 9.1.4 -> 9.2.1, `typer` 0.27.2 -> 0.27.3; `requirements.txt` follows the lock.
+
 ## [4.6.0] - 2026-10-28
 
 > Robustness release: `BaseAPIClient` honours `Retry-After`, runtime checks are explicit errors
