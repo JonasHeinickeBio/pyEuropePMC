@@ -4,6 +4,19 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
+### Dependencies
+
+- **lock:** every package in `poetry.lock` is refreshed (91 versions, one new transitive:
+  `ipython-pygments-lexers`), including security patch releases of `cryptography` (50.0.2) and
+  `pyjwt` (2.15.1); the lock now comes from Poetry 2.5.1. The open Dependabot bumps for these
+  packages are superseded.
+- **caps lifted:** `mypy` 2.x, `pytest-cov` 7, `ruff` 0.17 (the `pre-commit` hook follows,
+  plus `bandit` 1.9.4 and `pre-commit-hooks` v6), `types-PyYAML` (no longer pinned to a 2024
+  stub), and for the optional extras `pandas` 3, `openai` 3 and `huggingface-hub` 2. mypy is clean
+  on 221 files; the non-slow suite (8347 tests) passes on Python 3.10 and the tests that use
+  pandas, numpy, openai, matplotlib or langchain pass on Python 3.13 with pandas 3.1. `ruff
+  format` 0.17 reflows two lines (one in `mcp/_rhetoric.py`, one in a README example).
+
 ## [4.6.1] - 2026-11-02
 
 > Dependency release: `click` is allowed up to 8.x so downstream locks no longer have to hold
