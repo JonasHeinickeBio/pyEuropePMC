@@ -171,7 +171,7 @@ To add new functional tests:
    ```python
    def test_new_feature(self, filename):
        xml_path = FIXTURE_DIR / filename
-       with open(xml_path, 'r', encoding='utf-8') as f:
+       with open(xml_path, "r", encoding="utf-8") as f:
            xml_content = f.read()
        parser = FullTextXMLParser(xml_content)
        # Test your feature

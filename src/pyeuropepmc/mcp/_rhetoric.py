@@ -419,7 +419,7 @@ def group(kept: list[Tagged]) -> dict[str, list[dict[str, Any]]]:
                 "confidence": item.confidence,
             }
         )
-    return dict(sorted(roles.items(), key=lambda kv: ((*ROLES, UNKNOWN).index(kv[0]))))
+    return dict(sorted(roles.items(), key=lambda kv: (*ROLES, UNKNOWN).index(kv[0])))
 
 
 def statistics(tagged: list[Tagged]) -> dict[str, Any]:
