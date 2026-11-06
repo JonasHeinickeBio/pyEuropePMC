@@ -73,6 +73,12 @@
           "description": "Optional. Your contact e-mail address, sent with each Unpaywall request (their terms ask for one). Needed by the find_open_access tool only; there is no default.",
           "format": "string",
           "isRequired": false
+        },
+        {
+          "name": "PYEUROPEPMC_MCP_DOWNLOAD_DIR",
+          "description": "Optional. Folder where the download_papers_pdf tool saves PDFs on the machine running the server. Default: ~/Downloads/pyeuropepmc.",
+          "format": "string",
+          "isRequired": false
         }
       ]
     }

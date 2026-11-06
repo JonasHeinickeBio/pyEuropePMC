@@ -32,6 +32,7 @@ Two tools need configuration. `find_open_access` reads `UNPAYWALL_EMAIL` (Unpayw
 | Read a paper | `get_paper_fulltext`, `get_papers_fulltext_batch`, `paper_figures` |
 | Pull the methods, results or limitations out of a paper whatever its headings say | `tag_paper_sentences` |
 | Find a free copy of a paper that is not open access in Europe PMC | `find_open_access` |
+| Save the PDFs of papers to disk | `download_papers_pdf` |
 | Find genes, chemicals, diseases | `get_paper_annotations`, `find_papers_by_entity` |
 | Find where the data is | `get_paper_data_links`, `get_paper_lab_links` |
 | Follow citations | `get_paper_citations`, `get_paper_references`, `citation_snowball` |
@@ -195,7 +196,7 @@ citation_trace     pmid="22745249", direction="backward"
 
 ## Running it as a network service
 
-stdio, the default, needs no protection: the client starts the process and owns its pipes. The `streamable-http` and `sse` transports open a port, and then anyone who can reach it can call every tool, which means spending your Europe PMC, Crossref and OpenAlex quota, filling the server's caches, and (with `OPENAI_API_KEY` set) running the LLM tools on your key. The tools themselves are read-only and write nothing on the server's disk except the caches.
+stdio, the default, needs no protection: the client starts the process and owns its pipes. The `streamable-http` and `sse` transports open a port, and then anyone who can reach it can call every tool, which means spending your Europe PMC, Crossref and OpenAlex quota, filling the server's caches, and (with `OPENAI_API_KEY` set) running the LLM tools on your key. The tools are read-only and write nothing on the server's disk except the caches, with one exception: `download_papers_pdf` saves PDFs in `PYEUROPEPMC_MCP_DOWNLOAD_DIR` (default `~/Downloads/pyeuropepmc`). It builds the file name from the PMCID, so a caller cannot choose a path; it takes at most 20 papers per call and discards anything that is not a PDF or is over 100 MB. On an open HTTP port, anyone with the token can still fill that folder, so point it at a disk you can spare, or leave the tool to stdio use.
 
 **Safe defaults.** The server binds to `127.0.0.1` and has no token until you set one. If you bind to another address without a token it logs a warning at startup. stdio ignores tokens.
 

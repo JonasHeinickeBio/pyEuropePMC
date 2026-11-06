@@ -4,6 +4,15 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
+### Added
+
+- **mcp:** `download_papers_pdf` saves the PDFs of up to 20 papers (PMID, PMCID or DOI) in
+  `PYEUROPEPMC_MCP_DOWNLOAD_DIR` (default `~/Downloads/pyeuropepmc`) as `<PMCID>.pdf`, using the
+  library's Europe PMC / OA archive / Unpaywall chain. The caller cannot choose a path; each
+  file must be a PDF under 100 MB or it is deleted; the result carries path, size and SHA-256
+  and a status per input. It is the first MCP tool that writes outside the caches, so it is
+  marked as not read-only. The PDFs stay on the server's disk.
+
 ### Dependencies
 
 - **lock:** every package in `poetry.lock` is refreshed (91 versions, one new transitive:

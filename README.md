@@ -110,7 +110,7 @@ pyeuropepmc benchmark list-datasets
 
 ## 🤖 MCP server
 
-`pyeuropepmc-mcp` serves 47 tools over the [Model Context Protocol](https://modelcontextprotocol.io/), so an AI agent can search the literature, read papers and export references. The server is part of the core install.
+`pyeuropepmc-mcp` serves 48 tools over the [Model Context Protocol](https://modelcontextprotocol.io/), so an AI agent can search the literature, read papers and export references. The server is part of the core install.
 
 | Job | What the tools do |
 |---|---|
@@ -121,6 +121,7 @@ pyeuropepmc benchmark list-datasets
 | **Look up papers** | Metadata for up to 100 papers by PMID, PMCID or DOI in one call; enrich one paper with citation impact, funders, institutions, open-access status and retractions from Europe PMC, Crossref, OpenAlex, Semantic Scholar and iCite |
 | **Read** | Open-access full text as Markdown or typed sections, with a section filter and a size cap, or its sentences tagged as background, method, result, limitation and so on whatever the headings are called; figures, tables and supplementary files; free copies of other papers through Unpaywall |
 | **Entities and data** | Genes, chemicals and diseases text-mined from a paper, papers that mention an entity, and the data a paper links to (accession numbers, BioStudies, model-organism databases) |
+| **Download** | PDFs of up to 20 papers saved on the server's disk (`download_papers_pdf`), from Europe PMC or the open copy Unpaywall knows |
 | **Citations** | Citing papers, references and citation-graph walking |
 | **Export** | BibTeX, RIS, CSL-JSON, CSV, JSON or Markdown for a search or a list of papers |
 | **Resources and prompts** | `epmc://paper/{pmcid}` (full text), `/references` and `/outline` as attachable resources, and ready workflows for a literature review, a critical appraisal and a citation trace |
@@ -167,6 +168,7 @@ Europe PMC needs no API key. Other services read these environment variables. A 
 | Variable | Used for |
 |---|---|
 | `UNPAYWALL_EMAIL`, `CROSSREF_EMAIL` | Contact e-mail for Unpaywall and Crossref. `FullTextClient` needs one of them for its Unpaywall fallback, and so does the MCP tool `find_open_access`. |
+| `PYEUROPEPMC_MCP_DOWNLOAD_DIR` | Folder the MCP tool `download_papers_pdf` saves PDFs in (default `~/Downloads/pyeuropepmc`). |
 | `OPENALEX_EMAIL`, `DATACITE_EMAIL`, `ROR_EMAIL`, `ROR_CLIENT_ID` | The other enrichment sources |
 | `SEMANTIC_SCHOLAR_API_KEY` | Semantic Scholar, with higher rate limits |
 | `CORE_API_KEY` | The `core` search source |
