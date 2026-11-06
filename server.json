@@ -43,7 +43,7 @@
         },
         {
           "name": "SEMANTIC_SCHOLAR_API_KEY",
-          "description": "Optional. Raises the Semantic Scholar rate limit used by citation_snowball and the semantic_scholar source of unified_search; without it requests are throttled and may get HTTP 429.",
+          "description": "Optional. Raises the Semantic Scholar rate limit used by citation_snowball, the semantic_scholar source of unified_search and the DOI route of download_papers_pdf; without it requests are throttled and may get HTTP 429.",
           "format": "string",
           "isRequired": false,
           "isSecret": true
@@ -70,7 +70,7 @@
         },
         {
           "name": "UNPAYWALL_EMAIL",
-          "description": "Optional. Your contact e-mail address, sent with each Unpaywall request (their terms ask for one). Needed by the find_open_access tool only; there is no default.",
+          "description": "Optional. Your contact e-mail address, sent with each Unpaywall request (their terms ask for one). Used by the find_open_access and download_papers_pdf tools (without it download_papers_pdf skips the Unpaywall source); there is no default.",
           "format": "string",
           "isRequired": false
         },
