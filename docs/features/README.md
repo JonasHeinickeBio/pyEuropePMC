@@ -19,7 +19,7 @@ More: [Search](search/README.md).
 
 ## Full-text retrieval
 
-Download XML, PDF and HTML for open-access articles, one at a time or in batches with progress callbacks. `FTPDownloader` fetches PDF packages in bulk from the Europe PMC FTP site.
+Download XML, PDF and HTML for open-access articles, one at a time or in batches with progress callbacks. `FTPDownloader` fetches PDF packages in bulk from the Europe PMC FTP site. [Downloading PDFs](pdf-download.md) covers saving PDFs with their source and licence, from Python or the MCP server.
 
 ```python
 from pyeuropepmc import FullTextClient

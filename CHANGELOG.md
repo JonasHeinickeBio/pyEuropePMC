@@ -4,65 +4,72 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
+> PDF download release. `europepmc.org` now answers scripted clients with a Cloudflare browser
+> check (HTTP 403) on its PDF pages and FTP folders, which broke the PDF chain. It is not
+> bypassed; the PDF chain takes the same open-access files from sources that serve them
+> without a check, and the MCP server can save PDFs. `FTPDownloader` and the
+> `europepmc_ftp_bulk` XML step still use the blocked `europepmc.org/ftp/` folders and fail
+> until Europe PMC lifts the check; `download_xml_by_pmcid` falls through to the REST API. In a
+> 100-paper sample (years 2000 to 2025, 93% open access), 95 papers had a PDF from a source that
+> needs no browser check: all 93 open-access ones and 2 of the 7 others.
+
 ### Added
 
-- **mcp:** `download_papers_pdf` saves the PDFs of up to 20 papers (PMID, PMCID or DOI) in
-  `PYEUROPEPMC_MCP_DOWNLOAD_DIR` (default `~/Downloads/pyeuropepmc`) as `<PMCID>.pdf`, using the
-  library's chain: Europe PMC, NCBI's PMC Open Access Subset on AWS open data, Europe PMC's OA
-  PDF archive on `ftp.ebi.ac.uk`, Unpaywall. The caller cannot choose a path; each
-  file must be a PDF under 100 MB or it is deleted; the result carries path, size and SHA-256
-  and a status per input. It is the first MCP tool that writes outside the caches, so it is
-  marked as not read-only. The PDFs stay on the server's disk.
-- **fulltext:** `FullTextClient.download_pdf_by_pmcid` takes an optional `doi`, passed to its
-  Unpaywall step. Without it the step looks the DOI up from Europe PMC by PMCID, which found
-  nothing in a live check, so the Unpaywall fallback never ran; the MCP tool passes the DOI it
-  already has.
+- **mcp:** `download_papers_pdf` saves the PDFs of up to 20 papers (PMIDs, PMCIDs and DOIs,
+  mixed) in `PYEUROPEPMC_MCP_DOWNLOAD_DIR` (default `~/Downloads/pyeuropepmc`). The caller
+  cannot choose a path: the file is `<PMCID>.pdf`, or `<doi>-<hash>.pdf` for a paper outside
+  PubMed Central. Each file must start with `%PDF` and be under 100 MB, enforced while it
+  downloads, or it is removed. Two downloads of one file never overlap. It is the first MCP
+  tool that writes outside the caches, so it is marked as not read-only; the PDFs stay on the
+  server's disk. Statuses: `ok`, `exists`, `not_found`, `invalid`, `not_in_pmc`, `duplicate`,
+  `no_pdf`, `error`.
+- **mcp:** papers outside PubMed Central are downloaded too. A paper with a DOI but no PMCID, a
+  DOI Europe PMC has never heard of, and a PMC paper none of the PMC steps could serve are
+  looked for at arXiv, Unpaywall, OpenAlex and Semantic Scholar (`SEMANTIC_SCHOLAR_API_KEY` is
+  sent when set).
+- **mcp:** `manifest.jsonl` in the download folder gets a line for every PDF saved (`file`,
+  `pmcid`, `doi`, `source`, `url`, `license`, `license_source`, `md5_verified`, `from_cache`,
+  `sha256`, `size_bytes`, `saved_at`, `pyeuropepmc`), and each result carries the same facts
+  (`source`, `source_url`, `license`, `license_source`, `md5_verified`, `from_cache`; the
+  response has `manifest`, the file's path). The licence is what the source that supplied the
+  file reported, else what Europe PMC lists for the article (the tool now asks for `core`
+  records, which have it), else `null`: nobody said, which is not the same as closed. Spellings
+  are normalized (`cc-by-nc-nd`). Downloading a file again adds a line and the last one is
+  current. A manifest that cannot be written is reported as `manifest_error` and does not undo
+  the download.
+- **fulltext:** `FullTextClient.download_pdf_with_provenance` is `download_pdf_by_pmcid` plus a
+  `PdfResult` (`path`, `source`, `url`, `license`, `md5_verified`, `from_cache`), and
+  `FullTextClient.download_pdf_by_doi` fetches a paper outside PubMed Central through the new
+  module `features/fulltext/oa_pdf`. A link from a third-party record is followed only if it
+  is http(s) to a public address (no loopback, private or link-local range); redirects are
+  followed by hand, at most five, each checked the same way; the body must be a PDF under
+  `max_bytes`. `normalize_license` gives one spelling per licence.
 - **fulltext:** `download_pdf_by_pmcid` has a new step after the two Europe PMC endpoints: the PDF
-  of the newest version in NCBI's PMC Open Access Subset on AWS open data
-  (`pmc-oa-opendata`). `europepmc.org` now answers its PDF pages with a browser check (HTTP
-  403) to scripted clients, so those steps fail; the bucket needs no key and no email, and in a
-  live run it saved both test papers with `UNPAYWALL_EMAIL` unset. It holds open-access articles
-  only; others still depend on Unpaywall.
-- **fulltext:** `download_pdf_by_pmcid` and `atomic_download` take `max_bytes`; a PDF over it is
-  refused from its declared size or abandoned while downloading, in every step (Europe PMC,
-  OA archive, Unpaywall), and no partial file is left. The MCP tool passes 100 MB.
-- **mcp:** `download_papers_pdf` also downloads papers outside PubMed Central. A paper with a DOI
-  but no PMCID (or a DOI Europe PMC has never heard of), and a PMC paper none of the PMC steps
-  could serve, is looked for at arXiv, Unpaywall, OpenAlex and Semantic Scholar; it used to end
-  as `not_in_pmc`. The file is `<doi>-<hash>.pdf`.
-- **mcp:** `download_papers_pdf` keeps a manifest. Every PDF it saves adds a line to
-  `manifest.jsonl` in the download folder (`file`, `pmcid`, `doi`, `source`, `url`, `license`,
-  `license_source`, `md5_verified`, `from_cache`, `sha256`, `size_bytes`, `saved_at`,
-  `pyeuropepmc`), and each result carries the same facts (`source`, `source_url`, `license`,
-  `license_source`, `md5_verified`, `from_cache`; the response has `manifest`, the file's
-  path). The licence is what the source that supplied the file reported (the PMC bucket's
-  metadata, Unpaywall, OpenAlex, Semantic Scholar), else what Europe PMC lists for the article
-  (the tool now asks for `core` records, which have it), else `null`: nobody said, which is not
-  the same as closed. Spellings are normalized (`cc-by-nc-nd`). Downloading a file again adds
-  a line; the last one for a file is current. A manifest that cannot be written is reported
-  as `manifest_error` and does not undo the download.
-- **fulltext:** the PMC bucket step checks each PDF against the MD5 the article's metadata
-  publishes (a damaged file is discarded and the next version or step tried), and the origin
-  of every PDF put in the file cache is stored beside it with its SHA-256, so a later cache hit
-  still reports its real source, URL and licence instead of just `cache`. The result type is
-  `PdfResult` (`path`, `source`, `url`, `license`, `md5_verified`, `from_cache`).
-- **fulltext:** `FullTextClient.download_pdf_by_doi` and the module `features/fulltext/oa_pdf`
-  fetch PDFs by DOI. Links in third-party records are only followed if http(s) to a public
-  address, redirects included (checked by hand, at most 5), and the body must be a PDF under
-  `max_bytes`. `download_pdf_with_provenance` is `download_pdf_by_pmcid` plus a `PdfResult`
-  saying where the file came from.
-- **fulltext:** the PDF chain wastes less time: a paper Europe PMC lists as not open access
-  (`open_access=False`) skips the two open-access-only copies, which had a PDF for none of the 7
-  such papers in a 100-paper check and took 12 to 18 s to say so; and after a Cloudflare browser
-  check (`cf-mitigated: challenge`) from a host, its PDF steps are skipped for 10 minutes.
-- **fulltext:** the ZIP step of `download_pdf_by_pmcid` now reads Europe PMC's bulk copy of the
+  of the newest version in NCBI's PMC Open Access Subset on AWS open data (`pmc-oa-opendata`,
+  public, no key; open-access articles only). The article's metadata file gives the licence and
+  the PDF's MD5; a file that does not match is discarded and the next version or step tried.
+- **fulltext:** `download_pdf_by_pmcid` takes `doi` (for the Unpaywall step; without it the step
+  looks the DOI up from Europe PMC by PMCID, which found nothing in a live check, so the
+  fallback never ran), `max_bytes` (a PDF over it is refused from its declared size or
+  abandoned while downloading, in every step, and no partial file is left) and `open_access`.
+  `atomic_download` takes `max_bytes` and `on_response`.
+- **fulltext:** the origin of every PDF put in the file cache is stored beside it
+  (`pdf-provenance/PMC<id>.json`, with the file's SHA-256), so a later cache hit reports its real
+  source, URL and licence instead of just `cache`.
+
+### Changed
+
+- **fulltext:** the ZIP step of `download_pdf_by_pmcid` reads Europe PMC's bulk copy of the
   open-access PDFs on `ftp.ebi.ac.uk` (`pub/databases/pmc/pdf/OA/PMCxxxx<n>/PMC<id>.zip`, one
   folder per 10,000 PMC IDs, so no directory search is needed). The old `europepmc.org/pub/...`
   URL used a layout that no longer exists. The archive is spooled to a temporary file and the
   PDF extracted with a byte count instead of being held in memory, so `max_bytes` also holds
   against a ZIP that lies about its size. The server often takes 10 s or more to answer, so the
-  read timeout is 60 s and a dropped connection is retried once. In a live run it saved
-  PMC3525259, PMC7029158, PMC25774 and PMC13710763 with `europepmc.org` blocked.
+  read timeout is 60 s and a dropped connection is retried once.
+- **fulltext:** the PDF chain wastes less time. A paper Europe PMC lists as not open access
+  (`open_access=False`) skips the two open-access-only copies, which had a PDF for none of the 7
+  such papers in a 100-paper check and took 12 to 18 s to say so. After a Cloudflare browser
+  check (`cf-mitigated: challenge`) from a host, its PDF steps are skipped for 10 minutes.
 
 ### Fixed
 
@@ -70,6 +77,16 @@ All notable changes to PyEuropePMC are documented here.
   status, a wrong content type, an exception). Every blocked `europepmc.org` PDF attempt left
   one open, so a long-running MCP server could run out of descriptors. The descriptor is now
   closed on every path.
+
+### Documentation
+
+- **pdf:** a guide, `docs/features/pdf-download.md` (Downloading PDFs): the sources and their
+  order, the result and manifest fields, licences, the checks on links and files, measured
+  coverage, troubleshooting and known limits.
+- **fulltext:** the pages for `FullTextClient` and the full-text feature list the real PDF
+  sources, and the API page no longer says that the Unpaywall steps find nothing (fixed in
+  3.0.0). The pages for `FTPDownloader` and `FullTextClient` state that `europepmc.org/ftp/` is
+  behind a browser check.
 
 ### Dependencies
 

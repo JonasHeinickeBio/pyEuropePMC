@@ -5,7 +5,7 @@ pyEuropePMC is a Python library for searching Europe PMC, downloading full-text 
 ## What it does
 
 - **Search:** query Europe PMC with its search syntax or with `QueryBuilder`, and page through large result sets.
-- **Full text:** download XML, PDF and HTML for open-access articles, one at a time or in batches, and bulk PDF packages from the Europe PMC FTP site.
+- **Full text:** download XML, PDF and HTML for open-access articles, one at a time or in batches, and bulk PDF packages from the Europe PMC FTP site. [PDF download](features/pdf-download.md) also covers papers outside PubMed Central, with the source and licence of every file.
 - **Parsing:** extract metadata, sections, tables, figures and references from JATS XML with `FullTextXMLParser`.
 - **Multi-source search:** search Europe PMC together with PubMed, arXiv, OpenAlex, Semantic Scholar and other services through `UnifiedSearch`, with duplicates merged.
 - **Enrichment:** add metadata from CrossRef, OpenAlex, Semantic Scholar, Unpaywall and other services.

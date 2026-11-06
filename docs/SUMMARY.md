@@ -24,6 +24,7 @@
   * [ClinicalTrials.gov client](features/clinical-trials.md)
   * [arXiv client](features/arxiv.md)
 * [Full-text retrieval](features/fulltext/README.md)
+  * [Downloading PDFs](features/pdf-download.md)
   * [Full-text index (SQLite FTS5)](features/fulltext-index.md)
 * [XML parsing](features/parsing/README.md)
   * [JATS normalization](features/parsing/jats-normalization.md)

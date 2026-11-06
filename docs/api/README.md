@@ -28,7 +28,7 @@ from pyeuropepmc import (
 |---|---|---|---|
 | `SearchClient` | Search Europe PMC | `search()`, `search_all()`, `get_hit_count()`, `search_and_parse()`, `search_ids_only()`, `export_results()` | [SearchClient](search-client.md) |
 | `ArticleClient` | Metadata, citations, references and links for one article | `get_article_details()`, `get_citations()`, `get_references()`, `get_citation_count()`, `get_reference_count()`, `get_supplementary_files()` | [ArticleClient](article-client.md) |
-| `FullTextClient` | Full-text XML, PDF and HTML | `get_fulltext_content()`, `check_fulltext_availability()`, `download_xml_by_pmcid()`, `download_pdf_by_pmcid()`, `download_html_by_pmcid()`, `download_fulltext_batch()` | [FullTextClient](fulltext-client.md) |
+| `FullTextClient` | Full-text XML, PDF and HTML | `get_fulltext_content()`, `check_fulltext_availability()`, `download_xml_by_pmcid()`, `download_pdf_by_pmcid()`, `download_pdf_with_provenance()`, `download_pdf_by_doi()`, `download_html_by_pmcid()`, `download_fulltext_batch()` | [FullTextClient](fulltext-client.md) |
 | `FTPDownloader` | Bulk PDF packages from the Europe PMC FTP site | `query_pmcids_in_ftp()`, `bulk_download_and_extract()` | [FTPDownloader](ftp-downloader.md) |
 | `QueryBuilder` | Build query strings | `keyword()`, `field()`, `and_()`, `or_()`, `not_()`, `date_range()`, `citation_count()`, `build()`, `save()`, `translate()` | [QueryBuilder](query-builder.md) |
 | `FullTextXMLParser` | Parse JATS XML | `extract_metadata()`, `extract_tables()`, `extract_references()`, `get_full_text_sections_structured()`, `to_plaintext()`, `to_markdown()` | [XML parser](xml-parser.md) |

@@ -76,9 +76,9 @@ Runs only the FTP archive step, without the file cache. The archive name is deri
 
 ### download_pdf_by_pmcid
 
-`download_pdf_by_pmcid(pmcid, output_path=None, rate_limiter=None, doi=None, max_bytes=None) -> Path | None`
+`download_pdf_by_pmcid(pmcid, output_path=None, rate_limiter=None, doi=None, max_bytes=None, open_access=None) -> Path | None`
 
-Tries the file cache, `https://europepmc.org/articles/PMC{id}?pdf=render`, `https://europepmc.org/backend/ptpmcrender.fcgi?accid=PMC{id}&blobtype=pdf`, the PDF of the newest version in NCBI's PMC Open Access Subset on AWS open data (`https://pmc-oa-opendata.s3.amazonaws.com/PMC{id}.{version}/PMC{id}.{version}.pdf`), the ZIP file `https://ftp.ebi.ac.uk/pub/databases/pmc/pdf/OA/PMCxxxx{batch}/PMC{id}.zip` (`batch` is the PMC ID divided by 10,000, rounded up, in three digits or more: PMC3525259 is in `PMCxxxx353`), and Unpaywall (only with an e-mail address). The first two are behind a browser check (HTTP 403) for scripted clients since November 2026 and are not worked around. `doi` is passed to the Unpaywall step; without it the DOI is looked up from Europe PMC. `max_bytes` refuses a PDF, or ZIP, over that size from its declared size or while it downloads, in every step, and leaves no partial file. A downloaded file counts only if it starts with `%PDF` and is at least 1,024 bytes long. Returns the `Path`, or `None` when no step succeeds, including when the request that looks up the DOI for Unpaywall fails.
+Tries the file cache, `https://europepmc.org/articles/PMC{id}?pdf=render`, `https://europepmc.org/backend/ptpmcrender.fcgi?accid=PMC{id}&blobtype=pdf`, the PDF of the newest version in NCBI's PMC Open Access Subset on AWS open data (`https://pmc-oa-opendata.s3.amazonaws.com/PMC{id}.{version}/PMC{id}.{version}.pdf`), the ZIP file `https://ftp.ebi.ac.uk/pub/databases/pmc/pdf/OA/PMCxxxx{batch}/PMC{id}.zip` (`batch` is the PMC ID divided by 10,000, rounded up, in three digits or more: PMC3525259 is in `PMCxxxx353`), and Unpaywall (only with an e-mail address). The first two are behind a browser check (HTTP 403) for scripted clients since November 2026 and are not worked around. `doi` is passed to the Unpaywall step; without it the DOI is looked up from Europe PMC. `max_bytes` refuses a PDF, or ZIP, over that size from its declared size or while it downloads, in every step, and leaves no partial file. A downloaded file counts only if it starts with `%PDF` and is at least 1,024 bytes long. `open_access=False` skips the two steps that only hold open-access articles (see `download_pdf_with_provenance`). Returns the `Path`, or `None` when no step succeeds, including when the request that looks up the DOI for Unpaywall fails. [Downloading PDFs](../features/pdf-download.md) explains the sources, the checks and the measured coverage.
 
 ### download_pdf_with_provenance
 
@@ -187,9 +187,40 @@ Passed to the `download_fulltext_batch()` callback.
 
 `DownloadReport(pmcid)` has `add_attempt(...)`, `add_fallback(...)`, `set_detailed_analysis(analysis)`, `to_dict()`, `to_json(indent=2)` and `save(output_path) -> Path`.
 
+## PDF results and helpers
+
+### PdfResult
+
+`PdfResult` is a frozen dataclass in `pyeuropepmc.features.fulltext.pdf_result`, returned by `download_pdf_with_provenance()` and `download_pdf_by_doi()`.
+
+| Attribute | Type | Meaning |
+|---|---|---|
+| `path` | `Path` | The saved file. |
+| `source` | `str` | The step or service that supplied it. |
+| `url` | `str` or `None` | Where the bytes came from; `None` for a cache hit with no recorded origin. |
+| `license` | `str` or `None` | What the source reported, normalized; `None` when it did not say. |
+| `md5_verified` | `bool` | `True` when the MD5 published by the PMC open-data bucket matched. Default `False`. |
+| `from_cache` | `bool` | `True` when the file cache supplied the file. Default `False`. |
+
+### normalize_license
+
+`normalize_license(value) -> str | None`, in the same module, turns the spellings that the sources use into one lowercase form: `CC BY-NC-ND`, `cc by-nc-nd` and `CCBYNCND` become `cc-by-nc-nd`, a version is kept (`cc by 4.0` becomes `cc-by-4.0`), `CC0` becomes `cc0`, and any other text is lowercased with spaces turned into hyphens. Blank or non-text values give `None`.
+
+### oa_pdf
+
+`pyeuropepmc.features.fulltext.oa_pdf` holds the DOI route behind `download_pdf_by_doi()`:
+
+| Name | Description |
+|---|---|
+| `download_pdf_by_doi(doi, output_path, email=None, max_bytes=None, skip=())` | The function the client method calls. `email` is passed by the client; without it Unpaywall is skipped. |
+| `fetch_pdf(url, output_path, max_bytes=None) -> bool` | Fetches one link under the rules in `download_pdf_by_doi` and leaves no file when it fails. |
+| `is_public_url(url) -> bool` | `True` for an `http` or `https` URL without credentials whose host resolves only to globally routable addresses. |
+| `SOURCES` | The source names in the order they are asked: `arxiv`, `unpaywall`, `openalex`, `semantic_scholar`. |
+| `Link` | A `NamedTuple` of `url` and `license`, what each source returns for a candidate. |
+
 ## Caching
 
-The file cache, on by default, stores downloads as `cache_dir/{pdf,xml,html}/PMC{id}.{format}`. The API response cache is opt-in: `cache_config=CacheConfig(enabled=True)` caches availability results, in memory unless `enable_l2=True` adds a disk layer. See the [caching guide](../features/caching/README.md) and the [caching reference](../advanced/caching.md) for `CacheConfig`.
+The file cache, on by default, stores downloads as `cache_dir/{pdf,xml,html}/PMC{id}.{format}`. For PDFs, `cache_dir/pdf-provenance/PMC{id}.json` records where the cached file came from, with its SHA-256. The API response cache is opt-in: `cache_config=CacheConfig(enabled=True)` caches availability results, in memory unless `enable_l2=True` adds a disk layer. See the [caching guide](../features/caching/README.md) and the [caching reference](../advanced/caching.md) for `CacheConfig`.
 
 | Method | Returns | Description |
 |---|---|---|
@@ -238,11 +269,12 @@ Both derive from `PyEuropePMCError` in `pyeuropepmc.core.exceptions` and can be 
 ## Known limitations
 
 - The `fulltextRepo` step requests `https://www.ebi.ac.uk/europepmc/webservices/rest/PMC{id}/fulltextRepo`. That path has not been checked against the live service; the file endpoint the Europe PMC website loads, `https://europepmc.org/api/fulltextRepo`, takes a file name and MIME type rather than only a PMC ID.
-- The Unpaywall steps do not find anything yet: `UnpaywallClient` requests the Unpaywall API base URL twice (`https://api.unpaywall.org/v2/https://api.unpaywall.org/v2/{doi}`), so every lookup fails and the step counts the article as not found.
+- On 6 November 2026 `europepmc.org` answered scripted clients with a Cloudflare browser check (HTTP 403) on article pages, the PDF render and backend endpoints, `/ftp/pdf/`, `/ftp/oa/` and `/api/fulltextRepo`. The REST API on `www.ebi.ac.uk` was not affected. Nothing here tries to pass the check; the PDF chain uses other sources, and the XML chain falls through to the REST API. `FTPDownloader` and the `europepmc_ftp_bulk` XML step depend on the blocked hosts.
 - The HTML download is the Europe PMC web page as served, not an article-only document.
 
 ## See also
 
 - [Full-text retrieval](../features/fulltext/README.md)
+- [Downloading PDFs](../features/pdf-download.md)
 - [FTPDownloader](ftp-downloader.md)
 - [FullTextXMLParser](xml-parser.md)

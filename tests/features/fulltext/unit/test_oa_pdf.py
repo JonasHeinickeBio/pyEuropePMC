@@ -206,6 +206,18 @@ class TestLinks:
                 Link("https://example.org/s.pdf", "CCBY")
             ]
 
+    def test_semantic_scholar_gets_the_api_key_when_one_is_set(self, monkeypatch):
+        reply = _reply()
+        reply.json.return_value = {}
+        monkeypatch.setenv("SEMANTIC_SCHOLAR_API_KEY", " secret ")
+        with patch("requests.get", return_value=reply) as get:
+            oa_pdf._semantic_scholar_links("10.1/x", None)
+        assert get.call_args.kwargs["headers"]["x-api-key"] == "secret"
+        monkeypatch.delenv("SEMANTIC_SCHOLAR_API_KEY")
+        with patch("requests.get", return_value=reply) as get:
+            oa_pdf._semantic_scholar_links("10.1/x", None)
+        assert "x-api-key" not in get.call_args.kwargs["headers"]
+
     def test_a_failed_lookup_means_no_links(self):
         with patch("requests.get", return_value=_reply(429)):
             assert oa_pdf._openalex_links("10.1/x", None) == []

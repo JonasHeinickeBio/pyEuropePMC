@@ -15,6 +15,7 @@ from __future__ import annotations
 from collections.abc import Callable
 import ipaddress
 import logging
+import os
 from pathlib import Path
 import re
 import socket
@@ -134,9 +135,12 @@ def _save_if_pdf(response: Any, output_path: Path, max_bytes: int | None) -> boo
     return False
 
 
-def _json(url: str, **params: Any) -> Any:
+def _json(url: str, params: dict[str, str], headers: dict[str, str] | None = None) -> Any:
     response = requests.get(
-        url, params=params, timeout=API_TIMEOUT, headers={"User-Agent": get_user_agent()}
+        url,
+        params=params,
+        timeout=API_TIMEOUT,
+        headers={"User-Agent": get_user_agent(), **(headers or {})},
     )
     return response.json() if response.status_code == 200 else None
 
@@ -165,7 +169,7 @@ def _openalex_links(doi: str, email: str | None) -> list[Link]:
     params = {"select": "best_oa_location,locations"}
     if email:
         params["mailto"] = email
-    data = _json(f"https://api.openalex.org/works/doi:{quote(doi, safe='/')}", **params) or {}
+    data = _json(f"https://api.openalex.org/works/doi:{quote(doi, safe='/')}", params) or {}
     locations = [data.get("best_oa_location") or {}, *(data.get("locations") or [])]
     return [
         Link(str(loc["pdf_url"]), loc.get("license"))
@@ -176,7 +180,8 @@ def _openalex_links(doi: str, email: str | None) -> list[Link]:
 
 def _semantic_scholar_links(doi: str, email: str | None) -> list[Link]:
     url = f"https://api.semanticscholar.org/graph/v1/paper/DOI:{quote(doi, safe='/')}"
-    data = _json(url, fields="openAccessPdf") or {}
+    key = os.environ.get("SEMANTIC_SCHOLAR_API_KEY", "").strip()
+    data = _json(url, {"fields": "openAccessPdf"}, {"x-api-key": key} if key else None) or {}
     pdf = data.get("openAccessPdf") or {}
     return [Link(str(pdf["url"]), pdf.get("license"))] if pdf.get("url") else []
 
