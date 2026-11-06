@@ -2146,15 +2146,33 @@ def _pdf_status(
     return item
 
 
+_pdf_locks: dict[Path, threading.Lock] = {}
+_pdf_locks_guard = threading.Lock()
+
+
+def _pdf_lock(target: Path) -> threading.Lock:
+    """The lock of one target file (one per PMCID ever asked for, a few bytes each)."""
+    with _pdf_locks_guard:
+        return _pdf_locks.setdefault(target, threading.Lock())
+
+
 def _download_one_pdf(
     pmcid: str, directory: Path, overwrite: bool, doi: str | None = None
 ) -> dict[str, Any]:
     """Save one PDF as ``<directory>/<PMCID>.pdf`` and describe it (blocking).
 
     Returns the fields to merge into the result item: ``status`` ``ok``, ``exists`` (the file
-    was already there and ``overwrite`` is false), ``no_pdf`` or ``error``.
+    was already there and ``overwrite`` is false), ``no_pdf`` or ``error``. Calls for the same
+    file wait for each other, so none sees or removes a half-written copy; other files
+    proceed in parallel.
     """
     target = pdf.pdf_path(directory, pmcid)
+    with _pdf_lock(target):
+        return _save_pdf(pmcid, target, overwrite, doi)
+
+
+def _save_pdf(pmcid: str, target: Path, overwrite: bool, doi: str | None) -> dict[str, Any]:
+    directory = target.parent
     if target.exists() and not overwrite:
         problem = pdf.check_pdf(target)
         if problem is None:
@@ -2163,7 +2181,7 @@ def _download_one_pdf(
     directory.mkdir(parents=True, exist_ok=True)
     client = _fulltext_client_cache.get()
     try:
-        saved = client.download_pdf_by_pmcid(pmcid, target, doi=doi)
+        saved = client.download_pdf_by_pmcid(pmcid, target, doi=doi, max_bytes=pdf.MAX_PDF_BYTES)
     except FullTextError as exc:
         return {"status": "error", "error": str(exc)}
     except OSError as exc:

@@ -315,6 +315,7 @@ def atomic_download(
     session_getter: Callable[[], Any],
     validator: Callable[[Path], bool] | None = None,
     content_type_check: str | None = None,
+    max_bytes: int | None = None,
     **request_kwargs: Any,
 ) -> bool:
     """
@@ -332,6 +333,10 @@ def atomic_download(
         Optional validator function to validate the downloaded file
     content_type_check : Optional[str]
         Optional content type to check for (e.g., "application/pdf")
+    max_bytes : Optional[int]
+        Largest file to accept. A response that declares more is refused without reading
+        the body; one that turns out larger is abandoned as soon as the limit is passed,
+        and the temporary file is removed.
     **request_kwargs
         Additional keyword arguments for the request
 
@@ -368,11 +373,27 @@ def atomic_download(
                 temp_path.unlink(missing_ok=True)
                 return False
 
+        declared = response.headers.get("content-length", "")
+        if max_bytes is not None and str(declared).isdigit() and int(declared) > max_bytes:
+            os.close(temp_fd)
+            temp_path.unlink(missing_ok=True)
+            return False
+
         # Write to temporary file
+        written = 0
+        too_large = False
         with os.fdopen(temp_fd, "wb") as temp_file:
             for chunk in response.iter_content(chunk_size=8192):
                 if chunk:
+                    written += len(chunk)
+                    if max_bytes is not None and written > max_bytes:
+                        too_large = True
+                        break
                     temp_file.write(chunk)
+        if too_large:
+            response.close()
+            temp_path.unlink(missing_ok=True)
+            return False
 
         # Validate if validator is provided
         if validator and not validator(temp_path):

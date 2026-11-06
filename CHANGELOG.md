@@ -16,6 +16,9 @@ All notable changes to PyEuropePMC are documented here.
   Unpaywall step. Without it the step looks the DOI up from Europe PMC by PMCID, which found
   nothing in a live check, so the Unpaywall fallback never ran; the MCP tool passes the DOI it
   already has.
+- **fulltext:** `download_pdf_by_pmcid` and `atomic_download` take `max_bytes`; a PDF over it is
+  refused from its declared size or abandoned while downloading, in every step (Europe PMC,
+  OA archive, Unpaywall), and no partial file is left. The MCP tool passes 100 MB.
 
 ### Dependencies
 

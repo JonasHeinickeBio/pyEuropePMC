@@ -37,7 +37,7 @@ def pdf_path(directory: Path, pmcid: str) -> Path:
     The name is built from the identifier alone, so no request can write outside
     ``directory`` however its inputs are spelled.
     """
-    if not _PMCID_RE.match(pmcid):
+    if not _PMCID_RE.fullmatch(pmcid):
         raise ValueError(f"not a PMCID: {pmcid!r}")
     return directory / f"{pmcid}.pdf"
 

@@ -438,6 +438,10 @@ class RateLimiter:
             }
 
 
+class _PdfTooLarge(Exception):
+    """A PDF download passed the caller's ``max_bytes``; abandoned, not an error."""
+
+
 class FullTextClient(BaseAPIClient):
     """
     Client for accessing Europe PMC full text content.
@@ -1170,6 +1174,7 @@ class FullTextClient(BaseAPIClient):
         output_path: str | Path | None = None,
         rate_limiter: RateLimiter | None = None,
         doi: str | None = None,
+        max_bytes: int | None = None,
     ) -> Path | None:
         """
         Download PDF of a paper from Europe PMC using its PMC ID.
@@ -1192,6 +1197,9 @@ class FullTextClient(BaseAPIClient):
         doi : str, optional
             The paper's DOI, for the Unpaywall step. Looked up from Europe PMC when
             omitted; pass it when the caller already has it, which saves that request.
+        max_bytes : int, optional
+            Largest PDF to accept from any step. A source that serves more is abandoned
+            while downloading (or from its declared size) and the next step is tried.
 
         Returns
         -------
@@ -1224,23 +1232,23 @@ class FullTextClient(BaseAPIClient):
 
         # 1. Try the ?pdf=render endpoint
         render_url = self.PDF_RENDER_URL.format(pmcid=normalized_pmcid)
-        if self._try_pdf_endpoint(render_url, output_path, "render endpoint"):
+        if self._try_pdf_endpoint(render_url, output_path, "render endpoint", max_bytes):
             self._save_to_cache(output_path, normalized_pmcid, "pdf")
             return output_path
 
         # 2. Try the backend render service
         backend_url = self.PDF_BACKEND_URL.format(pmcid=normalized_pmcid)
-        if self._try_pdf_endpoint(backend_url, output_path, "backend service"):
+        if self._try_pdf_endpoint(backend_url, output_path, "backend service", max_bytes):
             self._save_to_cache(output_path, normalized_pmcid, "pdf")
             return output_path
 
         # 3. Try the ZIP archive (Europe PMC OA bulk)
-        if self._try_pdf_from_zip(normalized_pmcid, output_path):
+        if self._try_pdf_from_zip(normalized_pmcid, output_path, max_bytes):
             self._save_to_cache(output_path, normalized_pmcid, "pdf")
             return output_path
 
         # 4. Final fallback: Unpaywall via DOI lookup
-        if self._try_unpaywall_pdf(normalized_pmcid, output_path, doi=doi):
+        if self._try_unpaywall_pdf(normalized_pmcid, output_path, doi=doi, max_bytes=max_bytes):
             self._save_to_cache(output_path, normalized_pmcid, "pdf")
             return output_path
 
@@ -2001,7 +2009,9 @@ class FullTextClient(BaseAPIClient):
             self.logger.error(f"Error validating PDF {file_path}: {e}")
             return False
 
-    def _try_pdf_endpoint(self, url: str, output_path: Path, endpoint_name: str) -> bool:
+    def _try_pdf_endpoint(
+        self, url: str, output_path: Path, endpoint_name: str, max_bytes: int | None = None
+    ) -> bool:
         """
         Try downloading PDF from a specific endpoint with validation.
 
@@ -2029,6 +2039,7 @@ class FullTextClient(BaseAPIClient):
                 session_getter=lambda: requests.Session(),
                 validator=self._validate_pdf_content,
                 content_type_check="application/pdf",
+                max_bytes=max_bytes,
                 timeout=15,
             )
 
@@ -2045,7 +2056,9 @@ class FullTextClient(BaseAPIClient):
             self.logger.error(f"Error downloading from {endpoint_name}: {e}")
             return False
 
-    def _try_pdf_from_zip(self, normalized_pmcid: str, output_path: Path) -> bool:
+    def _try_pdf_from_zip(
+        self, normalized_pmcid: str, output_path: Path, max_bytes: int | None = None
+    ) -> bool:
         """
         Try downloading PDF from ZIP archive with validation.
 
@@ -2076,10 +2089,20 @@ class FullTextClient(BaseAPIClient):
                 self.logger.debug(f"ZIP archive returned status {zip_response.status_code}")
                 return False
 
+            declared = str(zip_response.headers.get("content-length", ""))
+            if max_bytes is not None and declared.isdigit() and int(declared) > max_bytes:
+                self.logger.debug(
+                    f"ZIP archive for PMC{normalized_pmcid} is over {max_bytes} bytes"
+                )
+                return False
+
             with zipfile.ZipFile(BytesIO(zip_response.content)) as zf:
                 pdf_names = [name for name in zf.namelist() if name.lower().endswith(".pdf")]
                 if not pdf_names:
                     self.logger.debug(f"No PDF found in ZIP for PMC{normalized_pmcid}")
+                    return False
+                if max_bytes is not None and zf.getinfo(pdf_names[0]).file_size > max_bytes:
+                    self.logger.debug(f"PDF in the ZIP for PMC{normalized_pmcid} is too large")
                     return False
 
                 # Extract PDF content and use atomic write
@@ -2370,8 +2393,37 @@ class FullTextClient(BaseAPIClient):
             )
             return False
 
+    @staticmethod
+    def _save_pdf_stream(response: Any, output_path: Path, max_bytes: int | None) -> bool:
+        """Write a streamed response to ``output_path`` atomically.
+
+        Returns ``False`` without leaving a file when the response declares, or turns out to
+        have, more than ``max_bytes`` (``None`` means no limit).
+        """
+        declared = str(response.headers.get("content-length", ""))
+        if max_bytes is not None and declared.isdigit() and int(declared) > max_bytes:
+            response.close()
+            return False
+        written = 0
+        try:
+            with atomic_write(output_path, "wb") as f:
+                for chunk in response.iter_content(chunk_size=8192):
+                    if chunk:
+                        written += len(chunk)
+                        if max_bytes is not None and written > max_bytes:
+                            raise _PdfTooLarge(max_bytes)
+                        f.write(chunk)
+        except _PdfTooLarge:
+            response.close()
+            return False
+        return True
+
     def _try_unpaywall_pdf(
-        self, normalized_pmcid: str, output_path: Path, doi: str | None = None
+        self,
+        normalized_pmcid: str,
+        output_path: Path,
+        doi: str | None = None,
+        max_bytes: int | None = None,
     ) -> bool:
         """
         Try to download PDF using Unpaywall API via DOI lookup.
@@ -2444,11 +2496,9 @@ class FullTextClient(BaseAPIClient):
                 self.logger.warning(f"Unexpected content type from Unpaywall: {content_type}")
                 return False
 
-            # Save using atomic write
-            with atomic_write(output_path, "wb") as f:
-                for chunk in response.iter_content(chunk_size=8192):
-                    if chunk:
-                        f.write(chunk)
+            if not self._save_pdf_stream(response, output_path, max_bytes):
+                self.logger.warning(f"Unpaywall PDF for PMC{normalized_pmcid} is too large")
+                return False
 
             # Validate downloaded PDF
             if not self._validate_pdf_content(output_path):

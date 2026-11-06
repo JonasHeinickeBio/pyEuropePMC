@@ -61,10 +61,12 @@ def _downloader(behaviour):
     (the real method returns ``None``); an exception is raised.
     """
     calls: list[str] = []
+    limits: list[int | None] = []
     dois: dict[str, str | None] = {}
 
-    def download(pmcid, output_path=None, rate_limiter=None, doi=None):
+    def download(pmcid, output_path=None, rate_limiter=None, doi=None, max_bytes=None):
         calls.append(pmcid)
+        limits.append(max_bytes)
         dois[pmcid] = doi
         outcome = behaviour[pmcid]
         if isinstance(outcome, Exception):
@@ -78,6 +80,7 @@ def _downloader(behaviour):
     client.download_pdf_by_pmcid.side_effect = download
     srv._fulltext_client_cache.set(client)
     client.calls = calls
+    client.limits = limits
     client.dois = dois
     return client
 
@@ -99,7 +102,18 @@ class TestHelpers:
         assert pdf.pdf_path(tmp_path, "PMC3525259") == tmp_path / "PMC3525259.pdf"
 
     @pytest.mark.parametrize(
-        "bad", ["../PMC1", "PMC1/../x", "PMC", "3525259", "pmc1", "PMC1.pdf", "", "PMC12345678901"]
+        "bad",
+        [
+            "../PMC1",
+            "PMC1/../x",
+            "PMC",
+            "3525259",
+            "pmc1",
+            "PMC1.pdf",
+            "",
+            "PMC12345678901",
+            "PMC1\n",
+        ],
     )
     def test_pdf_path_refuses_anything_but_a_pmcid(self, tmp_path, bad):
         with pytest.raises(ValueError, match="not a PMCID"):
@@ -281,3 +295,69 @@ class TestDownloadPapersPdf:
         assert client.dois == {"PMC1": "10.1234/One", "PMC2": None}
         assert out["results"][0]["doi"] == "10.1234/One"
         assert "doi" not in out["results"][1]
+
+    def test_the_size_limit_is_handed_to_the_downloader(self):
+        _search([rec("1", "PMC1")])
+        client = _downloader({"PMC1": PDF_BYTES})
+
+        _run(srv.download_papers_pdf(ids=["PMC1"]))
+
+        assert client.limits == [pdf.MAX_PDF_BYTES]
+
+    def test_calls_for_the_same_file_wait_for_each_other(self, tmp_path):
+        """Two overlapping downloads of one PMCID must never run the downloader at once."""
+        import threading
+        import time
+
+        active = 0
+        peak = 0
+        guard = threading.Lock()
+
+        def slow(pmcid, output_path=None, rate_limiter=None, doi=None, max_bytes=None):
+            nonlocal active, peak
+            with guard:
+                active += 1
+                peak = max(peak, active)
+            time.sleep(0.05)
+            Path(output_path).write_bytes(PDF_BYTES)
+            with guard:
+                active -= 1
+            return Path(output_path)
+
+        client = MagicMock()
+        client.download_pdf_by_pmcid.side_effect = slow
+        srv._fulltext_client_cache.set(client)
+        directory = tmp_path / "pdfs"
+
+        async def both():
+            return await asyncio.gather(
+                *(srv._pdf_or_error("PMC1", directory, True, None) for _ in range(4))
+            )
+
+        outcomes = _run(both())
+
+        assert peak == 1
+        assert all(o["status"] == "ok" for o in outcomes)
+
+    def test_different_files_download_in_parallel(self, tmp_path):
+        import threading
+
+        both_inside = threading.Barrier(2, timeout=5)
+
+        def rendezvous(pmcid, output_path=None, rate_limiter=None, doi=None, max_bytes=None):
+            both_inside.wait()  # only passes if the two downloads overlap
+            Path(output_path).write_bytes(PDF_BYTES)
+            return Path(output_path)
+
+        client = MagicMock()
+        client.download_pdf_by_pmcid.side_effect = rendezvous
+        srv._fulltext_client_cache.set(client)
+        directory = tmp_path / "pdfs"
+
+        async def two():
+            return await asyncio.gather(
+                srv._pdf_or_error("PMC1", directory, True, None),
+                srv._pdf_or_error("PMC2", directory, True, None),
+            )
+
+        assert [o["status"] for o in _run(two())] == ["ok", "ok"]
