@@ -23,7 +23,7 @@ class TestFTPDownloader:
         """Test FTPDownloader initialization."""
         downloader = FTPDownloader(rate_limit_delay=2.0)
         assert downloader.rate_limit_delay == 2.0
-        assert downloader.BASE_FTP_URL == "https://europepmc.org/ftp/pdf/"
+        assert downloader.BASE_FTP_URL == "https://ftp.ebi.ac.uk/pub/databases/pmc/pdf/OA/"
 
     @patch("pyeuropepmc.features.literature.ftp_downloader.FTPDownloader._get_ftp_url")
     def test_get_available_directories_success(self, mock_get_ftp_url):
@@ -347,29 +347,10 @@ class TestFTPDownloader:
     )
     def test_get_relevant_directories_success(self, mock_get_dirs):
         """Test getting relevant directories."""
-        # The method should return specific directories based on PMC IDs, not all available
         directories = self.downloader._get_relevant_directories(["11691200", "11691300"])
-        # For PMC ID 11691200, it should check:
-        # - PMCxxxx200 (last 3 digits)
-        # - PMCxxxx199, PMCxxxx201 (±1 from last 3 digits)
-        # - PMCxxxx1200 (last 4 digits, exactly at boundary)
-        # - PMCxxxx1199 (1200-1, still in range)
-        # - No PMCxxxx1201 (1200+1 = 1201 > 1200, outside range)
-        # For PMC ID 11691300, it should check:
-        # - PMCxxxx300 (last 3 digits)
-        # - PMCxxxx299, PMCxxxx301 (±1 from last 3 digits)
-        # - No 4-digit pattern (1300 > 1200, outside valid range)
-
-        expected_dirs = {
-            "PMCxxxx200",
-            "PMCxxxx199",
-            "PMCxxxx201",  # from 11691200
-            "PMCxxxx1200",
-            "PMCxxxx1199",  # from 11691200 (no 1201 since 1201 > 1200)
-            "PMCxxxx300",
-            "PMCxxxx299",
-            "PMCxxxx301",  # from 11691300
-        }
+        # One folder per 10,000 PMC IDs, numbered from 001: both IDs are in PMCxxxx1170
+        # (PMC11690001-PMC11700000). The server's listing is not needed.
+        expected_dirs = {"PMCxxxx1170"}
 
         assert directories == expected_dirs
         # Should not call get_available_directories since we found specific directories
@@ -385,10 +366,10 @@ class TestFTPDownloader:
         # Use an invalid PMC ID that would result in no directories
         directories = self.downloader._get_relevant_directories(["invalid"])
 
-        # Should return fallback directories (PMCxxxx0 to PMCxxxx1200)
-        assert len(directories) == 1201  # 0-999 (1000) + 1000-1200 (201) = 1201
-        assert "PMCxxxx0" in directories
-        assert "PMCxxxx1200" in directories
+        # Should return the fallback directories (PMCxxxx001 to PMCxxxx1500)
+        assert len(directories) == 1500
+        assert "PMCxxxx001" in directories
+        assert "PMCxxxx1500" in directories
 
 
 @pytest.mark.parametrize(

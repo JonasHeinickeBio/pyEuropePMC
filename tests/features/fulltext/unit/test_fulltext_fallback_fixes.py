@@ -74,6 +74,8 @@ def client(monkeypatch):
     monkeypatch.delenv("CROSSREF_EMAIL", raising=False)
     instance = FullTextClient(rate_limit_delay=0, enable_cache=False, email=None)
     assert instance.email is None
+    # stands in for the server's folder listing, which would need the network
+    instance._bulk_ranges = [(1, 10**9)]
     yield instance
     instance.close()
 

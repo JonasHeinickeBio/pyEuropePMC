@@ -4,6 +4,21 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
+### Fixed
+
+- **fulltext:** `FTPDownloader` reads the per-article PDF ZIP files from
+  `https://ftp.ebi.ac.uk/pub/databases/pmc/pdf/OA/` instead of `europepmc.org/ftp/pdf/`, which
+  answers scripted clients with a Cloudflare browser check (HTTP 403). The server keeps one folder
+  per 10,000 PMC IDs (PMC3525259 is in `PMCxxxx353`), so the downloader now opens that folder
+  directly instead of guessing folders from the last digits of the ID.
+- **fulltext:** the `europepmc_ftp_bulk` XML step reads the bulk archives from
+  `https://ftp.ebi.ac.uk/pub/databases/pmc/oa/`, and finds the archive of an ID in the folder
+  listing. None of the archive names it used to build from the ID (`PMC3200000_PMC3299999.xml.gz`)
+  is on the server, so the step could not succeed even where the site did not block it.
+- **fulltext:** `FullTextClient._lookup_doi_for_pmcid` asks Europe PMC for `PMC<id>` instead of the
+  bare number, which finds no article, so the DOI-keyed steps (Unpaywall and the other DOI sources)
+  got no DOI for papers given by PMCID alone.
+
 ## [4.7.0] - 2026-11-06
 
 > PDF download release. `europepmc.org` now answers scripted clients with a Cloudflare browser

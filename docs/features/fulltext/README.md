@@ -208,7 +208,7 @@ cache
 
 ## Bulk PDF downloads over FTP
 
-`FTPDownloader` downloads the per-article ZIP files that Europe PMC publishes at `https://europepmc.org/ftp/pdf/` and extracts the PDFs from them. **Since November 2026 that address answers scripted clients with a Cloudflare browser check (HTTP 403), so the downloader fails until Europe PMC lifts it.** The same ZIP files are served without a check from `https://ftp.ebi.ac.uk/pub/databases/pmc/pdf/OA/`, which `download_pdf_by_pmcid()` uses; see [Downloading PDFs](../pdf-download.md). It handles PDFs only; to download XML for many articles, use `download_fulltext_batch_parallel(..., format_type="xml")`.
+`FTPDownloader` downloads the per-article ZIP files that Europe PMC publishes at `https://ftp.ebi.ac.uk/pub/databases/pmc/pdf/OA/` and extracts the PDFs from them. (Until version 4.7.0 it read `https://europepmc.org/ftp/pdf/`, which has answered scripted clients with a Cloudflare browser check since November 2026; `download_pdf_by_pmcid()` already used the EBI server, see [Downloading PDFs](../pdf-download.md).) It handles PDFs only; to download XML for many articles, use `download_fulltext_batch_parallel(..., format_type="xml")`.
 
 ```python
 from pyeuropepmc import FTPDownloader

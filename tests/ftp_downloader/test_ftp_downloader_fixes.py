@@ -180,8 +180,8 @@ class TestFailedListings:
 
     def test_only_articles_whose_directories_failed_are_errors(self, sleeps, tmp_path):
         def listing(url: str) -> requests.Response:
-            # 11691200's directories answer; 5555's own directory is down.
-            return _response(503) if url.endswith("PMCxxxx555/") else _response(text=_listing())
+            # 11691200's directory answers; 5555's own directory is down.
+            return _response(503) if url.endswith("PMCxxxx001/") else _response(text=_listing())
 
         downloader = FTPDownloader(rate_limit_delay=0)
         with patch.object(requests.Session, "get", _router(listing)):
@@ -189,14 +189,16 @@ class TestFailedListings:
 
         assert results["11691200"]["status"] == "not_found"
         assert results["5555"]["status"] == "error"
-        assert "PMCxxxx555" in results["5555"]["error"]
+        assert "PMCxxxx001" in results["5555"]["error"]
 
     def test_query_records_failed_and_unsearched_directories(self, sleeps):
         downloader = FTPDownloader(rate_limit_delay=0)
         with patch.object(requests.Session, "get", _router(lambda url: _response(503))):
-            found = downloader.query_pmcids_in_ftp(["11691200"], max_directories=2)
+            found = downloader.query_pmcids_in_ftp(
+                ["11691200", "3525259", "5555"], max_directories=2
+            )
 
-        assert found == {"11691200": None}
+        assert found == {"11691200": None, "3525259": None, "5555": None}
         failures = downloader.last_query_failures
         assert len([reason for reason in failures.values() if "503" in reason]) == 2
         assert any(reason.startswith("not searched") for reason in failures.values())
