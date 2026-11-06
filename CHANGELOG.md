@@ -12,6 +12,10 @@ All notable changes to PyEuropePMC are documented here.
   file must be a PDF under 100 MB or it is deleted; the result carries path, size and SHA-256
   and a status per input. It is the first MCP tool that writes outside the caches, so it is
   marked as not read-only. The PDFs stay on the server's disk.
+- **fulltext:** `FullTextClient.download_pdf_by_pmcid` takes an optional `doi`, passed to its
+  Unpaywall step. Without it the step looks the DOI up from Europe PMC by PMCID, which found
+  nothing in a live check, so the Unpaywall fallback never ran; the MCP tool passes the DOI it
+  already has.
 
 ### Dependencies
 

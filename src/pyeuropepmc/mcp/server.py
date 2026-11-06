@@ -2140,10 +2140,15 @@ def _pdf_status(
         item["status"] = "not_in_pmc"
     else:
         item["pmcid"] = pmcid
+        doi = oa.clean_doi(str((record or {}).get("doi") or ""))
+        if doi:
+            item["doi"] = doi
     return item
 
 
-def _download_one_pdf(pmcid: str, directory: Path, overwrite: bool) -> dict[str, Any]:
+def _download_one_pdf(
+    pmcid: str, directory: Path, overwrite: bool, doi: str | None = None
+) -> dict[str, Any]:
     """Save one PDF as ``<directory>/<PMCID>.pdf`` and describe it (blocking).
 
     Returns the fields to merge into the result item: ``status`` ``ok``, ``exists`` (the file
@@ -2158,7 +2163,7 @@ def _download_one_pdf(pmcid: str, directory: Path, overwrite: bool) -> dict[str,
     directory.mkdir(parents=True, exist_ok=True)
     client = _fulltext_client_cache.get()
     try:
-        saved = client.download_pdf_by_pmcid(pmcid, target)
+        saved = client.download_pdf_by_pmcid(pmcid, target, doi=doi)
     except FullTextError as exc:
         return {"status": "error", "error": str(exc)}
     except OSError as exc:
@@ -2178,9 +2183,11 @@ def _download_one_pdf(pmcid: str, directory: Path, overwrite: bool) -> dict[str,
     return {"status": "ok", **pdf.describe(target)}
 
 
-async def _pdf_or_error(pmcid: str, directory: Path, overwrite: bool) -> dict[str, Any]:
+async def _pdf_or_error(
+    pmcid: str, directory: Path, overwrite: bool, doi: str | None
+) -> dict[str, Any]:
     try:
-        return await _run_blocking(_download_one_pdf, pmcid, directory, overwrite)
+        return await _run_blocking(_download_one_pdf, pmcid, directory, overwrite, doi)
     except Exception as exc:  # one paper must not take the others down with it
         return {"status": "error", "error": f"{type(exc).__name__}: {exc}"}
 
@@ -2242,7 +2249,10 @@ async def download_papers_pdf(
     for start in range(0, len(candidates), _PDF_CONCURRENCY):
         window = candidates[start : start + _PDF_CONCURRENCY]
         fetched = await asyncio.gather(
-            *(_pdf_or_error(results[p]["pmcid"], directory, overwrite) for p in window)
+            *(
+                _pdf_or_error(results[p]["pmcid"], directory, overwrite, results[p].get("doi"))
+                for p in window
+            )
         )
         for pos, outcome in zip(window, fetched, strict=True):
             results[pos].update(outcome)

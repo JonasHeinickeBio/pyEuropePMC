@@ -61,9 +61,11 @@ def _downloader(behaviour):
     (the real method returns ``None``); an exception is raised.
     """
     calls: list[str] = []
+    dois: dict[str, str | None] = {}
 
-    def download(pmcid, output_path=None, rate_limiter=None):
+    def download(pmcid, output_path=None, rate_limiter=None, doi=None):
         calls.append(pmcid)
+        dois[pmcid] = doi
         outcome = behaviour[pmcid]
         if isinstance(outcome, Exception):
             raise outcome
@@ -76,6 +78,7 @@ def _downloader(behaviour):
     client.download_pdf_by_pmcid.side_effect = download
     srv._fulltext_client_cache.set(client)
     client.calls = calls
+    client.dois = dois
     return client
 
 
@@ -268,3 +271,13 @@ class TestDownloadPapersPdf:
         monkeypatch.setattr(srv, "FULLTEXT_AVAILABLE", False)
         with pytest.raises(srv.ToolError):
             _run(srv.download_papers_pdf(ids=["PMC1"]))
+
+    def test_the_doi_from_the_lookup_reaches_the_unpaywall_step(self):
+        _search([rec("1", "PMC1", "https://doi.org/10.1234/One"), rec("2", "PMC2")])
+        client = _downloader({"PMC1": PDF_BYTES, "PMC2": PDF_BYTES})
+
+        out = _run(srv.download_papers_pdf(ids=["PMC1", "PMC2"]))
+
+        assert client.dois == {"PMC1": "10.1234/One", "PMC2": None}
+        assert out["results"][0]["doi"] == "10.1234/One"
+        assert "doi" not in out["results"][1]

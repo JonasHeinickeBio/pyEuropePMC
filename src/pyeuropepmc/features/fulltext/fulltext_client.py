@@ -1169,6 +1169,7 @@ class FullTextClient(BaseAPIClient):
         pmcid: str,
         output_path: str | Path | None = None,
         rate_limiter: RateLimiter | None = None,
+        doi: str | None = None,
     ) -> Path | None:
         """
         Download PDF of a paper from Europe PMC using its PMC ID.
@@ -1188,6 +1189,9 @@ class FullTextClient(BaseAPIClient):
             Path where to save the PDF file
         rate_limiter : RateLimiter, optional
             Rate limiter to use for network requests
+        doi : str, optional
+            The paper's DOI, for the Unpaywall step. Looked up from Europe PMC when
+            omitted; pass it when the caller already has it, which saves that request.
 
         Returns
         -------
@@ -1236,7 +1240,7 @@ class FullTextClient(BaseAPIClient):
             return output_path
 
         # 4. Final fallback: Unpaywall via DOI lookup
-        if self._try_unpaywall_pdf(normalized_pmcid, output_path):
+        if self._try_unpaywall_pdf(normalized_pmcid, output_path, doi=doi):
             self._save_to_cache(output_path, normalized_pmcid, "pdf")
             return output_path
 
