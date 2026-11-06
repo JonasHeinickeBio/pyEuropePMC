@@ -18,12 +18,13 @@ import logging
 from pathlib import Path
 import re
 import socket
-from typing import Any
+from typing import Any, NamedTuple
 from urllib.parse import quote, urljoin, urlparse
 
 import requests
 
 from pyeuropepmc._useragent import get_user_agent
+from pyeuropepmc.features.fulltext.pdf_result import PdfResult, normalize_license
 from pyeuropepmc.utils.helpers import DownloadTooLarge, atomic_write, copy_capped
 
 logger = logging.getLogger(__name__)
@@ -38,6 +39,13 @@ _REDIRECT_STATUS = (301, 302, 303, 307, 308)
 _ARXIV_DOI = re.compile(r"10\.48550/arxiv\.(.+)", re.IGNORECASE)
 #: Source names, in the order they are asked.
 SOURCES = ("arxiv", "unpaywall", "openalex", "semantic_scholar")
+
+
+class Link(NamedTuple):
+    """A candidate PDF URL and the licence the service that named it reported (if any)."""
+
+    url: str
+    license: str | None = None
 
 
 def is_public_url(url: str) -> bool:
@@ -133,12 +141,12 @@ def _json(url: str, **params: Any) -> Any:
     return response.json() if response.status_code == 200 else None
 
 
-def _arxiv_links(doi: str, email: str | None) -> list[str]:
+def _arxiv_links(doi: str, email: str | None) -> list[Link]:
     match = _ARXIV_DOI.fullmatch(doi)
-    return [f"https://arxiv.org/pdf/{match.group(1)}"] if match else []
+    return [Link(f"https://arxiv.org/pdf/{match.group(1)}")] if match else []
 
 
-def _unpaywall_links(doi: str, email: str | None) -> list[str]:
+def _unpaywall_links(doi: str, email: str | None) -> list[Link]:
     if not email:
         return []
     from pyeuropepmc.features.enrich.sources.unpaywall_client import UnpaywallClient
@@ -146,26 +154,34 @@ def _unpaywall_links(doi: str, email: str | None) -> list[str]:
     record = UnpaywallClient(email=email, rate_limit_delay=0.6).lookup_by_doi(doi) or {}
     best = record.get("best_oa_location") or {}
     locations = [best, *(record.get("oa_locations") or [])]
-    return [str(loc["url_for_pdf"]) for loc in locations if loc and loc.get("url_for_pdf")]
+    return [
+        Link(str(loc["url_for_pdf"]), loc.get("license"))
+        for loc in locations
+        if loc and loc.get("url_for_pdf")
+    ]
 
 
-def _openalex_links(doi: str, email: str | None) -> list[str]:
+def _openalex_links(doi: str, email: str | None) -> list[Link]:
     params = {"select": "best_oa_location,locations"}
     if email:
         params["mailto"] = email
     data = _json(f"https://api.openalex.org/works/doi:{quote(doi, safe='/')}", **params) or {}
     locations = [data.get("best_oa_location") or {}, *(data.get("locations") or [])]
-    return [str(loc["pdf_url"]) for loc in locations if loc and loc.get("pdf_url")]
+    return [
+        Link(str(loc["pdf_url"]), loc.get("license"))
+        for loc in locations
+        if loc and loc.get("pdf_url")
+    ]
 
 
-def _semantic_scholar_links(doi: str, email: str | None) -> list[str]:
+def _semantic_scholar_links(doi: str, email: str | None) -> list[Link]:
     url = f"https://api.semanticscholar.org/graph/v1/paper/DOI:{quote(doi, safe='/')}"
     data = _json(url, fields="openAccessPdf") or {}
-    pdf = (data.get("openAccessPdf") or {}).get("url")
-    return [str(pdf)] if pdf else []
+    pdf = data.get("openAccessPdf") or {}
+    return [Link(str(pdf["url"]), pdf.get("license"))] if pdf.get("url") else []
 
 
-_LINK_SOURCES: dict[str, Callable[[str, str | None], list[str]]] = {
+_LINK_SOURCES: dict[str, Callable[[str, str | None], list[Link]]] = {
     "arxiv": _arxiv_links,
     "unpaywall": _unpaywall_links,
     "openalex": _openalex_links,
@@ -179,13 +195,14 @@ def download_pdf_by_doi(
     email: str | None = None,
     max_bytes: int | None = None,
     skip: tuple[str, ...] = (),
-) -> tuple[Path | None, str | None]:
-    """Save an open PDF of the paper with this DOI; return the file and the source's name.
+) -> PdfResult | None:
+    """Save an open PDF of the paper with this DOI; say which source and link gave it.
 
     ``email`` is the contact address Unpaywall requires (without it that source is
     skipped) and OpenAlex uses for its polite pool. A source that fails, times out or
-    knows nothing is skipped, as is any named in ``skip``; ``(None, None)`` means no source
-    had a PDF that passed.
+    knows nothing is skipped, as is any named in ``skip``; ``None`` means no source had a
+    PDF that passed. The result carries the source's name, the link and the licence that
+    source reported for it (normalized, ``None`` when it did not say).
     """
     target = Path(output_path)
     target.parent.mkdir(parents=True, exist_ok=True)
@@ -199,13 +216,15 @@ def download_pdf_by_doi(
             logger.debug(f"{source} gave no links for {doi}: {exc}")
             continue
         for link in links:
-            if link in tried:
+            if link.url in tried:
                 continue
-            tried.add(link)
+            tried.add(link.url)
             try:
-                if fetch_pdf(link, target, max_bytes):
-                    logger.info(f"Downloaded the PDF of {doi} from {source}: {link}")
-                    return target, source
+                if fetch_pdf(link.url, target, max_bytes):
+                    logger.info(f"Downloaded the PDF of {doi} from {source}: {link.url}")
+                    return PdfResult(
+                        target, source, url=link.url, license=normalize_license(link.license)
+                    )
             except (requests.RequestException, OSError, ValueError) as exc:
-                logger.debug(f"{link} did not give a PDF: {exc}")
-    return None, None
+                logger.debug(f"{link.url} did not give a PDF: {exc}")
+    return None

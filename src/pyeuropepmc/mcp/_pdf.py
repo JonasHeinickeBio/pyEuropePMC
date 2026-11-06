@@ -3,15 +3,20 @@
 The only MCP tool that writes outside the caches is ``download_papers_pdf``, so the rules
 that keep it safe live here and are tested without a network: the caller never chooses a
 path (the file name comes from a validated PMCID or DOI, the directory from the server's
-environment), and a file that is not a PDF or is too large is removed again.
+environment), and a file that is not a PDF or is too large is removed again. Each file
+that is saved gets a line in ``manifest.jsonl`` next to it: where it came from and under
+what licence.
 """
 
 from __future__ import annotations
 
+import datetime
 import hashlib
+import json
 import os
 from pathlib import Path
 import re
+import threading
 from typing import Any
 
 #: Directory the server saves PDFs in; ``~`` is expanded. Set it in the server's environment.
@@ -20,6 +25,10 @@ ENV_DIR = "PYEUROPEPMC_MCP_DOWNLOAD_DIR"
 DEFAULT_DIR = Path("~/Downloads/pyeuropepmc")
 #: A scanned monograph is tens of MB; more than this is a wrong file or an abuse of the tool.
 MAX_PDF_BYTES = 100 * 1024 * 1024
+
+#: One JSON object per line, appended for every PDF saved, in the download directory.
+MANIFEST_NAME = "manifest.jsonl"
+_manifest_lock = threading.Lock()
 
 _PMCID_RE = re.compile(r"^PMC\d{1,10}$")
 _DOI_RE = re.compile(r"^10\.\d{4,9}/\S+$")
@@ -83,3 +92,56 @@ def describe(path: Path) -> dict[str, Any]:
         "size_bytes": path.stat().st_size,
         "sha256": digest.hexdigest(),
     }
+
+
+def manifest_record(
+    target: Path,
+    description: dict[str, Any],
+    *,
+    pmcid: str | None,
+    doi: str | None,
+    source: str,
+    url: str | None,
+    license: str | None,
+    license_source: str | None,
+    md5_verified: bool,
+    from_cache: bool,
+    version: str,
+) -> dict[str, Any]:
+    """The manifest line of one saved file.
+
+    ``file`` is the name inside the download directory, not a path, so the manifest stays
+    valid when the folder is moved. ``license`` is as the named source reported it
+    (normalized); ``null`` means the source did not say, not that the paper is closed.
+    """
+    return {
+        "saved_at": datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds"),
+        "file": target.name,
+        "pmcid": pmcid or None,
+        "doi": doi or None,
+        "source": source,
+        "url": url,
+        "license": license,
+        "license_source": license_source,
+        "md5_verified": md5_verified,
+        "from_cache": from_cache,
+        "sha256": description["sha256"],
+        "size_bytes": description["size_bytes"],
+        "pyeuropepmc": version,
+    }
+
+
+def append_manifest(directory: Path, record: dict[str, Any]) -> str | None:
+    """Append ``record`` as one line of ``manifest.jsonl``; the error text if that fails.
+
+    A download that was saved is not undone because its note could not be written, so this
+    reports instead of raising. Downloading a file again adds a second line for it: the last
+    line of a file is the current one. The lines are appended whole under a lock.
+    """
+    line = (json.dumps(record, separators=(",", ":")) + "\n").encode()
+    try:
+        with _manifest_lock, (directory / MANIFEST_NAME).open("ab") as handle:
+            handle.write(line)
+    except OSError as exc:
+        return f"cannot write {MANIFEST_NAME}: {exc}"
+    return None

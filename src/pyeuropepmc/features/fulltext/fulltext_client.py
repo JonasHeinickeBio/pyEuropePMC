@@ -9,6 +9,7 @@ from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from contextlib import suppress
 import gzip
+import hashlib
 import json
 import logging
 import os
@@ -34,6 +35,7 @@ from pyeuropepmc.cache.cache import CacheBackend, CacheConfig
 from pyeuropepmc.core.base import APIClientError, BaseAPIClient
 from pyeuropepmc.core.error_codes import ErrorCodes
 from pyeuropepmc.core.exceptions import FullTextError, UnpaywallError
+from pyeuropepmc.features.fulltext.pdf_result import PdfResult, normalize_license
 from pyeuropepmc.utils.helpers import (
     DownloadTooLarge,
     atomic_download,
@@ -1238,12 +1240,12 @@ class FullTextClient(BaseAPIClient):
         FullTextError
             If PMC ID is invalid
         """
-        path, _source = self.download_pdf_with_source(
+        result = self.download_pdf_with_provenance(
             pmcid, output_path, rate_limiter, doi=doi, max_bytes=max_bytes, open_access=open_access
         )
-        return path
+        return result.path if result else None
 
-    def download_pdf_with_source(
+    def download_pdf_with_provenance(
         self,
         pmcid: str,
         output_path: str | Path | None = None,
@@ -1251,16 +1253,20 @@ class FullTextClient(BaseAPIClient):
         doi: str | None = None,
         max_bytes: int | None = None,
         open_access: bool | None = None,
-    ) -> tuple[Path | None, str | None]:
+    ) -> PdfResult | None:
         """
-        Like :meth:`download_pdf_by_pmcid`, and also say which step supplied the file.
+        Like :meth:`download_pdf_by_pmcid`, and also say where the file came from.
 
         Returns
         -------
-        tuple of (Path or None, str or None)
-            The saved file and the name of the step that produced it: ``cache``,
+        PdfResult or None
+            The saved file with the name of the step that produced it (``cache``,
             ``europepmc_render``, ``europepmc_backend``, ``pmc_open_data``,
-            ``europepmc_ftp_zip`` or ``unpaywall``; ``(None, None)`` when every step failed.
+            ``europepmc_ftp_zip`` or ``unpaywall``), the URL it was fetched from, the
+            licence that step reported (normalized; often ``None``) and whether its MD5
+            matched the published one. A file served from the cache carries the origin
+            recorded when it was first downloaded, with ``from_cache`` set; if that record
+            is missing the source is just ``cache``. ``None`` when every step failed.
         """
         normalized_pmcid = self._validate_pmcid(pmcid)
         if output_path is None:
@@ -1275,12 +1281,13 @@ class FullTextClient(BaseAPIClient):
         cached_file = self._check_cache_for_file(normalized_pmcid, "pdf", output_path)
         if cached_file:
             self.logger.info(f"Using cached PDF for PMC{normalized_pmcid}")
-            return cached_file, "cache"
+            return self._cached_pdf_result(normalized_pmcid, cached_file)
 
         # Rate limit before network requests
         if rate_limiter is not None:
             rate_limiter.wait_if_needed()
 
+        provenance: dict[str, Any] = {}
         render_url = self.PDF_RENDER_URL.format(pmcid=normalized_pmcid)
         backend_url = self.PDF_BACKEND_URL.format(pmcid=normalized_pmcid)
         steps: list[tuple[str, bool, Callable[[], bool]]] = [
@@ -1288,31 +1295,39 @@ class FullTextClient(BaseAPIClient):
                 "europepmc_render",
                 False,
                 lambda: self._try_pdf_endpoint(
-                    render_url, output_path, "render endpoint", max_bytes
+                    render_url, output_path, "render endpoint", max_bytes, provenance
                 ),
             ),
             (
                 "europepmc_backend",
                 False,
                 lambda: self._try_pdf_endpoint(
-                    backend_url, output_path, "backend service", max_bytes
+                    backend_url, output_path, "backend service", max_bytes, provenance
                 ),
             ),
             (
                 "pmc_open_data",
                 True,
-                lambda: self._try_pdf_from_pmc_cloud(normalized_pmcid, output_path, max_bytes),
+                lambda: self._try_pdf_from_pmc_cloud(
+                    normalized_pmcid, output_path, max_bytes, provenance
+                ),
             ),
             (
                 "europepmc_ftp_zip",
                 True,
-                lambda: self._try_pdf_from_zip(normalized_pmcid, output_path, max_bytes),
+                lambda: self._try_pdf_from_zip(
+                    normalized_pmcid, output_path, max_bytes, provenance
+                ),
             ),
             (
                 "unpaywall",
                 False,
                 lambda: self._try_unpaywall_pdf(
-                    normalized_pmcid, output_path, doi=doi, max_bytes=max_bytes
+                    normalized_pmcid,
+                    output_path,
+                    doi=doi,
+                    max_bytes=max_bytes,
+                    provenance=provenance,
                 ),
             ),
         ]
@@ -1320,12 +1335,80 @@ class FullTextClient(BaseAPIClient):
             if open_access_only and open_access is False:
                 self.logger.debug(f"Skipping {name} for PMC{normalized_pmcid}: not open access")
                 continue
+            provenance.clear()
             if step():
-                self._save_to_cache(output_path, normalized_pmcid, "pdf")
-                return output_path, name
+                result = PdfResult(
+                    output_path,
+                    name,
+                    url=provenance.get("url"),
+                    license=normalize_license(provenance.get("license")),
+                    md5_verified=bool(provenance.get("md5_verified")),
+                )
+                if self._save_to_cache(output_path, normalized_pmcid, "pdf"):
+                    self._write_pdf_provenance(normalized_pmcid, result)
+                return result
 
         self.logger.info(f"PDF not available or invalid for PMC{normalized_pmcid}")
-        return None, None
+        return None
+
+    def _pdf_provenance_path(self, normalized_pmcid: str) -> Path | None:
+        """Where the record of a cached PDF's origin lives, beside (not inside) the cache."""
+        if not self.enable_cache or not self.cache_dir:
+            return None
+        folder = self.cache_dir / "pdf-provenance"
+        folder.mkdir(exist_ok=True)
+        return folder / f"PMC{normalized_pmcid}.json"
+
+    @staticmethod
+    def _sha256_of(path: Path) -> str:
+        digest = hashlib.sha256()
+        with path.open("rb") as handle:
+            for block in iter(lambda: handle.read(1 << 20), b""):
+                digest.update(block)
+        return digest.hexdigest()
+
+    def _write_pdf_provenance(self, normalized_pmcid: str, result: PdfResult) -> None:
+        """Remember where a PDF just put in the cache came from (best effort)."""
+        record_path = self._pdf_provenance_path(normalized_pmcid)
+        if record_path is None:
+            return
+        try:
+            record = {
+                "sha256": self._sha256_of(result.path),
+                "source": result.source,
+                "url": result.url,
+                "license": result.license,
+                "md5_verified": result.md5_verified,
+            }
+            with atomic_write(record_path, "w") as handle:
+                json.dump(record, handle)
+        except (OSError, TypeError, ValueError) as e:
+            self.logger.debug(f"Could not record the origin of PMC{normalized_pmcid}: {e}")
+
+    def _cached_pdf_result(self, normalized_pmcid: str, path: Path) -> PdfResult:
+        """A cache hit, with the origin recorded when it was downloaded if that is still valid.
+
+        The record is used only if it names this very file (same SHA-256); otherwise all
+        that is known is that it came from the cache.
+        """
+        unknown = PdfResult(path, "cache", from_cache=True)
+        record_path = self._pdf_provenance_path(normalized_pmcid)
+        try:
+            if record_path is None or not record_path.exists():
+                return unknown
+            record = json.loads(record_path.read_text())
+            if record.get("sha256") != self._sha256_of(path) or not record.get("source"):
+                return unknown
+            return PdfResult(
+                path,
+                str(record["source"]),
+                url=record.get("url"),
+                license=record.get("license"),
+                md5_verified=bool(record.get("md5_verified")),
+                from_cache=True,
+            )
+        except (OSError, ValueError, AttributeError):
+            return unknown
 
     def download_pdf_by_doi(
         self,
@@ -1333,7 +1416,7 @@ class FullTextClient(BaseAPIClient):
         output_path: str | Path,
         max_bytes: int | None = None,
         skip: tuple[str, ...] = (),
-    ) -> tuple[Path | None, str | None]:
+    ) -> PdfResult | None:
         """
         Download an open PDF of a paper by its DOI, for papers that are not in PubMed Central.
 
@@ -1354,9 +1437,10 @@ class FullTextClient(BaseAPIClient):
 
         Returns
         -------
-        tuple of (Path or None, str or None)
-            The saved file and the source that supplied it (``arxiv``, ``unpaywall``,
-            ``openalex`` or ``semantic_scholar``), or ``(None, None)``.
+        PdfResult or None
+            The saved file, the source that supplied it (``arxiv``, ``unpaywall``,
+            ``openalex`` or ``semantic_scholar``), the link and the licence that source
+            reported for it; ``None`` when no source had a PDF.
         """
         from pyeuropepmc.features.fulltext.oa_pdf import download_pdf_by_doi
 
@@ -2140,7 +2224,12 @@ class FullTextClient(BaseAPIClient):
                 )
 
     def _try_pdf_endpoint(
-        self, url: str, output_path: Path, endpoint_name: str, max_bytes: int | None = None
+        self,
+        url: str,
+        output_path: Path,
+        endpoint_name: str,
+        max_bytes: int | None = None,
+        provenance: dict[str, Any] | None = None,
     ) -> bool:
         """
         Try downloading PDF from a specific endpoint with validation.
@@ -2180,6 +2269,8 @@ class FullTextClient(BaseAPIClient):
 
             if success:
                 self.logger.info(f"Downloaded valid PDF via {endpoint_name}: {output_path}")
+                if provenance is not None:
+                    provenance["url"] = url
                 return True
             else:
                 return False
@@ -2212,34 +2303,77 @@ class FullTextClient(BaseAPIClient):
                 versions.append(int(match.group(1)))
         return sorted(versions, reverse=True)
 
+    def _pmc_cloud_metadata(self, normalized_pmcid: str, version: int) -> dict[str, Any]:
+        """The article's ``PMC<id>.<v>.json`` in the bucket: licence and PDF checksum.
+
+        ``{}`` when it is missing or unreadable; the PDF is then kept without either.
+        """
+        key = f"PMC{normalized_pmcid}.{version}/PMC{normalized_pmcid}.{version}.json"
+        try:
+            response = requests.get(f"{self.PMC_CLOUD_URL}/{key}", timeout=15)
+            data = response.json() if response.status_code == 200 else {}
+        except (requests.RequestException, ValueError):
+            return {}
+        return data if isinstance(data, dict) else {}
+
+    @staticmethod
+    def _md5_of(path: Path) -> str:
+        digest = hashlib.md5(usedforsecurity=False)  # a published checksum, not a defence
+        with path.open("rb") as handle:
+            for block in iter(lambda: handle.read(1 << 20), b""):
+                digest.update(block)
+        return digest.hexdigest()
+
     def _try_pdf_from_pmc_cloud(
-        self, normalized_pmcid: str, output_path: Path, max_bytes: int | None = None
+        self,
+        normalized_pmcid: str,
+        output_path: Path,
+        max_bytes: int | None = None,
+        provenance: dict[str, Any] | None = None,
     ) -> bool:
         """
         Try the PDF in NCBI's PMC Open Access Subset on AWS open data.
 
         Only open-access articles are in the subset; the newest version that has a PDF is
-        taken. Any failure means "not here", so the next step of the chain runs.
+        taken. The article's metadata file supplies the licence and the PDF's MD5; a file
+        that does not match its published MD5 is damaged and counts as "not here". Any
+        failure means "not here", so the next step of the chain runs.
         """
         try:
             for version in self._pmc_cloud_versions(normalized_pmcid):
                 key = f"PMC{normalized_pmcid}.{version}/PMC{normalized_pmcid}.{version}.pdf"
-                if atomic_download(
-                    url=f"{self.PMC_CLOUD_URL}/{key}",
+                url = f"{self.PMC_CLOUD_URL}/{key}"
+                if not atomic_download(
+                    url=url,
                     target_path=output_path,
                     session_getter=lambda: requests.Session(),
                     validator=self._validate_pdf_content,
                     max_bytes=max_bytes,
                     timeout=30,
                 ):
-                    self.logger.info(f"Downloaded valid PDF from the PMC open-data bucket: {key}")
-                    return True
+                    continue
+                metadata = self._pmc_cloud_metadata(normalized_pmcid, version)
+                published = re.findall(r"md5=([0-9a-fA-F]{32})", str(metadata.get("pdf_url", "")))
+                if published and self._md5_of(output_path) != published[0].lower():
+                    self.logger.warning(f"{key} does not match its published MD5; discarded")
+                    output_path.unlink(missing_ok=True)
+                    continue
+                if provenance is not None:
+                    provenance.update(
+                        url=url, license=metadata.get("license_code"), md5_verified=bool(published)
+                    )
+                self.logger.info(f"Downloaded valid PDF from the PMC open-data bucket: {key}")
+                return True
         except Exception as e:  # noqa: BLE001 - a failing source must not stop the chain
             self.logger.debug(f"PMC open-data bucket gave no PDF for PMC{normalized_pmcid}: {e}")
         return False
 
     def _try_pdf_from_zip(
-        self, normalized_pmcid: str, output_path: Path, max_bytes: int | None = None
+        self,
+        normalized_pmcid: str,
+        output_path: Path,
+        max_bytes: int | None = None,
+        provenance: dict[str, Any] | None = None,
     ) -> bool:
         """
         Try the article's ZIP in Europe PMC's bulk copy of the open-access PDFs.
@@ -2277,9 +2411,12 @@ class FullTextClient(BaseAPIClient):
                 with tempfile.TemporaryFile() as spool:
                     self._copy_capped(response.iter_content(chunk_size=65536), spool, max_bytes)
                     spool.seek(0)
-                    return self._extract_pdf_from_zip(
+                    saved = self._extract_pdf_from_zip(
                         spool, normalized_pmcid, output_path, max_bytes
                     )
+                    if saved and provenance is not None:
+                        provenance["url"] = zip_url
+                    return saved
             finally:
                 response.close()
         except _PdfTooLarge:
@@ -2613,6 +2750,7 @@ class FullTextClient(BaseAPIClient):
         output_path: Path,
         doi: str | None = None,
         max_bytes: int | None = None,
+        provenance: dict[str, Any] | None = None,
     ) -> bool:
         """
         Try to download PDF using Unpaywall API via DOI lookup.
@@ -2695,6 +2833,8 @@ class FullTextClient(BaseAPIClient):
                 return False
 
             self.logger.info(f"Successfully downloaded PDF from Unpaywall: {output_path}")
+            if provenance is not None:
+                provenance.update(url=download_url, license=best_location.get("license"))
             return True
 
         except (UnpaywallError, APIClientError) as e:

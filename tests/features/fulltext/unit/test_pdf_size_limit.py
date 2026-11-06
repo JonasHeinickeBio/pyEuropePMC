@@ -244,12 +244,12 @@ class TestChainBookkeeping:
     )
     def test_the_winning_step_is_named(self, client, tmp_path, winner, source):
         self._steps(client, succeed=winner)
-        path, name = client.download_pdf_with_source("PMC1", tmp_path / "a.pdf")
-        assert (path, name) == (tmp_path / "a.pdf", source)
+        result = client.download_pdf_with_provenance("PMC1", tmp_path / "a.pdf")
+        assert (result.path, result.source) == (tmp_path / "a.pdf", source)
 
     def test_every_step_failing_gives_nothing(self, client, tmp_path):
         self._steps(client)
-        assert client.download_pdf_with_source("PMC1", tmp_path / "a.pdf") == (None, None)
+        assert client.download_pdf_with_provenance("PMC1", tmp_path / "a.pdf") is None
 
     def test_download_pdf_by_pmcid_still_returns_just_the_path(self, client, tmp_path):
         self._steps(client, succeed="_try_unpaywall_pdf")
@@ -257,7 +257,7 @@ class TestChainBookkeeping:
 
     def test_a_closed_article_skips_the_two_open_access_only_steps(self, client, tmp_path):
         asked = self._steps(client, succeed="_try_unpaywall_pdf")
-        client.download_pdf_with_source("PMC1", tmp_path / "a.pdf", open_access=False)
+        client.download_pdf_with_provenance("PMC1", tmp_path / "a.pdf", open_access=False)
         assert "_try_pdf_from_pmc_cloud" not in asked
         assert "_try_pdf_from_zip" not in asked
         assert asked[-1] == "_try_unpaywall_pdf"
@@ -265,7 +265,7 @@ class TestChainBookkeeping:
     @pytest.mark.parametrize("flag", [None, True])
     def test_otherwise_every_step_runs(self, client, tmp_path, flag):
         asked = self._steps(client)
-        client.download_pdf_with_source("PMC1", tmp_path / "a.pdf", open_access=flag)
+        client.download_pdf_with_provenance("PMC1", tmp_path / "a.pdf", open_access=flag)
         assert "_try_pdf_from_pmc_cloud" in asked and "_try_pdf_from_zip" in asked
 
 

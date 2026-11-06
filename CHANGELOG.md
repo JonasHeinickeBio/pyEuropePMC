@@ -29,13 +29,28 @@ All notable changes to PyEuropePMC are documented here.
 - **mcp:** `download_papers_pdf` also downloads papers outside PubMed Central. A paper with a DOI
   but no PMCID (or a DOI Europe PMC has never heard of), and a PMC paper none of the PMC steps
   could serve, is looked for at arXiv, Unpaywall, OpenAlex and Semantic Scholar; it used to end
-  as `not_in_pmc`. The file is `<doi>-<hash>.pdf`. Each result now has a `source` (which step
-  or service supplied it) and `open_access`.
+  as `not_in_pmc`. The file is `<doi>-<hash>.pdf`.
+- **mcp:** `download_papers_pdf` keeps a manifest. Every PDF it saves adds a line to
+  `manifest.jsonl` in the download folder (`file`, `pmcid`, `doi`, `source`, `url`, `license`,
+  `license_source`, `md5_verified`, `from_cache`, `sha256`, `size_bytes`, `saved_at`,
+  `pyeuropepmc`), and each result carries the same facts (`source`, `source_url`, `license`,
+  `license_source`, `md5_verified`, `from_cache`; the response has `manifest`, the file's
+  path). The licence is what the source that supplied the file reported (the PMC bucket's
+  metadata, Unpaywall, OpenAlex, Semantic Scholar), else what Europe PMC lists for the article
+  (the tool now asks for `core` records, which have it), else `null`: nobody said, which is not
+  the same as closed. Spellings are normalized (`cc-by-nc-nd`). Downloading a file again adds
+  a line; the last one for a file is current. A manifest that cannot be written is reported
+  as `manifest_error` and does not undo the download.
+- **fulltext:** the PMC bucket step checks each PDF against the MD5 the article's metadata
+  publishes (a damaged file is discarded and the next version or step tried), and the origin
+  of every PDF put in the file cache is stored beside it with its SHA-256, so a later cache hit
+  still reports its real source, URL and licence instead of just `cache`. The result type is
+  `PdfResult` (`path`, `source`, `url`, `license`, `md5_verified`, `from_cache`).
 - **fulltext:** `FullTextClient.download_pdf_by_doi` and the module `features/fulltext/oa_pdf`
   fetch PDFs by DOI. Links in third-party records are only followed if http(s) to a public
   address, redirects included (checked by hand, at most 5), and the body must be a PDF under
-  `max_bytes`. `download_pdf_with_source` is `download_pdf_by_pmcid` plus the name of the step
-  that supplied the file.
+  `max_bytes`. `download_pdf_with_provenance` is `download_pdf_by_pmcid` plus a `PdfResult`
+  saying where the file came from.
 - **fulltext:** the PDF chain wastes less time: a paper Europe PMC lists as not open access
   (`open_access=False`) skips the two open-access-only copies, which had a PDF for none of the 7
   such papers in a 100-paper check and took 12 to 18 s to say so; and after a Cloudflare browser

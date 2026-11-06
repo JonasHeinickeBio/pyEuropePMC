@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import hashlib
+import json
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
@@ -28,6 +30,7 @@ def _reply(status=200, body=b"", headers=None):
     response.status_code = status
     response.content = body
     response.headers = headers or {}
+    response.json.side_effect = lambda: json.loads(body)
     response.iter_content.side_effect = lambda chunk_size=8192: iter(
         [body[i : i + chunk_size] for i in range(0, len(body), chunk_size)]
     )
@@ -78,7 +81,7 @@ class TestStep:
         with patch("requests.get", get):
             assert client._try_pdf_from_pmc_cloud("7029158", target)
         assert target.read_bytes() == PDF + b"old"
-        assert get.asked[-2:] == [
+        assert [u for u in get.asked if u.endswith(".pdf")] == [
             f"{FullTextClient.PMC_CLOUD_URL}/PMC7029158.2/PMC7029158.2.pdf",
             f"{FullTextClient.PMC_CLOUD_URL}/PMC7029158.1/PMC7029158.1.pdf",
         ]
@@ -102,6 +105,66 @@ class TestStep:
     def test_a_network_error_is_not_an_exception(self, client, tmp_path):
         with patch("requests.get", side_effect=OSError("down")):
             assert not client._try_pdf_from_pmc_cloud("7029158", tmp_path / "a.pdf")
+
+
+def _metadata(pdf: bytes | None, license_code: str | None = "CC BY-NC-ND", version=1) -> bytes:
+    url = "s3://pmc-oa-opendata/PMC7029158.1/PMC7029158.1.pdf"
+    if pdf is not None:
+        url += f"?md5={hashlib.md5(pdf).hexdigest()}"
+    return json.dumps(
+        {"pmcid": "PMC7029158", "license_code": license_code, "pdf_url": url}
+    ).encode()
+
+
+class TestProvenance:
+    KEY = "PMC7029158.1/PMC7029158.1"
+
+    def _run(self, client, tmp_path, objects):
+        provenance: dict = {}
+        with patch("requests.get", _bucket(objects, _listing(1))):
+            ok = client._try_pdf_from_pmc_cloud("7029158", tmp_path / "a.pdf", None, provenance)
+        return ok, provenance
+
+    def test_url_licence_and_a_matching_md5_are_recorded(self, client, tmp_path):
+        objects = {f"{self.KEY}.pdf": PDF, f"{self.KEY}.json": _metadata(PDF)}
+        ok, provenance = self._run(client, tmp_path, objects)
+        assert ok
+        assert provenance == {
+            "url": f"{FullTextClient.PMC_CLOUD_URL}/{self.KEY}.pdf",
+            "license": "CC BY-NC-ND",
+            "md5_verified": True,
+        }
+
+    def test_a_pdf_that_does_not_match_its_published_md5_is_discarded(self, client, tmp_path):
+        damaged = PDF + b"!"
+        objects = {f"{self.KEY}.pdf": damaged, f"{self.KEY}.json": _metadata(PDF)}
+        ok, provenance = self._run(client, tmp_path, objects)
+        assert not ok and provenance == {}
+        assert list(tmp_path.iterdir()) == []
+
+    def test_a_damaged_newest_version_falls_back_to_the_older_one(self, client, tmp_path):
+        older = PDF + b"older"
+        objects = {
+            "PMC7029158.2/PMC7029158.2.pdf": PDF + b"?",
+            "PMC7029158.2/PMC7029158.2.json": _metadata(PDF),
+            "PMC7029158.1/PMC7029158.1.pdf": older,
+            "PMC7029158.1/PMC7029158.1.json": _metadata(older),
+        }
+        with patch("requests.get", _bucket(objects, _listing(1, 2))):
+            assert client._try_pdf_from_pmc_cloud("7029158", tmp_path / "a.pdf")
+        assert (tmp_path / "a.pdf").read_bytes() == older
+
+    def test_missing_metadata_keeps_the_pdf_without_licence_or_verification(
+        self, client, tmp_path
+    ):
+        ok, provenance = self._run(client, tmp_path, {f"{self.KEY}.pdf": PDF})
+        assert ok
+        assert provenance["license"] is None and provenance["md5_verified"] is False
+
+    def test_an_article_without_a_licence_code_has_none(self, client, tmp_path):
+        objects = {f"{self.KEY}.pdf": PDF, f"{self.KEY}.json": _metadata(PDF, license_code=None)}
+        _ok, provenance = self._run(client, tmp_path, objects)
+        assert provenance["license"] is None and provenance["md5_verified"] is True
 
 
 class TestChain:

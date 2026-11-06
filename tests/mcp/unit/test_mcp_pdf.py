@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import asyncio
 import hashlib
+import json
 from pathlib import Path
 from unittest.mock import MagicMock
 
@@ -16,6 +17,7 @@ import pytest
 
 from pyeuropepmc.core.error_codes import ErrorCodes
 from pyeuropepmc.core.exceptions import APIClientError, FullTextError
+from pyeuropepmc.features.fulltext.pdf_result import PdfResult
 from pyeuropepmc.mcp import _pdf as pdf, server as srv
 
 PDF_BYTES = b"%PDF-1.7\n" + b"x" * 200
@@ -54,7 +56,7 @@ def _search(records):
     return client
 
 
-def _downloader(behaviour, by_doi=None):
+def _downloader(behaviour, by_doi=None, licenses=None):
     """A FullTextClient whose ``download_pdf_by_pmcid`` follows ``behaviour[pmcid]``.
 
     A ``bytes`` value is written to the target path; ``None`` means "no PDF anywhere"
@@ -76,9 +78,14 @@ def _downloader(behaviour, by_doi=None):
         if isinstance(outcome, Exception):
             raise outcome
         if outcome is None:
-            return None, None
+            return None
         Path(output_path).write_bytes(outcome)
-        return Path(output_path), "unpaywall"
+        return PdfResult(
+            Path(output_path),
+            "unpaywall",
+            url=f"https://example.org/{pmcid}.pdf",
+            license=(licenses or {}).get(pmcid),
+        )
 
     doi_calls: list[tuple[str, tuple[str, ...]]] = []
 
@@ -86,12 +93,17 @@ def _downloader(behaviour, by_doi=None):
         doi_calls.append((doi, tuple(skip)))
         outcome = (by_doi or {}).get(doi.lower())
         if outcome is None:
-            return None, None
+            return None
         Path(output_path).write_bytes(outcome)
-        return Path(output_path), "openalex"
+        return PdfResult(
+            Path(output_path),
+            "openalex",
+            url="https://example.org/doi.pdf",
+            license=(licenses or {}).get(doi.lower()),
+        )
 
     client = MagicMock()
-    client.download_pdf_with_source.side_effect = download
+    client.download_pdf_with_provenance.side_effect = download
     client.download_pdf_by_doi.side_effect = download_by_doi
     srv._fulltext_client_cache.set(client)
     client.doi_calls = doi_calls
@@ -351,10 +363,10 @@ class TestDownloadPapersPdf:
             Path(output_path).write_bytes(PDF_BYTES)
             with guard:
                 active -= 1
-            return Path(output_path), "pmc_open_data"
+            return PdfResult(Path(output_path), "pmc_open_data")
 
         client = MagicMock()
-        client.download_pdf_with_source.side_effect = slow
+        client.download_pdf_with_provenance.side_effect = slow
         srv._fulltext_client_cache.set(client)
         directory = tmp_path / "pdfs"
 
@@ -378,10 +390,10 @@ class TestDownloadPapersPdf:
         ):
             both_inside.wait()  # only passes if the two downloads overlap
             Path(output_path).write_bytes(PDF_BYTES)
-            return Path(output_path), "pmc_open_data"
+            return PdfResult(Path(output_path), "pmc_open_data")
 
         client = MagicMock()
-        client.download_pdf_with_source.side_effect = rendezvous
+        client.download_pdf_with_provenance.side_effect = rendezvous
         srv._fulltext_client_cache.set(client)
         directory = tmp_path / "pdfs"
 
@@ -491,3 +503,153 @@ class TestDoiPath:
     def test_anything_but_a_doi_is_refused(self, tmp_path, bad):
         with pytest.raises(ValueError, match="not a DOI"):
             pdf.doi_path(tmp_path, bad)
+
+
+def _manifest(tmp_path):
+    path = tmp_path / "pdfs" / pdf.MANIFEST_NAME
+    return [json.loads(line) for line in path.read_text().splitlines()] if path.exists() else []
+
+
+class TestManifestAndLicence:
+    def test_a_saved_pdf_gets_a_manifest_line_with_source_url_and_licence(self, tmp_path):
+        _search([rec("1", "PMC1", "10.1234/one")])
+        _downloader({"PMC1": PDF_BYTES}, licenses={"PMC1": "cc-by"})
+
+        out = _run(srv.download_papers_pdf(ids=["PMC1"]))
+
+        item = out["results"][0]
+        assert (item["license"], item["license_source"]) == ("cc-by", "unpaywall")
+        assert item["source_url"] == "https://example.org/PMC1.pdf"
+        assert out["manifest"] == str(tmp_path / "pdfs" / pdf.MANIFEST_NAME)
+        [line] = _manifest(tmp_path)
+        assert line["file"] == "PMC1.pdf" and line["pmcid"] == "PMC1"
+        assert line["doi"] == "10.1234/one" and line["source"] == "unpaywall"
+        assert line["url"] == "https://example.org/PMC1.pdf"
+        assert (line["license"], line["license_source"]) == ("cc-by", "unpaywall")
+        assert line["sha256"] == item["sha256"] and line["size_bytes"] == item["size_bytes"]
+        assert line["md5_verified"] is False and line["pyeuropepmc"]
+        assert line["saved_at"].endswith("+00:00")
+
+    def test_europe_pmc_licence_fills_in_when_the_source_says_nothing(self, tmp_path):
+        record = rec("1", "PMC1")
+        record["license"] = "cc by-nc-nd"
+        _search([record])
+        _downloader({"PMC1": PDF_BYTES})
+
+        item = _run(srv.download_papers_pdf(ids=["PMC1"]))["results"][0]
+
+        assert (item["license"], item["license_source"]) == ("cc-by-nc-nd", "europepmc")
+        assert _manifest(tmp_path)[0]["license_source"] == "europepmc"
+
+    def test_the_sources_own_licence_wins_over_europe_pmcs(self):
+        record = rec("1", "PMC1")
+        record["license"] = "cc by"
+        _search([record])
+        _downloader({"PMC1": PDF_BYTES}, licenses={"PMC1": "cc-by-nc"})
+
+        item = _run(srv.download_papers_pdf(ids=["PMC1"]))["results"][0]
+
+        assert (item["license"], item["license_source"]) == ("cc-by-nc", "unpaywall")
+
+    def test_nobody_saying_anything_is_null_not_a_guess(self, tmp_path):
+        _search([rec("1", "PMC1")])
+        _downloader({"PMC1": PDF_BYTES})
+
+        item = _run(srv.download_papers_pdf(ids=["PMC1"]))["results"][0]
+
+        assert item["license"] is None and item["license_source"] is None
+        assert _manifest(tmp_path)[0]["license"] is None
+
+    def test_a_doi_download_is_recorded_with_its_doi_and_no_pmcid(self, tmp_path):
+        _search([rec("5", None, "10.1234/x")])
+        _downloader({}, {"10.1234/x": PDF_BYTES}, licenses={"10.1234/x": "cc0"})
+
+        _run(srv.download_papers_pdf(ids=["10.1234/x"]))
+
+        [line] = _manifest(tmp_path)
+        assert (line["pmcid"], line["doi"], line["license"]) == (None, "10.1234/x", "cc0")
+        assert line["file"].startswith("10.1234_x-")
+
+    def test_a_file_that_already_exists_is_not_written_to_the_manifest_again(self, tmp_path):
+        _search([rec("1", "PMC1")])
+        _downloader({"PMC1": PDF_BYTES})
+        _run(srv.download_papers_pdf(ids=["PMC1"]))
+        again = _run(srv.download_papers_pdf(ids=["PMC1"]))
+
+        assert again["results"][0]["status"] == "exists"
+        assert len(_manifest(tmp_path)) == 1
+
+    def test_downloading_again_adds_a_line_and_the_last_one_is_current(self, tmp_path):
+        _search([rec("1", "PMC1")])
+        _downloader({"PMC1": PDF_BYTES})
+        _run(srv.download_papers_pdf(ids=["PMC1"]))
+        _run(srv.download_papers_pdf(ids=["PMC1"], overwrite=True))
+
+        assert [line["file"] for line in _manifest(tmp_path)] == ["PMC1.pdf", "PMC1.pdf"]
+
+    def test_failures_leave_no_manifest_line(self, tmp_path):
+        _search([rec("1", "PMC1"), rec("2", "PMC2")])
+        _downloader({"PMC1": None, "PMC2": HTML_BYTES})
+
+        _run(srv.download_papers_pdf(ids=["PMC1", "PMC2"]))
+
+        assert _manifest(tmp_path) == []
+
+    def test_an_unwritable_manifest_is_reported_but_the_pdf_stays(self, tmp_path, monkeypatch):
+        _search([rec("1", "PMC1")])
+        _downloader({"PMC1": PDF_BYTES})
+        monkeypatch.setattr(pdf, "MANIFEST_NAME", "no/such/dir/manifest.jsonl")
+
+        item = _run(srv.download_papers_pdf(ids=["PMC1"]))["results"][0]
+
+        assert item["status"] == "ok" and "manifest" in item["manifest_error"]
+        assert (tmp_path / "pdfs" / "PMC1.pdf").exists()
+
+    def test_parallel_writers_never_interleave_lines(self, tmp_path):
+        import threading
+
+        directory = tmp_path / "pdfs"
+        directory.mkdir()
+        record = {"file": "x" * 3000, "n": 0}
+
+        def write(n):
+            for i in range(20):
+                assert pdf.append_manifest(directory, {**record, "n": n * 100 + i}) is None
+
+        threads = [threading.Thread(target=write, args=(n,)) for n in range(8)]
+        for t in threads:
+            t.start()
+        for t in threads:
+            t.join()
+
+        lines = (directory / pdf.MANIFEST_NAME).read_text().splitlines()
+        assert len(lines) == 160 and all(json.loads(line)["file"] == "x" * 3000 for line in lines)
+
+    def test_the_tool_asks_europe_pmc_for_core_records_to_get_the_licence(self):
+        client = _search([rec("1", "PMC1")])
+        _downloader({"PMC1": PDF_BYTES})
+        _run(srv.download_papers_pdf(ids=["PMC1"]))
+        assert client.search_all.call_args.kwargs["resultType"] == "core"
+
+    def test_a_file_from_the_cache_says_so_in_the_result_and_the_manifest(self, tmp_path):
+        _search([rec("1", "PMC1")])
+        client = _downloader({"PMC1": PDF_BYTES})
+        original = client.download_pdf_with_provenance.side_effect
+
+        def from_cache(*args, **kwargs):
+            result = original(*args, **kwargs)
+            return PdfResult(
+                result.path,
+                "pmc_open_data",
+                url="https://example.org/original.pdf",
+                license="cc-by",
+                from_cache=True,
+            )
+
+        client.download_pdf_with_provenance.side_effect = from_cache
+
+        item = _run(srv.download_papers_pdf(ids=["PMC1"]))["results"][0]
+
+        assert (item["source"], item["from_cache"]) == ("pmc_open_data", True)
+        assert item["source_url"] == "https://example.org/original.pdf"
+        assert _manifest(tmp_path)[0]["from_cache"] is True

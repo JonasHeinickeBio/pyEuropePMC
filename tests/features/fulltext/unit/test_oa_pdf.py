@@ -9,6 +9,7 @@ import pytest
 
 from pyeuropepmc.features.fulltext import oa_pdf
 from pyeuropepmc.features.fulltext.fulltext_client import FullTextClient
+from pyeuropepmc.features.fulltext.oa_pdf import Link
 
 PDF = b"%PDF-1.7\n" + b"x" * 5000
 
@@ -151,7 +152,7 @@ class TestFetchPdf:
 class TestLinks:
     def test_arxiv_dois_map_to_the_arxiv_pdf(self):
         assert oa_pdf._arxiv_links("10.48550/arXiv.2401.00001", None) == [
-            "https://arxiv.org/pdf/2401.00001"
+            Link("https://arxiv.org/pdf/2401.00001")
         ]
         assert oa_pdf._arxiv_links("10.1038/nature14539", None) == []
 
@@ -160,11 +161,14 @@ class TestLinks:
 
     def test_unpaywall_links_are_best_first_and_only_those_with_a_pdf(self):
         record = {
-            "best_oa_location": {"url_for_pdf": "https://example.org/best.pdf"},
+            "best_oa_location": {
+                "url_for_pdf": "https://example.org/best.pdf",
+                "license": "cc-by",
+            },
             "oa_locations": [
-                {"url_for_pdf": "https://example.org/best.pdf"},
+                {"url_for_pdf": "https://example.org/best.pdf", "license": "cc-by"},
                 {"url_for_pdf": None, "url": "https://example.org/landing"},
-                {"url_for_pdf": "https://other.example.org/b.pdf"},
+                {"url_for_pdf": "https://other.example.org/b.pdf", "license": None},
             ],
         }
         client = MagicMock()
@@ -172,28 +176,35 @@ class TestLinks:
         with patch("pyeuropepmc.features.enrich.sources.unpaywall_client.UnpaywallClient", client):
             links = oa_pdf._unpaywall_links("10.1/x", "me@example.org")
         assert links == [
-            "https://example.org/best.pdf",
-            "https://example.org/best.pdf",
-            "https://other.example.org/b.pdf",
+            Link("https://example.org/best.pdf", "cc-by"),
+            Link("https://example.org/best.pdf", "cc-by"),
+            Link("https://other.example.org/b.pdf", None),
         ]
 
     def test_openalex_links(self):
         data = {
-            "best_oa_location": {"pdf_url": "https://example.org/a.pdf"},
+            "best_oa_location": {"pdf_url": "https://example.org/a.pdf", "license": "cc-by-nc"},
             "locations": [{"pdf_url": None}, {"pdf_url": "https://other.example.org/b.pdf"}],
         }
         reply = _reply()
         reply.json.return_value = data
         with patch("requests.get", return_value=reply) as get:
             links = oa_pdf._openalex_links("10.1/x", "me@example.org")
-        assert links == ["https://example.org/a.pdf", "https://other.example.org/b.pdf"]
+        assert links == [
+            Link("https://example.org/a.pdf", "cc-by-nc"),
+            Link("https://other.example.org/b.pdf"),
+        ]
         assert get.call_args.kwargs["params"]["mailto"] == "me@example.org"
 
     def test_semantic_scholar_link(self):
         reply = _reply()
-        reply.json.return_value = {"openAccessPdf": {"url": "https://example.org/s.pdf"}}
+        reply.json.return_value = {
+            "openAccessPdf": {"url": "https://example.org/s.pdf", "license": "CCBY"}
+        }
         with patch("requests.get", return_value=reply):
-            assert oa_pdf._semantic_scholar_links("10.1/x", None) == ["https://example.org/s.pdf"]
+            assert oa_pdf._semantic_scholar_links("10.1/x", None) == [
+                Link("https://example.org/s.pdf", "CCBY")
+            ]
 
     def test_a_failed_lookup_means_no_links(self):
         with patch("requests.get", return_value=_reply(429)):
@@ -206,7 +217,10 @@ class TestDownloadByDoi:
     def _links(**by_source):
         return patch.dict(
             oa_pdf._LINK_SOURCES,
-            {name: (lambda doi, email, _v=v: _v) for name, v in by_source.items()},
+            {
+                name: (lambda doi, email, _v=v: [Link(u) if isinstance(u, str) else u for u in _v])
+                for name, v in by_source.items()
+            },
         )
 
     def test_the_first_source_with_a_pdf_wins_and_is_named(self, tmp_path):
@@ -226,8 +240,9 @@ class TestDownloadByDoi:
             semantic_scholar=["https://example.org/never"],
         )
         with links, patch.object(oa_pdf, "fetch_pdf", fetch):
-            path, source = oa_pdf.download_pdf_by_doi("10.1/x", tmp_path / "a.pdf")
-        assert (path, source) == (tmp_path / "a.pdf", "openalex")
+            result = oa_pdf.download_pdf_by_doi("10.1/x", tmp_path / "a.pdf")
+        assert (result.path, result.source) == (tmp_path / "a.pdf", "openalex")
+        assert result.url == "https://example.org/good" and result.license is None
         assert fetched == ["https://example.org/bad", "https://example.org/good"]
 
     def test_a_source_that_raises_is_skipped(self, tmp_path):
@@ -239,9 +254,8 @@ class TestDownloadByDoi:
             self._links(arxiv=[], openalex=["https://example.org/p.pdf"], semantic_scholar=[]),
             patch.object(oa_pdf, "fetch_pdf", lambda u, t, m: t.write_bytes(PDF) and True),
         ):
-            assert oa_pdf.download_pdf_by_doi("10.1/x", tmp_path / "a.pdf", email="a@b.c")[1] == (
-                "openalex"
-            )
+            result = oa_pdf.download_pdf_by_doi("10.1/x", tmp_path / "a.pdf", email="a@b.c")
+        assert result.source == "openalex"
 
     def test_named_sources_are_skipped(self, tmp_path):
         asked = []
@@ -249,9 +263,10 @@ class TestDownloadByDoi:
             name: (lambda doi, email, _n=name: asked.append(_n) or []) for name in oa_pdf.SOURCES
         }
         with patch.dict(oa_pdf._LINK_SOURCES, links):
-            assert oa_pdf.download_pdf_by_doi(
-                "10.1/x", tmp_path / "a.pdf", skip=("unpaywall",)
-            ) == (None, None)
+            assert (
+                oa_pdf.download_pdf_by_doi("10.1/x", tmp_path / "a.pdf", skip=("unpaywall",))
+                is None
+            )
         assert asked == ["arxiv", "openalex", "semantic_scholar"]
 
     def test_the_same_link_is_not_fetched_twice(self, tmp_path):
@@ -261,13 +276,25 @@ class TestDownloadByDoi:
             self._links(arxiv=[], unpaywall=same, openalex=same, semantic_scholar=same),
             patch.object(oa_pdf, "fetch_pdf", lambda u, t, m: fetched.append(u) and False),
         ):
-            assert oa_pdf.download_pdf_by_doi("10.1/x", tmp_path / "a.pdf") == (None, None)
+            assert oa_pdf.download_pdf_by_doi("10.1/x", tmp_path / "a.pdf") is None
         assert fetched == ["https://example.org/p.pdf"]
 
     def test_the_client_method_passes_its_email_and_limits(self, tmp_path):
         client = FullTextClient(enable_cache=False, email="me@example.org")
-        with patch.object(oa_pdf, "download_pdf_by_doi", return_value=(None, None)) as run:
+        with patch.object(oa_pdf, "download_pdf_by_doi", return_value=None) as run:
             client.download_pdf_by_doi("10.1/x", tmp_path / "a.pdf", max_bytes=7, skip=("arxiv",))
         run.assert_called_once_with(
             "10.1/x", tmp_path / "a.pdf", email="me@example.org", max_bytes=7, skip=("arxiv",)
         )
+
+    def test_the_licence_the_source_reported_is_normalized_into_the_result(self, tmp_path):
+        links = self._links(
+            arxiv=[],
+            unpaywall=[Link("https://example.org/p.pdf", "CC BY-NC-ND")],
+            openalex=[],
+            semantic_scholar=[],
+        )
+        with links, patch.object(oa_pdf, "fetch_pdf", lambda u, t, m: t.write_bytes(PDF) and True):
+            result = oa_pdf.download_pdf_by_doi("10.1/x", tmp_path / "a.pdf", email="a@b.c")
+        assert (result.source, result.license) == ("unpaywall", "cc-by-nc-nd")
+        assert result.url == "https://example.org/p.pdf" and result.md5_verified is False

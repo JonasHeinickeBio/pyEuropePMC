@@ -118,7 +118,7 @@ from mcp.types import ToolAnnotations
 from pydantic import Field
 import requests
 
-from pyeuropepmc import SearchClient
+from pyeuropepmc import SearchClient, __version__ as _package_version
 from pyeuropepmc.cache.cache import CacheConfig
 from pyeuropepmc.core import network
 from pyeuropepmc.core.error_codes import ErrorCodes
@@ -186,6 +186,7 @@ except ImportError:
 try:
     from pyeuropepmc import FullTextClient
     from pyeuropepmc.features.fulltext.fulltext_parser import FullTextXMLParser
+    from pyeuropepmc.features.fulltext.pdf_result import normalize_license
 
     FULLTEXT_AVAILABLE = True
 except ImportError:
@@ -2149,6 +2150,9 @@ def _pdf_status(
     flag = str((record or {}).get("isOpenAccess") or "")
     if flag in ("Y", "N"):
         item["open_access"] = flag == "Y"
+    licence = normalize_license((record or {}).get("license"))
+    if licence:
+        item.update(license=licence, license_source="europepmc")
     return item
 
 
@@ -2168,6 +2172,7 @@ def _download_one_pdf(
     overwrite: bool,
     doi: str | None = None,
     open_access: bool | None = None,
+    record_license: str | None = None,
 ) -> dict[str, Any]:
     """Save one PDF as ``<directory>/<PMCID>.pdf`` (``<DOI>-<hash>.pdf`` for ``pmcid=""``).
 
@@ -2178,11 +2183,16 @@ def _download_one_pdf(
     """
     target = pdf.pdf_path(directory, pmcid) if pmcid else pdf.doi_path(directory, doi or "")
     with _pdf_lock(target):
-        return _save_pdf(pmcid, target, overwrite, doi, open_access)
+        return _save_pdf(pmcid, target, overwrite, doi, open_access, record_license)
 
 
 def _save_pdf(
-    pmcid: str, target: Path, overwrite: bool, doi: str | None, open_access: bool | None = None
+    pmcid: str,
+    target: Path,
+    overwrite: bool,
+    doi: str | None,
+    open_access: bool | None = None,
+    record_license: str | None = None,
 ) -> dict[str, Any]:
     name = pmcid or doi or target.name
     if target.exists() and not overwrite:
@@ -2192,24 +2202,23 @@ def _save_pdf(
         target.unlink()  # a truncated or foreign file under our name: fetch it again
     target.parent.mkdir(parents=True, exist_ok=True)
     client = _fulltext_client_cache.get()
-    source: str | None = None
     try:
-        saved: Path | None = None
+        fetched = None
         if pmcid:
-            saved, source = client.download_pdf_with_source(
+            fetched = client.download_pdf_with_provenance(
                 pmcid, target, doi=doi, max_bytes=pdf.MAX_PDF_BYTES, open_access=open_access
             )
-        if saved is None and doi:
+        if fetched is None and doi:
             # outside PubMed Central, or nothing there: the other open copies. Unpaywall is
             # left out after the PMC chain, which already asked it.
-            saved, source = client.download_pdf_by_doi(
+            fetched = client.download_pdf_by_doi(
                 doi, target, max_bytes=pdf.MAX_PDF_BYTES, skip=("unpaywall",) if pmcid else ()
             )
     except FullTextError as exc:
         return {"status": "error", "error": str(exc)}
     except OSError as exc:
         return {"status": "error", "error": f"cannot write {target}: {exc}"}
-    if saved is None or not target.exists():
+    if fetched is None or not target.exists():
         return {
             "status": "no_pdf",
             "error": f"No PDF could be fetched for {name}. Open-access articles are taken from "
@@ -2222,7 +2231,54 @@ def _save_pdf(
     if problem is not None:
         target.unlink(missing_ok=True)
         return {"status": "error", "error": f"Discarded the download of {name}: {problem}"}
-    return {"status": "ok", "source": source, **pdf.describe(target)}
+    return _saved(fetched, target, pmcid, doi, record_license)
+
+
+def _saved(
+    fetched: Any, target: Path, pmcid: str, doi: str | None, record_license: str | None
+) -> dict[str, Any]:
+    """The result of a PDF that was just saved, and its line in the manifest.
+
+    The licence is the one the source that supplied the file reported; when it said nothing,
+    the one Europe PMC lists for the article, and ``license_source`` says which. ``null``
+    means nobody said.
+    """
+    description = pdf.describe(target)
+    if fetched.license:
+        licence, licence_from = fetched.license, fetched.source
+    elif record_license:
+        licence, licence_from = record_license, "europepmc"
+    else:
+        licence, licence_from = None, None
+    outcome: dict[str, Any] = {
+        "status": "ok",
+        "source": fetched.source,
+        "source_url": fetched.url,
+        "license": licence,
+        "license_source": licence_from,
+        "md5_verified": fetched.md5_verified,
+        "from_cache": fetched.from_cache,
+        **description,
+    }
+    problem = pdf.append_manifest(
+        target.parent,
+        pdf.manifest_record(
+            target,
+            description,
+            pmcid=pmcid,
+            doi=doi,
+            source=fetched.source,
+            url=fetched.url,
+            license=licence,
+            license_source=licence_from,
+            md5_verified=fetched.md5_verified,
+            from_cache=fetched.from_cache,
+            version=_package_version,
+        ),
+    )
+    if problem:
+        outcome["manifest_error"] = problem
+    return outcome
 
 
 async def _pdf_or_error(
@@ -2231,10 +2287,11 @@ async def _pdf_or_error(
     overwrite: bool,
     doi: str | None,
     open_access: bool | None = None,
+    record_license: str | None = None,
 ) -> dict[str, Any]:
     try:
         return await _run_blocking(
-            _download_one_pdf, pmcid, directory, overwrite, doi, open_access
+            _download_one_pdf, pmcid, directory, overwrite, doi, open_access, record_license
         )
     except Exception as exc:  # one paper must not take the others down with it
         return {"status": "error", "error": f"{type(exc).__name__}: {exc}"}
@@ -2272,7 +2329,9 @@ async def download_papers_pdf(
     set in the server's environment, at the open copy Unpaywall knows. Only open copies are
     fetched; a paper that has none comes back as no_pdf.
     It is checked to be a PDF and under 100 MB, or discarded. Returns the path, size and
-    SHA-256 of every file and the source that supplied it. The PDFs stay on the server's
+    SHA-256 of every file, the source that supplied it and the licence that source (or, failing
+    that, Europe PMC) reported; each saved file also gets a line in manifest.jsonl in the
+    same folder. The PDFs stay on the server's
     disk: with a remote HTTP server they are not sent to the caller. Each result has a
     status: ok, exists (already saved, not fetched again), not_found, invalid, not_in_pmc,
     duplicate, no_pdf or error.
@@ -2280,7 +2339,7 @@ async def download_papers_pdf(
     """
     _require_available(FULLTEXT_AVAILABLE, "FullTextClient")
     entries = [bm.classify(i) for i in ids]
-    index, errors = await _fetch_batch_records(entries, "lite")
+    index, errors = await _fetch_batch_records(entries, "core")  # core: it has the licence
 
     results: list[dict[str, Any]] = []
     candidates: list[int] = []
@@ -2309,6 +2368,7 @@ async def download_papers_pdf(
                     overwrite,
                     results[p].get("doi"),
                     results[p].get("open_access"),
+                    results[p].get("license"),
                 )
                 for p in window
             )
@@ -2318,6 +2378,7 @@ async def download_papers_pdf(
     return {
         "requested": len(ids),
         "directory": str(directory),
+        "manifest": str(directory / pdf.MANIFEST_NAME),
         "by_status": dict(Counter(r["status"] for r in results)),
         "results": results,
     }
