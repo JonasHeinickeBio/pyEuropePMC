@@ -19,7 +19,7 @@ More: [Search](search/README.md).
 
 ## Full-text retrieval
 
-Download XML, PDF and HTML for open-access articles, one at a time or in batches with progress callbacks. `FTPDownloader` fetches PDF packages in bulk from the Europe PMC FTP site.
+Download XML, PDF and HTML for open-access articles, one at a time or in batches with progress callbacks. `FTPDownloader` fetches PDF packages in bulk from the Europe PMC FTP site. [Downloading PDFs](pdf-download.md) covers saving PDFs with their source and licence, from Python or the MCP server.
 
 ```python
 from pyeuropepmc import FullTextClient
@@ -107,7 +107,7 @@ More: [Systematic Review Tracking](systematic-review-tracking.md) and [Search lo
 | Label sentences by rhetorical role | [Rhetorical highlighting](rhetorical-highlighting.md) |
 | MeSH terms and PICO questions | [MeSH and PICO](mesh-pico.md) |
 | Cache API responses and downloads | [Caching](caching/README.md) |
-| Let an AI agent search, read and export papers (47 tools) | [MCP server](mcp-server.md) |
+| Let an AI agent search, read and export papers (48 tools) | [MCP server](mcp-server.md) |
 
 The `pyeuropepmc` command (`pyeuropepmc --help`) offers the `normalize`, `unified_search`, `claim` and `benchmark` command groups, and `pyeuropepmc mcp` (or the `pyeuropepmc-mcp` command) runs an MCP server for MCP clients.
 

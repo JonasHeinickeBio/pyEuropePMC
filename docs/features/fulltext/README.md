@@ -55,7 +55,7 @@ The methods try several sources in turn:
 | Method | Sources, in order | If no source succeeds |
 |---|---|---|
 | `download_xml_by_pmcid()` | The file cache; the Europe PMC REST API; the Europe PMC FTP open-access archives; the Europe PMC `fulltextRepo` endpoint; with `extra_strategies=True` (the default), the NCBI PMC OA web service, NCBI E-utilities efetch, BioC-PMC, DOI content negotiation and the bioRxiv/medRxiv API; Unpaywall | Raises `FullTextError` (`FULL003`) |
-| `download_pdf_by_pmcid()` | The file cache; `https://europepmc.org/articles/PMC{id}?pdf=render`; the Europe PMC render service `ptpmcrender.fcgi`; a ZIP file from the open-access PDF collection; Unpaywall | Returns `None` |
+| `download_pdf_by_pmcid()` | The file cache; `https://europepmc.org/articles/PMC{id}?pdf=render`; the Europe PMC render service `ptpmcrender.fcgi`; NCBI's PMC Open Access Subset on AWS open data; Europe PMC's bulk ZIP on `ftp.ebi.ac.uk`; Unpaywall | Returns `None` |
 | `download_html_by_pmcid()` | The file cache; the article's web page `https://europepmc.org/article/PMC/{id}` | Returns `None` |
 
 - `client.last_xml_source` names the source of the last XML file: `cache`, `europepmc_rest`, `europepmc_ftp_bulk`, `europepmc_fulltext_repo`, `pmc_oa_service`, `ncbi_efetch`, `bioc_pmc`, `doi_negotiation`, `biorxiv` or `unpaywall`.
@@ -63,6 +63,8 @@ The methods try several sources in turn:
 - The Unpaywall steps run only with a contact e-mail address: `FullTextClient(email="you@example.org")`, or the `UNPAYWALL_EMAIL` or `CROSSREF_EMAIL` environment variable. Without one they are skipped before any request, including the DOI lookup.
 - A source that fails counts as having nothing, so the table's last column is the outcome whether the sources answered "not found" or could not be reached.
 - A PDF counts as downloaded only if the file starts with `%PDF`.
+- `download_pdf_with_provenance()` returns the same file with where it came from and its licence, and `download_pdf_by_doi()` fetches papers that are not in PubMed Central; see [Downloading PDFs](../pdf-download.md).
+- Since November 2026 the two `europepmc.org` PDF steps meet a Cloudflare browser check and fail; the other steps do not depend on them. The client skips them for ten minutes once it has seen the check.
 
 ## Check what is available
 
@@ -206,7 +208,7 @@ cache
 
 ## Bulk PDF downloads over FTP
 
-`FTPDownloader` downloads the per-article ZIP files that Europe PMC publishes at `https://europepmc.org/ftp/pdf/` and extracts the PDFs from them. It handles PDFs only; to download XML for many articles, use `download_fulltext_batch_parallel(..., format_type="xml")`.
+`FTPDownloader` downloads the per-article ZIP files that Europe PMC publishes at `https://europepmc.org/ftp/pdf/` and extracts the PDFs from them. **Since November 2026 that address answers scripted clients with a Cloudflare browser check (HTTP 403), so the downloader fails until Europe PMC lifts it.** The same ZIP files are served without a check from `https://ftp.ebi.ac.uk/pub/databases/pmc/pdf/OA/`, which `download_pdf_by_pmcid()` uses; see [Downloading PDFs](../pdf-download.md). It handles PDFs only; to download XML for many articles, use `download_fulltext_batch_parallel(..., format_type="xml")`.
 
 ```python
 from pyeuropepmc import FTPDownloader

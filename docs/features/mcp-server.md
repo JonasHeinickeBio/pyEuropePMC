@@ -1,6 +1,6 @@
 # MCP server
 
-`pyeuropepmc-mcp` lets an AI agent search Europe PMC, read papers and export references through the [Model Context Protocol](https://modelcontextprotocol.io/). This page shows how the tools fit together, gives a workflow for the common jobs, and lists the Europe PMC behaviours that the tools work around. The [package README](../../src/pyeuropepmc/mcp/README.md) has the flags, the transports and the reference table of every tool.
+`pyeuropepmc-mcp` lets an AI agent search Europe PMC, read papers and export references through the [Model Context Protocol](https://modelcontextprotocol.io/). This page shows how the tools fit together, gives a workflow for the common jobs, and lists the Europe PMC behaviours that the tools work around. The [package README](https://github.com/JonasHeinickeBio/pyEuropePMC/blob/main/src/pyeuropepmc/mcp/README.md) has the flags, the transports and the reference table of every tool.
 
 ## Connect a client
 
@@ -12,9 +12,9 @@ pyeuropepmc-mcp                                       # stdio, for any client th
 pyeuropepmc-mcp --transport streamable-http           # HTTP at http://127.0.0.1:8000/mcp
 ```
 
-For Claude Desktop, Cursor and VS Code, add `"command": "pyeuropepmc-mcp"` (or `"command": "uvx"` with `"args": ["pyeuropepmc", "mcp"]`) to the client's MCP configuration; the [README](../../README.md#-mcp-server) shows the file for each. The server has no authentication of its own: keep the HTTP transport on `127.0.0.1` or put an authenticating proxy in front of it. Behind a proxy that forwards its public host name, add `--allowed-host mcp.example.org` (MCP SDK 2.x answers HTTP 421 to unknown `Host` headers).
+For Claude Desktop, Cursor and VS Code, add `"command": "pyeuropepmc-mcp"` (or `"command": "uvx"` with `"args": ["pyeuropepmc", "mcp"]`) to the client's MCP configuration; the [README](https://github.com/JonasHeinickeBio/pyEuropePMC#-mcp-server) shows the file for each. The server has no authentication of its own: keep the HTTP transport on `127.0.0.1` or put an authenticating proxy in front of it. Behind a proxy that forwards its public host name, add `--allowed-host mcp.example.org` (MCP SDK 2.x answers HTTP 421 to unknown `Host` headers).
 
-Two tools need configuration. `find_open_access` reads `UNPAYWALL_EMAIL` (Unpaywall asks for a contact address), and the LLM tools need the `agentic` extra and an `OPENAI_API_KEY`. A tool whose dependency is missing stays in the tool list and answers with the `pip install` line it needs.
+Three things need configuration. `find_open_access` reads `UNPAYWALL_EMAIL` (Unpaywall asks for a contact address), and so does `download_papers_pdf`, which also reads `PYEUROPEPMC_MCP_DOWNLOAD_DIR`, the folder it saves PDFs and `manifest.jsonl` in. The LLM tools need the `agentic` extra and an `OPENAI_API_KEY`. A tool whose dependency is missing stays in the tool list and answers with the `pip install` line it needs.
 
 ## Which tool for which job
 
@@ -32,6 +32,7 @@ Two tools need configuration. `find_open_access` reads `UNPAYWALL_EMAIL` (Unpayw
 | Read a paper | `get_paper_fulltext`, `get_papers_fulltext_batch`, `paper_figures` |
 | Pull the methods, results or limitations out of a paper whatever its headings say | `tag_paper_sentences` |
 | Find a free copy of a paper that is not open access in Europe PMC | `find_open_access` |
+| Save the PDFs of papers to disk, with where each came from and its licence | `download_papers_pdf` (see [Downloading PDFs](pdf-download.md)) |
 | Find genes, chemicals, diseases | `get_paper_annotations`, `find_papers_by_entity` |
 | Find where the data is | `get_paper_data_links`, `get_paper_lab_links` |
 | Follow citations | `get_paper_citations`, `get_paper_references`, `citation_snowball` |
@@ -195,7 +196,7 @@ citation_trace     pmid="22745249", direction="backward"
 
 ## Running it as a network service
 
-stdio, the default, needs no protection: the client starts the process and owns its pipes. The `streamable-http` and `sse` transports open a port, and then anyone who can reach it can call every tool, which means spending your Europe PMC, Crossref and OpenAlex quota, filling the server's caches, and (with `OPENAI_API_KEY` set) running the LLM tools on your key. The tools themselves are read-only and write nothing on the server's disk except the caches.
+stdio, the default, needs no protection: the client starts the process and owns its pipes. The `streamable-http` and `sse` transports open a port, and then anyone who can reach it can call every tool, which means spending your Europe PMC, Crossref and OpenAlex quota, filling the server's caches, and (with `OPENAI_API_KEY` set) running the LLM tools on your key. The tools are read-only and write nothing on the server's disk except the caches, with one exception: `download_papers_pdf` saves PDFs in `PYEUROPEPMC_MCP_DOWNLOAD_DIR` (default `~/Downloads/pyeuropepmc`). It builds the file name from the PMCID (from the DOI for a paper outside PubMed Central), so a caller cannot choose a path, and adds a line to `manifest.jsonl` in the same folder; it takes at most 20 papers per call, discards anything that is not a PDF or is over 100 MB, and follows links from Unpaywall, OpenAlex and Semantic Scholar only if they lead to public `http` or `https` addresses. On an open HTTP port, anyone with the token can still fill that folder, so point it at a disk you can spare, or leave the tool to stdio use.
 
 **Safe defaults.** The server binds to `127.0.0.1` and has no token until you set one. If you bind to another address without a token it logs a warning at startup. stdio ignores tokens.
 
@@ -219,6 +220,7 @@ A client sends `Authorization: Bearer <token>`; any other request, including a m
 These were measured against the live service in October 2026. The tools handle them for you; they are listed so that the results make sense.
 
 - **Queries are never rejected.** See above; `validate_query` exists for this reason.
+- **PDF pages answer scripts with a browser check.** In November 2026 `europepmc.org` article pages, the PDF render and backend endpoints and `/ftp/` returned HTTP 403 with a Cloudflare "Just a moment" page to a plain HTTP client, while the REST API on `ebi.ac.uk` was unaffected. `download_papers_pdf` does not try to pass that check. It takes open-access PDFs from NCBI's PMC Open Access Subset on AWS open data and from Europe PMC's bulk copy on `ftp.ebi.ac.uk`, skips `europepmc.org` for ten minutes after it has seen the check, and finds papers outside PubMed Central through their DOI at arXiv, Unpaywall, OpenAlex and Semantic Scholar. Every result names its `source` and `license`, and every saved file adds a line to `manifest.jsonl` in the download folder. [Downloading PDFs](pdf-download.md) has the order of the sources, the checks on links and files, and what to do when a paper does not download.
 - **A leading wildcard** (`*cancer`) gives HTTP 503. `validate_query` flags it.
 - **Full text of a paper outside the open-access set** gives HTTP 500 after about 20 seconds, which looks like an outage. The tools look at the open-access flag first and answer at once with the real reason.
 - **`CITES:` works with PMIDs only.** `build_query(cites=...)` takes a PMID for that reason.

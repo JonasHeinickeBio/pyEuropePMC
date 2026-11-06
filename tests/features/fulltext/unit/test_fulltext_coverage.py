@@ -316,6 +316,14 @@ class TestFullTextClientCoverage:
             )
             assert result is False
 
+    @staticmethod
+    def _zip_response(body: bytes) -> Mock:
+        response = Mock()
+        response.status_code = 200
+        response.headers = {}
+        response.iter_content.side_effect = lambda chunk_size=8192: iter([body])
+        return response
+
     def test_try_pdf_from_zip_non_200_status(self):
         """Test ZIP PDF download with non-200 status."""
         with patch("requests.get") as mock_get:
@@ -333,12 +341,7 @@ class TestFullTextClientCoverage:
         with zipfile.ZipFile(zip_buffer, "w") as zf:
             zf.writestr("readme.txt", "No PDF here")
 
-        with patch("requests.get") as mock_get:
-            mock_response = Mock()
-            mock_response.status_code = 200
-            mock_response.content = zip_buffer.getvalue()
-            mock_get.return_value = mock_response
-
+        with patch("requests.get", return_value=self._zip_response(zip_buffer.getvalue())):
             result = self.client._try_pdf_from_zip("123456", Path("/tmp/test.pdf"))
             assert result is False
 
@@ -349,16 +352,14 @@ class TestFullTextClientCoverage:
         with zipfile.ZipFile(zip_buffer, "w") as zf:
             zf.writestr("test.pdf", "INVALID_PDF_CONTENT")
 
-        with patch("requests.get") as mock_get:
-            mock_response = Mock()
-            mock_response.status_code = 200
-            mock_response.content = zip_buffer.getvalue()
-            mock_get.return_value = mock_response
-
-            with tempfile.TemporaryDirectory() as temp_dir:
-                output_path = Path(temp_dir) / "test.pdf"
-                result = self.client._try_pdf_from_zip("123456", output_path)
-                assert result is False
+        with (
+            patch("requests.get", return_value=self._zip_response(zip_buffer.getvalue())),
+            tempfile.TemporaryDirectory() as temp_dir,
+        ):
+            output_path = Path(temp_dir) / "test.pdf"
+            result = self.client._try_pdf_from_zip("123456", output_path)
+            assert result is False
+            assert list(Path(temp_dir).iterdir()) == []
 
     def test_try_pdf_from_zip_exception(self):
         """Test ZIP PDF download with exception."""

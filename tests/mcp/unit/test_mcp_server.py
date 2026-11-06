@@ -345,6 +345,7 @@ class TestToolRegistry:
         "get_papers_batch",
         "get_papers_fulltext_batch",
         "find_open_access",
+        "download_papers_pdf",
         "get_paper_annotations",
         "find_papers_by_entity",
         "get_paper_data_links",
