@@ -352,6 +352,8 @@ def atomic_download(
     temp_dir = target_path.parent
     temp_fd, temp_path_str = tempfile.mkstemp(dir=temp_dir, suffix=".tmp")
     temp_path = Path(temp_path_str)
+    # Owns the descriptor from here on, so the finally below closes it on every path
+    temp_file = os.fdopen(temp_fd, "wb")
 
     try:
         # Use requests.get directly for better test compatibility
@@ -375,21 +377,20 @@ def atomic_download(
 
         declared = response.headers.get("content-length", "")
         if max_bytes is not None and str(declared).isdigit() and int(declared) > max_bytes:
-            os.close(temp_fd)
             temp_path.unlink(missing_ok=True)
             return False
 
         # Write to temporary file
         written = 0
         too_large = False
-        with os.fdopen(temp_fd, "wb") as temp_file:
-            for chunk in response.iter_content(chunk_size=8192):
-                if chunk:
-                    written += len(chunk)
-                    if max_bytes is not None and written > max_bytes:
-                        too_large = True
-                        break
-                    temp_file.write(chunk)
+        for chunk in response.iter_content(chunk_size=8192):
+            if chunk:
+                written += len(chunk)
+                if max_bytes is not None and written > max_bytes:
+                    too_large = True
+                    break
+                temp_file.write(chunk)
+        temp_file.close()
         if too_large:
             response.close()
             temp_path.unlink(missing_ok=True)
@@ -409,3 +410,6 @@ def atomic_download(
         temp_path.unlink(missing_ok=True)
         logging.debug(f"Error during atomic download: {e}")
         return False
+
+    finally:
+        temp_file.close()

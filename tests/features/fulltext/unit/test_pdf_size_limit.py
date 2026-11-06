@@ -54,6 +54,32 @@ class TestAtomicDownload:
             assert not atomic_download("http://x", tmp_path / "a.pdf", lambda: None, max_bytes=100)
         assert _leftovers(tmp_path) == []
 
+    @pytest.mark.skipif(not Path("/proc/self/fd").exists(), reason="needs /proc/self/fd")
+    @pytest.mark.parametrize(
+        "failure", ["status", "content_type", "declared", "raises", "invalid"]
+    )
+    def test_no_descriptor_is_left_open_on_a_failed_download(self, tmp_path, failure):
+        def open_fds():
+            return len(list(Path("/proc/self/fd").iterdir()))
+
+        response = _response(PDF, declared=10_000 if failure == "declared" else None)
+        if failure == "status":
+            response.status_code = 403
+        kwargs = {"content_type_check": "text/html"} if failure == "content_type" else {}
+        kwargs["max_bytes"] = 100 if failure == "declared" else None
+        patch_args = (
+            {"side_effect": OSError("down")} if failure == "raises" else {"return_value": response}
+        )
+        validator = (lambda _p: False) if failure == "invalid" else None
+        before = open_fds()
+        for _ in range(5):
+            with patch("requests.get", **patch_args):
+                assert not atomic_download(
+                    "http://x", tmp_path / "a.pdf", lambda: None, validator=validator, **kwargs
+                )
+        assert open_fds() == before
+        assert _leftovers(tmp_path) == []
+
     def test_no_limit_means_no_check(self, tmp_path):
         with patch("requests.get", return_value=_response(PDF, declared=10**12)):
             assert atomic_download("http://x", tmp_path / "a.pdf", lambda: None)
@@ -67,7 +93,12 @@ def client():
 class TestPdfSteps:
     def test_the_limit_reaches_every_step(self, client, tmp_path):
         calls = {}
-        for step in ("_try_pdf_endpoint", "_try_pdf_from_zip", "_try_unpaywall_pdf"):
+        for step in (
+            "_try_pdf_endpoint",
+            "_try_pdf_from_pmc_cloud",
+            "_try_pdf_from_zip",
+            "_try_unpaywall_pdf",
+        ):
 
             def spy(*args, _step=step, **kwargs):
                 calls[_step] = (args, kwargs)
@@ -78,6 +109,7 @@ class TestPdfSteps:
         assert client.download_pdf_by_pmcid("PMC1", tmp_path / "a.pdf", max_bytes=123) is None
 
         assert calls["_try_pdf_endpoint"][0][3] == 123
+        assert calls["_try_pdf_from_pmc_cloud"][0][2] == 123
         assert calls["_try_pdf_from_zip"][0][2] == 123
         assert calls["_try_unpaywall_pdf"][1]["max_bytes"] == 123
 

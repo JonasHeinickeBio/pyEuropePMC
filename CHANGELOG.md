@@ -35,6 +35,13 @@ All notable changes to PyEuropePMC are documented here.
   read timeout is 60 s and a dropped connection is retried once. In a live run it saved
   PMC3525259, PMC7029158, PMC25774 and PMC13710763 with `europepmc.org` blocked.
 
+### Fixed
+
+- **utils:** `atomic_download` leaked a file descriptor whenever a request failed early (a non-200
+  status, a wrong content type, an exception). Every blocked `europepmc.org` PDF attempt left
+  one open, so a long-running MCP server could run out of descriptors. The descriptor is now
+  closed on every path.
+
 ### Dependencies
 
 - **lock:** every package in `poetry.lock` is refreshed (91 versions, one new transitive:
