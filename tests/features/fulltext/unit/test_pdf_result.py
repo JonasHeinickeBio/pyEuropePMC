@@ -93,9 +93,12 @@ class TestChainCarriesProvenance:
 
         self._spy_all(client, {"endpoint": False, "cloud": False, "zip": True, "unpaywall": False})
         client._try_pdf_endpoint = failing_endpoint
-        client._try_pdf_from_zip = (
-            lambda *a, **k: a[3].update(url="https://example.org/zip") or True
-        )
+
+        def zip_step(*args, **kwargs):
+            args[3].update(url="https://example.org/zip")
+            return True
+
+        client._try_pdf_from_zip = zip_step
         result = client.download_pdf_with_provenance("PMC1", tmp_path / "a.pdf")
         assert result.source == "europepmc_ftp_zip"
         assert (result.url, result.license, result.md5_verified) == (
