@@ -5,11 +5,10 @@ This module provides functionality to download and access full text content
 from Europe PMC, including PDF, XML, and HTML formats.
 """
 
-from collections.abc import Callable
+from collections.abc import Callable, Iterable
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from contextlib import suppress
 import gzip
-from io import BytesIO
 import json
 import logging
 import os
@@ -470,6 +469,12 @@ class FullTextClient(BaseAPIClient):
     # PMC<id>.<version>/PMC<id>.<version>.pdf. Public, no key, and not behind the browser
     # check that europepmc.org puts in front of its PDF pages.
     PMC_CLOUD_URL = "https://pmc-oa-opendata.s3.amazonaws.com"
+    # Europe PMC's bulk copy of the open-access PDFs on the EBI FTP server (plain HTTPS, no
+    # browser check): one ZIP per article, in a folder per 10,000 PMC IDs (PMC3525259 is in
+    # PMCxxxx353, PMC13710763 in PMCxxxx1372), so the URL follows from the ID alone.
+    PDF_ZIP_URL = (
+        "https://ftp.ebi.ac.uk/pub/databases/pmc/pdf/OA/PMCxxxx{batch:03d}/PMC{pmcid}.zip"
+    )
 
     # HTML endpoints (no direct API)
     HTML_ARTICLE_URL_MED = "https://europepmc.org/article/MED/{medid}#free-full-text"
@@ -1189,7 +1194,7 @@ class FullTextClient(BaseAPIClient):
         2. Europe PMC render endpoint (?pdf=render)
         3. Backend render service (ptpmcrender.fcgi)
         4. NCBI's PMC Open Access Subset on AWS open data (open-access articles only)
-        5. ZIP archive from OA collection
+        5. ZIP archive from Europe PMC's bulk OA PDF collection (ftp.ebi.ac.uk)
         6. Unpaywall API via DOI lookup (final fallback)
 
         Parameters
@@ -2118,7 +2123,10 @@ class FullTextClient(BaseAPIClient):
         self, normalized_pmcid: str, output_path: Path, max_bytes: int | None = None
     ) -> bool:
         """
-        Try downloading PDF from ZIP archive with validation.
+        Try the article's ZIP in Europe PMC's bulk copy of the open-access PDFs.
+
+        The archive is spooled to an anonymous temporary file, never held in memory, and
+        abandoned once it passes ``max_bytes``; the PDF inside is extracted the same way.
 
         Parameters
         ----------
@@ -2126,6 +2134,8 @@ class FullTextClient(BaseAPIClient):
             Normalized PMC ID (without PMC prefix)
         output_path : Path
             Where to save the file
+        max_bytes : int, optional
+            Largest archive and largest PDF to accept
 
         Returns
         -------
@@ -2133,65 +2143,71 @@ class FullTextClient(BaseAPIClient):
             True if download successful and valid, False otherwise
         """
         try:
-            pmc_int = int(normalized_pmcid)
-            zip_dir = f"PMC{pmc_int // 1000 * 1000:07d}"
-            zip_url = (
-                f"https://europepmc.org/pub/databases/pmc/pdf/OA/"
-                f"{zip_dir}/PMC{normalized_pmcid}.zip"
-            )
-
+            batch = -(-int(normalized_pmcid) // 10_000)
+            zip_url = self.PDF_ZIP_URL.format(batch=batch, pmcid=normalized_pmcid)
             self.logger.debug(f"Trying PDF download from ZIP archive: {zip_url}")
-            zip_response = requests.get(zip_url, stream=True, timeout=15)
-
-            if zip_response.status_code != 200:
-                self.logger.debug(f"ZIP archive returned status {zip_response.status_code}")
-                return False
-
-            declared = str(zip_response.headers.get("content-length", ""))
-            if max_bytes is not None and declared.isdigit() and int(declared) > max_bytes:
-                self.logger.debug(
-                    f"ZIP archive for PMC{normalized_pmcid} is over {max_bytes} bytes"
-                )
-                return False
-
-            with zipfile.ZipFile(BytesIO(zip_response.content)) as zf:
-                pdf_names = [name for name in zf.namelist() if name.lower().endswith(".pdf")]
-                if not pdf_names:
-                    self.logger.debug(f"No PDF found in ZIP for PMC{normalized_pmcid}")
+            response = self._get_pdf_zip(zip_url)
+            try:
+                if response.status_code != 200:
+                    self.logger.debug(f"ZIP archive returned status {response.status_code}")
                     return False
-                if max_bytes is not None and zf.getinfo(pdf_names[0]).file_size > max_bytes:
-                    self.logger.debug(f"PDF in the ZIP for PMC{normalized_pmcid} is too large")
+                declared = str(response.headers.get("content-length", ""))
+                if max_bytes is not None and declared.isdigit() and int(declared) > max_bytes:
+                    self.logger.debug(f"ZIP for PMC{normalized_pmcid} is over {max_bytes} bytes")
                     return False
-
-                # Extract PDF content and use atomic write
-                pdf_content = zf.read(pdf_names[0])
-
-                # Use atomic write by creating temporary file
-                temp_path = output_path.with_suffix(".tmp")
-                try:
-                    with open(temp_path, "wb") as pdf_file:
-                        pdf_file.write(pdf_content)
-
-                    # Validate the downloaded content
-                    if self._validate_pdf_content(temp_path):
-                        # Move temp file to final location
-                        temp_path.rename(output_path)
-                        self.logger.info(f"Downloaded valid PDF via OA ZIP: {output_path}")
-                        return True
-                    else:
-                        # Remove invalid file
-                        temp_path.unlink(missing_ok=True)
-                        return False
-                except Exception as e:
-                    # Clean up temp file on error
-                    temp_path.unlink(missing_ok=True)
-                    raise e
-
+                with tempfile.TemporaryFile() as spool:
+                    self._copy_capped(response.iter_content(chunk_size=65536), spool, max_bytes)
+                    spool.seek(0)
+                    return self._extract_pdf_from_zip(
+                        spool, normalized_pmcid, output_path, max_bytes
+                    )
+            finally:
+                response.close()
+        except _PdfTooLarge:
+            self.logger.debug(f"ZIP or PDF for PMC{normalized_pmcid} is over {max_bytes} bytes")
+            return False
         except Exception as e:
             self.logger.error(
                 f"Error downloading or extracting ZIP for PMC{normalized_pmcid}: {e}"
             )
             return False
+
+    @staticmethod
+    def _get_pdf_zip(url: str) -> requests.Response:
+        """GET the ZIP, once more after a dropped or timed-out connection.
+
+        ftp.ebi.ac.uk often needs 10 s or more before it sends the first byte, and now and
+        then longer than the 60 s read timeout allows.
+        """
+        try:
+            return requests.get(url, stream=True, timeout=(15, 60))
+        except (requests.ConnectionError, requests.Timeout):
+            return requests.get(url, stream=True, timeout=(15, 60))
+
+    def _extract_pdf_from_zip(
+        self, archive: IO[bytes], normalized_pmcid: str, output_path: Path, max_bytes: int | None
+    ) -> bool:
+        """Save the first PDF in ``archive`` to ``output_path`` if it is a valid PDF."""
+        with zipfile.ZipFile(archive) as zf:
+            pdf_names = [name for name in zf.namelist() if name.lower().endswith(".pdf")]
+            if not pdf_names:
+                self.logger.debug(f"No PDF found in ZIP for PMC{normalized_pmcid}")
+                return False
+            member = zf.getinfo(pdf_names[0])
+            if max_bytes is not None and member.file_size > max_bytes:
+                raise _PdfTooLarge(max_bytes)
+            # The size in the header is the archive's claim: the bytes read are what count
+            temp_path = output_path.with_suffix(".tmp")
+            try:
+                with zf.open(member) as source, open(temp_path, "wb") as sink:
+                    self._copy_capped(iter(lambda: source.read(65536), b""), sink, max_bytes)
+                if not self._validate_pdf_content(temp_path):
+                    return False
+                temp_path.rename(output_path)
+            finally:
+                temp_path.unlink(missing_ok=True)
+        self.logger.info(f"Downloaded valid PDF via OA ZIP: {output_path}")
+        return True
 
     def _determine_bulk_archive_range(self, pmcid: int) -> tuple[int, int] | None:
         """
@@ -2452,6 +2468,17 @@ class FullTextClient(BaseAPIClient):
             return False
 
     @staticmethod
+    def _copy_capped(chunks: Iterable[bytes], sink: IO[bytes], max_bytes: int | None) -> None:
+        """Write ``chunks`` to ``sink``; raise ``_PdfTooLarge`` once more than ``max_bytes``."""
+        written = 0
+        for chunk in chunks:
+            if chunk:
+                written += len(chunk)
+                if max_bytes is not None and written > max_bytes:
+                    raise _PdfTooLarge(max_bytes)
+                sink.write(chunk)
+
+    @staticmethod
     def _save_pdf_stream(response: Any, output_path: Path, max_bytes: int | None) -> bool:
         """Write a streamed response to ``output_path`` atomically.
 
@@ -2462,15 +2489,9 @@ class FullTextClient(BaseAPIClient):
         if max_bytes is not None and declared.isdigit() and int(declared) > max_bytes:
             response.close()
             return False
-        written = 0
         try:
             with atomic_write(output_path, "wb") as f:
-                for chunk in response.iter_content(chunk_size=8192):
-                    if chunk:
-                        written += len(chunk)
-                        if max_bytes is not None and written > max_bytes:
-                            raise _PdfTooLarge(max_bytes)
-                        f.write(chunk)
+                FullTextClient._copy_capped(response.iter_content(chunk_size=8192), f, max_bytes)
         except _PdfTooLarge:
             response.close()
             return False

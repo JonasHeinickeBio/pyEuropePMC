@@ -9,7 +9,7 @@ All notable changes to PyEuropePMC are documented here.
 - **mcp:** `download_papers_pdf` saves the PDFs of up to 20 papers (PMID, PMCID or DOI) in
   `PYEUROPEPMC_MCP_DOWNLOAD_DIR` (default `~/Downloads/pyeuropepmc`) as `<PMCID>.pdf`, using the
   library's chain: Europe PMC, NCBI's PMC Open Access Subset on AWS open data, Europe PMC's OA
-  archive, Unpaywall. The caller cannot choose a path; each
+  PDF archive on `ftp.ebi.ac.uk`, Unpaywall. The caller cannot choose a path; each
   file must be a PDF under 100 MB or it is deleted; the result carries path, size and SHA-256
   and a status per input. It is the first MCP tool that writes outside the caches, so it is
   marked as not read-only. The PDFs stay on the server's disk.
@@ -26,6 +26,14 @@ All notable changes to PyEuropePMC are documented here.
 - **fulltext:** `download_pdf_by_pmcid` and `atomic_download` take `max_bytes`; a PDF over it is
   refused from its declared size or abandoned while downloading, in every step (Europe PMC,
   OA archive, Unpaywall), and no partial file is left. The MCP tool passes 100 MB.
+- **fulltext:** the ZIP step of `download_pdf_by_pmcid` now reads Europe PMC's bulk copy of the
+  open-access PDFs on `ftp.ebi.ac.uk` (`pub/databases/pmc/pdf/OA/PMCxxxx<n>/PMC<id>.zip`, one
+  folder per 10,000 PMC IDs, so no directory search is needed). The old `europepmc.org/pub/...`
+  URL used a layout that no longer exists. The archive is spooled to a temporary file and the
+  PDF extracted with a byte count instead of being held in memory, so `max_bytes` also holds
+  against a ZIP that lies about its size. The server often takes 10 s or more to answer, so the
+  read timeout is 60 s and a dropped connection is retried once. In a live run it saved
+  PMC3525259, PMC7029158, PMC25774 and PMC13710763 with `europepmc.org` blocked.
 
 ### Dependencies
 

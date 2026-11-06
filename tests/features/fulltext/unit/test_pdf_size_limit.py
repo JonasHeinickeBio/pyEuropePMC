@@ -8,6 +8,7 @@ from unittest.mock import MagicMock, patch
 import zipfile
 
 import pytest
+import requests
 
 from pyeuropepmc.features.fulltext.fulltext_client import FullTextClient
 from pyeuropepmc.utils.helpers import atomic_download
@@ -87,6 +88,8 @@ class TestPdfSteps:
         response = _response(archive.getvalue(), content_type="application/zip")
         with patch("requests.get", return_value=response):
             assert not client._try_pdf_from_zip("1", tmp_path / "a.pdf", max_bytes=100)
+            assert _leftovers(tmp_path) == []
+        with patch("requests.get", return_value=_response(archive.getvalue())):
             assert client._try_pdf_from_zip("1", tmp_path / "a.pdf", max_bytes=100_000)
         assert (tmp_path / "a.pdf").read_bytes() == PDF
 
@@ -94,6 +97,32 @@ class TestPdfSteps:
         response = _response(b"PK", declared=10**9, content_type="application/zip")
         with patch("requests.get", return_value=response):
             assert not client._try_pdf_from_zip("1", tmp_path / "a.pdf", max_bytes=100)
+        response.iter_content.assert_not_called()
+
+    def test_zip_that_outgrows_the_limit_while_streaming_is_abandoned(self, client, tmp_path):
+        response = _response(b"PK" + b"0" * 10_000)  # no content-length
+        with patch("requests.get", return_value=response):
+            assert not client._try_pdf_from_zip("1", tmp_path / "a.pdf", max_bytes=1000)
+        assert _leftovers(tmp_path) == []
+
+    def test_zip_member_larger_than_its_header_says_is_cut_off(self, client, tmp_path):
+        archive = BytesIO()
+        with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as zf:
+            zf.writestr("paper.pdf", PDF)
+        # lie about the uncompressed size so only counting the bytes read can catch it
+        real_getinfo = zipfile.ZipFile.getinfo
+
+        def getinfo(self, name):
+            member = real_getinfo(self, name)
+            member.file_size = 10
+            return member
+
+        with (
+            patch("requests.get", return_value=_response(archive.getvalue())),
+            patch.object(zipfile.ZipFile, "getinfo", getinfo),
+        ):
+            assert not client._try_pdf_from_zip("1", tmp_path / "a.pdf", max_bytes=1000)
+        assert _leftovers(tmp_path) == []
 
     def test_unpaywall_download_over_the_limit_is_abandoned(self, client, tmp_path):
         unpaywall = MagicMock()
@@ -110,3 +139,42 @@ class TestPdfSteps:
             assert not target.exists()
             assert client._try_unpaywall_pdf("1", target, doi="10.1/x", max_bytes=100_000)
         assert target.read_bytes() == PDF
+
+
+class TestPdfZipUrl:
+    @pytest.mark.parametrize(
+        ("pmcid", "folder"),
+        [
+            ("3525259", "PMCxxxx353"),
+            ("7029158", "PMCxxxx703"),
+            ("25774", "PMCxxxx003"),
+            ("10000", "PMCxxxx001"),
+            ("10001", "PMCxxxx002"),
+            ("13710763", "PMCxxxx1372"),
+        ],
+    )
+    def test_folder_is_the_id_in_blocks_of_10000(self, client, tmp_path, pmcid, folder):
+        response = MagicMock()
+        response.status_code = 404
+        with patch("requests.get", return_value=response) as get:
+            assert not client._try_pdf_from_zip(pmcid, tmp_path / "a.pdf")
+        assert get.call_args[0][0] == (
+            f"https://ftp.ebi.ac.uk/pub/databases/pmc/pdf/OA/{folder}/PMC{pmcid}.zip"
+        )
+        response.close.assert_called()
+
+    def test_a_dropped_connection_is_retried_once(self, client, tmp_path):
+        archive = BytesIO()
+        with zipfile.ZipFile(archive, "w") as zf:
+            zf.writestr("paper.pdf", PDF)
+        with patch(
+            "requests.get",
+            side_effect=[requests.ConnectionError("reset"), _response(archive.getvalue())],
+        ) as get:
+            assert client._try_pdf_from_zip("1", tmp_path / "a.pdf")
+        assert get.call_count == 2
+
+    def test_a_second_failure_gives_up(self, client, tmp_path):
+        with patch("requests.get", side_effect=requests.Timeout("slow")) as get:
+            assert not client._try_pdf_from_zip("1", tmp_path / "a.pdf")
+        assert get.call_count == 2

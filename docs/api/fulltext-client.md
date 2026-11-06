@@ -76,9 +76,9 @@ Runs only the FTP archive step, without the file cache. The archive name is deri
 
 ### download_pdf_by_pmcid
 
-`download_pdf_by_pmcid(pmcid, output_path=None, rate_limiter=None) -> Path | None`
+`download_pdf_by_pmcid(pmcid, output_path=None, rate_limiter=None, doi=None, max_bytes=None) -> Path | None`
 
-Tries the file cache, `https://europepmc.org/articles/PMC{id}?pdf=render`, `https://europepmc.org/backend/ptpmcrender.fcgi?accid=PMC{id}&blobtype=pdf`, the ZIP file `https://europepmc.org/pub/databases/pmc/pdf/OA/PMC{nnnn}000/PMC{id}.zip`, and Unpaywall (only with an e-mail address). A downloaded file counts only if it starts with `%PDF` and is at least 1,024 bytes long. Returns the `Path`, or `None` when no step succeeds, including when the request that looks up the DOI for Unpaywall fails.
+Tries the file cache, `https://europepmc.org/articles/PMC{id}?pdf=render`, `https://europepmc.org/backend/ptpmcrender.fcgi?accid=PMC{id}&blobtype=pdf`, the PDF of the newest version in NCBI's PMC Open Access Subset on AWS open data (`https://pmc-oa-opendata.s3.amazonaws.com/PMC{id}.{version}/PMC{id}.{version}.pdf`), the ZIP file `https://ftp.ebi.ac.uk/pub/databases/pmc/pdf/OA/PMCxxxx{batch}/PMC{id}.zip` (`batch` is the PMC ID divided by 10,000, rounded up, in three digits or more: PMC3525259 is in `PMCxxxx353`), and Unpaywall (only with an e-mail address). The first two are behind a browser check (HTTP 403) for scripted clients since November 2026 and are not worked around. `doi` is passed to the Unpaywall step; without it the DOI is looked up from Europe PMC. `max_bytes` refuses a PDF, or ZIP, over that size from its declared size or while it downloads, in every step, and leaves no partial file. A downloaded file counts only if it starts with `%PDF` and is at least 1,024 bytes long. Returns the `Path`, or `None` when no step succeeds, including when the request that looks up the DOI for Unpaywall fails.
 
 ### download_html_by_pmcid
 
