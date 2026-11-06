@@ -4,6 +4,8 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
+## [4.7.1] - 2026-11-06
+
 ### Fixed
 
 - **fulltext:** `FTPDownloader` reads the per-article PDF ZIP files from
