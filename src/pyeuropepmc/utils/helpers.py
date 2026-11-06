@@ -324,6 +324,43 @@ def copy_capped(chunks: Iterable[bytes], sink: IO[bytes], max_bytes: int | None)
             sink.write(chunk)
 
 
+def write_validated(
+    chunks: Iterable[bytes],
+    target_path: str | Path,
+    max_bytes: int | None = None,
+    validator: Callable[[Path], bool] | None = None,
+) -> bool:
+    """
+    Write ``chunks`` to ``target_path`` only if they pass, leaving any existing file alone.
+
+    The bytes go to a temporary file in the target's directory. That file replaces
+    ``target_path`` (in one step) only if it stays within ``max_bytes`` and ``validator``
+    accepts it; otherwise it is removed and the file already at ``target_path``, if any, is
+    untouched. So a download that fails its checks cannot cost the caller a good copy.
+
+    Returns
+    -------
+    bool
+        ``True`` if ``target_path`` now holds the new content, ``False`` if the content
+        was too large or rejected by the validator.
+    """
+    target_path = Path(target_path)
+    target_path.parent.mkdir(parents=True, exist_ok=True)
+    temp_fd, temp_name = tempfile.mkstemp(dir=target_path.parent, suffix=".tmp")
+    temp_path = Path(temp_name)
+    try:
+        with os.fdopen(temp_fd, "wb") as sink:
+            copy_capped(chunks, sink, max_bytes)
+        if validator is not None and not validator(temp_path):
+            return False
+        temp_path.replace(target_path)
+        return True
+    except DownloadTooLarge:
+        return False
+    finally:
+        temp_path.unlink(missing_ok=True)
+
+
 def atomic_download(
     url: str,
     target_path: str | Path,

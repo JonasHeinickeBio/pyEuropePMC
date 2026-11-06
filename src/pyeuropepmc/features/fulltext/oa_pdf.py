@@ -26,7 +26,7 @@ import requests
 
 from pyeuropepmc._useragent import get_user_agent
 from pyeuropepmc.features.fulltext.pdf_result import PdfResult, normalize_license
-from pyeuropepmc.utils.helpers import DownloadTooLarge, atomic_write, copy_capped
+from pyeuropepmc.utils.helpers import write_validated
 
 logger = logging.getLogger(__name__)
 
@@ -119,20 +119,18 @@ def _save_if_pdf(response: Any, output_path: Path, max_bytes: int | None) -> boo
     declared = str(response.headers.get("content-length", ""))
     if max_bytes is not None and declared.isdigit() and int(declared) > max_bytes:
         return False
+    return write_validated(
+        response.iter_content(chunk_size=65536), output_path, max_bytes, _is_pdf_file
+    )
+
+
+def _is_pdf_file(path: Path) -> bool:
+    """Whether the file starts with ``%PDF`` and is at least ``MIN_PDF_BYTES`` long."""
     try:
-        with atomic_write(output_path, "wb") as sink:
-            copy_capped(response.iter_content(chunk_size=65536), sink, max_bytes)
-    except DownloadTooLarge:
-        return False
-    try:
-        with output_path.open("rb") as handle:
-            looks_like_pdf = handle.read(4) == b"%PDF"
-        if looks_like_pdf and output_path.stat().st_size >= MIN_PDF_BYTES:
-            return True
+        with path.open("rb") as handle:
+            return handle.read(4) == b"%PDF" and path.stat().st_size >= MIN_PDF_BYTES
     except OSError:
-        pass
-    output_path.unlink(missing_ok=True)
-    return False
+        return False
 
 
 def _json(url: str, params: dict[str, str], headers: dict[str, str] | None = None) -> Any:

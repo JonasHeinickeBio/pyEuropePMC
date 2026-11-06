@@ -149,6 +149,41 @@ class TestFetchPdf:
         assert (tmp_path / "a.pdf").read_bytes() == PDF
 
 
+class TestAnExistingFileSurvives:
+    OLD = b"%PDF-1.4\n" + b"o" * 5000
+
+    @pytest.mark.parametrize(
+        "reply",
+        [
+            _reply(body=b"<html>paywall</html>" * 100, headers={"content-type": "text/html"}),
+            _reply(body=b"<html>" + b"x" * 5000),  # says PDF, is not
+            _reply(body=b"%PDF-1.4 tiny"),
+            _reply(404),
+        ],
+    )
+    def test_a_bad_download_leaves_the_file_where_it_was(self, tmp_path, reply):
+        target = tmp_path / "a.pdf"
+        target.write_bytes(self.OLD)
+        with patch("requests.get", return_value=reply):
+            assert not oa_pdf.fetch_pdf("https://example.org/p.pdf", target)
+        assert target.read_bytes() == self.OLD
+        assert [p.name for p in tmp_path.iterdir()] == ["a.pdf"]
+
+    def test_a_download_over_the_limit_leaves_it_too(self, tmp_path):
+        target = tmp_path / "a.pdf"
+        target.write_bytes(self.OLD)
+        with patch("requests.get", return_value=_reply(body=PDF)):
+            assert not oa_pdf.fetch_pdf("https://example.org/p.pdf", target, 100)
+        assert target.read_bytes() == self.OLD
+
+    def test_a_good_download_replaces_it(self, tmp_path):
+        target = tmp_path / "a.pdf"
+        target.write_bytes(self.OLD)
+        with patch("requests.get", return_value=_reply(body=PDF)):
+            assert oa_pdf.fetch_pdf("https://example.org/p.pdf", target)
+        assert target.read_bytes() == PDF
+
+
 class TestLinks:
     def test_arxiv_dois_map_to_the_arxiv_pdf(self):
         assert oa_pdf._arxiv_links("10.48550/arXiv.2401.00001", None) == [

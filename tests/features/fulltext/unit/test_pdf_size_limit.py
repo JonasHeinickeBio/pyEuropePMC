@@ -11,7 +11,7 @@ import pytest
 import requests
 
 from pyeuropepmc.features.fulltext.fulltext_client import FullTextClient
-from pyeuropepmc.utils.helpers import atomic_download
+from pyeuropepmc.utils.helpers import atomic_download, write_validated
 
 PDF = b"%PDF-1.7\n" + b"x" * 5000
 
@@ -312,3 +312,68 @@ class TestChallengeCooldown:
         with patch("requests.get", return_value=_response(PDF)) as get:
             assert client._try_pdf_endpoint("https://europepmc.org/b", tmp_path / "b.pdf", "x")
         assert get.call_count == 1
+
+
+GOOD = b"%PDF-1.4\n" + b"g" * 5000
+
+
+def _is_pdf(path):
+    return path.read_bytes().startswith(b"%PDF")
+
+
+class TestAnExistingFileSurvivesAFailedReplacement:
+    def test_write_validated_replaces_with_content_that_passes(self, tmp_path):
+        target = tmp_path / "a.pdf"
+        target.write_bytes(GOOD)
+        assert write_validated([PDF[:100], PDF[100:]], target, 10_000, _is_pdf)
+        assert target.read_bytes() == PDF
+        assert _leftovers(tmp_path) == ["a.pdf"]
+
+    @pytest.mark.parametrize(
+        ("chunks", "limit", "validator"),
+        [
+            ([b"<html>" + b"x" * 5000], None, _is_pdf),  # not a PDF
+            ([PDF], 100, _is_pdf),  # over the limit
+            ([PDF], None, lambda p: False),  # rejected by the caller's check
+        ],
+    )
+    def test_write_validated_leaves_the_existing_file_and_no_leftovers(
+        self, tmp_path, chunks, limit, validator
+    ):
+        target = tmp_path / "a.pdf"
+        target.write_bytes(GOOD)
+        assert not write_validated(chunks, target, limit, validator)
+        assert target.read_bytes() == GOOD
+        assert _leftovers(tmp_path) == ["a.pdf"]
+
+    def test_write_validated_cleans_up_when_the_stream_breaks(self, tmp_path):
+        def broken():
+            yield PDF[:100]
+            raise ConnectionError("dropped")
+
+        target = tmp_path / "a.pdf"
+        target.write_bytes(GOOD)
+        with pytest.raises(ConnectionError):
+            write_validated(broken(), target)
+        assert target.read_bytes() == GOOD
+        assert _leftovers(tmp_path) == ["a.pdf"]
+
+    def test_write_validated_creates_the_folder(self, tmp_path):
+        assert write_validated([PDF], tmp_path / "new" / "a.pdf")
+        assert (tmp_path / "new" / "a.pdf").read_bytes() == PDF
+
+    def test_unpaywall_download_that_is_not_a_pdf_leaves_the_existing_file(self, client, tmp_path):
+        unpaywall = MagicMock()
+        unpaywall.get_best_oa_location.return_value = {"url_for_pdf": "http://x/paper.pdf"}
+        target = tmp_path / "a.pdf"
+        target.write_bytes(GOOD)
+        with (
+            patch(
+                "pyeuropepmc.features.enrich.sources.unpaywall_client.UnpaywallClient",
+                return_value=unpaywall,
+            ),
+            patch("requests.get", return_value=_response(b"<html>" + b"x" * 5000)),
+        ):
+            assert not client._try_unpaywall_pdf("1", target, doi="10.1/x")
+        assert target.read_bytes() == GOOD
+        assert _leftovers(tmp_path) == ["a.pdf"]

@@ -167,6 +167,33 @@ class TestProvenance:
         assert provenance["license"] is None and provenance["md5_verified"] is True
 
 
+class TestAnExistingPdfSurvives:
+    KEY = "PMC7029158.1/PMC7029158.1"
+    OLD = b"%PDF-1.4\n" + b"o" * 5000
+
+    def _try(self, client, tmp_path, objects):
+        target = tmp_path / "a.pdf"
+        target.write_bytes(self.OLD)
+        with patch("requests.get", _bucket(objects, _listing(1))):
+            return client._try_pdf_from_pmc_cloud("7029158", target), target
+
+    def test_an_md5_mismatch_discards_only_the_download(self, client, tmp_path):
+        objects = {f"{self.KEY}.pdf": PDF + b"!", f"{self.KEY}.json": _metadata(PDF)}
+        ok, target = self._try(client, tmp_path, objects)
+        assert not ok
+        assert target.read_bytes() == self.OLD
+        assert [p.name for p in tmp_path.iterdir()] == ["a.pdf"]
+
+    def test_a_body_that_is_not_a_pdf_discards_only_the_download(self, client, tmp_path):
+        ok, target = self._try(client, tmp_path, {f"{self.KEY}.pdf": b"<html>" + b"x" * 5000})
+        assert not ok and target.read_bytes() == self.OLD
+
+    def test_a_matching_download_replaces_it(self, client, tmp_path):
+        objects = {f"{self.KEY}.pdf": PDF, f"{self.KEY}.json": _metadata(PDF)}
+        ok, target = self._try(client, tmp_path, objects)
+        assert ok and target.read_bytes() == PDF
+
+
 class TestChain:
     def test_it_runs_after_the_europe_pmc_endpoints_and_before_the_rest(self, client, tmp_path):
         order = []

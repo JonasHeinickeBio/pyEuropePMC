@@ -77,6 +77,12 @@ All notable changes to PyEuropePMC are documented here.
   status, a wrong content type, an exception). Every blocked `europepmc.org` PDF attempt left
   one open, so a long-running MCP server could run out of descriptors. The descriptor is now
   closed on every path.
+- **fulltext:** a PDF that fails its checks can no longer destroy the file it was meant to
+  replace. With `overwrite=true` (or any call whose target already exists), the PMC bucket step
+  (published MD5), the Unpaywall step and the new DOI route used to move the download onto the
+  target and only then check it, deleting it on failure; if no later source succeeded the earlier
+  PDF was gone. They now stage the download in a temporary file, validate it there, and replace
+  the target in one step only if it passes (`utils.helpers.write_validated`).
 
 ### Documentation
 

@@ -8,6 +8,7 @@ from Europe PMC, including PDF, XML, and HTML formats.
 from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from contextlib import suppress
+from functools import partial
 import gzip
 import hashlib
 import json
@@ -41,6 +42,7 @@ from pyeuropepmc.utils.helpers import (
     atomic_download,
     atomic_write,
     copy_capped,
+    write_validated,
 )
 
 logger = logging.getLogger(__name__)
@@ -2324,6 +2326,29 @@ class FullTextClient(BaseAPIClient):
                 digest.update(block)
         return digest.hexdigest()
 
+    def _pmc_cloud_accepts(
+        self,
+        normalized_pmcid: str,
+        version: int,
+        key: str,
+        checked: dict[str, Any],
+        staged: Path,
+    ) -> bool:
+        """Whether the staged bucket PDF is a valid PDF that matches its published MD5.
+
+        Runs on the downloaded temporary file, before it can replace anything. Fills
+        ``checked`` with the article's licence code and whether an MD5 was published.
+        """
+        if not self._validate_pdf_content(staged):
+            return False
+        metadata = self._pmc_cloud_metadata(normalized_pmcid, version)
+        published = re.findall(r"md5=([0-9a-fA-F]{32})", str(metadata.get("pdf_url", "")))
+        if published and self._md5_of(staged) != published[0].lower():
+            self.logger.warning(f"{key} does not match its published MD5; discarded")
+            return False
+        checked.update(license=metadata.get("license_code"), md5=bool(published))
+        return True
+
     def _try_pdf_from_pmc_cloud(
         self,
         normalized_pmcid: str,
@@ -2343,24 +2368,23 @@ class FullTextClient(BaseAPIClient):
             for version in self._pmc_cloud_versions(normalized_pmcid):
                 key = f"PMC{normalized_pmcid}.{version}/PMC{normalized_pmcid}.{version}.pdf"
                 url = f"{self.PMC_CLOUD_URL}/{key}"
+                # Checked on the staged file, before it can replace one already at output_path
+                checked: dict[str, Any] = {}
+
                 if not atomic_download(
                     url=url,
                     target_path=output_path,
                     session_getter=lambda: requests.Session(),
-                    validator=self._validate_pdf_content,
+                    validator=partial(
+                        self._pmc_cloud_accepts, normalized_pmcid, version, key, checked
+                    ),
                     max_bytes=max_bytes,
                     timeout=30,
                 ):
                     continue
-                metadata = self._pmc_cloud_metadata(normalized_pmcid, version)
-                published = re.findall(r"md5=([0-9a-fA-F]{32})", str(metadata.get("pdf_url", "")))
-                if published and self._md5_of(output_path) != published[0].lower():
-                    self.logger.warning(f"{key} does not match its published MD5; discarded")
-                    output_path.unlink(missing_ok=True)
-                    continue
                 if provenance is not None:
                     provenance.update(
-                        url=url, license=metadata.get("license_code"), md5_verified=bool(published)
+                        url=url, license=checked["license"], md5_verified=checked["md5"]
                     )
                 self.logger.info(f"Downloaded valid PDF from the PMC open-data bucket: {key}")
                 return True
@@ -2726,23 +2750,28 @@ class FullTextClient(BaseAPIClient):
     _copy_capped = staticmethod(copy_capped)
 
     @staticmethod
-    def _save_pdf_stream(response: Any, output_path: Path, max_bytes: int | None) -> bool:
-        """Write a streamed response to ``output_path`` atomically.
+    def _save_pdf_stream(
+        response: Any,
+        output_path: Path,
+        max_bytes: int | None,
+        validator: Callable[[Path], bool] | None = None,
+    ) -> bool:
+        """Write a streamed response to ``output_path`` if it passes, else change nothing.
 
-        Returns ``False`` without leaving a file when the response declares, or turns out to
-        have, more than ``max_bytes`` (``None`` means no limit).
+        Returns ``False`` when the response declares, or turns out to have, more than
+        ``max_bytes`` (``None`` means no limit), or when ``validator`` rejects the staged
+        file. A file already at ``output_path`` is replaced only by content that passed.
         """
         declared = str(response.headers.get("content-length", ""))
         if max_bytes is not None and declared.isdigit() and int(declared) > max_bytes:
             response.close()
             return False
-        try:
-            with atomic_write(output_path, "wb") as f:
-                FullTextClient._copy_capped(response.iter_content(chunk_size=8192), f, max_bytes)
-        except _PdfTooLarge:
+        saved = write_validated(
+            response.iter_content(chunk_size=8192), output_path, max_bytes, validator
+        )
+        if not saved:
             response.close()
-            return False
-        return True
+        return saved
 
     def _try_unpaywall_pdf(
         self,
@@ -2823,13 +2852,12 @@ class FullTextClient(BaseAPIClient):
                 self.logger.warning(f"Unexpected content type from Unpaywall: {content_type}")
                 return False
 
-            if not self._save_pdf_stream(response, output_path, max_bytes):
-                self.logger.warning(f"Unpaywall PDF for PMC{normalized_pmcid} is too large")
-                return False
-
-            # Validate downloaded PDF
-            if not self._validate_pdf_content(output_path):
-                self.logger.warning(f"Downloaded file failed PDF validation: {output_path}")
+            if not self._save_pdf_stream(
+                response, output_path, max_bytes, self._validate_pdf_content
+            ):
+                self.logger.warning(
+                    f"Unpaywall PDF for PMC{normalized_pmcid} was too large or not a valid PDF"
+                )
                 return False
 
             self.logger.info(f"Successfully downloaded PDF from Unpaywall: {output_path}")
