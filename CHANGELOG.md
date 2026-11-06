@@ -4,6 +4,8 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
+## [4.7.0] - 2026-11-06
+
 > PDF download release. `europepmc.org` now answers scripted clients with a Cloudflare browser
 > check (HTTP 403) on its PDF pages and FTP folders, which broke the PDF chain. It is not
 > bypassed; the PDF chain takes the same open-access files from sources that serve them
