@@ -1,6 +1,6 @@
 # FTPDownloader
 
-`FTPDownloader` downloads open-access PDF bundles from the Europe PMC FTP site, which it reads over HTTPS at `https://europepmc.org/ftp/pdf/`. It finds each article's ZIP file in the site's directory listings, downloads it and extracts the PDFs. It does not download XML; for XML see [FullTextClient](fulltext-client.md).
+`FTPDownloader` downloads open-access PDF bundles from the Europe PMC FTP server at EBI, which it reads over HTTPS at `https://ftp.ebi.ac.uk/pub/databases/pmc/pdf/OA/`. It finds each article's ZIP file in the site's directory listings, downloads it and extracts the PDFs. It does not download XML; for XML see [FullTextClient](fulltext-client.md).
 
 ```python
 from pyeuropepmc import FTPDownloader
@@ -62,7 +62,7 @@ Output:
 
 Looks up which of the given PMC IDs have a ZIP file, without downloading anything. The result maps each PMC ID to its file information (see `get_zip_files_in_directory()`) or to `None`.
 
-The ZIP files sit in directories named `PMCxxxx` followed by digits. For each PMC ID the method derives candidate directories from its last digits: the last three digits and their neighbours (for `11691200`: `PMCxxxx199`, `PMCxxxx200`, `PMCxxxx201`), and, when the last four digits are between 1000 and 1200, those four digits and their neighbours within that range (`PMCxxxx1199`, `PMCxxxx1200`). When no candidate can be derived, it lists all directories. It then reads the listing of each candidate directory, at most `max_directories` of them, and stops early after 10 listings in a row fail.
+The ZIP files sit in directories named `PMCxxxx` followed by a number, one directory per 10,000 PMC IDs: the number is the PMC ID divided by 10,000, rounded up, in at least three digits (`PMC11691200` is in `PMCxxxx1170`, `PMC3525259` in `PMCxxxx353`). The directory therefore follows from the ID alone. When an ID is not a positive integer and no directory can be derived, the method lists all directories. It then reads the listing of each candidate directory, at most `max_directories` of them, and stops early after 10 listings in a row fail.
 
 | Parameter | Type | Default | Description |
 |---|---|---|---|
@@ -76,7 +76,7 @@ A directory that does not exist (HTTP 404) counts as searched and empty. Any oth
 | Method | Returns | Description |
 |---|---|---|
 | `get_available_directories()` | `list[str]` | Sorted names of the `PMCxxxx…` directories in the root listing |
-| `get_zip_files_in_directory(directory)` | `list[dict[str, str \| int]]` | The ZIP files in one directory, as `{"filename": "PMC11691200.zip", "pmcid": "11691200", "size": 295936, "directory": "PMCxxxx1200"}`. `size` is in bytes, computed from the size shown in the listing (for example `289K`) |
+| `get_zip_files_in_directory(directory)` | `list[dict[str, str \| int]]` | The ZIP files in one directory, as `{"filename": "PMC11691200.zip", "pmcid": "11691200", "size": 295936, "directory": "PMCxxxx1170"}`. `size` is in bytes, computed from the size shown in the listing (for example `289K`) |
 | `download_pdf_zip(zip_info, output_dir)` | `Path` | Downloads the ZIP file described by one of those dicts to `output_dir/filename`. Raises `TypeError` if `zip_info` is not a dict with `filename`, `directory`, `pmcid` and `size` |
 | `extract_pdf_from_zip(zip_path, extract_dir, keep_zip=True)` | `list[Path]` | Writes every archive member whose name ends in `.pdf` to `extract_dir`, then deletes the ZIP file if `keep_zip=False` |
 | `close()` | `None` | Closes the HTTP session |
@@ -95,7 +95,7 @@ with FTPDownloader() as downloader:
 Output:
 
 ```text
-PMCxxxx1200 295936 ['PMC11691200.pdf']
+PMCxxxx1170 295936 ['PMC11691200.pdf']
 ```
 
 ## Errors

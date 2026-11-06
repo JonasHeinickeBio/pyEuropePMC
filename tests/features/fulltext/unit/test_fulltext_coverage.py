@@ -25,6 +25,8 @@ class TestFullTextClientCoverage:
     def setup_method(self):
         """Set up test fixtures before each test method."""
         self.client = FullTextClient()
+        # these tests stand in for the server's folder listing, which would need the network
+        self.client._bulk_ranges = [(1, 10**9)]
         # The XML download chain now includes non-Europe-PMC strategies that
         # would hit the network; neutralise them for these hermetic unit tests.
         self._extra_patch = patch.object(
@@ -366,26 +368,6 @@ class TestFullTextClientCoverage:
         with patch("requests.get", side_effect=Exception("Network error")):
             result = self.client._try_pdf_from_zip("123456", Path("/tmp/test.pdf"))
             assert result is False
-
-    def test_determine_bulk_archive_range_large_pmcid(self):
-        """Test bulk archive range determination for large PMC IDs."""
-        result = self.client._determine_bulk_archive_range(1234567)
-        assert result == (1200000, 1299999)
-
-    def test_determine_bulk_archive_range_medium_pmcid(self):
-        """Test bulk archive range determination for medium PMC IDs."""
-        result = self.client._determine_bulk_archive_range(567890)
-        assert result == (500000, 599999)
-
-    def test_determine_bulk_archive_range_small_pmcid(self):
-        """Test bulk archive range determination for small PMC IDs."""
-        result = self.client._determine_bulk_archive_range(12345)
-        assert result == (10000, 19999)
-
-    def test_determine_bulk_archive_range_very_small_pmcid(self):
-        """Test bulk archive range determination for very small PMC IDs."""
-        result = self.client._determine_bulk_archive_range(567)
-        assert result == (0, 999)
 
     def test_try_bulk_xml_download_no_archive_range(self):
         """Test bulk XML download when archive range cannot be determined."""

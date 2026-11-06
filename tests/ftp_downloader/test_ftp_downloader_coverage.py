@@ -211,21 +211,19 @@ class TestFTPDownloaderCoverage:
 
     def test_get_relevant_directories_various_pmcid_lengths(self):
         """Test _get_relevant_directories with various PMC ID lengths."""
-        # Test with short PMC IDs
-        directories = self.downloader._get_relevant_directories(["123", "456"])
-        assert "PMCxxxx123" in directories
-        assert "PMCxxxx456" in directories
+        # IDs up to 10,000 share the first folder
+        assert self.downloader._get_relevant_directories(["123", "456"]) == {"PMCxxxx001"}
+        assert self.downloader._get_relevant_directories(["10000"]) == {"PMCxxxx001"}
 
-        # Test with 4-digit PMC IDs in range
-        directories = self.downloader._get_relevant_directories(["1100", "1150"])
-        assert "PMCxxxx1100" in directories
-        assert "PMCxxxx1150" in directories
-        assert "PMCxxxx100" in directories  # Last 3 digits
-        assert "PMCxxxx150" in directories  # Last 3 digits
+        # A folder holds 10,000 IDs: 10001 starts the next one
+        assert self.downloader._get_relevant_directories(["10001"]) == {"PMCxxxx002"}
+        assert self.downloader._get_relevant_directories(["3525259", "3510005"]) == {
+            "PMCxxxx353",
+            "PMCxxxx352",
+        }
 
-        # Test with 4-digit PMC IDs out of range
-        directories = self.downloader._get_relevant_directories(["2000", "5000"])
-        assert "PMCxxxx000" in directories  # Last 3 digits only
+        # Past 999 the folder number gains a digit
+        assert self.downloader._get_relevant_directories(["13710763"]) == {"PMCxxxx1372"}
 
     def test_get_relevant_directories_invalid_pmcids(self):
         """Test _get_relevant_directories with invalid PMC IDs."""
@@ -257,9 +255,9 @@ class TestFTPDownloaderCoverage:
         directories = self.downloader._get_relevant_directories([])
 
         # Should create fallback range
-        assert len(directories) > 1000  # Should include range 0-1200
-        assert "PMCxxxx0" in directories
-        assert "PMCxxxx1200" in directories
+        assert len(directories) == 1500
+        assert "PMCxxxx001" in directories
+        assert "PMCxxxx1500" in directories
 
     def test_download_pdf_zip_invalid_zip_info_type(self):
         """Test download_pdf_zip with invalid zip_info type."""

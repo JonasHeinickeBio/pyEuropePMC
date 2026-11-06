@@ -35,7 +35,7 @@ class FTPDownloader(BaseAPIClient):
     - Extract and organize downloaded PDFs
     """
 
-    BASE_FTP_URL = "https://europepmc.org/ftp/pdf/"
+    BASE_FTP_URL = "https://ftp.ebi.ac.uk/pub/databases/pmc/pdf/OA/"
 
     def __init__(self, rate_limit_delay: float = 1.0):
         """
@@ -680,10 +680,11 @@ class FTPDownloader(BaseAPIClient):
 
     def _get_relevant_directories(self, pmcids: list[str]) -> set[str]:
         """
-        Determine which directories might contain the given PMC IDs.
+        Determine which directories hold the given PMC IDs.
 
-        Always checks BOTH 3-digit and 4-digit patterns since the directory
-        structure is not consistently predictable from PMC ID value alone.
+        The server keeps one folder per 10,000 PMC IDs, numbered upward from 001
+        (PMC3525259 is in ``PMCxxxx353``, PMC13710763 in ``PMCxxxx1372``), so the folder
+        follows from the ID alone.
         """
         directories: set[str] = set()
 
@@ -698,46 +699,14 @@ class FTPDownloader(BaseAPIClient):
         return directories
 
     def _add_directories_for_pmcid(self, directories: set[str], pmcid: str) -> None:
-        """Add relevant directories for a single PMC ID."""
+        """Add the folder of a single PMC ID."""
         try:
-            # Always check BOTH patterns regardless of PMC ID value
-            if len(pmcid) >= 3:
-                self._add_three_digit_patterns(directories, pmcid)
-
-            if len(pmcid) >= 4:
-                self._add_four_digit_patterns(directories, pmcid)
-
+            number = int(pmcid)
         except ValueError:
             logger.warning(f"PMC ID {pmcid} is not a valid integer: {pmcid}")
-
-    def _add_three_digit_patterns(self, directories: set[str], pmcid: str) -> None:
-        """Add 3-digit directory patterns for a PMC ID."""
-        last_three = pmcid[-3:]
-        last_three_int = int(last_three)
-
-        # Add 3-digit pattern
-        directories.add(f"PMCxxxx{last_three_int:03d}")
-
-        # Also check nearby directories (±1) for 3-digit pattern
-        for offset in [-1, 1]:
-            adjusted = last_three_int + offset
-            if 0 <= adjusted <= 999:
-                directories.add(f"PMCxxxx{adjusted:03d}")
-
-    def _add_four_digit_patterns(self, directories: set[str], pmcid: str) -> None:
-        """Add 4-digit directory patterns for a PMC ID."""
-        last_four = pmcid[-4:]
-        last_four_int = int(last_four)
-
-        # Add 4-digit pattern if within reasonable range
-        if 1000 <= last_four_int <= 1200:
-            directories.add(f"PMCxxxx{last_four_int}")
-
-            # Also check nearby directories (±1) for 4-digit pattern
-            for offset in [-1, 1]:
-                adjusted = last_four_int + offset
-                if 1000 <= adjusted <= 1200:
-                    directories.add(f"PMCxxxx{adjusted}")
+            return
+        if number >= 1:
+            directories.add(f"PMCxxxx{-(-number // 10_000):03d}")
 
     def _get_fallback_directories(self) -> set[str]:
         """Get fallback directories when specific ones can't be determined."""
@@ -748,15 +717,9 @@ class FTPDownloader(BaseAPIClient):
             )
             return set(available_dirs)
         except FullTextError:
-            # Final fallback to the known directory range
-            logger.info("Falling back to known directory range: PMCxxxx0 to PMCxxxx1200")
-            directories: set[str] = set()
-            # Add directories for PMC IDs 0-999 (last 3 digits)
-            for i in range(1000):
-                directories.add(f"PMCxxxx{i}")
-            # Add directories for PMC IDs 1000-1200 (last 4 digits)
-            for i in range(1000, 1201):
-                directories.add(f"PMCxxxx{i}")
+            # Final fallback: the folders numbered so far (about 1,400 on the server)
+            logger.info("Falling back to the known directory range: PMCxxxx001 to PMCxxxx1500")
+            directories: set[str] = {f"PMCxxxx{i:03d}" for i in range(1, 1501)}
             return directories
 
     def _parse_file_size(self, size_text: str) -> int:

@@ -5,6 +5,7 @@ This module provides functionality to download and access full text content
 from Europe PMC, including PDF, XML, and HTML formats.
 """
 
+import bisect
 from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from contextlib import suppress
@@ -496,7 +497,10 @@ class FullTextClient(BaseAPIClient):
     HTML_ARTICLE_URL_PMC = "https://europepmc.org/article/PMC/{pmcid}#free-full-text"
 
     # XML bulk download FTP endpoints
-    FTP_OA_BASE_URL = "https://europepmc.org/ftp/oa/"
+    # Bulk XML archives of the open-access subset on the EBI FTP server (plain HTTPS). The same
+    # files were served from europepmc.org/ftp/oa/ until that began answering scripted clients
+    # with a browser check (HTTP 403).
+    FTP_OA_BASE_URL = "https://ftp.ebi.ac.uk/pub/databases/pmc/oa/"
     # Archive naming pattern: PMC{start_id}_{end_id}.xml.gz
     # Archives contain XML files for PMC IDs in the range [start_id, end_id]
 
@@ -1555,7 +1559,10 @@ class FullTextClient(BaseAPIClient):
 
             ac = ArticleClient(rate_limit_delay=self.rate_limit_delay)
             try:
-                details = ac.get_article_details("PMC", normalized_pmcid, result_type="lite")
+                # Europe PMC's id for a PMC article carries the prefix: "3525259" finds nothing
+                details = ac.get_article_details(
+                    "PMC", f"PMC{normalized_pmcid}", result_type="lite"
+                )
             finally:
                 ac.close()
             doi = (details.get("result") or {}).get("doi") if isinstance(details, dict) else None
@@ -2489,12 +2496,35 @@ class FullTextClient(BaseAPIClient):
         self.logger.info(f"Downloaded valid PDF via OA ZIP: {output_path}")
         return True
 
+    _bulk_ranges: list[tuple[int, int]] | None = None  # set per client once listed
+    _BULK_ARCHIVE_NAME = re.compile(r"PMC(\d+)_PMC(\d+)\.xml\.gz")
+
+    def _bulk_archive_ranges(self) -> list[tuple[int, int]]:
+        """The ID ranges of the bulk archives on the server, sorted; ``[]`` when unreadable.
+
+        Each archive holds about 10,000 IDs but the bounds are irregular
+        (``PMC3010001_PMC3019986.xml.gz``), so they are read from the folder listing, once
+        per client. A failed read is not remembered: the next call asks again.
+        """
+        if self._bulk_ranges is not None:
+            return self._bulk_ranges
+        try:
+            response = requests.get(self.FTP_OA_BASE_URL, timeout=30)
+        except requests.RequestException as e:
+            self.logger.debug(f"Could not list the bulk archives: {e}")
+            return []
+        if response.status_code != 200:
+            self.logger.debug(f"Bulk archive listing answered HTTP {response.status_code}")
+            return []
+        found = {
+            (int(a), int(b)) for a, b in self._BULK_ARCHIVE_NAME.findall(response.text) if a <= b
+        }
+        self._bulk_ranges = sorted(found)
+        return self._bulk_ranges
+
     def _determine_bulk_archive_range(self, pmcid: int) -> tuple[int, int] | None:
         """
-        Determine the archive range that would contain the given PMC ID.
-
-        Europe PMC FTP OA archives are organized in ranges like PMC1000000_PMC1099999.xml.gz
-        This method estimates the likely archive based on common range patterns.
+        Find the bulk archive that holds the given PMC ID.
 
         Parameters
         ----------
@@ -2504,30 +2534,14 @@ class FullTextClient(BaseAPIClient):
         Returns
         -------
         tuple[int, int] or None
-            (start_id, end_id) for the archive, or None if cannot determine
+            ``(start_id, end_id)`` of the archive, or ``None`` when no archive covers the ID
+            (not open access, too new, or the listing could not be read)
         """
-        # Common range patterns observed in Europe PMC FTP
-        # Archives typically use 100k ranges for newer articles
-        if pmcid >= 1000000:
-            # For PMC IDs >= 1M, use 100k ranges
-            start_range = (pmcid // 100000) * 100000
-            end_range = start_range + 99999
-            return (start_range, end_range)
-        elif pmcid >= 100000:
-            # For PMC IDs 100k-1M, use 100k ranges
-            start_range = (pmcid // 100000) * 100000
-            end_range = start_range + 99999
-            return (start_range, end_range)
-        elif pmcid >= 10000:
-            # For PMC IDs 10k-100k, use 10k ranges
-            start_range = (pmcid // 10000) * 10000
-            end_range = start_range + 9999
-            return (start_range, end_range)
-        else:
-            # For PMC IDs < 10k, use 1k ranges
-            start_range = (pmcid // 1000) * 1000
-            end_range = start_range + 999
-            return (start_range, end_range)
+        ranges = self._bulk_archive_ranges()
+        index = bisect.bisect_right(ranges, (pmcid, float("inf"))) - 1
+        if index >= 0 and ranges[index][0] <= pmcid <= ranges[index][1]:
+            return ranges[index]
+        return None
 
     def _try_bulk_xml_download(self, pmcid: str, output_path: Path) -> bool:
         """

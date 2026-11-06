@@ -231,7 +231,6 @@ Treat these as a rough guide. Europe PMC returns search results by relevance, no
 
 ## Known limits
 
-- **`FTPDownloader` and the XML archive step need `europepmc.org/ftp/`, which is behind the same browser check.** `FTPDownloader` lists and downloads from `https://europepmc.org/ftp/pdf/`, and `download_xml_by_pmcid()` tries `https://europepmc.org/ftp/oa/` among its steps. Both returned HTTP 403 with a challenge on 6 November 2026. `download_xml_by_pmcid()` falls through to the REST API, which works; `FTPDownloader` has no fallback yet. The same folders exist on `ftp.ebi.ac.uk/pub/databases/pmc/pdf/OA/`.
 - The tool reads no text out of the PDFs and does not check that the file is the paper that was asked for.
 - Without `SEMANTIC_SCHOLAR_API_KEY`, Semantic Scholar may refuse with HTTP 429; that source then gives no link.
 - At most two files are fetched at a time, which keeps the load on each source low. A call with 20 papers is not instant.

@@ -21,6 +21,8 @@ class TestFullTextClient:
     def setup_method(self):
         """Set up test fixtures before each test method."""
         self.client = FullTextClient()
+        # these tests stand in for the server's folder listing, which would need the network
+        self.client._bulk_ranges = [(1, 10**9)]
 
     def teardown_method(self):
         """Clean up after each test method."""
@@ -423,22 +425,6 @@ class TestFullTextClient:
 
             assert result is False
             assert not output_path.exists()
-
-    @pytest.mark.unit
-    def test_determine_bulk_archive_range(self):
-        """Test determination of archive ranges for different PMC IDs."""
-        # Test PMC IDs >= 1M (100k ranges)
-        assert self.client._determine_bulk_archive_range(1234567) == (1200000, 1299999)
-
-        # Test PMC IDs 100k-1M (100k ranges)
-        assert self.client._determine_bulk_archive_range(345678) == (300000, 399999)
-
-        # Test PMC IDs 10k-100k (10k ranges)
-        assert self.client._determine_bulk_archive_range(23456) == (20000, 29999)
-
-        # Test PMC IDs < 10k (1k ranges)
-        assert self.client._determine_bulk_archive_range(2345) == (2000, 2999)
-        assert self.client._determine_bulk_archive_range(345) == (0, 999)
 
     @pytest.mark.unit
     @patch("pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._try_bulk_xml_download")

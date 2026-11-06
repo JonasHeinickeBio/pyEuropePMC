@@ -23,7 +23,7 @@ Output:
 
 Key tips:
 
-- It downloads PDFs only, as ZIP files from `https://europepmc.org/ftp/pdf/`. The PDFs are extracted to `output_dir/extracted/`, and the ZIP files are deleted unless you pass `keep_zips=True`.
+- It downloads PDFs only, as ZIP files from `https://ftp.ebi.ac.uk/pub/databases/pmc/pdf/OA/`. The PDFs are extracted to `output_dir/extracted/`, and the ZIP files are deleted unless you pass `keep_zips=True`.
 - Each result has a `status` of `"success"`, `"not_found"` or `"error"`, plus `zip_path` and `pdf_paths`, or `error`.
 - A PMC ID with the `PMC` prefix, or one whose directory listing could not be read, comes back as `"not_found"`.
 - There is no progress callback. For XML, or for progress reporting, use `FullTextClient.download_fulltext_batch()` or `download_fulltext_batch_parallel()`.
