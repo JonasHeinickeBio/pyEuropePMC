@@ -1,11 +1,11 @@
-from collections.abc import Callable, Iterator
+from collections.abc import Callable, Iterable, Iterator
 from contextlib import contextmanager
 import json
 import logging
 import os
 from pathlib import Path
 import tempfile
-from typing import Any
+from typing import IO, Any
 import warnings
 
 from pyeuropepmc.core.error_codes import ErrorCodes
@@ -309,6 +309,21 @@ def atomic_write(target_path: str | Path, mode: str = "w", **kwargs: Any) -> Ite
         raise
 
 
+class DownloadTooLarge(Exception):
+    """A download passed the caller's ``max_bytes``; abandoned, not an error."""
+
+
+def copy_capped(chunks: Iterable[bytes], sink: IO[bytes], max_bytes: int | None) -> None:
+    """Write ``chunks`` to ``sink``; raise ``DownloadTooLarge`` once more than ``max_bytes``."""
+    written = 0
+    for chunk in chunks:
+        if chunk:
+            written += len(chunk)
+            if max_bytes is not None and written > max_bytes:
+                raise DownloadTooLarge(max_bytes)
+            sink.write(chunk)
+
+
 def atomic_download(
     url: str,
     target_path: str | Path,
@@ -316,6 +331,7 @@ def atomic_download(
     validator: Callable[[Path], bool] | None = None,
     content_type_check: str | None = None,
     max_bytes: int | None = None,
+    on_response: Callable[[Any], None] | None = None,
     **request_kwargs: Any,
 ) -> bool:
     """
@@ -337,6 +353,9 @@ def atomic_download(
         Largest file to accept. A response that declares more is refused without reading
         the body; one that turns out larger is abandoned as soon as the limit is passed,
         and the temporary file is removed.
+    on_response : Optional[Callable]
+        Called with the response as soon as it arrives, before any check; lets a caller
+        look at the status and headers of a failed download.
     **request_kwargs
         Additional keyword arguments for the request
 
@@ -362,6 +381,8 @@ def atomic_download(
         # Extract timeout from kwargs to avoid conflicts
         timeout = request_kwargs.pop("timeout", 30)
         response = requests.get(url, stream=True, timeout=timeout, **request_kwargs)
+        if on_response is not None:
+            on_response(response)
 
         # Check status code
         if response.status_code != 200:

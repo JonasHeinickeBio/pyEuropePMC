@@ -54,7 +54,7 @@ def _search(records):
     return client
 
 
-def _downloader(behaviour):
+def _downloader(behaviour, by_doi=None):
     """A FullTextClient whose ``download_pdf_by_pmcid`` follows ``behaviour[pmcid]``.
 
     A ``bytes`` value is written to the target path; ``None`` means "no PDF anywhere"
@@ -63,25 +63,42 @@ def _downloader(behaviour):
     calls: list[str] = []
     limits: list[int | None] = []
     dois: dict[str, str | None] = {}
+    access: dict[str, bool | None] = {}
 
-    def download(pmcid, output_path=None, rate_limiter=None, doi=None, max_bytes=None):
+    def download(
+        pmcid, output_path=None, rate_limiter=None, doi=None, max_bytes=None, open_access=None
+    ):
         calls.append(pmcid)
         limits.append(max_bytes)
         dois[pmcid] = doi
+        access[pmcid] = open_access
         outcome = behaviour[pmcid]
         if isinstance(outcome, Exception):
             raise outcome
         if outcome is None:
-            return None
+            return None, None
         Path(output_path).write_bytes(outcome)
-        return Path(output_path)
+        return Path(output_path), "unpaywall"
+
+    doi_calls: list[tuple[str, tuple[str, ...]]] = []
+
+    def download_by_doi(doi, output_path, max_bytes=None, skip=()):
+        doi_calls.append((doi, tuple(skip)))
+        outcome = (by_doi or {}).get(doi.lower())
+        if outcome is None:
+            return None, None
+        Path(output_path).write_bytes(outcome)
+        return Path(output_path), "openalex"
 
     client = MagicMock()
-    client.download_pdf_by_pmcid.side_effect = download
+    client.download_pdf_with_source.side_effect = download
+    client.download_pdf_by_doi.side_effect = download_by_doi
     srv._fulltext_client_cache.set(client)
+    client.doi_calls = doi_calls
     client.calls = calls
     client.limits = limits
     client.dois = dois
+    client.access = access
     return client
 
 
@@ -304,6 +321,16 @@ class TestDownloadPapersPdf:
 
         assert client.limits == [pdf.MAX_PDF_BYTES]
 
+    def test_the_open_access_flag_reaches_the_downloader_and_the_source_the_result(self):
+        _search([rec("1", "PMC1", oa="Y"), rec("2", "PMC2", oa="N"), rec("3", "PMC3", oa="")])
+        client = _downloader({"PMC1": PDF_BYTES, "PMC2": PDF_BYTES, "PMC3": PDF_BYTES})
+
+        out = _run(srv.download_papers_pdf(ids=["PMC1", "PMC2", "PMC3"]))
+
+        assert client.access == {"PMC1": True, "PMC2": False, "PMC3": None}
+        assert [r.get("open_access") for r in out["results"]] == [True, False, None]
+        assert [r["source"] for r in out["results"]] == ["unpaywall"] * 3
+
     def test_calls_for_the_same_file_wait_for_each_other(self, tmp_path):
         """Two overlapping downloads of one PMCID must never run the downloader at once."""
         import threading
@@ -313,7 +340,9 @@ class TestDownloadPapersPdf:
         peak = 0
         guard = threading.Lock()
 
-        def slow(pmcid, output_path=None, rate_limiter=None, doi=None, max_bytes=None):
+        def slow(
+            pmcid, output_path=None, rate_limiter=None, doi=None, max_bytes=None, open_access=None
+        ):
             nonlocal active, peak
             with guard:
                 active += 1
@@ -322,10 +351,10 @@ class TestDownloadPapersPdf:
             Path(output_path).write_bytes(PDF_BYTES)
             with guard:
                 active -= 1
-            return Path(output_path)
+            return Path(output_path), "pmc_open_data"
 
         client = MagicMock()
-        client.download_pdf_by_pmcid.side_effect = slow
+        client.download_pdf_with_source.side_effect = slow
         srv._fulltext_client_cache.set(client)
         directory = tmp_path / "pdfs"
 
@@ -344,13 +373,15 @@ class TestDownloadPapersPdf:
 
         both_inside = threading.Barrier(2, timeout=5)
 
-        def rendezvous(pmcid, output_path=None, rate_limiter=None, doi=None, max_bytes=None):
+        def rendezvous(
+            pmcid, output_path=None, rate_limiter=None, doi=None, max_bytes=None, open_access=None
+        ):
             both_inside.wait()  # only passes if the two downloads overlap
             Path(output_path).write_bytes(PDF_BYTES)
-            return Path(output_path)
+            return Path(output_path), "pmc_open_data"
 
         client = MagicMock()
-        client.download_pdf_by_pmcid.side_effect = rendezvous
+        client.download_pdf_with_source.side_effect = rendezvous
         srv._fulltext_client_cache.set(client)
         directory = tmp_path / "pdfs"
 
@@ -361,3 +392,102 @@ class TestDownloadPapersPdf:
             )
 
         assert [o["status"] for o in _run(two())] == ["ok", "ok"]
+
+
+class TestPapersOutsidePmc:
+    def test_a_doi_without_pmcid_is_fetched_by_doi_into_a_hashed_name(self, tmp_path):
+        _search([rec("5", None, "10.1234/Abc.1")])
+        client = _downloader({}, {"10.1234/abc.1": PDF_BYTES})
+
+        out = _run(srv.download_papers_pdf(ids=["10.1234/Abc.1"]))
+
+        item = out["results"][0]
+        assert item["status"] == "ok" and item["source"] == "openalex"
+        assert "pmcid" not in item
+        assert Path(item["path"]).name == pdf.doi_path(Path("."), "10.1234/Abc.1").name
+        assert Path(item["path"]).parent == (tmp_path / "pdfs").resolve()
+        assert client.calls == []
+        assert client.doi_calls == [("10.1234/Abc.1", ())]
+
+    def test_a_doi_europe_pmc_has_never_heard_of_is_still_tried(self):
+        _search([])
+        client = _downloader({}, {"10.1234/x": PDF_BYTES})
+
+        out = _run(srv.download_papers_pdf(ids=["10.1234/x"]))
+
+        assert out["results"][0]["status"] == "ok"
+        assert client.doi_calls == [("10.1234/x", ())]
+
+    def test_a_pmid_with_neither_pmcid_nor_doi_has_nothing_to_ask_for(self):
+        _search([rec("5", None, None)])
+        client = _downloader({})
+
+        out = _run(srv.download_papers_pdf(ids=["5"]))
+
+        assert out["results"][0]["status"] == "not_in_pmc"
+        assert client.doi_calls == [] and client.calls == []
+
+    def test_an_unknown_pmid_is_still_not_found(self):
+        _search([])
+        _downloader({})
+        assert _run(srv.download_papers_pdf(ids=["5"]))["results"][0]["status"] == "not_found"
+
+    def test_a_pmc_paper_with_no_pdf_falls_back_to_the_doi_sources_without_unpaywall(self):
+        _search([rec("1", "PMC1", "10.1234/one")])
+        client = _downloader({"PMC1": None}, {"10.1234/one": PDF_BYTES})
+
+        out = _run(srv.download_papers_pdf(ids=["PMC1"]))
+
+        assert out["results"][0]["status"] == "ok"
+        assert out["results"][0]["source"] == "openalex"
+        assert client.doi_calls == [("10.1234/one", ("unpaywall",))]
+        assert Path(out["results"][0]["path"]).name == "PMC1.pdf"
+
+    def test_nothing_anywhere_is_no_pdf_and_names_the_input(self):
+        _search([rec("5", None, "10.1234/none")])
+        _downloader({})
+        item = _run(srv.download_papers_pdf(ids=["10.1234/none"]))["results"][0]
+        assert item["status"] == "no_pdf" and "10.1234/none" in item["error"]
+
+    def test_the_same_doi_twice_is_one_download(self):
+        _search([rec("5", None, "10.1234/Same")])
+        client = _downloader({}, {"10.1234/same": PDF_BYTES})
+
+        out = _run(srv.download_papers_pdf(ids=["10.1234/Same", "doi:10.1234/same"]))
+
+        assert [r["status"] for r in out["results"]] == ["ok", "duplicate"]
+        assert len(client.doi_calls) == 1
+
+    def test_a_doi_and_its_pmcid_are_one_paper(self):
+        _search([rec("1", "PMC1", "10.1234/one")])
+        client = _downloader({"PMC1": PDF_BYTES})
+
+        out = _run(srv.download_papers_pdf(ids=["PMC1", "10.1234/one"]))
+
+        assert [r["status"] for r in out["results"]] == ["ok", "duplicate"]
+        assert client.calls == ["PMC1"]
+
+
+class TestDoiPath:
+    def test_the_name_is_readable_safe_and_stable(self, tmp_path):
+        path = pdf.doi_path(tmp_path, "10.1038/nature14539")
+        assert path.parent == tmp_path
+        assert path.name.startswith("10.1038_nature14539-") and path.suffix == ".pdf"
+        assert path == pdf.doi_path(tmp_path, "10.1038/NATURE14539")
+
+    def test_dois_differing_only_in_replaced_characters_stay_apart(self, tmp_path):
+        assert pdf.doi_path(tmp_path, "10.1234/a(b)") != pdf.doi_path(tmp_path, "10.1234/a[b]")
+
+    def test_nothing_in_a_doi_can_leave_the_directory(self, tmp_path):
+        path = pdf.doi_path(tmp_path, "10.1234/../../etc/passwd")
+        assert path.parent == tmp_path and "/" not in path.name and not path.name.startswith(".")
+
+    def test_a_very_long_doi_gives_a_short_name(self, tmp_path):
+        assert len(pdf.doi_path(tmp_path, "10.1234/" + "a" * 500).name) < 100
+
+    @pytest.mark.parametrize(
+        "bad", ["", "nature14539", "10.1/", "10.12/ab", "../10.1234/x", "10.1234/x\n"]
+    )
+    def test_anything_but_a_doi_is_refused(self, tmp_path, bad):
+        with pytest.raises(ValueError, match="not a DOI"):
+            pdf.doi_path(tmp_path, bad)

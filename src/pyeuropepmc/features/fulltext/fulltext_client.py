@@ -5,7 +5,7 @@ This module provides functionality to download and access full text content
 from Europe PMC, including PDF, XML, and HTML formats.
 """
 
-from collections.abc import Callable, Iterable
+from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from contextlib import suppress
 import gzip
@@ -20,7 +20,7 @@ import threading
 from threading import Lock, local
 import time
 from typing import IO, Any, TypedDict
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlparse
 import zipfile
 
 from defusedxml import DefusedXmlException
@@ -34,7 +34,12 @@ from pyeuropepmc.cache.cache import CacheBackend, CacheConfig
 from pyeuropepmc.core.base import APIClientError, BaseAPIClient
 from pyeuropepmc.core.error_codes import ErrorCodes
 from pyeuropepmc.core.exceptions import FullTextError, UnpaywallError
-from pyeuropepmc.utils.helpers import atomic_download, atomic_write
+from pyeuropepmc.utils.helpers import (
+    DownloadTooLarge,
+    atomic_download,
+    atomic_write,
+    copy_capped,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -438,8 +443,7 @@ class RateLimiter:
             }
 
 
-class _PdfTooLarge(Exception):
-    """A PDF download passed the caller's ``max_bytes``; abandoned, not an error."""
+_PdfTooLarge = DownloadTooLarge
 
 
 class FullTextClient(BaseAPIClient):
@@ -475,6 +479,13 @@ class FullTextClient(BaseAPIClient):
     PDF_ZIP_URL = (
         "https://ftp.ebi.ac.uk/pub/databases/pmc/pdf/OA/PMCxxxx{batch:03d}/PMC{pmcid}.zip"
     )
+
+    # europepmc.org answers scripted clients with a Cloudflare browser check (HTTP 403 and a
+    # ``cf-mitigated: challenge`` header). It is not passed; once seen, the host's PDF steps
+    # are skipped for this long so a batch does not knock on a closed door for every paper.
+    CHALLENGE_COOLDOWN_SECONDS = 600
+    _challenged_hosts: dict[str, float] = {}
+    _challenged_lock = Lock()
 
     # HTML endpoints (no direct API)
     HTML_ARTICLE_URL_MED = "https://europepmc.org/article/MED/{medid}#free-full-text"
@@ -1185,6 +1196,7 @@ class FullTextClient(BaseAPIClient):
         rate_limiter: RateLimiter | None = None,
         doi: str | None = None,
         max_bytes: int | None = None,
+        open_access: bool | None = None,
     ) -> Path | None:
         """
         Download PDF of a paper from Europe PMC using its PMC ID.
@@ -1211,6 +1223,10 @@ class FullTextClient(BaseAPIClient):
         max_bytes : int, optional
             Largest PDF to accept from any step. A source that serves more is abandoned
             while downloading (or from its declared size) and the next step is tried.
+        open_access : bool, optional
+            Whether Europe PMC lists the article as open access (``isOpenAccess``). When
+            ``False`` the two steps that only hold open-access articles are skipped: in a
+            check of 100 papers neither had a PDF for any of the 7 that were not.
 
         Returns
         -------
@@ -1221,6 +1237,30 @@ class FullTextClient(BaseAPIClient):
         ------
         FullTextError
             If PMC ID is invalid
+        """
+        path, _source = self.download_pdf_with_source(
+            pmcid, output_path, rate_limiter, doi=doi, max_bytes=max_bytes, open_access=open_access
+        )
+        return path
+
+    def download_pdf_with_source(
+        self,
+        pmcid: str,
+        output_path: str | Path | None = None,
+        rate_limiter: RateLimiter | None = None,
+        doi: str | None = None,
+        max_bytes: int | None = None,
+        open_access: bool | None = None,
+    ) -> tuple[Path | None, str | None]:
+        """
+        Like :meth:`download_pdf_by_pmcid`, and also say which step supplied the file.
+
+        Returns
+        -------
+        tuple of (Path or None, str or None)
+            The saved file and the name of the step that produced it: ``cache``,
+            ``europepmc_render``, ``europepmc_backend``, ``pmc_open_data``,
+            ``europepmc_ftp_zip`` or ``unpaywall``; ``(None, None)`` when every step failed.
         """
         normalized_pmcid = self._validate_pmcid(pmcid)
         if output_path is None:
@@ -1235,41 +1275,94 @@ class FullTextClient(BaseAPIClient):
         cached_file = self._check_cache_for_file(normalized_pmcid, "pdf", output_path)
         if cached_file:
             self.logger.info(f"Using cached PDF for PMC{normalized_pmcid}")
-            return cached_file
+            return cached_file, "cache"
 
         # Rate limit before network requests
         if rate_limiter is not None:
             rate_limiter.wait_if_needed()
 
-        # 1. Try the ?pdf=render endpoint
         render_url = self.PDF_RENDER_URL.format(pmcid=normalized_pmcid)
-        if self._try_pdf_endpoint(render_url, output_path, "render endpoint", max_bytes):
-            self._save_to_cache(output_path, normalized_pmcid, "pdf")
-            return output_path
-
-        # 2. Try the backend render service
         backend_url = self.PDF_BACKEND_URL.format(pmcid=normalized_pmcid)
-        if self._try_pdf_endpoint(backend_url, output_path, "backend service", max_bytes):
-            self._save_to_cache(output_path, normalized_pmcid, "pdf")
-            return output_path
-
-        # 3. NCBI's open-data copy of the PMC Open Access Subset
-        if self._try_pdf_from_pmc_cloud(normalized_pmcid, output_path, max_bytes):
-            self._save_to_cache(output_path, normalized_pmcid, "pdf")
-            return output_path
-
-        # 4. Try the ZIP archive (Europe PMC OA bulk)
-        if self._try_pdf_from_zip(normalized_pmcid, output_path, max_bytes):
-            self._save_to_cache(output_path, normalized_pmcid, "pdf")
-            return output_path
-
-        # 5. Final fallback: Unpaywall via DOI lookup
-        if self._try_unpaywall_pdf(normalized_pmcid, output_path, doi=doi, max_bytes=max_bytes):
-            self._save_to_cache(output_path, normalized_pmcid, "pdf")
-            return output_path
+        steps: list[tuple[str, bool, Callable[[], bool]]] = [
+            (
+                "europepmc_render",
+                False,
+                lambda: self._try_pdf_endpoint(
+                    render_url, output_path, "render endpoint", max_bytes
+                ),
+            ),
+            (
+                "europepmc_backend",
+                False,
+                lambda: self._try_pdf_endpoint(
+                    backend_url, output_path, "backend service", max_bytes
+                ),
+            ),
+            (
+                "pmc_open_data",
+                True,
+                lambda: self._try_pdf_from_pmc_cloud(normalized_pmcid, output_path, max_bytes),
+            ),
+            (
+                "europepmc_ftp_zip",
+                True,
+                lambda: self._try_pdf_from_zip(normalized_pmcid, output_path, max_bytes),
+            ),
+            (
+                "unpaywall",
+                False,
+                lambda: self._try_unpaywall_pdf(
+                    normalized_pmcid, output_path, doi=doi, max_bytes=max_bytes
+                ),
+            ),
+        ]
+        for name, open_access_only, step in steps:
+            if open_access_only and open_access is False:
+                self.logger.debug(f"Skipping {name} for PMC{normalized_pmcid}: not open access")
+                continue
+            if step():
+                self._save_to_cache(output_path, normalized_pmcid, "pdf")
+                return output_path, name
 
         self.logger.info(f"PDF not available or invalid for PMC{normalized_pmcid}")
-        return None
+        return None, None
+
+    def download_pdf_by_doi(
+        self,
+        doi: str,
+        output_path: str | Path,
+        max_bytes: int | None = None,
+        skip: tuple[str, ...] = (),
+    ) -> tuple[Path | None, str | None]:
+        """
+        Download an open PDF of a paper by its DOI, for papers that are not in PubMed Central.
+
+        Asks arXiv (for arXiv DOIs), Unpaywall (needs this client's e-mail), OpenAlex and
+        Semantic Scholar for links to open copies and takes the first that serves a PDF.
+        Links must point to public hosts; see :mod:`pyeuropepmc.features.fulltext.oa_pdf`.
+
+        Parameters
+        ----------
+        doi : str
+            The DOI, without ``doi:`` or URL prefix
+        output_path : str or Path
+            Where to save the file
+        max_bytes : int, optional
+            Largest PDF to accept
+        skip : tuple of str, optional
+            Sources not to ask, e.g. ``("unpaywall",)`` after the PMC chain already did
+
+        Returns
+        -------
+        tuple of (Path or None, str or None)
+            The saved file and the source that supplied it (``arxiv``, ``unpaywall``,
+            ``openalex`` or ``semantic_scholar``), or ``(None, None)``.
+        """
+        from pyeuropepmc.features.fulltext.oa_pdf import download_pdf_by_doi
+
+        return download_pdf_by_doi(
+            doi, output_path, email=self.email, max_bytes=max_bytes, skip=skip
+        )
 
     def download_xml_by_pmcid(
         self,
@@ -2025,6 +2118,27 @@ class FullTextClient(BaseAPIClient):
             self.logger.error(f"Error validating PDF {file_path}: {e}")
             return False
 
+    @classmethod
+    def _in_challenge_cooldown(cls, host: str) -> bool:
+        """Whether ``host`` showed a browser check less than the cooldown ago."""
+        with cls._challenged_lock:
+            return cls._challenged_hosts.get(host, 0.0) > time.monotonic()
+
+    @classmethod
+    def _note_challenge(cls, host: str, response: Any) -> None:
+        """Start the cooldown of ``host`` when ``response`` is Cloudflare's browser check."""
+        if response.status_code == 403 and (
+            str(response.headers.get("cf-mitigated", "")).lower() == "challenge"
+        ):
+            with cls._challenged_lock:
+                already = cls._challenged_hosts.get(host, 0.0) > time.monotonic()
+                cls._challenged_hosts[host] = time.monotonic() + cls.CHALLENGE_COOLDOWN_SECONDS
+            if not already:
+                logger.warning(
+                    f"{host} is showing a browser check to scripted clients; skipping its PDF "
+                    f"pages for {cls.CHALLENGE_COOLDOWN_SECONDS // 60} minutes"
+                )
+
     def _try_pdf_endpoint(
         self, url: str, output_path: Path, endpoint_name: str, max_bytes: int | None = None
     ) -> bool:
@@ -2045,6 +2159,10 @@ class FullTextClient(BaseAPIClient):
         bool
             True if download successful and valid, False otherwise
         """
+        host = urlparse(url).netloc
+        if self._in_challenge_cooldown(host):
+            self.logger.debug(f"Skipping {endpoint_name}: {host} is showing a browser check")
+            return False
         try:
             self.logger.debug(f"Trying PDF download from {endpoint_name}: {url}")
 
@@ -2056,6 +2174,7 @@ class FullTextClient(BaseAPIClient):
                 validator=self._validate_pdf_content,
                 content_type_check="application/pdf",
                 max_bytes=max_bytes,
+                on_response=lambda response: self._note_challenge(host, response),
                 timeout=15,
             )
 
@@ -2467,16 +2586,7 @@ class FullTextClient(BaseAPIClient):
             )
             return False
 
-    @staticmethod
-    def _copy_capped(chunks: Iterable[bytes], sink: IO[bytes], max_bytes: int | None) -> None:
-        """Write ``chunks`` to ``sink``; raise ``_PdfTooLarge`` once more than ``max_bytes``."""
-        written = 0
-        for chunk in chunks:
-            if chunk:
-                written += len(chunk)
-                if max_bytes is not None and written > max_bytes:
-                    raise _PdfTooLarge(max_bytes)
-                sink.write(chunk)
+    _copy_capped = staticmethod(copy_capped)
 
     @staticmethod
     def _save_pdf_stream(response: Any, output_path: Path, max_bytes: int | None) -> bool:

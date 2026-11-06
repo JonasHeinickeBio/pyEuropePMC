@@ -210,3 +210,105 @@ class TestPdfZipUrl:
         with patch("requests.get", side_effect=requests.Timeout("slow")) as get:
             assert not client._try_pdf_from_zip("1", tmp_path / "a.pdf")
         assert get.call_count == 2
+
+
+class TestChainBookkeeping:
+    """Which step supplied the file, which steps an open_access=False paper skips, and the
+    cooldown after a browser check."""
+
+    @staticmethod
+    def _steps(client, *, succeed=None):
+        """Replace every step by a spy that answers True only for ``succeed``."""
+        asked = []
+        for name in (
+            "_try_pdf_endpoint",
+            "_try_pdf_from_pmc_cloud",
+            "_try_pdf_from_zip",
+            "_try_unpaywall_pdf",
+        ):
+
+            def spy(*args, _name=name, **kwargs):
+                asked.append(_name)
+                return _name == succeed
+
+            setattr(client, name, spy)
+        return asked
+
+    @pytest.mark.parametrize(
+        ("winner", "source"),
+        [
+            ("_try_pdf_from_pmc_cloud", "pmc_open_data"),
+            ("_try_pdf_from_zip", "europepmc_ftp_zip"),
+            ("_try_unpaywall_pdf", "unpaywall"),
+        ],
+    )
+    def test_the_winning_step_is_named(self, client, tmp_path, winner, source):
+        self._steps(client, succeed=winner)
+        path, name = client.download_pdf_with_source("PMC1", tmp_path / "a.pdf")
+        assert (path, name) == (tmp_path / "a.pdf", source)
+
+    def test_every_step_failing_gives_nothing(self, client, tmp_path):
+        self._steps(client)
+        assert client.download_pdf_with_source("PMC1", tmp_path / "a.pdf") == (None, None)
+
+    def test_download_pdf_by_pmcid_still_returns_just_the_path(self, client, tmp_path):
+        self._steps(client, succeed="_try_unpaywall_pdf")
+        assert client.download_pdf_by_pmcid("PMC1", tmp_path / "a.pdf") == tmp_path / "a.pdf"
+
+    def test_a_closed_article_skips_the_two_open_access_only_steps(self, client, tmp_path):
+        asked = self._steps(client, succeed="_try_unpaywall_pdf")
+        client.download_pdf_with_source("PMC1", tmp_path / "a.pdf", open_access=False)
+        assert "_try_pdf_from_pmc_cloud" not in asked
+        assert "_try_pdf_from_zip" not in asked
+        assert asked[-1] == "_try_unpaywall_pdf"
+
+    @pytest.mark.parametrize("flag", [None, True])
+    def test_otherwise_every_step_runs(self, client, tmp_path, flag):
+        asked = self._steps(client)
+        client.download_pdf_with_source("PMC1", tmp_path / "a.pdf", open_access=flag)
+        assert "_try_pdf_from_pmc_cloud" in asked and "_try_pdf_from_zip" in asked
+
+
+class TestChallengeCooldown:
+    @pytest.fixture(autouse=True)
+    def _clean(self):
+        FullTextClient._challenged_hosts.clear()
+        yield
+        FullTextClient._challenged_hosts.clear()
+
+    @staticmethod
+    def _challenge():
+        response = _response(b"<html>Just a moment</html>", content_type="text/html")
+        response.status_code = 403
+        response.headers["cf-mitigated"] = "challenge"
+        return response
+
+    def test_a_browser_check_silences_the_host_for_the_cooldown(self, client, tmp_path):
+        with patch("requests.get", return_value=self._challenge()) as get:
+            assert not client._try_pdf_endpoint("https://europepmc.org/a", tmp_path / "a.pdf", "x")
+            assert not client._try_pdf_endpoint("https://europepmc.org/b", tmp_path / "b.pdf", "x")
+            assert not client._try_pdf_endpoint("https://europepmc.org/c", tmp_path / "c.pdf", "x")
+        assert get.call_count == 1  # the later papers do not knock again
+
+    def test_other_hosts_are_not_affected(self, client, tmp_path):
+        with patch("requests.get", return_value=self._challenge()):
+            client._try_pdf_endpoint("https://europepmc.org/a", tmp_path / "a.pdf", "x")
+        with patch("requests.get", return_value=_response(PDF)) as get:
+            assert client._try_pdf_endpoint("https://example.org/p.pdf", tmp_path / "b.pdf", "x")
+        assert get.call_count == 1
+
+    def test_a_plain_403_is_not_a_browser_check(self, client, tmp_path):
+        refused = _response(b"no", content_type="text/html")
+        refused.status_code = 403
+        with patch("requests.get", return_value=refused) as get:
+            client._try_pdf_endpoint("https://europepmc.org/a", tmp_path / "a.pdf", "x")
+            client._try_pdf_endpoint("https://europepmc.org/b", tmp_path / "b.pdf", "x")
+        assert get.call_count == 2
+
+    def test_the_cooldown_ends(self, client, tmp_path, monkeypatch):
+        with patch("requests.get", return_value=self._challenge()):
+            client._try_pdf_endpoint("https://europepmc.org/a", tmp_path / "a.pdf", "x")
+        FullTextClient._challenged_hosts["europepmc.org"] = 0.0
+        with patch("requests.get", return_value=_response(PDF)) as get:
+            assert client._try_pdf_endpoint("https://europepmc.org/b", tmp_path / "b.pdf", "x")
+        assert get.call_count == 1

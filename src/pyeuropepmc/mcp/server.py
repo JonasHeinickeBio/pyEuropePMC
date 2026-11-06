@@ -2123,26 +2123,32 @@ def _pdf_status(
 ) -> dict[str, Any]:
     """Status and identifying fields of one input before any PDF is fetched.
 
-    Unlike full-text XML, a PDF can come from outside Europe PMC's open-access set (the
-    publisher's copy through Unpaywall), so a closed article is tried rather than refused;
-    only a paper outside PubMed Central has nothing to ask for, since the download is keyed
-    by PMCID.
+    A paper in PubMed Central is fetched by PMCID; any other paper with a DOI is looked for
+    in the open copies third parties know of (arXiv, Unpaywall, OpenAlex, Semantic Scholar),
+    including a DOI Europe PMC has never heard of. Only a paper with neither a PMCID nor a
+    DOI has nothing to ask for.
     """
     item: dict[str, Any] = {"id": entry.raw, "id_type": entry.kind, "status": "ok"}
     pmcid = str((record or {}).get("pmcid") or "")
+    doi = oa.clean_doi(str((record or {}).get("doi") or ""))
+    if not doi and entry.kind == "doi":
+        doi = entry.value
     if entry.kind == "invalid":
         item.update(status="invalid", error=entry.problem)
-    elif error and record is None:
+        return item
+    if error and record is None:
         item.update(status="error", error=error)
-    elif record is None:
-        item["status"] = "not_found"
-    elif not pmcid:
-        item["status"] = "not_in_pmc"
-    else:
+        return item
+    if pmcid:
         item["pmcid"] = pmcid
-        doi = oa.clean_doi(str((record or {}).get("doi") or ""))
-        if doi:
-            item["doi"] = doi
+    if doi:
+        item["doi"] = doi
+    if not pmcid and not doi:
+        item["status"] = "not_found" if record is None else "not_in_pmc"
+        return item
+    flag = str((record or {}).get("isOpenAccess") or "")
+    if flag in ("Y", "N"):
+        item["open_access"] = flag == "Y"
     return item
 
 
@@ -2157,31 +2163,48 @@ def _pdf_lock(target: Path) -> threading.Lock:
 
 
 def _download_one_pdf(
-    pmcid: str, directory: Path, overwrite: bool, doi: str | None = None
+    pmcid: str,
+    directory: Path,
+    overwrite: bool,
+    doi: str | None = None,
+    open_access: bool | None = None,
 ) -> dict[str, Any]:
-    """Save one PDF as ``<directory>/<PMCID>.pdf`` and describe it (blocking).
+    """Save one PDF as ``<directory>/<PMCID>.pdf`` (``<DOI>-<hash>.pdf`` for ``pmcid=""``).
 
     Returns the fields to merge into the result item: ``status`` ``ok``, ``exists`` (the file
     was already there and ``overwrite`` is false), ``no_pdf`` or ``error``. Calls for the same
     file wait for each other, so none sees or removes a half-written copy; other files
     proceed in parallel.
     """
-    target = pdf.pdf_path(directory, pmcid)
+    target = pdf.pdf_path(directory, pmcid) if pmcid else pdf.doi_path(directory, doi or "")
     with _pdf_lock(target):
-        return _save_pdf(pmcid, target, overwrite, doi)
+        return _save_pdf(pmcid, target, overwrite, doi, open_access)
 
 
-def _save_pdf(pmcid: str, target: Path, overwrite: bool, doi: str | None) -> dict[str, Any]:
-    directory = target.parent
+def _save_pdf(
+    pmcid: str, target: Path, overwrite: bool, doi: str | None, open_access: bool | None = None
+) -> dict[str, Any]:
+    name = pmcid or doi or target.name
     if target.exists() and not overwrite:
         problem = pdf.check_pdf(target)
         if problem is None:
             return {"status": "exists", **pdf.describe(target)}
         target.unlink()  # a truncated or foreign file under our name: fetch it again
-    directory.mkdir(parents=True, exist_ok=True)
+    target.parent.mkdir(parents=True, exist_ok=True)
     client = _fulltext_client_cache.get()
+    source: str | None = None
     try:
-        saved = client.download_pdf_by_pmcid(pmcid, target, doi=doi, max_bytes=pdf.MAX_PDF_BYTES)
+        saved: Path | None = None
+        if pmcid:
+            saved, source = client.download_pdf_with_source(
+                pmcid, target, doi=doi, max_bytes=pdf.MAX_PDF_BYTES, open_access=open_access
+            )
+        if saved is None and doi:
+            # outside PubMed Central, or nothing there: the other open copies. Unpaywall is
+            # left out after the PMC chain, which already asked it.
+            saved, source = client.download_pdf_by_doi(
+                doi, target, max_bytes=pdf.MAX_PDF_BYTES, skip=("unpaywall",) if pmcid else ()
+            )
     except FullTextError as exc:
         return {"status": "error", "error": str(exc)}
     except OSError as exc:
@@ -2189,23 +2212,30 @@ def _save_pdf(pmcid: str, target: Path, overwrite: bool, doi: str | None) -> dic
     if saved is None or not target.exists():
         return {
             "status": "no_pdf",
-            "error": f"No PDF could be fetched for {pmcid}. Open-access articles are taken from "
-            "NCBI's PMC Open Access Subset or Europe PMC; for a paper outside both, set "
-            "UNPAYWALL_EMAIL in the server's environment so the open copy Unpaywall knows "
-            "is tried as well",
+            "error": f"No PDF could be fetched for {name}. Open-access articles are taken from "
+            "NCBI's PMC Open Access Subset or Europe PMC, other papers from arXiv, OpenAlex "
+            "and Semantic Scholar; set UNPAYWALL_EMAIL in the server's environment so the "
+            "open copy Unpaywall knows is tried as well. A paper with no open copy cannot "
+            "be downloaded",
         }
     problem = pdf.check_pdf(target)
     if problem is not None:
         target.unlink(missing_ok=True)
-        return {"status": "error", "error": f"Discarded the download of {pmcid}: {problem}"}
-    return {"status": "ok", **pdf.describe(target)}
+        return {"status": "error", "error": f"Discarded the download of {name}: {problem}"}
+    return {"status": "ok", "source": source, **pdf.describe(target)}
 
 
 async def _pdf_or_error(
-    pmcid: str, directory: Path, overwrite: bool, doi: str | None
+    pmcid: str,
+    directory: Path,
+    overwrite: bool,
+    doi: str | None,
+    open_access: bool | None = None,
 ) -> dict[str, Any]:
     try:
-        return await _run_blocking(_download_one_pdf, pmcid, directory, overwrite, doi)
+        return await _run_blocking(
+            _download_one_pdf, pmcid, directory, overwrite, doi, open_access
+        )
     except Exception as exc:  # one paper must not take the others down with it
         return {"status": "error", "error": f"{type(exc).__name__}: {exc}"}
 
@@ -2223,8 +2253,8 @@ async def download_papers_pdf(
     ids: Annotated[
         list[str],
         Field(
-            description="PMIDs, PMCIDs and DOIs, mixed allowed. A paper needs a PMCID "
-            "(PubMed Central) to be downloaded",
+            description="PMIDs, PMCIDs and DOIs, mixed allowed. A paper in PubMed Central "
+            "is fetched by its PMCID; any other paper needs a DOI",
             min_length=1,
             max_length=20,
         ),
@@ -2236,12 +2266,16 @@ async def download_papers_pdf(
     """Save the PDFs of several papers on the machine the server runs on.
 
     Files go to PYEUROPEPMC_MCP_DOWNLOAD_DIR (default ~/Downloads/pyeuropepmc) as
-    <PMCID>.pdf; the caller cannot choose a path. Each PDF is looked for at Europe PMC and,
-    with UNPAYWALL_EMAIL set in the server's environment, at the open copy Unpaywall knows.
+    <PMCID>.pdf, or <DOI>-<hash>.pdf for a paper outside PubMed Central; the caller cannot
+    choose a path. A PMC paper is looked for at NCBI's open-access copy and Europe PMC; any
+    paper with a DOI also at arXiv, OpenAlex, Semantic Scholar and, with UNPAYWALL_EMAIL
+    set in the server's environment, at the open copy Unpaywall knows. Only open copies are
+    fetched; a paper that has none comes back as no_pdf.
     It is checked to be a PDF and under 100 MB, or discarded. Returns the path, size and
-    SHA-256 of every file. The PDFs stay on the server's disk: with a remote HTTP server
-    they are not sent to the caller. Each result has a status: ok, exists (already saved,
-    not fetched again), not_found, invalid, not_in_pmc, duplicate, no_pdf or error.
+    SHA-256 of every file and the source that supplied it. The PDFs stay on the server's
+    disk: with a remote HTTP server they are not sent to the caller. Each result has a
+    status: ok, exists (already saved, not fetched again), not_found, invalid, not_in_pmc,
+    duplicate, no_pdf or error.
     Use `get_paper_fulltext` to read a paper instead of saving it.
     """
     _require_available(FULLTEXT_AVAILABLE, "FullTextClient")
@@ -2256,10 +2290,11 @@ async def download_papers_pdf(
             entry, bm.lookup(index, entry), errors.get((entry.kind, entry.value.lower()))
         )
         if item["status"] == "ok":
-            if item["pmcid"] in first_by_pmcid:
-                item.update(status="duplicate", duplicate_of=first_by_pmcid[item["pmcid"]])
+            key = item.get("pmcid") or str(item["doi"]).lower()
+            if key in first_by_pmcid:
+                item.update(status="duplicate", duplicate_of=first_by_pmcid[key])
             else:
-                first_by_pmcid[item["pmcid"]] = pos
+                first_by_pmcid[key] = pos
                 candidates.append(pos)
         results.append(item)
 
@@ -2268,7 +2303,13 @@ async def download_papers_pdf(
         window = candidates[start : start + _PDF_CONCURRENCY]
         fetched = await asyncio.gather(
             *(
-                _pdf_or_error(results[p]["pmcid"], directory, overwrite, results[p].get("doi"))
+                _pdf_or_error(
+                    results[p].get("pmcid", ""),
+                    directory,
+                    overwrite,
+                    results[p].get("doi"),
+                    results[p].get("open_access"),
+                )
                 for p in window
             )
         )

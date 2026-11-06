@@ -2,7 +2,7 @@
 
 The only MCP tool that writes outside the caches is ``download_papers_pdf``, so the rules
 that keep it safe live here and are tested without a network: the caller never chooses a
-path (the file name comes from a validated PMCID, the directory from the server's
+path (the file name comes from a validated PMCID or DOI, the directory from the server's
 environment), and a file that is not a PDF or is too large is removed again.
 """
 
@@ -22,6 +22,7 @@ DEFAULT_DIR = Path("~/Downloads/pyeuropepmc")
 MAX_PDF_BYTES = 100 * 1024 * 1024
 
 _PMCID_RE = re.compile(r"^PMC\d{1,10}$")
+_DOI_RE = re.compile(r"^10\.\d{4,9}/\S+$")
 _PDF_MAGIC = b"%PDF"
 
 
@@ -40,6 +41,20 @@ def pdf_path(directory: Path, pmcid: str) -> Path:
     if not _PMCID_RE.fullmatch(pmcid):
         raise ValueError(f"not a PMCID: {pmcid!r}")
     return directory / f"{pmcid}.pdf"
+
+
+def doi_path(directory: Path, doi: str) -> Path:
+    """``<directory>/<DOI with unsafe characters replaced>-<hash>.pdf`` for a paper without PMCID.
+
+    Only letters, digits, ``.``, ``_`` and ``-`` survive in the name and a short hash of the
+    DOI keeps two DOIs that differ only in replaced characters apart, so the DOI cannot
+    steer the file out of ``directory``.
+    """
+    if not _DOI_RE.fullmatch(doi):
+        raise ValueError(f"not a DOI: {doi!r}")
+    stem = re.sub(r"[^A-Za-z0-9._-]+", "_", doi.lower())[:80].strip("._-")
+    digest = hashlib.sha256(doi.lower().encode()).hexdigest()[:8]
+    return directory / f"{stem}-{digest}.pdf"
 
 
 def check_pdf(path: Path) -> str | None:

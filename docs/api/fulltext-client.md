@@ -80,6 +80,18 @@ Runs only the FTP archive step, without the file cache. The archive name is deri
 
 Tries the file cache, `https://europepmc.org/articles/PMC{id}?pdf=render`, `https://europepmc.org/backend/ptpmcrender.fcgi?accid=PMC{id}&blobtype=pdf`, the PDF of the newest version in NCBI's PMC Open Access Subset on AWS open data (`https://pmc-oa-opendata.s3.amazonaws.com/PMC{id}.{version}/PMC{id}.{version}.pdf`), the ZIP file `https://ftp.ebi.ac.uk/pub/databases/pmc/pdf/OA/PMCxxxx{batch}/PMC{id}.zip` (`batch` is the PMC ID divided by 10,000, rounded up, in three digits or more: PMC3525259 is in `PMCxxxx353`), and Unpaywall (only with an e-mail address). The first two are behind a browser check (HTTP 403) for scripted clients since November 2026 and are not worked around. `doi` is passed to the Unpaywall step; without it the DOI is looked up from Europe PMC. `max_bytes` refuses a PDF, or ZIP, over that size from its declared size or while it downloads, in every step, and leaves no partial file. A downloaded file counts only if it starts with `%PDF` and is at least 1,024 bytes long. Returns the `Path`, or `None` when no step succeeds, including when the request that looks up the DOI for Unpaywall fails.
 
+### download_pdf_with_source
+
+`download_pdf_with_source(pmcid, output_path=None, rate_limiter=None, doi=None, max_bytes=None, open_access=None) -> tuple[Path | None, str | None]`
+
+The same steps as `download_pdf_by_pmcid`, which returns only the first element. The second says which step supplied the file: `cache`, `europepmc_render`, `europepmc_backend`, `pmc_open_data`, `europepmc_ftp_zip` or `unpaywall`; `(None, None)` when every step failed. `open_access=False` (Europe PMC's `isOpenAccess` is `N`) skips `pmc_open_data` and `europepmc_ftp_zip`, which only hold open-access articles. After a response from a host carries Cloudflare's `cf-mitigated: challenge` header, that host's PDF steps are skipped for `CHALLENGE_COOLDOWN_SECONDS` (600).
+
+### download_pdf_by_doi
+
+`download_pdf_by_doi(doi, output_path, max_bytes=None, skip=()) -> tuple[Path | None, str | None]`
+
+For a paper that is not in PubMed Central. Asks, in order, arXiv (for `10.48550/arXiv.*` DOIs), Unpaywall (needs the client's e-mail), OpenAlex (`best_oa_location` and `locations`) and Semantic Scholar (`openAccessPdf`) for links, and saves the first that serves a PDF; returns the path and the source's name (`arxiv`, `unpaywall`, `openalex`, `semantic_scholar`), or `(None, None)`. A link counts only if it is http(s), has no credentials and every address its host resolves to is public (no loopback, private or link-local range); redirects are followed by hand, at most five, and each target is checked the same way. A body of type HTML, over `max_bytes`, under 1,024 bytes or not starting with `%PDF` is refused and no file is left. `skip` names sources not to ask. The address can change between the check and the connection, so this narrows the risk of a hostile record pointing at an internal service rather than removing it.
+
 ### download_html_by_pmcid
 
 `download_html_by_pmcid(pmcid, output_path=None, rate_limiter=None) -> Path | None`

@@ -26,6 +26,20 @@ All notable changes to PyEuropePMC are documented here.
 - **fulltext:** `download_pdf_by_pmcid` and `atomic_download` take `max_bytes`; a PDF over it is
   refused from its declared size or abandoned while downloading, in every step (Europe PMC,
   OA archive, Unpaywall), and no partial file is left. The MCP tool passes 100 MB.
+- **mcp:** `download_papers_pdf` also downloads papers outside PubMed Central. A paper with a DOI
+  but no PMCID (or a DOI Europe PMC has never heard of), and a PMC paper none of the PMC steps
+  could serve, is looked for at arXiv, Unpaywall, OpenAlex and Semantic Scholar; it used to end
+  as `not_in_pmc`. The file is `<doi>-<hash>.pdf`. Each result now has a `source` (which step
+  or service supplied it) and `open_access`.
+- **fulltext:** `FullTextClient.download_pdf_by_doi` and the module `features/fulltext/oa_pdf`
+  fetch PDFs by DOI. Links in third-party records are only followed if http(s) to a public
+  address, redirects included (checked by hand, at most 5), and the body must be a PDF under
+  `max_bytes`. `download_pdf_with_source` is `download_pdf_by_pmcid` plus the name of the step
+  that supplied the file.
+- **fulltext:** the PDF chain wastes less time: a paper Europe PMC lists as not open access
+  (`open_access=False`) skips the two open-access-only copies, which had a PDF for none of the 7
+  such papers in a 100-paper check and took 12 to 18 s to say so; and after a Cloudflare browser
+  check (`cf-mitigated: challenge`) from a host, its PDF steps are skipped for 10 minutes.
 - **fulltext:** the ZIP step of `download_pdf_by_pmcid` now reads Europe PMC's bulk copy of the
   open-access PDFs on `ftp.ebi.ac.uk` (`pub/databases/pmc/pdf/OA/PMCxxxx<n>/PMC<id>.zip`, one
   folder per 10,000 PMC IDs, so no directory search is needed). The old `europepmc.org/pub/...`
