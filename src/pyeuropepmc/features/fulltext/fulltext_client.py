@@ -14,6 +14,7 @@ import json
 import logging
 import os
 from pathlib import Path
+import re
 import shutil
 import tempfile
 import threading
@@ -465,6 +466,10 @@ class FullTextClient(BaseAPIClient):
     PDF_BACKEND_URL = (
         "https://europepmc.org/backend/ptpmcrender.fcgi?accid=PMC{pmcid}&blobtype=pdf"
     )
+    # NCBI's PMC Open Access Subset on AWS open data: one folder per article version,
+    # PMC<id>.<version>/PMC<id>.<version>.pdf. Public, no key, and not behind the browser
+    # check that europepmc.org puts in front of its PDF pages.
+    PMC_CLOUD_URL = "https://pmc-oa-opendata.s3.amazonaws.com"
 
     # HTML endpoints (no direct API)
     HTML_ARTICLE_URL_MED = "https://europepmc.org/article/MED/{medid}#free-full-text"
@@ -1183,8 +1188,9 @@ class FullTextClient(BaseAPIClient):
         1. Check cache for existing valid file
         2. Europe PMC render endpoint (?pdf=render)
         3. Backend render service (ptpmcrender.fcgi)
-        4. ZIP archive from OA collection
-        5. Unpaywall API via DOI lookup (final fallback)
+        4. NCBI's PMC Open Access Subset on AWS open data (open-access articles only)
+        5. ZIP archive from OA collection
+        6. Unpaywall API via DOI lookup (final fallback)
 
         Parameters
         ----------
@@ -1242,12 +1248,17 @@ class FullTextClient(BaseAPIClient):
             self._save_to_cache(output_path, normalized_pmcid, "pdf")
             return output_path
 
-        # 3. Try the ZIP archive (Europe PMC OA bulk)
+        # 3. NCBI's open-data copy of the PMC Open Access Subset
+        if self._try_pdf_from_pmc_cloud(normalized_pmcid, output_path, max_bytes):
+            self._save_to_cache(output_path, normalized_pmcid, "pdf")
+            return output_path
+
+        # 4. Try the ZIP archive (Europe PMC OA bulk)
         if self._try_pdf_from_zip(normalized_pmcid, output_path, max_bytes):
             self._save_to_cache(output_path, normalized_pmcid, "pdf")
             return output_path
 
-        # 4. Final fallback: Unpaywall via DOI lookup
+        # 5. Final fallback: Unpaywall via DOI lookup
         if self._try_unpaywall_pdf(normalized_pmcid, output_path, doi=doi, max_bytes=max_bytes):
             self._save_to_cache(output_path, normalized_pmcid, "pdf")
             return output_path
@@ -2055,6 +2066,53 @@ class FullTextClient(BaseAPIClient):
         except Exception as e:
             self.logger.error(f"Error downloading from {endpoint_name}: {e}")
             return False
+
+    def _pmc_cloud_versions(self, normalized_pmcid: str) -> list[int]:
+        """Version numbers of the article's folders in the PMC open-data bucket, newest first."""
+        from pyeuropepmc.core.xml_parsing import parse_xml
+
+        response = requests.get(
+            self.PMC_CLOUD_URL,
+            params={"list-type": "2", "delimiter": "/", "prefix": f"PMC{normalized_pmcid}."},
+            timeout=15,
+        )
+        if response.status_code != 200:
+            return []
+        root = parse_xml(response.content, what="The PMC open-data listing")
+        pattern = re.compile(rf"PMC{normalized_pmcid}\.(\d+)/")
+        versions = []
+        for element in root.iter():
+            # "PMC123.2/" -> 2; the listing's own <Prefix>PMC123.</Prefix> has no version
+            match = pattern.fullmatch((element.text or "").strip())
+            if match and element.tag.rsplit("}", 1)[-1] == "Prefix":
+                versions.append(int(match.group(1)))
+        return sorted(versions, reverse=True)
+
+    def _try_pdf_from_pmc_cloud(
+        self, normalized_pmcid: str, output_path: Path, max_bytes: int | None = None
+    ) -> bool:
+        """
+        Try the PDF in NCBI's PMC Open Access Subset on AWS open data.
+
+        Only open-access articles are in the subset; the newest version that has a PDF is
+        taken. Any failure means "not here", so the next step of the chain runs.
+        """
+        try:
+            for version in self._pmc_cloud_versions(normalized_pmcid):
+                key = f"PMC{normalized_pmcid}.{version}/PMC{normalized_pmcid}.{version}.pdf"
+                if atomic_download(
+                    url=f"{self.PMC_CLOUD_URL}/{key}",
+                    target_path=output_path,
+                    session_getter=lambda: requests.Session(),
+                    validator=self._validate_pdf_content,
+                    max_bytes=max_bytes,
+                    timeout=30,
+                ):
+                    self.logger.info(f"Downloaded valid PDF from the PMC open-data bucket: {key}")
+                    return True
+        except Exception as e:  # noqa: BLE001 - a failing source must not stop the chain
+            self.logger.debug(f"PMC open-data bucket gave no PDF for PMC{normalized_pmcid}: {e}")
+        return False
 
     def _try_pdf_from_zip(
         self, normalized_pmcid: str, output_path: Path, max_bytes: int | None = None

@@ -220,6 +220,7 @@ A client sends `Authorization: Bearer <token>`; any other request, including a m
 These were measured against the live service in October 2026. The tools handle them for you; they are listed so that the results make sense.
 
 - **Queries are never rejected.** See above; `validate_query` exists for this reason.
+- **PDF pages answer scripts with a browser check.** In November 2026 `europepmc.org/articles/...?pdf=render`, the `ptpmcrender.fcgi` backend and `/ftp/pdf/` returned HTTP 403 with a Cloudflare "Just a moment" page to a plain HTTP client, while the REST API on `ebi.ac.uk` was unaffected. `download_papers_pdf` does not try to pass that check. It takes open-access PDFs from NCBI's PMC Open Access Subset on AWS open data (`pmc-oa-opendata`, public, no key), which holds the PDF of each article version, and falls back to Unpaywall (`UNPAYWALL_EMAIL`) for a paper outside the subset.
 - **A leading wildcard** (`*cancer`) gives HTTP 503. `validate_query` flags it.
 - **Full text of a paper outside the open-access set** gives HTTP 500 after about 20 seconds, which looks like an outage. The tools look at the open-access flag first and answer at once with the real reason.
 - **`CITES:` works with PMIDs only.** `build_query(cites=...)` takes a PMID for that reason.

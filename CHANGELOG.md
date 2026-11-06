@@ -8,7 +8,8 @@ All notable changes to PyEuropePMC are documented here.
 
 - **mcp:** `download_papers_pdf` saves the PDFs of up to 20 papers (PMID, PMCID or DOI) in
   `PYEUROPEPMC_MCP_DOWNLOAD_DIR` (default `~/Downloads/pyeuropepmc`) as `<PMCID>.pdf`, using the
-  library's Europe PMC / OA archive / Unpaywall chain. The caller cannot choose a path; each
+  library's chain: Europe PMC, NCBI's PMC Open Access Subset on AWS open data, Europe PMC's OA
+  archive, Unpaywall. The caller cannot choose a path; each
   file must be a PDF under 100 MB or it is deleted; the result carries path, size and SHA-256
   and a status per input. It is the first MCP tool that writes outside the caches, so it is
   marked as not read-only. The PDFs stay on the server's disk.
@@ -16,6 +17,12 @@ All notable changes to PyEuropePMC are documented here.
   Unpaywall step. Without it the step looks the DOI up from Europe PMC by PMCID, which found
   nothing in a live check, so the Unpaywall fallback never ran; the MCP tool passes the DOI it
   already has.
+- **fulltext:** `download_pdf_by_pmcid` has a new step after the two Europe PMC endpoints: the PDF
+  of the newest version in NCBI's PMC Open Access Subset on AWS open data
+  (`pmc-oa-opendata`). `europepmc.org` now answers its PDF pages with a browser check (HTTP
+  403) to scripted clients, so those steps fail; the bucket needs no key and no email, and in a
+  live run it saved both test papers with `UNPAYWALL_EMAIL` unset. It holds open-access articles
+  only; others still depend on Unpaywall.
 - **fulltext:** `download_pdf_by_pmcid` and `atomic_download` take `max_bytes`; a PDF over it is
   refused from its declared size or abandoned while downloading, in every step (Europe PMC,
   OA archive, Unpaywall), and no partial file is left. The MCP tool passes 100 MB.

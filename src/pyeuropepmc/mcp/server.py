@@ -2189,10 +2189,10 @@ def _save_pdf(pmcid: str, target: Path, overwrite: bool, doi: str | None) -> dic
     if saved is None or not target.exists():
         return {
             "status": "no_pdf",
-            "error": f"No PDF could be fetched for {pmcid}. Europe PMC may have none, or its "
-            "PDF pages may refuse automated requests from this machine (they sit behind a "
-            "browser check); with UNPAYWALL_EMAIL set in the server's environment the open "
-            "copy Unpaywall knows is tried as well",
+            "error": f"No PDF could be fetched for {pmcid}. Open-access articles are taken from "
+            "NCBI's PMC Open Access Subset or Europe PMC; for a paper outside both, set "
+            "UNPAYWALL_EMAIL in the server's environment so the open copy Unpaywall knows "
+            "is tried as well",
         }
     problem = pdf.check_pdf(target)
     if problem is not None:
