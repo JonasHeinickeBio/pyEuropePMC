@@ -297,6 +297,15 @@ class TestDownloadPapersPdf:
 
         assert out["results"][0]["status"] == "error"
 
+    def test_a_write_that_fails_midway_names_the_file(self):
+        _search([rec("1", "PMC1")])
+        _downloader({"PMC1": OSError("disk full")})
+
+        item = _run(srv.download_papers_pdf(ids=["PMC1"]))["results"][0]
+
+        assert item["status"] == "error"
+        assert "cannot write" in item["error"] and "disk full" in item["error"]
+
     def test_a_lookup_failure_is_reported_per_input(self):
         client = MagicMock()
         client.search_all.side_effect = APIClientError(
