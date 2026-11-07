@@ -13,6 +13,15 @@ All notable changes to PyEuropePMC are documented here.
   `cursor_mark`, `result_type`, `sort`) and returns the query, the terms, `hitCount`,
   `nextCursorMark` and the parsed records. Closes #396.
 
+### Fixed
+
+- **literature:** `ArticleClient` builds the cache key of `get_article_details()`,
+  `get_citations()` and `get_references()` from every parameter of the request. The key held
+  only the source, the article, the page, the page size and the format, so a call with another
+  `sort`, `cursorMark`, `synonym` or other extra parameter was answered with the cached response
+  of a different request. The same request in any parameter order still hits one entry, and
+  `invalidate_article_cache()` still finds the entries of an article. A `get_article_details()`
+  call with a JSONP `callback` is no longer cached, as for citations and references.
 ### Changed
 
 - **literature:** `SearchClient.interactive_search()` no longer logs an error and returns an empty
