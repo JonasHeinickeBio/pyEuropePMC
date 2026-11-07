@@ -184,3 +184,23 @@ def test_invalidating_one_article_still_finds_its_entries(client, get):
     client.get_article_details("MED", "1")
     client.get_citations("MED", "2")
     assert get.call_count == 5  # article 1 was fetched again, article 2 was not
+
+
+@pytest.mark.parametrize(
+    ("method", "args"),
+    [
+        ("get_article_details", ("MED", "1")),
+        ("get_citations", ("MED", "1")),
+        ("get_references", ("MED", "1")),
+    ],
+)
+def test_a_broken_cache_never_fails_the_request(client, get, method, args):
+    """A cache that raises on read and on write only costs the saved request."""
+    with (
+        patch.object(client._cache, "get", side_effect=RuntimeError("cache down")),
+        patch.object(client._cache, "set", side_effect=RuntimeError("cache full")),
+    ):
+        first = getattr(client, method)(*args)
+        getattr(client, method)(*args)
+    assert first["hitCount"] == 1
+    assert get.call_count == 2
