@@ -79,6 +79,25 @@ class TestCacheKey:
     def test_values_that_are_not_json_still_make_a_key(self):
         assert _cache_key("citations", "MED", "1", {"when": Path("x")})
 
+    def test_bytes_and_the_string_that_looks_like_them_are_different_requests(self):
+        """``cursorMark=b"x"`` and ``cursorMark="b'x'"`` are sent as different query strings."""
+        assert _cache_key("citations", "MED", "1", {"cursorMark": b"x"}) != _cache_key(
+            "citations", "MED", "1", {"cursorMark": "b'x'"}
+        )
+
+    def test_a_parameter_set_to_none_is_not_part_of_the_request(self):
+        """``requests`` does not send it, so it must not split the cache."""
+        assert _cache_key("citations", "MED", "1", {"page": 1, "sort": None}) == _cache_key(
+            "citations", "MED", "1", {"page": 1}
+        )
+
+    def test_parameters_that_cannot_be_serialized_give_no_key(self):
+        mixed = {None: None, "P_PDATE_D desc": None}
+        assert _cache_key("citations", "MED", "1", {"sort": mixed}) is None
+        loop: list = []
+        loop.append(loop)
+        assert _cache_key("citations", "MED", "1", {"sort": loop}) is None
+
 
 class TestDetails:
     def test_the_same_request_is_served_from_the_cache(self, client, get):
@@ -101,6 +120,19 @@ class TestDetails:
         client.get_article_details("MED", "1", format="xml", callback="cb")
         client.get_article_details("MED", "1", format="xml", callback="cb")
         assert get.call_count == 2
+
+    def test_a_callback_of_none_is_no_callback(self, client, get):
+        client.get_article_details("MED", "1", callback=None)
+        client.get_article_details("MED", "1", callback=None)
+        client.get_article_details("MED", "1")
+        assert get.call_count == 1
+
+    def test_parameters_that_cannot_be_keyed_still_send_the_request(self, client, get):
+        odd = {None: None, "x": None}
+        first = client.get_article_details("MED", "1", extra=odd)
+        client.get_article_details("MED", "1", extra=odd)
+        assert first["hitCount"] == 1
+        assert get.call_count == 2  # not cached, but not refused either
 
 
 @pytest.mark.parametrize("method", ["get_citations", "get_references"])
@@ -132,6 +164,12 @@ class TestPagedLists:
         getattr(client, method)("MED", "1", callback="cb")
         getattr(client, method)("MED", "1", callback="cb")
         assert get.call_count == 2
+
+    def test_parameters_that_cannot_be_keyed_still_send_the_request(self, client, get, method):
+        odd = {None: None, "P_PDATE_D desc": None}
+        getattr(client, method)("MED", "1", sort=odd)
+        getattr(client, method)("MED", "1", sort=odd)
+        assert get.call_count == 2  # not cached, but not refused either
 
 
 def test_invalidating_one_article_still_finds_its_entries(client, get):

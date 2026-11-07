@@ -47,17 +47,35 @@ _GENERIC_MESH = frozenset(
 _RELATED_BASES = ("auto", "mesh", "keywords")
 
 
-def _cache_key(kind: str, source: str, article_id: str, params: dict[str, Any]) -> str:
+def _tagged(value: Any) -> list[str]:
+    """JSON form of a value JSON cannot hold, which cannot equal a string's JSON form.
+
+    ``b"x"`` and the string ``"b'x'"`` reach Europe PMC as different query strings; they must
+    not share a cache entry.
+    """
+    return [f"<{type(value).__qualname__}>", repr(value)]
+
+
+def _cache_key(kind: str, source: str, article_id: str, params: dict[str, Any]) -> str | None:
     """
     Cache key for one request: the endpoint plus every parameter that is sent.
 
     The parameters are serialized in sorted order, so the same request gives the same key
     whatever order the caller passed them in, and any parameter that changes the answer
-    (``sort``, ``cursorMark``, ``resultType``, ...) changes the key. They are hashed to keep
-    the key short. The ``kind:source:article_id:`` prefix stays readable because
+    (``sort``, ``cursorMark``, ``resultType``, ...) changes the key. A parameter set to
+    ``None`` is left out, as ``requests`` does not send it. They are hashed to keep the key
+    short. The ``kind:source:article_id:`` prefix stays readable because
     ``ArticleClient.invalidate_article_cache`` matches on it.
+
+    Returns ``None`` when the parameters cannot be serialized (for example a mapping with keys
+    of different types, or one that contains itself): the request is then sent without
+    touching the cache.
     """
-    canonical = json.dumps(params, sort_keys=True, separators=(",", ":"), default=str)
+    sent = {k: v for k, v in params.items() if v is not None}
+    try:
+        canonical = json.dumps(sent, sort_keys=True, separators=(",", ":"), default=_tagged)
+    except (TypeError, ValueError):
+        return None
     digest = hashlib.sha256(canonical.encode("utf-8")).hexdigest()[:16]
     return f"{kind}:{source}:{article_id}:{digest}"
 
@@ -150,9 +168,10 @@ class ArticleClient(BaseAPIClient):
         params = {"resultType": result_type, "format": format, **kwargs}
 
         # Check cache first (a JSONP callback changes the response's shape: never cached)
-        cacheable = "callback" not in params
         cache_key = _cache_key("article_details", source, article_id, params)
-        if cacheable:
+        if params.get("callback") is not None:
+            cache_key = None
+        if cache_key is not None:
             try:
                 cached_result = self._cache.get(cache_key)
                 if cached_result is not None:
@@ -173,7 +192,7 @@ class ArticleClient(BaseAPIClient):
                 result_dict = dict(result)
 
             # Cache the result
-            if cacheable:
+            if cache_key is not None:
                 try:
                     self._cache.set(cache_key, result_dict, tag="article_details")
                 except Exception as e:
@@ -242,7 +261,7 @@ class ArticleClient(BaseAPIClient):
 
         # Check cache first (skip caching for JSONP responses)
         cache_key = _cache_key("citations", source, article_id, params)
-        if not callback:
+        if cache_key is not None and not callback:
             try:
                 cached_result = self._cache.get(cache_key)
                 if cached_result is not None:
@@ -275,10 +294,11 @@ class ArticleClient(BaseAPIClient):
                     result_dict = dict(result)
 
                 # Cache the result
-                try:
-                    self._cache.set(cache_key, result_dict, tag="citations")
-                except Exception as e:
-                    self.logger.warning(f"Failed to cache citations: {e}")
+                if cache_key is not None:
+                    try:
+                        self._cache.set(cache_key, result_dict, tag="citations")
+                    except Exception as e:
+                        self.logger.warning(f"Failed to cache citations: {e}")
 
                 return result_dict
         except APIClientError:
@@ -349,7 +369,7 @@ class ArticleClient(BaseAPIClient):
 
         # Check cache first (skip caching for JSONP responses)
         cache_key = _cache_key("references", source, article_id, params)
-        if not callback:
+        if cache_key is not None and not callback:
             try:
                 cached_result = self._cache.get(cache_key)
                 if cached_result is not None:
@@ -376,10 +396,11 @@ class ArticleClient(BaseAPIClient):
                     result_dict = dict(result)
 
                 # Cache the result
-                try:
-                    self._cache.set(cache_key, result_dict, tag="references")
-                except Exception as e:
-                    self.logger.warning(f"Failed to cache references: {e}")
+                if cache_key is not None:
+                    try:
+                        self._cache.set(cache_key, result_dict, tag="references")
+                    except Exception as e:
+                        self.logger.warning(f"Failed to cache references: {e}")
 
                 return result_dict
         except APIClientError:
