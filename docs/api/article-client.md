@@ -173,7 +173,7 @@ Path("PMC3258128_supplementary.zip").write_bytes(archive)
 
 ## Caching
 
-With `cache_config=CacheConfig(enabled=True)`, the responses of `get_article_details()`, `get_citations()` and `get_references()` are cached. Database, lab and data links and supplementary files are always fetched. `invalidate_article_cache(source=None, article_id=None)` removes cached entries for one article, for one source, or all entries when called without arguments, and returns the number removed. See [Caching](../features/caching/README.md).
+With `cache_config=CacheConfig(enabled=True)`, the responses of `get_article_details()`, `get_citations()` and `get_references()` are cached, each under a key made from every parameter of the request, so a call with another `sort`, `cursorMark` or other extra parameter is a separate entry. A request with a JSONP `callback` is never cached. Database, lab and data links and supplementary files are always fetched. `invalidate_article_cache(source=None, article_id=None)` removes cached entries for one article, for one source, or all entries when called without arguments, and returns the number removed. See [Caching](../features/caching/README.md).
 
 ```python
 from pyeuropepmc import ArticleClient, CacheConfig
