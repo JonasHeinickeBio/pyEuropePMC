@@ -4,6 +4,15 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
+### Added
+
+- **literature:** `ArticleClient.get_related_articles()` finds articles on the same subject as a
+  given one. Europe PMC's REST API has no similar-articles endpoint, so it searches on the
+  article's MeSH headings (or keywords), major topics first and without generic headings such as
+  `Humans`, and leaves the article out. It pages like `SearchClient.search()` (`page_size`,
+  `cursor_mark`, `result_type`, `sort`) and returns the query, the terms, `hitCount`,
+  `nextCursorMark` and the parsed records. Closes #396.
+
 ## [4.7.1] - 2026-11-06
 
 ### Fixed

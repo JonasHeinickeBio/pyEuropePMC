@@ -14,9 +14,35 @@ from pyeuropepmc.cache.cache import CacheBackend, CacheConfig
 from pyeuropepmc.core.base import BaseAPIClient
 from pyeuropepmc.core.error_codes import ErrorCodes
 from pyeuropepmc.core.exceptions import APIClientError, ValidationError
+from pyeuropepmc.features.literature.search_parser import EuropePMCParser
 from pyeuropepmc.utils.helpers import warn_if_empty_hitcount
 
 __all__ = ["ArticleClient"]
+
+# MeSH "check tags" and other headings that nearly every article carries: searching on them
+# finds articles that have nothing in common with the one given.
+_GENERIC_MESH = frozenset(
+    {
+        "humans",
+        "animals",
+        "male",
+        "female",
+        "adult",
+        "aged",
+        "aged, 80 and over",
+        "middle aged",
+        "young adult",
+        "adolescent",
+        "child",
+        "child, preschool",
+        "infant",
+        "infant, newborn",
+        "mice",
+        "rats",
+        "cells, cultured",
+    }
+)
+_RELATED_BASES = ("auto", "mesh", "keywords")
 
 
 class ArticleClient(BaseAPIClient):
@@ -382,6 +408,160 @@ class ArticleClient(BaseAPIClient):
             return int(hit_count)
         except Exception:
             return 0
+
+    def get_related_articles(
+        self,
+        source: str,
+        article_id: str,
+        basis: str = "auto",
+        match: str = "any",
+        max_terms: int = 3,
+        terms: list[str] | None = None,
+        page_size: int = 25,
+        cursor_mark: str = "*",
+        result_type: str = "lite",
+        sort: str = "",
+        **kwargs: Any,
+    ) -> dict[str, Any]:
+        """
+        Find articles on the same subject as the given article.
+
+        Europe PMC's REST API has no "similar articles" endpoint, so this builds a search from
+        what the article is indexed with: its MeSH headings (major topics first, without the
+        generic ones such as ``Humans``) or its author keywords. The article itself is left out
+        of the results. Pagination and result types are those of ``SearchClient.search()``.
+
+        Args:
+            source: Three letter code of the data source (e.g., 'MED', 'PMC')
+            article_id: Article ID in that source
+            basis: Where the search terms come from: ``"mesh"``, ``"keywords"``, or ``"auto"``
+                (MeSH headings, else keywords)
+            match: ``"any"`` finds articles that share at least one term, best matches first;
+                ``"all"`` only those that carry every term
+            max_terms: How many terms to use (1 to 10)
+            terms: Search these terms instead of reading them from the article, which saves the
+                request for the article. Pass the ``terms`` of a first call to fetch the next
+                pages. They are searched as MeSH headings, or as keywords when
+                ``basis="keywords"``.
+            page_size: Results per page (1-1000)
+            cursor_mark: Cursor for the page; ``"*"`` for the first, the ``nextCursorMark`` of
+                the previous response afterwards
+            result_type: ``"lite"`` (default), ``"core"`` or ``"idlist"``
+            sort: Sort order, as for ``SearchClient.search()``; empty means by relevance
+            **kwargs: Additional query parameters
+
+        Returns:
+            Dict with ``query`` (the search that was run), ``terms``, ``hitCount``,
+            ``nextCursorMark`` and ``results`` (the records, as ``search_and_parse()`` returns
+            them). When the article has no usable terms, ``terms`` is empty, ``query`` is
+            ``None`` and no search is made.
+
+        Raises:
+            ValidationError: For an invalid argument
+            APIClientError: If a request fails
+
+        Example:
+            >>> client = ArticleClient()
+            >>> page = client.get_related_articles('MED', '23087375', page_size=10)
+            >>> page['terms']
+            ['Mutation', 'DNA, Mitochondrial', 'Mitochondria']
+            >>> more = client.get_related_articles(
+            ...     'MED', '23087375', terms=page['terms'], cursor_mark=page['nextCursorMark']
+            ... )
+        """
+        self._validate_source_and_id(source, article_id)
+        self._validate_pagination(1, page_size)
+        self._validate_result_type(result_type)
+        self._validate_choice("basis", basis, _RELATED_BASES)
+        self._validate_choice("match", match, ("any", "all"))
+        if not isinstance(max_terms, int) or not 1 <= max_terms <= 10:
+            raise ValidationError(
+                ErrorCodes.VALID001,
+                field_name="max_terms",
+                actual_value=max_terms,
+                message="max_terms must be an integer between 1 and 10",
+            )
+
+        if terms is None:
+            details = self.get_article_details(source, article_id, result_type="core")
+            terms, field = self._related_terms(details.get("result") or {}, basis, max_terms)
+        else:
+            terms = [t for t in dict.fromkeys(terms) if isinstance(t, str) and t.strip()]
+            field = "KW" if basis == "keywords" else "MESH"
+        terms = [t.replace('"', " ").strip() for t in terms][:max_terms]
+
+        if not terms:
+            self.logger.info(f"No terms to search for articles related to {source}:{article_id}")
+            return {
+                "query": None,
+                "terms": [],
+                "hitCount": 0,
+                "nextCursorMark": None,
+                "results": [],
+            }
+
+        # The field is named once and the terms grouped: `MESH:"a" OR MESH:"b"` is evaluated by
+        # Europe PMC as `MESH:"b"` alone.
+        joiner = " AND " if match == "all" else " OR "
+        wanted = joiner.join(f'"{t}"' for t in terms)
+        query = f"{field}:({wanted}) AND NOT (EXT_ID:{article_id} AND SRC:{source})"
+        params = {
+            "query": query,
+            "format": "json",
+            "resultType": result_type,
+            "pageSize": page_size,
+            "cursorMark": cursor_mark,
+            "sort": sort,
+            **kwargs,
+        }
+
+        self.logger.info(f"Retrieving articles related to {source}:{article_id}")
+        try:
+            data = self._get("search", params=params).json()
+            warn_if_empty_hitcount(data, context="related articles")
+            return {
+                "query": query,
+                "terms": terms,
+                "hitCount": data.get("hitCount", 0),
+                "nextCursorMark": data.get("nextCursorMark"),
+                "results": EuropePMCParser.parse_json(data) if data.get("hitCount") else [],
+            }
+        except APIClientError:
+            self.logger.error(f"Failed to retrieve articles related to {source}:{article_id}")
+            raise
+        except Exception as e:
+            context = {"source": source, "article_id": article_id, "endpoint": "search"}
+            self.logger.error(f"Failed to retrieve articles related to {source}:{article_id}")
+            raise APIClientError(ErrorCodes.NET001, context) from e
+
+    @staticmethod
+    def _related_terms(
+        record: dict[str, Any], basis: str, max_terms: int
+    ) -> tuple[list[str], str]:
+        """The terms to search for and the field they belong to, read from a core record."""
+        mesh = (record.get("meshHeadingList") or {}).get("meshHeading") or []
+        specific = [
+            m for m in mesh if str(m.get("descriptorName", "")).lower() not in _GENERIC_MESH
+        ]
+        # Major topics are what the article is mainly about
+        specific.sort(key=lambda m: m.get("majorTopic_YN") != "Y")
+        mesh_terms = [str(m["descriptorName"]) for m in specific if m.get("descriptorName")]
+        keywords = [str(k) for k in (record.get("keywordList") or {}).get("keyword") or []]
+
+        if basis == "keywords" or (basis == "auto" and not mesh_terms):
+            return list(dict.fromkeys(keywords))[:max_terms], "KW"
+        return list(dict.fromkeys(mesh_terms))[:max_terms], "MESH"
+
+    @staticmethod
+    def _validate_choice(name: str, value: str, choices: tuple[str, ...]) -> None:
+        """Validate a parameter that takes one of a few values."""
+        if value not in choices:
+            raise ValidationError(
+                ErrorCodes.VALID001,
+                field_name=name,
+                actual_value=value,
+                message=f"{name} must be one of: {', '.join(choices)}",
+            )
 
     def get_database_links(
         self,
