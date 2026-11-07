@@ -13,6 +13,19 @@ All notable changes to PyEuropePMC are documented here.
   `cursor_mark`, `result_type`, `sort`) and returns the query, the terms, `hitCount`,
   `nextCursorMark` and the parsed records. Closes #396.
 
+### Changed
+
+- **literature:** `SearchClient.interactive_search()` no longer logs an error and returns an empty
+  list when something fails. A failed request raises the `SearchError` (or other client error) it
+  met, a response that is not a JSON page with a `hitCount` (for example with `format="xml"`)
+  raises `SearchError` `SEARCH005`, and only a query without matches or a cancelled prompt gives
+  `[]`. The prompt also no longer loops forever on a closed standard input: it raises `EOFError`.
+  Code that relied on `[]` after an error now has to catch the exception.
+- **utils:** `export.to_markdown_table()` (and `export_results(format="markdown")` of the search,
+  article and full-text clients) raises when the conversion fails instead of returning an empty
+  string; a missing pandas or tabulate raises `ImportError` that names `pyeuropepmc[export]`.
+  An empty list of results still gives `""`.
+
 ## [4.7.1] - 2026-11-06
 
 ### Fixed

@@ -12,6 +12,9 @@ _MISSING_PANDAS = (
 )
 
 
+_MISSING_EXPORT_EXTRAS = "Install the export extras with: pip install pyeuropepmc[export]"
+
+
 def _pandas() -> "Any":
     """Import pandas on demand so it stays an optional dependency."""
     try:
@@ -93,16 +96,25 @@ def to_json(results: list[dict[str, Any]], path: str | None = None, pretty: bool
 
 
 def to_markdown_table(results: list[dict[str, Any]]) -> str:
-    """Export results to a Markdown table string."""
+    """Export results to a Markdown table string.
+
+    An empty list of results gives an empty string. A failure is raised, not turned into an
+    empty string: ``ImportError`` when pandas or tabulate is missing, and whatever pandas
+    raises for results it cannot convert.
+    """
+    if not results:
+        return ""
     try:
-        if not results:
-            return ""
         df = to_dataframe(results)
         markdown: str = df.to_markdown(index=False)
         return markdown
+    except ImportError as e:
+        # pandas names a missing tabulate itself; _pandas() already carries the install hint
+        logging.error(f"Failed to export results to Markdown table: {e}")
+        raise ImportError(f"{e} {_MISSING_EXPORT_EXTRAS}") from e
     except Exception as e:
         logging.error(f"Failed to export results to Markdown table: {e}")
-        return ""
+        raise
 
 
 def filter_fields(results: list[dict[str, Any]], fields: list[str]) -> list[dict[str, Any]]:
