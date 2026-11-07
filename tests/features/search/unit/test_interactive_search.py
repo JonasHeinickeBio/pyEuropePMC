@@ -3,6 +3,8 @@ from unittest.mock import patch
 
 import pytest
 
+from pyeuropepmc.core.error_codes import ErrorCodes
+from pyeuropepmc.core.exceptions import SearchError
 from pyeuropepmc.features.literature.search import SearchClient
 
 logging.basicConfig(level=logging.INFO)
@@ -31,51 +33,49 @@ def test_interactive_search_unit(search_cancer_json, search_cancer_page2_json) -
 
 @pytest.mark.unit
 def test_interactive_search_string_response() -> None:
-    """Test interactive_search handles string response (XML format)."""
+    """A non-JSON answer (``format="xml"``) is an error, not "no results"."""
     client = SearchClient()
 
-    with patch.object(client, "search") as mock_search:
-        mock_search.return_value = "<xml>test response</xml>"
+    with (
+        patch.object(client, "search", return_value="<xml>test response</xml>"),
+        patch("builtins.input") as mock_input,
+        pytest.raises(SearchError) as caught,
+    ):
+        client.interactive_search("test", format="xml")
 
-        with patch("builtins.input") as mock_input:
-            mock_input.return_value = "q"  # Quit immediately
-
-            # Should handle string response gracefully
-            client.interactive_search("test", format="xml")
-
+    assert caught.value.error_code == ErrorCodes.SEARCH005
+    assert "non-JSON format" in str(caught.value.context["error"])
+    mock_input.assert_not_called()
     client.close()
 
 
 @pytest.mark.unit
-def test_interactive_search_no_hit_count() -> None:
-    """Test interactive_search handles response without hitCount."""
+@pytest.mark.parametrize("response", [{"resultList": {"result": []}}, {}, None, ["x"]])
+def test_interactive_search_without_hit_count(response) -> None:
+    """A response with no hit count is an error: it cannot tell whether anything matched."""
     client = SearchClient()
 
-    with patch.object(client, "search") as mock_search:
-        mock_search.return_value = {"resultList": {"result": []}}
+    with (
+        patch.object(client, "search", return_value=response),
+        patch("builtins.input") as mock_input,
+        pytest.raises(SearchError) as caught,
+    ):
+        client.interactive_search("test")
 
-        with patch("builtins.input") as mock_input:
-            mock_input.return_value = "q"  # Quit immediately
-
-            # Should handle missing hitCount gracefully
-            client.interactive_search("test")
-
+    assert caught.value.error_code == ErrorCodes.SEARCH005
+    mock_input.assert_not_called()
     client.close()
 
 
 @pytest.mark.unit
-def test_interactive_search_empty_response() -> None:
-    """Test interactive_search handles completely empty response."""
+def test_interactive_search_quit_returns_an_empty_list() -> None:
+    """Choosing not to fetch anything is not an error."""
     client = SearchClient()
 
-    with patch.object(client, "search") as mock_search:
-        mock_search.return_value = {}
-
-        with patch("builtins.input") as mock_input:
-            mock_input.return_value = "q"
-
-            # Should handle empty response gracefully
-            client.interactive_search("test")
+    with patch.object(client, "search", return_value={"hitCount": 5, "resultList": {}}):
+        for answer in ("q", "quit", "0", ""):
+            with patch("builtins.input", return_value=answer):
+                assert client.interactive_search("test") == []
 
     client.close()
 
@@ -133,18 +133,81 @@ def test_interactive_search_fetch_results() -> None:
 
 
 @pytest.mark.unit
-def test_interactive_search_error_handling() -> None:
-    """Test interactive_search handles search errors gracefully."""
+def test_interactive_search_network_error_is_raised() -> None:
+    """A failed request reaches the caller instead of looking like a query without matches."""
+    client = SearchClient()
+    failure = SearchError(ErrorCodes.NET001, {"error": "Network error"})
+
+    with (
+        patch.object(client, "search", side_effect=failure),
+        patch("builtins.input") as mock_input,
+        pytest.raises(SearchError) as caught,
+    ):
+        client.interactive_search("test")
+
+    assert caught.value is failure
+    mock_input.assert_not_called()
+    client.close()
+
+
+@pytest.mark.unit
+def test_interactive_search_error_while_fetching_is_raised() -> None:
+    """The hit count worked, the download did not: the records already asked for are not
+    silently dropped."""
+    client = SearchClient()
+    failure = SearchError(ErrorCodes.NET002, {"error": "timed out"})
+
+    with (
+        patch.object(client, "search", return_value={"hitCount": 50, "resultList": {}}),
+        patch.object(client, "search_all", side_effect=failure),
+        patch("builtins.input", return_value="10"),
+        pytest.raises(SearchError) as caught,
+    ):
+        client.interactive_search("test")
+
+    assert caught.value is failure
+    client.close()
+
+
+@pytest.mark.unit
+def test_interactive_search_zero_hits_is_an_empty_list_without_a_prompt() -> None:
     client = SearchClient()
 
-    with patch.object(client, "search") as mock_search:
-        mock_search.side_effect = Exception("Network error")
+    with (
+        patch.object(client, "search", return_value={"hitCount": 0, "resultList": {}}),
+        patch("builtins.input") as mock_input,
+    ):
+        assert client.interactive_search("nothing like this") == []
 
-        with patch("builtins.input") as mock_input:
-            mock_input.return_value = "q"
+    mock_input.assert_not_called()
+    client.close()
 
-            # Should handle search exception gracefully and return empty list
-            result = client.interactive_search("test")
-            assert result == []  # Should return empty list, not raise exception
+
+@pytest.mark.unit
+def test_interactive_search_asks_again_after_a_bad_number() -> None:
+    client = SearchClient()
+    records = [{"id": 1}, {"id": 2}]
+
+    with (
+        patch.object(client, "search", return_value={"hitCount": 5, "resultList": {}}),
+        patch.object(client, "search_all", return_value=records) as search_all,
+        patch("builtins.input", side_effect=["many", "9", "2"]),
+    ):
+        assert client.interactive_search("test") == records
+
+    assert search_all.call_args.kwargs["max_results"] == 2
+    client.close()
+
+
+@pytest.mark.unit
+def test_interactive_search_closed_stdin_raises_instead_of_looping() -> None:
+    client = SearchClient()
+
+    with (
+        patch.object(client, "search", return_value={"hitCount": 5, "resultList": {}}),
+        patch("builtins.input", side_effect=EOFError),
+        pytest.raises(EOFError),
+    ):
+        client.interactive_search("test")
 
     client.close()

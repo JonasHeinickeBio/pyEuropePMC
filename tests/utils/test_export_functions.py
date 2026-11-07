@@ -140,15 +140,39 @@ def test_to_json_failure(monkeypatch):
 
 
 def test_to_markdown_table_failure(monkeypatch):
-    """Test to_markdown_table exception handler returns '' (lines 86-88)."""
+    """A conversion failure is raised, not turned into an empty string."""
     import pandas as pd
 
     def failing_df(*args, **kwargs):
         raise ValueError("mock failure")
 
     monkeypatch.setattr(pd, "DataFrame", failing_df)
-    md = export.to_markdown_table([{"a": 1}])
-    assert md == ""
+    with pytest.raises(ValueError, match="mock failure"):
+        export.to_markdown_table([{"a": 1}])
+
+
+def test_to_markdown_table_without_tabulate_says_what_to_install(monkeypatch):
+    """pandas needs tabulate for Markdown; its absence is an ImportError with the extra to install."""
+    import pandas as pd
+
+    def no_tabulate(self, *args, **kwargs):
+        raise ImportError("Missing optional dependency 'tabulate'.")
+
+    monkeypatch.setattr(pd.DataFrame, "to_markdown", no_tabulate)
+    with pytest.raises(ImportError, match=r"tabulate.*pyeuropepmc\[export\]"):
+        export.to_markdown_table([{"a": 1}])
+
+
+def test_to_markdown_table_without_pandas_says_what_to_install(monkeypatch):
+    import sys
+
+    monkeypatch.setitem(sys.modules, "pandas", None)  # `import pandas` now raises ImportError
+    with pytest.raises(ImportError, match=r"pandas.*pyeuropepmc\[analytics\]"):
+        export.to_markdown_table([{"a": 1}])
+
+
+def test_to_markdown_table_of_nothing_is_an_empty_string():
+    assert export.to_markdown_table([]) == ""
 
 
 def test_filter_fields_failure():

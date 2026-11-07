@@ -146,7 +146,9 @@ The local check that `search()` applies before sending a request. It returns `Fa
 
 `interactive_search(query, **kwargs) -> list[dict]`
 
-Prints the number of matches, asks on standard input how many records to fetch (`0`, `q` or `quit` cancels), then calls `search_all()`. Errors are logged and an empty list is returned.
+Prints the number of matches, asks on standard input how many records to fetch (`0`, `q`, `quit` or an empty answer cancels; anything that is not a number between 1 and the match count is asked again), then calls `search_all()`.
+
+The returned list is empty only when the query has no matches or you cancelled. Failures are raised, not returned as an empty list: a failed request raises the `SearchError` (or `RateLimitError`, `APIClientError`) that `search()` or `search_all()` raised, a response that is not a JSON page with a `hitCount` (for example when `format="xml"` is passed) raises `SearchError` with code `SEARCH005`, and a closed standard input raises `EOFError`.
 
 ### export_results
 
@@ -160,9 +162,9 @@ Converts a list of record dicts, such as the output of `search_all()`.
 | `"csv"` | `str` | Also written to `path` if given; needs pandas |
 | `"excel"` | `bytes` | Also written to `path` if given; needs pandas and xlsxwriter |
 | `"json"` | `str` | Also written to `path` if given; pass `pretty=True` for indentation |
-| `"markdown"` | `str` | Needs pandas and tabulate; returns `""` if conversion fails |
+| `"markdown"` | `str` | Needs pandas and tabulate; `""` for an empty list of results |
 
-Other values raise `ValueError`. pandas, tabulate and xlsxwriter are installed with `pip install "pyeuropepmc[export]"`.
+Other values raise `ValueError`. pandas, tabulate and xlsxwriter are installed with `pip install "pyeuropepmc[export]"`. A missing package raises `ImportError` naming the extra to install, and a conversion failure is raised as it happened; none of them is turned into an empty result.
 
 ```python
 from pyeuropepmc import SearchClient

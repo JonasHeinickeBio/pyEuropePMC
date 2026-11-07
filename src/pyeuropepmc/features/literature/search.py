@@ -598,39 +598,50 @@ class SearchClient(BaseAPIClient):
         it then prompts the user for how many results they want,
         and then fetches that many results, handling pagination as needed.
         The user can type 'q' or 'quit' to exit without fetching results.
+
+        Returns
+        -------
+        list[dict[str, Any]]
+            The fetched records. The list is empty only when the query has no matches or the
+            user chose not to fetch any.
+
+        Raises
+        ------
+        SearchError
+            If a request fails or Europe PMC answers with something that is not a page of
+            results (for example when ``format="xml"`` is passed). Failures are not turned
+            into an empty list: that would look like a query without matches.
+        EOFError
+            If standard input is closed, so the prompt cannot be answered.
         """
-        try:
-            # Step 1: Get hit count
-            hit_count = self._get_hit_count_for_interactive(query, **kwargs)
-            if hit_count == 0:
-                return []
-
-            # Step 2: Get user input for number of results
-            n = self._prompt_user_for_result_count(hit_count, query)
-            if n == 0:
-                return []
-
-            # Step 3: Fetch results
-            return self._fetch_interactive_results(query, n, **kwargs)
-
-        except (EuropePMCError, Exception) as e:
-            logger.error(f"Error during interactive search: {e}")
+        # Step 1: Get hit count
+        hit_count = self._get_hit_count_for_interactive(query, **kwargs)
+        if hit_count == 0:
             return []
 
+        # Step 2: Get user input for number of results
+        n = self._prompt_user_for_result_count(hit_count, query)
+        if n == 0:
+            return []
+
+        # Step 3: Fetch results
+        return self._fetch_interactive_results(query, n, **kwargs)
+
     def _get_hit_count_for_interactive(self, query: str, **kwargs: Any) -> int:
-        """Get hit count for interactive search and handle early exits."""
+        """Get the hit count for interactive search; 0 only means the query has no matches."""
         response = self.search(query, page_size=1, **kwargs)
 
-        if isinstance(response, str):
-            logger.warning(
-                "Received a string response, which is unexpected. "
-                "Please check your query or parameters."
+        if not isinstance(response, dict) or "hitCount" not in response:
+            kind = type(response).__name__
+            logger.error(f"Interactive search got {kind} without a hit count for '{query}'")
+            raise SearchError(
+                ErrorCodes.SEARCH005,
+                {
+                    "query": query,
+                    "error": f"expected a JSON page with a hitCount, got {kind}"
+                    + (" (is a non-JSON format set?)" if isinstance(response, str) else ""),
+                },
             )
-            return 0
-
-        if not response or "hitCount" not in response:
-            logger.info("No results found or error occurred.")
-            return 0
 
         hit_count = int(response["hitCount"])
         if hit_count == 0:
@@ -661,7 +672,7 @@ class SearchClient(BaseAPIClient):
                 if 1 <= n <= hit_count:
                     return n
                 logger.info(f"Please enter a number between 1 and {hit_count}, or '0' to quit.")
-            except Exception as e:
+            except ValueError as e:
                 logger.info(f"Please enter a valid integer, or '0' to quit. Error: {e}")
                 continue
             except KeyboardInterrupt:

@@ -52,3 +52,29 @@ def test_export_markdown(client):
     md = client.export_results(SAMPLE_RESULTS, format="markdown")
     assert "|   id " in md
     assert "First Article" in md
+
+
+def test_export_unsupported_format_is_an_error(client):
+    with pytest.raises(ValueError, match="Unsupported export format: pdf"):
+        client.export_results(SAMPLE_RESULTS, format="pdf")
+
+
+@pytest.mark.parametrize("format", ["dataframe", "csv", "excel", "markdown"])
+def test_export_without_pandas_names_the_extra_to_install(client, monkeypatch, format):
+    import sys
+
+    monkeypatch.setitem(sys.modules, "pandas", None)  # `import pandas` now raises ImportError
+    with pytest.raises(ImportError, match=r"pyeuropepmc\[analytics\]"):
+        client.export_results(SAMPLE_RESULTS, format=format)
+
+
+def test_export_markdown_failure_is_raised_not_returned_as_an_empty_string(client, monkeypatch):
+    pytest.importorskip("tabulate")
+    import pandas as pd
+
+    def broken(self, *args, **kwargs):
+        raise RuntimeError("cannot render")
+
+    monkeypatch.setattr(pd.DataFrame, "to_markdown", broken)
+    with pytest.raises(RuntimeError, match="cannot render"):
+        client.export_results(SAMPLE_RESULTS, format="markdown")
