@@ -41,6 +41,7 @@ The client can be used as a context manager; otherwise call `close()`.
 | `get_references(source, article_id, page=1, page_size=25, format="json", callback=None, **kwargs)` | `{source}/{id}/references` | `dict` |
 | `get_citation_count(source, article_id, **kwargs)` | `{source}/{id}/citations` | `int` |
 | `get_reference_count(source, article_id, **kwargs)` | `{source}/{id}/references` | `int` |
+| `get_related_articles(source, article_id, basis="auto", match="any", max_terms=3, terms=None, page_size=25, cursor_mark="*", result_type="lite", sort="", **kwargs)` | `search` | `dict` |
 | `get_database_links(source, article_id, page=1, page_size=25, format="json", callback=None, **kwargs)` | `{source}/{id}/databaseLinks` | `dict` |
 | `get_lab_links(source, article_id, provider_id=None, format="json", callback=None, **kwargs)` | `{source}/{id}/labsLinks` | `dict` |
 | `get_data_links(source, article_id, format="json", callback=None, **kwargs)` | `{source}/{id}/datalinks` | `dict` |
@@ -73,6 +74,40 @@ Returns `{"version", "hitCount", "request", "result"}`, where `result` is the ar
 `get_citation_count()` and `get_reference_count()` request one record and return `hitCount` as an `int` (0 if it cannot be read).
 
 When a response has `hitCount` 0, the client emits a `UserWarning`.
+
+### get_related_articles
+
+Finds articles on the same subject as the given one. Europe PMC's REST API has no "similar articles" endpoint, so the method builds a search from what the article is indexed with and leaves the article itself out. It reads the article's `core` record (a cached `get_article_details()` call) and takes, up to `max_terms`, its MeSH headings, major topics first and without the headings that nearly every article carries (`Humans`, `Animals`, `Male`, `Female`, age groups, `Mice`, `Rats` and a few more). The query for PMID 23087375 is, for example:
+
+```text
+MESH:("Mutation" OR "Mitochondria" OR "DNA, Mitochondrial") AND NOT (EXT_ID:23087375 AND SRC:MED)
+```
+
+| Parameter | Default | Description |
+|---|---|---|
+| `basis` | `"auto"` | `"mesh"` uses MeSH headings, `"keywords"` the author keywords, `"auto"` MeSH headings and, when the article has none, its keywords |
+| `match` | `"any"` | `"any"` finds articles that share at least one term, best matches first; `"all"` only those that carry every term |
+| `max_terms` | `3` | Number of terms, 1 to 10 |
+| `terms` | `None` | Search these terms instead of reading them from the article (as MeSH headings, or keywords with `basis="keywords"`). This saves the request for the article when fetching the next pages |
+| `page_size`, `cursor_mark`, `result_type`, `sort` | `25`, `"*"`, `"lite"`, `""` | As for [`SearchClient.search()`](search-client.md#search); `result_type` is `"lite"`, `"core"` or `"idlist"` |
+
+It returns `{"query", "terms", "hitCount", "nextCursorMark", "results"}`. `results` holds the records as [`SearchClient.search_and_parse()`](search-client.md#search_and_parse) returns them. Pass `terms` and `nextCursorMark` of one response to the next call to get the next page. When the article has no usable terms, `terms` is empty, `query` is `None`, `results` is empty and no search is made; a failed request raises `APIClientError`.
+
+```python
+from pyeuropepmc import ArticleClient
+
+with ArticleClient() as client:
+    page = client.get_related_articles("MED", "23087375", page_size=10)
+    print(page["terms"], page["hitCount"])
+    for record in page["results"]:
+        print(record["id"], record["title"])
+
+    more = client.get_related_articles(
+        "MED", "23087375", terms=page["terms"], cursor_mark=page["nextCursorMark"], page_size=10
+    )
+```
+
+The result is a ranking by shared subject headings, not Europe PMC's own "similar articles" list, which the REST API does not expose.
 
 ### get_database_links, get_lab_links and get_data_links
 
@@ -153,7 +188,7 @@ with ArticleClient(cache_config=CacheConfig(enabled=True)) as client:
 
 | Exception | Raised when |
 |---|---|
-| `ValidationError` | An argument is invalid: `source` not three letters, empty `article_id`, `page` below 1, `page_size` outside 1 to 1000, an unknown `result_type` or `format`, or `callback` with a non-JSON format |
+| `ValidationError` | An argument is invalid: `source` not three letters, empty `article_id`, `page` below 1, `page_size` outside 1 to 1000, an unknown `result_type` or `format`, `callback` with a non-JSON format, or (for `get_related_articles()`) an unknown `basis` or `match`, or `max_terms` outside 1 to 10 |
 | `APIClientError` | The request fails or the response is not JSON |
 
 `APIClientError` is exported by `pyeuropepmc`; `ValidationError` is imported from `pyeuropepmc.core.exceptions`. Both derive from `PyEuropePMCError`.
