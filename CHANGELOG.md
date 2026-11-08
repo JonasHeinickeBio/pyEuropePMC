@@ -4,6 +4,8 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
+## [4.8.0] - 2026-11-08
+
 ### Added
 
 - **literature:** `ArticleClient.get_related_articles()` finds articles on the same subject as a
