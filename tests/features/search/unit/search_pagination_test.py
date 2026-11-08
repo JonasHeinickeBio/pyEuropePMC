@@ -233,3 +233,67 @@ def test_search_all_single_page() -> None:
         assert results == [{"id": 1}, {"id": 2}, {"id": 3}]
 
     client.close()
+
+
+@pytest.mark.unit
+def test_search_all_goes_on_after_a_short_page() -> None:
+    """Europe PMC returns 998 or 999 records for pageSize=1000 and still has more pages."""
+    client = SearchClient()
+
+    def page(ids, cursor):
+        body = {"hitCount": 30, "resultList": {"result": [{"id": i} for i in ids]}}
+        if cursor:
+            body["nextCursorMark"] = cursor
+        return body
+
+    pages = [
+        page(range(0, 9), "c2"),  # short: 9 of 10
+        page(range(9, 19), "c3"),
+        page(range(19, 29), "c3"),  # last page repeats the cursor
+    ]
+    with patch.object(client, "search", side_effect=pages) as mock_search:
+        results = client.search_all("test", page_size=10)
+
+    assert [r["id"] for r in results] == list(range(29))
+    assert mock_search.call_count == 3
+    client.close()
+
+
+@pytest.mark.unit
+def test_search_all_ends_on_an_empty_page_after_short_pages() -> None:
+    client = SearchClient()
+    short = {
+        "hitCount": 9,
+        "nextCursorMark": "c2",
+        "resultList": {"result": [{"id": i} for i in range(9)]},
+    }
+    empty = {"hitCount": 9, "nextCursorMark": "c2", "resultList": {"result": []}}
+    with patch.object(client, "search", side_effect=[short, empty]) as mock_search:
+        results = client.search_all("test", page_size=10)
+
+    assert len(results) == 9
+    assert mock_search.call_count == 2
+    client.close()
+
+
+@pytest.mark.unit
+def test_search_all_max_results_counts_across_short_pages() -> None:
+    """After a short page the next request asks only for what is still missing."""
+    client = SearchClient()
+    first = {
+        "hitCount": 100,
+        "nextCursorMark": "c2",
+        "resultList": {"result": [{"id": i} for i in range(9)]},
+    }
+    second = {
+        "hitCount": 100,
+        "nextCursorMark": "c3",
+        "resultList": {"result": [{"id": i} for i in range(9, 14)]},
+    }
+    with patch.object(client, "search", side_effect=[first, second]) as mock_search:
+        results = client.search_all("test", page_size=10, max_results=14)
+
+    assert len(results) == 14
+    assert mock_search.call_args_list[1].kwargs["page_size"] == 5
+    assert mock_search.call_count == 2
+    client.close()

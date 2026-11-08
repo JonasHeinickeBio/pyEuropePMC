@@ -95,7 +95,7 @@ Takes the same parameters as `search()` and sends them form-encoded to the `sear
 | `max_results` | `int` or `None` | `None` | Stop after this many records; `None` fetches every match |
 | `**kwargs` | | | Sent with every request, for example `resultType` or `sort` |
 
-Follows `nextCursorMark` from page to page. It stops when `max_results` is reached, a page is empty or shorter than requested, or the cursor is missing or unchanged. It returns an empty list when `max_results` is 0 or negative.
+Follows `nextCursorMark` from page to page. It stops when `max_results` is reached, a page is empty, or the cursor is missing or unchanged. A page shorter than requested does not stop it: Europe PMC often returns 998 or 999 records for `page_size=1000` and still has more pages. It returns an empty list when `max_results` is 0 or negative.
 
 **Raises:** the errors of `search()`. A request that fails on a later page raises too; the records collected before it are not returned.
 
