@@ -68,8 +68,13 @@ class TestSearchAll:
             client.search_all("malaria")
 
     def test_complete_results_are_unchanged(self, client):
+        # The last page is followed by an empty one: a short page alone does not end paging.
         responses = iter(
-            [_response(200, _page(0, 100, "c2")), _response(200, _page(100, 50, "c3"))]
+            [
+                _response(200, _page(0, 100, "c2")),
+                _response(200, _page(100, 50, "c3")),
+                _response(200, _page(150, 0, "c3")),
+            ]
         )
 
         def get(self, url, **kwargs):  # noqa: ARG001

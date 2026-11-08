@@ -22,6 +22,12 @@ All notable changes to PyEuropePMC are documented here.
   of a different request. The same request in any parameter order still hits one entry, and
   `invalidate_article_cache()` still finds the entries of an article. A `get_article_details()`
   call with a JSONP `callback` is no longer cached, as for citations and references.
+- **literature:** `SearchClient.search_all()` (and `fetch_all_pages()`) no longer stops at the
+  first page that has fewer records than `page_size`. Europe PMC often returns 998 or 999 records
+  for `pageSize=1000` and still has more pages, so a large query ended after one page and
+  returned, for example, 998 of 50,714 records without an error. The loop now ends on an empty
+  page or a missing or unchanged `nextCursorMark`.
+
 ### Changed
 
 - **literature:** `SearchClient.interactive_search()` no longer logs an error and returns an empty

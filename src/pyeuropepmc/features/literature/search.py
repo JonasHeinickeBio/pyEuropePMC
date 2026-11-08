@@ -497,12 +497,10 @@ class SearchClient(BaseAPIClient):
             # Add results and check for completion
             results.extend(page_results)
 
-            # Stop if next cursor is missing, unchanged, or page wasn't full
-            if (
-                not next_cursor
-                or next_cursor == cursor_mark
-                or len(page_results) < current_page_size
-            ):
+            # Stop when the cursor is missing or unchanged (the last page). A page
+            # shorter than requested is not the end: Europe PMC often returns 998 or
+            # 999 records for pageSize=1000 and carries on with the next cursor.
+            if not next_cursor or next_cursor == cursor_mark:
                 break
 
             cursor_mark = next_cursor
