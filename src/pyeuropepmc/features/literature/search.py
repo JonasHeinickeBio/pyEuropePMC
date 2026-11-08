@@ -161,6 +161,9 @@ class SearchClient(BaseAPIClient):
                     raise SearchError(ErrorCodes.SEARCH003, context) from e
                 return cast(dict[str, Any], json_data)
             return str(response.text)
+        except SearchError:
+            # Keep the specific code (SEARCH003, NET002) instead of re-wrapping it as NET001.
+            raise
         except requests.exceptions.HTTPError as e:
             raise self._handle_http_error(e, method, endpoint) from e
         except requests.exceptions.RequestException as e:
@@ -190,7 +193,10 @@ class SearchClient(BaseAPIClient):
         self, error: requests.exceptions.HTTPError, method: str, endpoint: str
     ) -> NoReturn:
         """Handle HTTP errors and map to appropriate error codes."""
-        status_code = getattr(error.response, "status_code", 0) if error.response else 0
+        # Compare with None: a Response with an error status is falsy.
+        status_code = (
+            getattr(error.response, "status_code", 0) if error.response is not None else 0
+        )
 
         if status_code == 404:
             error_code = ErrorCodes.HTTP404

@@ -27,6 +27,10 @@ All notable changes to PyEuropePMC are documented here.
   for `pageSize=1000` and still has more pages, so a large query ended after one page and
   returned, for example, 998 of 50,714 records without an error. The loop now ends on an empty
   page or a missing or unchanged `nextCursorMark`.
+- **literature:** `SearchClient` reports an HTTP 404, 403 or 500 as `HTTP404`, `HTTP403` or
+  `HTTP500` again. The check `if error.response` is false for a response with an error status, so
+  every HTTP error was reported as `NET001`. A response that is not JSON is `SEARCH003` and a
+  request that returns no response object is `NET002`; both were overwritten with `NET001`.
 
 ### Changed
 
