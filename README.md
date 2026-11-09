@@ -195,20 +195,20 @@ The weekly benchmark workflow times the API clients and opens a pull request tha
 <!-- BENCHMARK-RESULTS:START -->
 ## 📊 Performance
 
-> Last updated: 2026-09-14
+> Last updated: 2026-11-09
 
 | Metric | Value |
 |--------|-------|
 | **Benchmarked methods** | 10 |
-| **Total requests** | 224 |
-| **Mean call time** | 0.871s |
+| **Total requests** | 226 |
+| **Mean call time** | 1.853s |
 | **Success rate** | 100.0% |
 
 <details>
 <summary>📈 View full benchmark report</summary>
 
 # 🚀 pyEuropePMC Benchmark Suite
-**Generated:** 2026-09-14 07:45:39
+**Generated:** 2026-11-09 09:27:52
 
 ## 📊 Summary
 
@@ -222,51 +222,51 @@ The weekly benchmark workflow times the API clients and opens a pull request tha
 
 | Method | Mean Time | Std Dev | Mean Memory | Cache | Requests | Errors |
 |---|---:|---:|---:|:--:|---:|---:|
-| get_article_details | 1.707s | 0.212s | 0.0MB | ❌ | 31 | 0 |
-<sub>p50: 1.620s · p95: 2.235s · ops: 0.59/s · runs: 30</sub>
-| get_citations | 1.789s | 0.318s | 0.0MB | ❌ | 31 | 0 |
-<sub>p50: 1.666s · p95: 2.851s · ops: 0.56/s · runs: 30</sub>
+| get_article_details | 2.320s | 1.303s | 0.0MB | ❌ | 31 | 0 |
+<sub>p50: 1.648s · p95: 5.209s · ops: 0.43/s · runs: 30</sub>
+| get_citations | 4.884s | 5.239s | 0.1MB | ❌ | 33 | 0 |
+<sub>p50: 2.203s · p95: 18.092s · ops: 0.20/s · runs: 30</sub>
 
 ## ArticleClient_Cached
 
 | Method | Mean Time | Std Dev | Mean Memory | Cache | Requests | Errors |
 |---|---:|---:|---:|:--:|---:|---:|
 | get_article_details | <1ms | <1ms | 0.0MB | ✅ | 1 | 0 |
-<sub>p50: 17µs · p95: 29µs · ops: 53390.19/s · runs: 30</sub>
+<sub>p50: 49µs · p95: 64µs · ops: 20430.73/s · runs: 30</sub>
 | get_citations | <1ms | <1ms | 0.0MB | ✅ | 1 | 0 |
-<sub>p50: 19µs · p95: 30µs · ops: 48437.33/s · runs: 30</sub>
+<sub>p50: 45µs · p95: 61µs · ops: 20688.88/s · runs: 30</sub>
 
 ## SearchClient_NoCache
 
 | Method | Mean Time | Std Dev | Mean Memory | Cache | Requests | Errors |
 |---|---:|---:|---:|:--:|---:|---:|
-| search | 2.074s | 0.262s | 0.1MB | ❌ | 31 | 0 |
-<sub>p50: 1.964s · p95: 2.673s · ops: 0.48/s · runs: 30</sub>
-| get_hit_count | 2.085s | 0.562s | 0.0MB | ❌ | 31 | 0 |
-<sub>p50: 1.933s · p95: 3.668s · ops: 0.48/s · runs: 30</sub>
+| search | 2.121s | 0.902s | 0.0MB | ❌ | 31 | 0 |
+<sub>p50: 1.836s · p95: 4.364s · ops: 0.47/s · runs: 30</sub>
+| get_hit_count | 3.462s | 3.536s | 0.0MB | ❌ | 31 | 0 |
+<sub>p50: 2.051s · p95: 11.935s · ops: 0.29/s · runs: 30</sub>
 
 ## SearchClient_Cached
 
 | Method | Mean Time | Std Dev | Mean Memory | Cache | Requests | Errors |
 |---|---:|---:|---:|:--:|---:|---:|
 | search | <1ms | <1ms | 0.0MB | ✅ | 1 | 0 |
-<sub>p50: 109µs · p95: 134µs · ops: 8795.90/s · runs: 30</sub>
+<sub>p50: 100µs · p95: 140µs · ops: 8937.92/s · runs: 30</sub>
 | get_hit_count | <1ms | <1ms | 0.0MB | ✅ | 1 | 0 |
-<sub>p50: 111µs · p95: 137µs · ops: 8603.62/s · runs: 30</sub>
+<sub>p50: 118µs · p95: 145µs · ops: 8461.62/s · runs: 30</sub>
 
 ## FullTextClient_NoCache
 
 | Method | Mean Time | Std Dev | Mean Memory | Cache | Requests | Errors |
 |---|---:|---:|---:|:--:|---:|---:|
-| check_fulltext_availability | 1.050s | 0.148s | 0.1MB | ❌ | 93 | 0 |
-<sub>p50: 0.998s · p95: 1.388s · ops: 0.95/s · runs: 30</sub>
+| check_fulltext_availability | 5.747s | 5.888s | 0.1MB | ❌ | 93 | 0 |
+<sub>p50: 3.182s · p95: 15.597s · ops: 0.17/s · runs: 30</sub>
 
 ## FullTextClient_Cached
 
 | Method | Mean Time | Std Dev | Mean Memory | Cache | Requests | Errors |
 |---|---:|---:|---:|:--:|---:|---:|
 | check_fulltext_availability | <1ms | <1ms | 0.0MB | ✅ | 3 | 0 |
-<sub>p50: 20µs · p95: 21µs · ops: 48496.45/s · runs: 30</sub>
+<sub>p50: 19µs · p95: 26µs · ops: 49733.02/s · runs: 30</sub>
 
 ## 🔁 Cache vs No-Cache Comparison
 
@@ -274,23 +274,23 @@ The weekly benchmark workflow times the API clients and opens a pull request tha
 
 | Method | No-Cache Mean | Cached Mean | Speedup (no/cache) |
 |---|---:|---:|---:|
-| get_article_details | 1.707s | <1ms | >17074.4x |
-| get_citations | 1.789s | <1ms | >17888.5x |
+| get_article_details | 2.320s | <1ms | >23202.0x |
+| get_citations | 4.884s | <1ms | >48835.3x |
 
 ### FullTextClient — cached vs no-cache
 
 | Method | No-Cache Mean | Cached Mean | Speedup (no/cache) |
 |---|---:|---:|---:|
-| check_fulltext_availability | 1.050s | <1ms | >10504.7x |
+| check_fulltext_availability | 5.747s | <1ms | >57469.8x |
 
 ### SearchClient — cached vs no-cache
 
 | Method | No-Cache Mean | Cached Mean | Speedup (no/cache) |
 |---|---:|---:|---:|
-| get_hit_count | 2.085s | <1ms | 17941.89x |
-| search | 2.074s | <1ms | 18245.92x |
+| get_hit_count | 3.462s | <1ms | 29290.99x |
+| search | 2.121s | <1ms | 18953.41x |
 
-- **Average speedup for SearchClient (no-cache / cached):** 18093.91x
+- **Average speedup for SearchClient (no-cache / cached):** 24122.20x
 
 ---
 _Notes: Means are computed over measured iterations; '-' indicates missing data. Values like '<1ms' indicate very fast cached responses. Speedups shown as lower-bounds when cached times are too small to measure precisely._
