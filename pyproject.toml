@@ -104,7 +104,7 @@ langchain = { version = ">=1.3.9,<2.0", optional = true }
 langchain-openai = { version = ">=1.1.14,<2.0", optional = true }
 # langchain-openai 1.x requires openai >=2.26; the old <2 bound is what
 # blocked the security bump of the agentic stack.
-openai = { version = ">=2.26,<4", optional = true }
+openai = { version = ">=3.46.0,<4", optional = true }
 langgraph = { version = ">=1.0.10,<2.0", optional = true }
 jinja2 = { version = ">=3.1.2,<4.0", optional = true }
 semanticscholar = { version = ">=0.12.0,<1.0", optional = true }
